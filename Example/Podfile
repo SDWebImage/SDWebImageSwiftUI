@@ -1,0 +1,6 @@
+use_frameworks!
+target 'SDWebImageSwiftUI_Tests' do
+  pod 'SDWebImageSwiftUI', :path => '../'
+  
+  
+end
