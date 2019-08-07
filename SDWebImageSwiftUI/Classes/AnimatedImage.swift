@@ -10,10 +10,24 @@ import SwiftUI
 import SDWebImage
 
 public struct AnimatedImage: UIViewRepresentable {
-    public var url: URL?
+    var url: URL?
+    var name: String?
+    var bundle: Bundle?
+    var data: Data?
+    var scale: Length = 0
     
     public init(url: URL?) {
         self.url = url
+    }
+    
+    public init(name: String?, bundle: Bundle? = nil) {
+        self.name = name
+        self.bundle = bundle
+    }
+    
+    public init(data: Data, scale: Length = 0) {
+        self.data = data
+        self.scale = scale
     }
     
     public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> SDAnimatedImageView {
@@ -21,6 +35,17 @@ public struct AnimatedImage: UIViewRepresentable {
     }
     
     public func updateUIView(_ uiView: SDAnimatedImageView, context: UIViewRepresentableContext<AnimatedImage>) {
-        uiView.sd_setImage(with: url)
+        if let url = url {
+            uiView.sd_setImage(with: url)
+            return
+        }
+        if let name = name {
+            uiView.image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
+            return
+        }
+        if let data = data {
+            uiView.image = SDAnimatedImage(data: data, scale: scale)
+            return
+        }
     }
 }
