@@ -9,34 +9,25 @@
 Pod::Spec.new do |s|
   s.name             = 'SDWebImageSwiftUI'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of SDWebImageSwiftUI.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.summary          = 'Integration of SDWebImage Asynchronous image loading and SwiftUI framework'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+This framework is used to integrate SDWebImage' image loading system to the new SwiftUI framework.
+Which aims to provide a better support for SwiftUI users.
                        DESC
 
-  s.homepage         = 'https://github.com/lizhuoli1126@126.com/SDWebImageSwiftUI'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/dreampiggy/SDWebImageSwiftUI'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'lizhuoli1126@126.com' => 'lizhuoli1126@126.com' }
-  s.source           = { :git => 'https://github.com/lizhuoli1126@126.com/SDWebImageSwiftUI.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'DreamPiggy' => 'lizhuoli1126@126.com' }
+  s.source           = { :git => 'https://github.com/dreampiggy/SDWebImageSwiftUI.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '13.0'
+  s.osx.deployment_target = '10.15'
+  s.tvos.deployment_target = '13.0'
+  s.watchos.deployment_target = '6.0'
 
   s.source_files = 'SDWebImageSwiftUI/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'SDWebImageSwiftUI' => ['SDWebImageSwiftUI/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'SwiftUI'
+  s.dependency 'SDWebImage', '~> 5.1'
 end

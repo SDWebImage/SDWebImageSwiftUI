@@ -5,11 +5,23 @@
 [![License](https://img.shields.io/cocoapods/l/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
 [![Platform](https://img.shields.io/cocoapods/p/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
 
-## Example
+## What's for
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+This is an experimental project for [SDWebImage](https://github.com/SDWebImage/SDWebImage).
+
+It aims to ensure the following function available for users and try to do some experiences for Swift platform.
+
++ Swift Package Manager integration
++ SwiftUI compatibility
++ Swift source code compatibility
 
 ## Requirements
+
++ Xcode 11+
++ iOS 13+
++ macOS 10.15+
++ tvOS 13+
++ watchOS 6+
 
 ## Installation
 
@@ -20,10 +32,51 @@ it, simply add the following line to your Podfile:
 pod 'SDWebImageSwiftUI'
 ```
 
+## Usage
+
++ Using `WebImage` to load network image
+
+It supports the placeholder and detail options control for image loading as SDWebImage.
+
+```swift
+var body: some View {
+    WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic")!)
+        .scaledToFit()
+        .frame(width: 300, height: 300, alignment: .center)
+}
+```
+
++ Using `AnimatedImage` to play animation
+
+```swift
+var body: some View {
+    AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")!)
+}
+```
+
+It supports both image url or image data for animated image format.
+
+## Demo
+
+To run the example using SwiftUI, following the steps:
+
+```
+cd Example
+pod install
+```
+
+Then open the Xcode Workspace to run the demo application.
+
+## Screenshot
+
+![](Example/Screenshot/1.jpg)
+
 ## Author
 
-lizhuoli1126@126.com, lizhuoli1126@126.com
+DreamPiggy
 
 ## License
 
 SDWebImageSwiftUI is available under the MIT license. See the LICENSE file for more info.
+
+

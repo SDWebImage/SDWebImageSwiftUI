@@ -1,0 +1,25 @@
+PODS:
+  - SDWebImage (5.1.0):
+    - SDWebImage/Core (= 5.1.0)
+  - SDWebImage/Core (5.1.0)
+  - SDWebImageSwiftUI (0.1.0):
+    - SDWebImage (~> 5.1)
+
+DEPENDENCIES:
+  - SDWebImageSwiftUI (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SDWebImage
+
+EXTERNAL SOURCES:
+  SDWebImageSwiftUI:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
+  SDWebImageSwiftUI: b872d00c12aa224eb0c092d5ef2d7a8d4ddfb28f
+
+PODFILE CHECKSUM: 146734166216dd8fc1597433cc675999454ed4b2
+
+COCOAPODS: 1.7.5
