@@ -1,6 +1,6 @@
 # SDWebImageSwiftUI
 
-[![CI Status](https://travis-ci.com/dreampiggy/SDWebImageSwiftUI.svg?branch=master)](https://travis-ci.com/dreampiggy/SDWebImageSwiftUI)
+[![CI Status](https://travis-ci.com/SDWebImage/SDWebImageSwiftUI.svg?branch=master)](https://travis-ci.com/SDWebImage/SDWebImageSwiftUI)
 [![Version](https://img.shields.io/cocoapods/v/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
 [![License](https://img.shields.io/cocoapods/l/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
 [![Platform](https://img.shields.io/cocoapods/p/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
@@ -11,11 +11,13 @@
 
 This is an experimental project for [SDWebImage](https://github.com/SDWebImage/SDWebImage).
 
-It aims to ensure the following function available for users and try to do some experiences for Swift platform.
+It aims to ensure the following function available for users and try to do some experiment for Swift platform.
 
 + Swift Package Manager integration
 + SwiftUI compatibility
 + Swift source code compatibility
+
+Note we do not gurantee the public API stable for current status. Since Xcode 11 is not get released and SwiftUI is a new platform for us.
 
 ## Requirements
 
@@ -41,7 +43,7 @@ pod 'SDWebImageSwiftUI'
 SDWebImageSwiftUI is available through [Carthage](https://github.com/Carthage/Carthage).
 
 ```
-github "dreampiggy/SDWebImageSwiftUI"
+github "SDWebImage/SDWebImageSwiftUI"
 ```
 
 #### Swift Package Manager
@@ -51,7 +53,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/dreampiggy/SDWebImageSwiftUI.git", .branch("master"))
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.1")
     ],
 )
 ```

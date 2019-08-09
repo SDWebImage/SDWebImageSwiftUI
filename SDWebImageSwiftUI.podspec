@@ -16,10 +16,10 @@ This framework is used to integrate SDWebImage' image loading system to the new 
 Which aims to provide a better support for SwiftUI users.
                        DESC
 
-  s.homepage         = 'https://github.com/dreampiggy/SDWebImageSwiftUI'
+  s.homepage         = 'https://github.com/SDWebImage/SDWebImageSwiftUI'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'DreamPiggy' => 'lizhuoli1126@126.com' }
-  s.source           = { :git => 'https://github.com/dreampiggy/SDWebImageSwiftUI.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/SDWebImage/SDWebImageSwiftUI.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '13.0'
   s.osx.deployment_target = '10.15'
