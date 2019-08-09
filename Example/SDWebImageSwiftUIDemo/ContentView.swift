@@ -20,6 +20,7 @@ struct ContentView: View {
             AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")!)
 //                .scaledToFit() // Apple's Bug ? Custom UIView does not passthrough the `contentMode` from Swift UI layout system into UIKit layout system
                 .frame(width: 400, height: 300, alignment: .center)
+            AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
         }
     }
 }

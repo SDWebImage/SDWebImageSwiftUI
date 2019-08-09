@@ -25,11 +25,33 @@ It aims to ensure the following function available for users and try to do some 
 
 ## Installation
 
+#### CocoaPods
+
 SDWebImageSwiftUI is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'SDWebImageSwiftUI'
+```
+
+#### Carthage
+
+SDWebImageSwiftUI is available through [Carthage](https://github.com/Carthage/Carthage).
+
+```
+github "dreampiggy/SDWebImageSwiftUI"
+```
+
+#### Swift Package Manager
+
+SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org/package-manager/).
+
+```swift
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/dreampiggy/SDWebImageSwiftUI.git", .branch("master"))
+    ],
+)
 ```
 
 ## Usage
@@ -51,6 +73,7 @@ var body: some View {
 ```swift
 var body: some View {
     AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")!)
+    AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
 }
 ```
 
