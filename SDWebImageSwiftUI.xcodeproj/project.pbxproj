@@ -310,7 +310,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1100;
-				ORGANIZATIONNAME = lizhuoli;
+				ORGANIZATIONNAME = SDWebImage;
 				TargetAttributes = {
 					32C43DCB22FD540D00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
