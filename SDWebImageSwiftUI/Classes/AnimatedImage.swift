@@ -16,11 +16,11 @@ public struct AnimatedImage: UIViewRepresentable {
     var data: Data?
     var scale: Length = 0
     
-    public init(url: URL?) {
+    public init(url: URL, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
     }
     
-    public init(name: String?, bundle: Bundle? = nil) {
+    public init(name: String, bundle: Bundle? = nil) {
         self.name = name
         self.bundle = bundle
     }
