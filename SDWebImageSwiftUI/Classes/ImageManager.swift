@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import SDWebImage
 
-class ImageManager : BindableObject {
+class ImageManager : ObservableObject {
     var willChange = PassthroughSubject<ImageManager, Never>()
     var didChange = PassthroughSubject<ImageManager, Never>()
     

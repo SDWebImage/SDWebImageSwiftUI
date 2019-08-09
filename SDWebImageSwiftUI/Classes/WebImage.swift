@@ -15,7 +15,7 @@ public struct WebImage : View {
     public var options: SDWebImageOptions
     public var context: [SDWebImageContextOption : Any]?
     
-    @ObjectBinding var imageManager: ImageManager
+    @ObservedObject var imageManager: ImageManager
     
     public init(url: URL, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url

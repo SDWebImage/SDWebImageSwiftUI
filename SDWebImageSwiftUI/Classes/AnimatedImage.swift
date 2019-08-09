@@ -16,7 +16,7 @@ public struct AnimatedImage: ViewRepresentable {
     var name: String?
     var bundle: Bundle?
     var data: Data?
-    var scale: Length = 0
+    var scale: CGFloat = 0
     
     #if os(macOS)
     public typealias NSViewType = SDAnimatedImageView
@@ -74,7 +74,7 @@ public struct AnimatedImage: ViewRepresentable {
         self.bundle = bundle
     }
     
-    public init(data: Data, scale: Length = 0) {
+    public init(data: Data, scale: CGFloat = 0) {
         self.data = data
         self.scale = scale
     }
