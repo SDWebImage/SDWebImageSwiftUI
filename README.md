@@ -11,13 +11,13 @@
 
 This is an experimental project for [SDWebImage](https://github.com/SDWebImage/SDWebImage).
 
-It aims to ensure the following function available for users and try to do some experiment for Swift platform.
+It aims to ensure the following function available for users and try to do some experiments for Swift platform.
 
 + Swift Package Manager integration
 + SwiftUI compatibility
 + Swift source code compatibility
 
-Note we do not gurantee the public API stable for current status. Since Xcode 11 is not get released and SwiftUI is a new platform for us.
+Note we do not guarantee the public API stable for current status. Since Xcode 11 is not get released and SwiftUI is a new platform for us.
 
 ## Requirements
 
@@ -81,7 +81,7 @@ var body: some View {
 }
 ```
 
-It supports both image url or image data for animated image format.
+It supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
 
 ## Demo
 
