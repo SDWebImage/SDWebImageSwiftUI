@@ -1,20 +1,69 @@
 //
-//  Image+WebCache.swift
-//  SDWebImageSwiftUIDemo
+//  AnimatedImage.swift
+//  SDWebImageSwiftUI
 //
-//  Created by lizhuoli on 2019/7/26.
+//  Created by lizhuoli on 2019/8/9.
 //  Copyright © 2019 lizhuoli. All rights reserved.
 //
 
 import SwiftUI
 import SDWebImage
 
-public struct AnimatedImage: UIViewRepresentable {
+#if !os(watchOS)
+
+public struct AnimatedImage: ViewRepresentable {
     var url: URL?
     var name: String?
     var bundle: Bundle?
     var data: Data?
     var scale: Length = 0
+    
+    #if os(macOS)
+    public typealias NSViewType = SDAnimatedImageView
+    #else
+    public typealias UIViewType = SDAnimatedImageView
+    #endif
+    
+    #if os(macOS)
+    public func makeNSView(context: NSViewRepresentableContext<AnimatedImage>) -> SDAnimatedImageView {
+        makeView(context: context)
+    }
+    
+    public func updateNSView(_ nsView: SDAnimatedImageView, context: NSViewRepresentableContext<AnimatedImage>) {
+        updateView(nsView, context: context)
+    }
+    #else
+    public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> SDAnimatedImageView {
+        makeView(context: context)
+    }
+    
+    public func updateUIView(_ uiView: SDAnimatedImageView, context: UIViewRepresentableContext<AnimatedImage>) {
+        updateView(uiView, context: context)
+    }
+    #endif
+    
+    func makeView(context: ViewRepresentableContext<AnimatedImage>) -> SDAnimatedImageView {
+        SDAnimatedImageView()
+    }
+    
+    func updateView(_ view: SDAnimatedImageView, context: ViewRepresentableContext<AnimatedImage>) {
+        if let url = url {
+            view.sd_setImage(with: url)
+            return
+        }
+        if let name = name {
+            #if os(macOS)
+            view.image = SDAnimatedImage(named: name, in: bundle)
+            #else
+            view.image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
+            #endif
+            return
+        }
+        if let data = data {
+            view.image = SDAnimatedImage(data: data, scale: scale)
+            return
+        }
+    }
     
     public init(url: URL, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
@@ -29,23 +78,6 @@ public struct AnimatedImage: UIViewRepresentable {
         self.data = data
         self.scale = scale
     }
-    
-    public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> SDAnimatedImageView {
-        SDAnimatedImageView()
-    }
-    
-    public func updateUIView(_ uiView: SDAnimatedImageView, context: UIViewRepresentableContext<AnimatedImage>) {
-        if let url = url {
-            uiView.sd_setImage(with: url)
-            return
-        }
-        if let name = name {
-            uiView.image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
-            return
-        }
-        if let data = data {
-            uiView.image = SDAnimatedImage(data: data, scale: scale)
-            return
-        }
-    }
 }
+
+#endif

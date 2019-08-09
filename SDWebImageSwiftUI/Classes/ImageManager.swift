@@ -1,8 +1,9 @@
 //
 //  ImageManager.swift
-//  Pods-SDWebImageSwiftUIDemo
+//  SDWebImageSwiftUI
 //
-//  Created by lizhuoli on 2019/8/7.
+//  Created by lizhuoli on 2019/8/9.
+//  Copyright © 2019 lizhuoli. All rights reserved.
 //
 
 import SwiftUI
@@ -16,7 +17,7 @@ class ImageManager : BindableObject {
     private var manager = SDWebImageManager.shared
     private weak var currentOperation: SDWebImageOperation? = nil
     
-    var image: UIImage? {
+    var image: Image? {
         willSet {
             willChange.send(self)
         }
@@ -37,7 +38,13 @@ class ImageManager : BindableObject {
     
     func load() {
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, _, _) in
-            self.image = image
+            if let image = image {
+                #if os(macOS)
+                self.image = Image(nsImage: image)
+                #else
+                self.image = Image(uiImage: image)
+                #endif
+            }
         }
     }
     

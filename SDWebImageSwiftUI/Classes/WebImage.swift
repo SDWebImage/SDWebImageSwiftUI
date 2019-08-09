@@ -1,8 +1,8 @@
 //
 //  WebImage.swift
-//  SDWebImageSwiftUIDemo
+//  SDWebImageSwiftUI
 //
-//  Created by lizhuoli on 2019/7/26.
+//  Created by lizhuoli on 2019/8/9.
 //  Copyright © 2019 lizhuoli. All rights reserved.
 //
 
@@ -27,7 +27,7 @@ public struct WebImage : View {
     
     public var body: some View {
         if let image = imageManager.image {
-            return Image(uiImage: image)
+            return image
                 .resizable()
                 .onAppear {}
                 .onDisappear {}
@@ -37,7 +37,12 @@ public struct WebImage : View {
                     .onAppear { self.imageManager.load() }
                     .onDisappear { self.imageManager.cancel() }
         } else {
-            return Image(uiImage: UIImage())
+            #if os(macOS)
+            let emptyImage = Image(nsImage: NSImage())
+            #else
+            let emptyImage = Image(uiImage: UIImage())
+            #endif
+            return emptyImage
                 .resizable()
                 .onAppear { self.imageManager.load() }
                 .onDisappear { self.imageManager.cancel() }
