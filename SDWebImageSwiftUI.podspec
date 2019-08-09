@@ -30,4 +30,5 @@ Which aims to provide a better support for SwiftUI users.
 
   s.frameworks = 'SwiftUI'
   s.dependency 'SDWebImage', '~> 5.1'
+  s.swift_version = '5.0'
 end
