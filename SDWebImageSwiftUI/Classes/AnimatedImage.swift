@@ -65,7 +65,7 @@ public struct AnimatedImage: ViewRepresentable {
         }
     }
     
-    public init(url: URL, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
     }
     
