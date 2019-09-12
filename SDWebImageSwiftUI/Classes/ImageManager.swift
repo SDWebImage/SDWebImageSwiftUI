@@ -11,18 +11,15 @@ import Combine
 import SDWebImage
 
 class ImageManager : ObservableObject {
-    var willChange = PassthroughSubject<ImageManager, Never>()
-    var didChange = PassthroughSubject<ImageManager, Never>()
+    
+    var objectWillChange = PassthroughSubject<ImageManager, Never>()
     
     private var manager = SDWebImageManager.shared
     private weak var currentOperation: SDWebImageOperation? = nil
     
     var image: Image? {
         willSet {
-            willChange.send(self)
-        }
-        didSet {
-            didChange.send(self)
+            objectWillChange.send(self)
         }
     }
     
