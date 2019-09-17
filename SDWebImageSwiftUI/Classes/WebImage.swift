@@ -10,14 +10,14 @@ import SwiftUI
 import SDWebImage
 
 public struct WebImage : View {
-    public var url: URL
+    public var url: URL?
     public var placeholder: Image?
     public var options: SDWebImageOptions
     public var context: [SDWebImageContextOption : Any]?
     
     @ObservedObject var imageManager: ImageManager
     
-    public init(url: URL, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
         self.placeholder = placeholder
         self.options = options

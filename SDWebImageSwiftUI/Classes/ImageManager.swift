@@ -23,11 +23,11 @@ class ImageManager : ObservableObject {
         }
     }
     
-    var url: URL
+    var url: URL?
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
     
-    init(url: URL, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
         self.options = options
         self.context = context
