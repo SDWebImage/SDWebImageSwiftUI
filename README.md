@@ -17,7 +17,7 @@ It aims to ensure the following function available for users and try to do some 
 + SwiftUI compatibility
 + Swift source code compatibility
 
-Note we do not guarantee the public API stable for current status. Since Xcode 11 is not get released and SwiftUI is a new platform for us.
+Note we do not guarantee the public API stable for current status. Since SwiftUI is a new platform for us, we need to investigate the API design.
 
 ## Requirements
 
@@ -66,7 +66,7 @@ It supports the placeholder and detail options control for image loading as SDWe
 
 ```swift
 var body: some View {
-    WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic")!)
+    WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
 }
@@ -76,7 +76,7 @@ var body: some View {
 
 ```swift
 var body: some View {
-    AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")!)
+    AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
     AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
 }
 ```
