@@ -11,12 +11,24 @@ import SDWebImage
 
 #if !os(watchOS)
 
-public struct AnimatedImage: ViewRepresentable {
-    var url: URL?
-    var name: String?
-    var bundle: Bundle?
-    var data: Data?
-    var scale: CGFloat = 0
+// Data Binding Object
+final class AnimatedImageModel : ObservableObject {
+    @Published var image: SDAnimatedImage?
+    @Published var url: URL?
+}
+
+// Layout Binding Object
+final class AnimatedImageLayout : ObservableObject {
+    @Published var contentMode: ContentMode = .fill
+}
+
+// View
+public struct AnimatedImage : ViewRepresentable {
+    @ObservedObject var imageModel = AnimatedImageModel()
+    @ObservedObject var imageLayout = AnimatedImageLayout()
+    
+    var webOptions: SDWebImageOptions = []
+    var webContext: [SDWebImageContextOption : Any]? = nil
     
     #if os(macOS)
     public typealias NSViewType = SDAnimatedImageView
@@ -47,36 +59,67 @@ public struct AnimatedImage: ViewRepresentable {
     }
     
     func updateView(_ view: SDAnimatedImageView, context: ViewRepresentableContext<AnimatedImage>) {
-        if let url = url {
-            view.sd_setImage(with: url)
-            return
+        view.image = imageModel.image
+        if let url = imageModel.url {
+            view.sd_setImage(with: url, placeholderImage: view.image, options: webOptions, context: webContext)
         }
-        if let name = name {
+        
+        switch imageLayout.contentMode {
+        case .fit:
             #if os(macOS)
-            view.image = SDAnimatedImage(named: name, in: bundle)
+            view.imageScaling = .scaleProportionallyUpOrDown
             #else
-            view.image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
+            view.contentMode = .scaleAspectFit
             #endif
-            return
-        }
-        if let data = data {
-            view.image = SDAnimatedImage(data: data, scale: scale)
-            return
+        case .fill:
+            #if os(macOS)
+            view.imageScaling = .scaleAxesIndependently
+            #else
+            view.contentMode = .scaleToFill
+            #endif
         }
     }
     
-    public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.url = url
+    public func image(_ image: SDAnimatedImage?) -> Self {
+        imageModel.image = image
+        return self
     }
     
+    public func imageUrl(_ url: URL?) -> Self {
+        imageModel.url = url
+        return self
+    }
+    
+    public func scaledToFit() -> Self {
+        imageLayout.contentMode = .fit
+        return self
+    }
+    
+    public func scaledToFill() -> Self {
+        imageLayout.contentMode = .fill
+        return self
+    }
+}
+
+extension AnimatedImage {
+    public init(url: URL?, placeholder: SDAnimatedImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.webOptions = options
+        self.webContext = context
+        self.imageModel.url = url
+    }
+
     public init(name: String, bundle: Bundle? = nil) {
-        self.name = name
-        self.bundle = bundle
+        #if os(macOS)
+        let image = SDAnimatedImage(named: name, in: bundle)
+        #else
+        let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
+        #endif
+        self.imageModel.image = image
     }
-    
+
     public init(data: Data, scale: CGFloat = 0) {
-        self.data = data
-        self.scale = scale
+        let image = SDAnimatedImage(data: data, scale: scale)
+        self.imageModel.image = image
     }
 }
 

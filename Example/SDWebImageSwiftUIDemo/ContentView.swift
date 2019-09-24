@@ -16,10 +16,10 @@ struct ContentView: View {
         VStack {
             WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
                 .scaledToFit()
-                .frame(width: 300, height: 300, alignment: .center)
-            AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
-//                .scaledToFit() // Apple's Bug ? Custom UIView does not passthrough the `contentMode` from Swift UI layout system into UIKit layout system
-                .frame(width: 400, height: 300, alignment: .center)
+                .frame(width: CGFloat(300), height: CGFloat(300), alignment: .center)
+            AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), options: [.progressiveLoad])
+                .scaledToFill()
+                .frame(width: CGFloat(400), height: CGFloat(300), alignment: .center)
         }
     }
 }
