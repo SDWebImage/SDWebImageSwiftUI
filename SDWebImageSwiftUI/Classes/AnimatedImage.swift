@@ -73,9 +73,10 @@ public struct AnimatedImage : ViewRepresentable {
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
         // AspectRatio
-        if let aspectRatio = imageLayout.aspectRatio {
-            // Not implements
+        if let _ = imageLayout.aspectRatio {
+            // TODO: Needs layer transform and geometry calculation
         }
+        
         // ContentMode
         switch imageLayout.contentMode {
         case .fit:
@@ -91,6 +92,7 @@ public struct AnimatedImage : ViewRepresentable {
             view.wrapped.contentMode = .scaleToFill
             #endif
         }
+        
         // RenderingMode
         if let renderingMode = imageLayout.renderingMode {
             switch renderingMode {
@@ -111,6 +113,7 @@ public struct AnimatedImage : ViewRepresentable {
                 break
             }
         }
+        
         // Interpolation
         if let interpolation = imageLayout.interpolation {
             switch interpolation {
@@ -129,15 +132,16 @@ public struct AnimatedImage : ViewRepresentable {
         } else {
             view.interpolationQuality = .default
         }
+        
         // Antialiased
         view.shouldAntialias = imageLayout.antialiased
         
         // Display
         #if os(macOS)
-        view.updateConstraintsIfNeeded()
+        view.needsLayout = true
         view.needsDisplay = true
         #else
-        view.updateConstraintsIfNeeded()
+        view.setNeedsLayout()
         view.setNeedsDisplay()
         #endif
     }
