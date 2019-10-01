@@ -9,6 +9,8 @@
 import Foundation
 import SDWebImage
 
+#if !os(watchOS)
+
 // View Wrapper
 public class AnimatedImageViewWrapper : PlatformView {
     var wrapped = SDAnimatedImageView()
@@ -59,3 +61,5 @@ extension PlatformView {
 
     }
 }
+
+#endif
