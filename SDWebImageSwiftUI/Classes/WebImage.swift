@@ -15,6 +15,8 @@ public struct WebImage : View {
     public var options: SDWebImageOptions
     public var context: [SDWebImageContextOption : Any]?
     
+    var configurations: [(Image) -> Image] = []
+    
     @ObservedObject var imageManager: ImageManager
     
     public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
@@ -26,26 +28,56 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        if let image = imageManager.image {
-            return image
-                .resizable()
-                .onAppear {}
-                .onDisappear {}
-        } else if let image = placeholder {
-                return image
-                    .resizable()
-                    .onAppear { self.imageManager.load() }
-                    .onDisappear { self.imageManager.cancel() }
+        let image: Image
+        if let platformImage = imageManager.image {
+            image = Image(platformImage: platformImage)
+        } else if let placeholder = placeholder {
+            image = placeholder
         } else {
             #if os(macOS)
             let emptyImage = Image(nsImage: NSImage())
             #else
             let emptyImage = Image(uiImage: UIImage())
             #endif
-            return emptyImage
-                .resizable()
-                .onAppear { self.imageManager.load() }
-                .onDisappear { self.imageManager.cancel() }
+            image = emptyImage
         }
+        return configurations.reduce(image) { (previous, configuration) in
+            configuration(previous)
+        }
+        .onAppear {
+            if self.imageManager.image == nil {
+                self.imageManager.load()
+            }
+        }
+        .onDisappear {
+            self.imageManager.cancel()
+        }
+    }
+}
+
+extension WebImage {
+    func configure(_ block: @escaping (Image) -> Image) -> WebImage {
+        var result = self
+        result.configurations.append(block)
+        return result
+    }
+
+    public func resizable(
+        capInsets: EdgeInsets = EdgeInsets(),
+        resizingMode: Image.ResizingMode = .stretch) -> WebImage
+    {
+        configure { $0.resizable(capInsets: capInsets, resizingMode: resizingMode) }
+    }
+
+    public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> WebImage {
+        configure { $0.renderingMode(renderingMode) }
+    }
+
+    public func interpolation(_ interpolation: Image.Interpolation) -> WebImage {
+        configure { $0.interpolation(interpolation) }
+    }
+
+    public func antialiased(_ isAntialiased: Bool) -> WebImage {
+        configure { $0.antialiased(isAntialiased) }
     }
 }

@@ -14,10 +14,10 @@ class ImageManager : ObservableObject {
     
     var objectWillChange = PassthroughSubject<ImageManager, Never>()
     
-    private var manager = SDWebImageManager.shared
-    private weak var currentOperation: SDWebImageOperation? = nil
+    var manager = SDWebImageManager.shared
+    weak var currentOperation: SDWebImageOperation? = nil
     
-    var image: Image? {
+    var image: PlatformImage? {
         willSet {
             objectWillChange.send(self)
         }
@@ -36,11 +36,7 @@ class ImageManager : ObservableObject {
     func load() {
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, _, _) in
             if let image = image {
-                #if os(macOS)
-                self.image = Image(nsImage: image)
-                #else
-                self.image = Image(uiImage: image)
-                #endif
+                self.image = image
             }
         }
     }
