@@ -26,6 +26,7 @@ Note we do not guarantee the public API stable for current status. Since SwiftUI
 + macOS 10.15+
 + tvOS 13+
 + watchOS 6+
++ Swift 5.1+
 
 ## Installation
 
@@ -64,9 +65,12 @@ let package = Package(
 
 It supports the placeholder and detail options control for image loading as SDWebImage.
 
+Note: Unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation. This `WebImage` using `Image` for internal implementation and supports static image format only.
+
 ```swift
 var body: some View {
     WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
+        .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
 }
@@ -77,11 +81,13 @@ var body: some View {
 ```swift
 var body: some View {
     AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+    .scaledToFit()
     AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
+    .scaledToFill()
 }
 ```
 
-It supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
+Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
 
 ## Demo
 
