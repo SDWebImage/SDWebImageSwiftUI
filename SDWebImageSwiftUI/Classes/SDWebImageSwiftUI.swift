@@ -9,6 +9,28 @@
 import Foundation
 import SwiftUI
 
+#if os(macOS)
+typealias PlatformImage = NSImage
+#else
+typealias PlatformImage = UIImage
+#endif
+
+#if os(macOS)
+public typealias PlatformView = NSView
+#else
+public typealias PlatformView = UIView
+#endif
+
+extension Image {
+    init(platformImage: PlatformImage) {
+        #if os(macOS)
+        self.init(nsImage: platformImage)
+        #else
+        self.init(uiImage: platformImage)
+        #endif
+    }
+}
+
 #if !os(watchOS)
 
 #if os(macOS)

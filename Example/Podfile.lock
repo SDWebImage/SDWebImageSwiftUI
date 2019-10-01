@@ -2,7 +2,7 @@ PODS:
   - SDWebImage (5.1.0):
     - SDWebImage/Core (= 5.1.0)
   - SDWebImage/Core (5.1.0)
-  - SDWebImageSwiftUI (0.1.0):
+  - SDWebImageSwiftUI (0.1.1):
     - SDWebImage (~> 5.1)
 
 DEPENDENCIES:
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
-  SDWebImageSwiftUI: 22254f3ced4f056602cd8167b64106ab6419c6e6
+  SDWebImageSwiftUI: fa0b13b16a92985532cd13931b88aea4ff7efb0b
 
 PODFILE CHECKSUM: 146734166216dd8fc1597433cc675999454ed4b2
 
