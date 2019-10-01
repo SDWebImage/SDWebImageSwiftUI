@@ -10,15 +10,9 @@ import Foundation
 import SwiftUI
 
 #if os(macOS)
-typealias PlatformImage = NSImage
+public typealias PlatformImage = NSImage
 #else
-typealias PlatformImage = UIImage
-#endif
-
-#if os(macOS)
-public typealias PlatformView = NSView
-#else
-public typealias PlatformView = UIView
+public typealias PlatformImage = UIImage
 #endif
 
 extension Image {
@@ -31,14 +25,25 @@ extension Image {
     }
 }
 
-#if !os(watchOS)
+#if os(macOS)
+public typealias PlatformView = NSView
+#endif
+#if os(iOS) || os(tvOS)
+public typealias PlatformView = UIView
+#endif
+#if os(watchOS)
+public typealias PlatformView = WKInterfaceObject
+#endif
 
 #if os(macOS)
 typealias ViewRepresentable = NSViewRepresentable
 typealias ViewRepresentableContext = NSViewRepresentableContext
-#else
+#endif
+#if os(iOS) || os(tvOS)
 typealias ViewRepresentable = UIViewRepresentable
 typealias ViewRepresentableContext = UIViewRepresentableContext
 #endif
-
+#if os(watchOS)
+typealias ViewRepresentable = WKInterfaceObjectRepresentable
+typealias ViewRepresentableContext = WKInterfaceObjectRepresentableContext
 #endif

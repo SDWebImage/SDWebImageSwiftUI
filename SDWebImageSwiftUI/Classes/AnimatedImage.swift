@@ -13,7 +13,7 @@ import SDWebImage
 
 // Data Binding Object
 final class AnimatedImageModel : ObservableObject {
-    @Published var image: SDAnimatedImage?
+    @Published var image: PlatformImage?
     @Published var url: URL?
 }
 
@@ -146,7 +146,7 @@ public struct AnimatedImage : ViewRepresentable {
         #endif
     }
     
-    public func image(_ image: SDAnimatedImage?) -> Self {
+    public func image(_ image: PlatformImage?) -> Self {
         imageModel.image = image
         return self
     }
@@ -202,7 +202,7 @@ public struct AnimatedImage : ViewRepresentable {
 }
 
 extension AnimatedImage {
-    public init(url: URL?, placeholder: SDAnimatedImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.webOptions = options
         self.webContext = context
         self.imageModel.url = url
