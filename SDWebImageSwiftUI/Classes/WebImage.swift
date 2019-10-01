@@ -81,3 +81,17 @@ extension WebImage {
         configure { $0.antialiased(isAntialiased) }
     }
 }
+
+
+#if DEBUG
+struct WebImage_Previews : PreviewProvider {
+    static var previews: some View {
+        Group {
+            WebImage(url: URL(string: "https://raw.githubusercontent.com/SDWebImage/SDWebImage/master/SDWebImage_logo.png"))
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+        }
+    }
+}
+#endif

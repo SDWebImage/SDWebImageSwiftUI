@@ -15,6 +15,12 @@ typealias PlatformImage = NSImage
 typealias PlatformImage = UIImage
 #endif
 
+#if os(macOS)
+public typealias PlatformView = NSView
+#else
+public typealias PlatformView = UIView
+#endif
+
 extension Image {
     init(platformImage: PlatformImage) {
         #if os(macOS)
