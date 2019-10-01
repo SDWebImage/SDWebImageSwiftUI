@@ -21,6 +21,8 @@ final class AnimatedImageModel : ObservableObject {
 final class AnimatedImageLayout : ObservableObject {
     @Published var contentMode: ContentMode = .fill
     @Published var aspectRatio: CGFloat?
+    @Published var capInsets: EdgeInsets = EdgeInsets()
+    @Published var resizingMode: Image.ResizingMode?
     @Published var renderingMode: Image.TemplateRenderingMode?
     @Published var interpolation: Image.Interpolation?
     @Published var antialiased: Bool = false
@@ -93,24 +95,55 @@ public struct AnimatedImage : ViewRepresentable {
             #endif
         }
         
-        // RenderingMode
-        if let renderingMode = imageLayout.renderingMode {
-            switch renderingMode {
-            case .template:
+        // Animated Image does not support resizing mode and rendering mode
+        if let image = view.wrapped.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+            // ResizingMode
+            if let resizingMode = imageLayout.resizingMode {
                 #if os(macOS)
-                view.wrapped.image?.isTemplate = true
+                let capInsets = NSEdgeInsets(top: imageLayout.capInsets.top, left: imageLayout.capInsets.leading, bottom: imageLayout.capInsets.bottom, right: imageLayout.capInsets.trailing)
                 #else
-                view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysTemplate)
+                let capInsets = UIEdgeInsets(top: imageLayout.capInsets.top, left: imageLayout.capInsets.leading, bottom: imageLayout.capInsets.bottom, right: imageLayout.capInsets.trailing)
                 #endif
-            case .original:
-                #if os(macOS)
-                view.wrapped.image?.isTemplate = false
-                #else
-                view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysOriginal)
-                #endif
-            @unknown default:
-                // Future cases, not implements
-                break
+                switch resizingMode {
+                case .stretch:
+                    #if os(macOS)
+                    view.wrapped.image?.resizingMode = .stretch
+                    view.wrapped.image?.capInsets = capInsets
+                    #else
+                    view.wrapped.image = view.wrapped.image?.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
+                    #endif
+                case .tile:
+                    #if os(macOS)
+                    view.wrapped.image?.resizingMode = .tile
+                    view.wrapped.image?.capInsets = capInsets
+                    #else
+                    view.wrapped.image = view.wrapped.image?.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
+                    #endif
+                @unknown default:
+                    // Future cases, not implements
+                    break
+                }
+            }
+            
+            // RenderingMode
+            if let renderingMode = imageLayout.renderingMode {
+                switch renderingMode {
+                case .template:
+                    #if os(macOS)
+                    view.wrapped.image?.isTemplate = true
+                    #else
+                    view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysTemplate)
+                    #endif
+                case .original:
+                    #if os(macOS)
+                    view.wrapped.image?.isTemplate = false
+                    #else
+                    view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysOriginal)
+                    #endif
+                @unknown default:
+                    // Future cases, not implements
+                    break
+                }
             }
         }
         
@@ -160,6 +193,8 @@ public struct AnimatedImage : ViewRepresentable {
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> AnimatedImage
     {
+        imageLayout.capInsets = capInsets
+        imageLayout.resizingMode = resizingMode
         return self
     }
 
