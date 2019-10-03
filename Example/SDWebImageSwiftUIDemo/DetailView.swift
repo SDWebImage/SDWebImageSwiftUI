@@ -12,18 +12,43 @@ import SDWebImageSwiftUI
 struct DetailView: View {
     let url: String
     let animated: Bool
+    @State var progress: CGFloat = 1
     
     var body: some View {
-        Group {
-            if animated {
-                AnimatedImage(url: URL(string:url), options: [.progressiveLoad])
-                .resizable()
-                .scaledToFit()
-            } else {
-                WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .resizable()
-                .scaledToFit()
+        VStack {
+            HStack {
+                ProgressBar(value: $progress)
+                .foregroundColor(.blue)
+                .frame(maxHeight: 6)
             }
+            Spacer()
+            HStack {
+                if animated {
+                    AnimatedImage(url: URL(string:url), options: [.progressiveLoad])
+                    .onProgress(perform: { (receivedSize, expectedSize) in
+                        // SwiftUI engine itself ensure the main queue dispatch
+                        if (expectedSize >= 0) {
+                            self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                        } else {
+                            self.progress = 1
+                        }
+                    })
+                    .resizable()
+                    .scaledToFit()
+                } else {
+                    WebImage(url: URL(string:url), options: [.progressiveLoad])
+                    .onProgress(perform: { (receivedSize, expectedSize) in
+                        if (expectedSize >= 0) {
+                            self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                        } else {
+                            self.progress = 1
+                        }
+                    })
+                    .resizable()
+                    .scaledToFit()
+                }
+            }
+            Spacer()
         }
     }
 }

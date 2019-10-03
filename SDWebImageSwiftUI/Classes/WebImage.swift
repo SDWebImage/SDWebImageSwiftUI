@@ -55,6 +55,7 @@ public struct WebImage : View {
     }
 }
 
+// Layout
 extension WebImage {
     func configure(_ block: @escaping (Image) -> Image) -> WebImage {
         var result = self
@@ -82,6 +83,7 @@ extension WebImage {
     }
 }
 
+// Completion Handler
 extension WebImage {
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> WebImage {
         self.imageManager.failureBlock = action

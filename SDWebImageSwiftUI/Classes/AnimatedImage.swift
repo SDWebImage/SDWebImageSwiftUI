@@ -189,7 +189,10 @@ public struct AnimatedImage : ViewRepresentable {
         view.setNeedsDisplay()
         #endif
     }
-    
+}
+
+// Layout
+extension AnimatedImage {
     public func resizable(
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> AnimatedImage
@@ -237,6 +240,7 @@ public struct AnimatedImage : ViewRepresentable {
     }
 }
 
+// Completion Handler
 extension AnimatedImage {
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> AnimatedImage {
         imageModel.failureBlock = action
@@ -254,6 +258,7 @@ extension AnimatedImage {
     }
 }
 
+// Initializer
 extension AnimatedImage {
     public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.webOptions = options
