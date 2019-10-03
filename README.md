@@ -63,13 +63,18 @@ let package = Package(
 
 + Using `WebImage` to load network image
 
-It supports the placeholder and detail options control for image loading as SDWebImage.
+Supports the placeholder and detail options control for image loading as SDWebImage.
+
+Supports the success/failure/progress changes event for custom handling.
 
 Note: Unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation. This `WebImage` using `Image` for internal implementation and supports static image format only.
 
 ```swift
 var body: some View {
     WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
+        .onSuccess(perform: { (image, cacheType) in
+            // Success
+        })
         .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
@@ -81,6 +86,9 @@ var body: some View {
 ```swift
 var body: some View {
     AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+    .onFailure(perform: { (error) in
+        // Error
+    })
     .scaledToFit()
     AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
     .scaledToFill()
