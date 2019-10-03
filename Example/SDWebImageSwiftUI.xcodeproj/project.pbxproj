@@ -13,6 +13,7 @@
 		320CDC3222FADB45007CF858 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3122FADB45007CF858 /* Assets.xcassets */; };
 		320CDC3522FADB45007CF858 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3422FADB45007CF858 /* Preview Assets.xcassets */; };
 		320CDC3822FADB45007CF858 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3622FADB45007CF858 /* LaunchScreen.storyboard */; };
+		326B0D712345C01900D28269 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B0D702345C01900D28269 /* DetailView.swift */; };
 		CECA1658ECBAF54E3FF3EF58 /* Pods_SDWebImageSwiftUIDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A371F81C3B5BD6972F7A0E2 /* Pods_SDWebImageSwiftUIDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		320CDC3422FADB45007CF858 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		320CDC3722FADB45007CF858 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		320CDC3922FADB45007CF858 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		326B0D702345C01900D28269 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		3E9F8B5F06960FFFBD1A5F99 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4A371F81C3B5BD6972F7A0E2 /* Pods_SDWebImageSwiftUIDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SDWebImageSwiftUIDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54859B427E0A79E823713963 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				320CDC2B22FADB44007CF858 /* AppDelegate.swift */,
 				320CDC2D22FADB44007CF858 /* SceneDelegate.swift */,
 				320CDC2F22FADB44007CF858 /* ContentView.swift */,
+				326B0D702345C01900D28269 /* DetailView.swift */,
 				320CDC3122FADB45007CF858 /* Assets.xcassets */,
 				320CDC3622FADB45007CF858 /* LaunchScreen.storyboard */,
 				320CDC3922FADB45007CF858 /* Info.plist */,
@@ -173,7 +176,6 @@
 				TargetAttributes = {
 					320CDC2822FADB44007CF858 = {
 						CreatedOnToolsVersion = 11.0;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -219,11 +221,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-SDWebImageSwiftUIDemo/Pods-SDWebImageSwiftUIDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI/SDWebImageSwiftUI.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder/SDWebImageWebPCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -260,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				320CDC2C22FADB44007CF858 /* AppDelegate.swift in Sources */,
+				326B0D712345C01900D28269 /* DetailView.swift in Sources */,
 				320CDC2E22FADB44007CF858 /* SceneDelegate.swift in Sources */,
 				320CDC3022FADB44007CF858 /* ContentView.swift in Sources */,
 			);
@@ -292,9 +299,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "SDWebImageSwiftUIDemo/Preview\\ Content";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SDWebImageSwiftUIDemo/Info.plist;
@@ -304,6 +312,9 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dreampiggy.SDWebImageSwiftUIDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -323,8 +334,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
 				DEVELOPMENT_ASSET_PATHS = "SDWebImageSwiftUIDemo/Preview\\ Content";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SDWebImageSwiftUIDemo/Info.plist;
@@ -333,6 +345,9 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dreampiggy.SDWebImageSwiftUIDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

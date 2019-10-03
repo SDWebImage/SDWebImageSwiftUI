@@ -7,22 +7,73 @@
  */
 
 import SwiftUI
+import SDWebImage
 import SDWebImageSwiftUI
 
+extension String : Identifiable {
+    public typealias ID = Int
+    public var id: Int {
+        self.hashValue
+    }
+}
+
+let imageURLs = [
+    "http://assets.sbnation.com/assets/2512203/dogflops.gif",
+    "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif",
+    "http://apng.onevcat.com/assets/elephant.png",
+    "http://www.ioncannon.net/wp-content/uploads/2011/06/test2.webp",
+    "http://www.ioncannon.net/wp-content/uploads/2011/06/test9.webp",
+    "http://littlesvr.ca/apng/images/SteamEngine.webp",
+    "http://littlesvr.ca/apng/images/world-cup-2014-42.webp",
+    "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
+    "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic",
+    "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
+    "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
+    "http://via.placeholder.com/200x200.jpg"]
+
 struct ContentView: View {
-    var url: URL?
+    @State var animated: Bool = false
     
     var body: some View {
-        VStack {
-            WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
-                .resizable()
-                .scaledToFit()
-                .frame(width: CGFloat(300), height: CGFloat(300), alignment: .center)
-            AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), options: [.progressiveLoad])
-                .resizable()
-                .scaledToFill()
-                .frame(width: CGFloat(400), height: CGFloat(300), alignment: .center)
+        NavigationView {
+            List(imageURLs) { url in
+                NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
+                    HStack {
+                        if self.animated {
+                            AnimatedImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        } else {
+                            WebImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        }
+                        Text(url)
+                    }
+                }
+            }
+            .navigationBarTitle(animated ? "AnimatedImage" : "WebImage")
+            .navigationBarItems(leading:
+                Button(action: { self.reloadCache() }) {
+                    Text("Reload")
+                }, trailing:
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
+            )
         }
+    }
+    
+    func reloadCache() {
+        SDImageCache.shared.clearMemory()
+        SDImageCache.shared.clearDisk(onCompletion: nil)
+    }
+    
+    func switchView() {
+        SDImageCache.shared.clearMemory()
+        animated.toggle()
     }
 }
 

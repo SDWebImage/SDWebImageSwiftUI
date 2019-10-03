@@ -37,3 +37,4 @@ Pods/
 
 # SwiftPM
 .build
+.swiftpm
