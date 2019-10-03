@@ -1,25 +1,42 @@
 PODS:
-  - SDWebImage (5.1.0):
-    - SDWebImage/Core (= 5.1.0)
-  - SDWebImage/Core (5.1.0)
-  - SDWebImageSwiftUI (0.1.1):
+  - libwebp (1.0.3):
+    - libwebp/demux (= 1.0.3)
+    - libwebp/mux (= 1.0.3)
+    - libwebp/webp (= 1.0.3)
+  - libwebp/demux (1.0.3):
+    - libwebp/webp
+  - libwebp/mux (1.0.3):
+    - libwebp/demux
+  - libwebp/webp (1.0.3)
+  - SDWebImage (5.2.2):
+    - SDWebImage/Core (= 5.2.2)
+  - SDWebImage/Core (5.2.2)
+  - SDWebImageSwiftUI (0.1.2):
     - SDWebImage (~> 5.1)
+  - SDWebImageWebPCoder (0.2.5):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.0)
 
 DEPENDENCIES:
   - SDWebImageSwiftUI (from `../`)
+  - SDWebImageWebPCoder
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - libwebp
     - SDWebImage
+    - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
   SDWebImageSwiftUI:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
-  SDWebImageSwiftUI: fa0b13b16a92985532cd13931b88aea4ff7efb0b
+  libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
+  SDWebImage: 5fcdb02cc35e05fc35791ec514b191d27189f872
+  SDWebImageSwiftUI: 1026ac69b616d77b3ecb5b34e5b977ca9a165d5f
+  SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
 
-PODFILE CHECKSUM: 146734166216dd8fc1597433cc675999454ed4b2
+PODFILE CHECKSUM: c85d310339d014183658205b527a83237d24f8f2
 
 COCOAPODS: 1.7.5
