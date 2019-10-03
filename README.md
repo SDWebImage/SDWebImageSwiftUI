@@ -98,11 +98,17 @@ cd Example
 pod install
 ```
 
-Then open the Xcode Workspace to run the demo application.
+Then open the Xcode Workspace to run the demo application. You can run it on iOS and macOS.
 
 ## Screenshot
 
-![](Example/Screenshot/1.jpg)
++ iOS Demo
+
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-iOS.png' width=960 />
+
++ macOS Demo
+
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-macOS.png' width=960 />
 
 ## Author
 
