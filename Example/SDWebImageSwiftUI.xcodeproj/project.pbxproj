@@ -13,6 +13,7 @@
 		320CDC3222FADB45007CF858 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3122FADB45007CF858 /* Assets.xcassets */; };
 		320CDC3522FADB45007CF858 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3422FADB45007CF858 /* Preview Assets.xcassets */; };
 		320CDC3822FADB45007CF858 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320CDC3622FADB45007CF858 /* LaunchScreen.storyboard */; };
+		321A6BF02345EC4E00B5BEFC /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A6BEF2345EC4E00B5BEFC /* ProgressBar.swift */; };
 		326B0D712345C01900D28269 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B0D702345C01900D28269 /* DetailView.swift */; };
 		CECA1658ECBAF54E3FF3EF58 /* Pods_SDWebImageSwiftUIDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A371F81C3B5BD6972F7A0E2 /* Pods_SDWebImageSwiftUIDemo.framework */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		320CDC3422FADB45007CF858 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		320CDC3722FADB45007CF858 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		320CDC3922FADB45007CF858 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		321A6BEF2345EC4E00B5BEFC /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		326B0D702345C01900D28269 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		3E9F8B5F06960FFFBD1A5F99 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4A371F81C3B5BD6972F7A0E2 /* Pods_SDWebImageSwiftUIDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SDWebImageSwiftUIDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 				320CDC2D22FADB44007CF858 /* SceneDelegate.swift */,
 				320CDC2F22FADB44007CF858 /* ContentView.swift */,
 				326B0D702345C01900D28269 /* DetailView.swift */,
+				321A6BEF2345EC4E00B5BEFC /* ProgressBar.swift */,
 				320CDC3122FADB45007CF858 /* Assets.xcassets */,
 				320CDC3622FADB45007CF858 /* LaunchScreen.storyboard */,
 				320CDC3922FADB45007CF858 /* Info.plist */,
@@ -268,6 +271,7 @@
 				320CDC2C22FADB44007CF858 /* AppDelegate.swift in Sources */,
 				326B0D712345C01900D28269 /* DetailView.swift in Sources */,
 				320CDC2E22FADB44007CF858 /* SceneDelegate.swift in Sources */,
+				321A6BF02345EC4E00B5BEFC /* ProgressBar.swift in Sources */,
 				320CDC3022FADB44007CF858 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

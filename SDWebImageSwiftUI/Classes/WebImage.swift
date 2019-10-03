@@ -55,6 +55,7 @@ public struct WebImage : View {
     }
 }
 
+// Layout
 extension WebImage {
     func configure(_ block: @escaping (Image) -> Image) -> WebImage {
         var result = self
@@ -82,6 +83,23 @@ extension WebImage {
     }
 }
 
+// Completion Handler
+extension WebImage {
+    public func onFailure(perform action: ((Error) -> Void)? = nil) -> WebImage {
+        self.imageManager.failureBlock = action
+        return self
+    }
+    
+    public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> WebImage {
+        self.imageManager.successBlock = action
+        return self
+    }
+    
+    public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
+        self.imageManager.progressBlock = action
+        return self
+    }
+}
 
 #if DEBUG
 struct WebImage_Previews : PreviewProvider {

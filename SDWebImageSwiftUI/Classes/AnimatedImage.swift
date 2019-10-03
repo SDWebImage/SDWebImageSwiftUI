@@ -15,6 +15,9 @@ import SDWebImage
 final class AnimatedImageModel : ObservableObject {
     @Published var image: PlatformImage?
     @Published var url: URL?
+    @Published var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
+    @Published var failureBlock: ((Error) -> Void)?
+    @Published var progressBlock: ((Int, Int) -> Void)?
 }
 
 // Layout Binding Object
@@ -67,7 +70,15 @@ public struct AnimatedImage : ViewRepresentable {
     func updateView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
         view.wrapped.image = imageModel.image
         if let url = imageModel.url {
-            view.wrapped.sd_setImage(with: url, placeholderImage: nil, options: webOptions, context: webContext)
+            view.wrapped.sd_setImage(with: url, placeholderImage: nil, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+                self.imageModel.progressBlock?(receivedSize, expectedSize)
+            }) { (image, error, cacheType, _) in
+                if let image = image {
+                    self.imageModel.successBlock?(image, cacheType)
+                } else {
+                    self.imageModel.failureBlock?(error ?? NSError())
+                }
+            }
         }
         
         layoutView(view, context: context)
@@ -178,17 +189,10 @@ public struct AnimatedImage : ViewRepresentable {
         view.setNeedsDisplay()
         #endif
     }
-    
-    public func image(_ image: PlatformImage?) -> Self {
-        imageModel.image = image
-        return self
-    }
-    
-    public func imageUrl(_ url: URL?) -> Self {
-        imageModel.url = url
-        return self
-    }
-    
+}
+
+// Layout
+extension AnimatedImage {
     public func resizable(
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> AnimatedImage
@@ -236,6 +240,25 @@ public struct AnimatedImage : ViewRepresentable {
     }
 }
 
+// Completion Handler
+extension AnimatedImage {
+    public func onFailure(perform action: ((Error) -> Void)? = nil) -> AnimatedImage {
+        imageModel.failureBlock = action
+        return self
+    }
+    
+    public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
+        imageModel.successBlock = action
+        return self
+    }
+    
+    public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
+        imageModel.progressBlock = action
+        return self
+    }
+}
+
+// Initializer
 extension AnimatedImage {
     public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.webOptions = options
