@@ -82,6 +82,22 @@ extension WebImage {
     }
 }
 
+extension WebImage {
+    public func onFailure(perform action: ((Error) -> Void)? = nil) -> WebImage {
+        self.imageManager.failureBlock = action
+        return self
+    }
+    
+    public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> WebImage {
+        self.imageManager.successBlock = action
+        return self
+    }
+    
+    public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
+        self.imageManager.progressBlock = action
+        return self
+    }
+}
 
 #if DEBUG
 struct WebImage_Previews : PreviewProvider {

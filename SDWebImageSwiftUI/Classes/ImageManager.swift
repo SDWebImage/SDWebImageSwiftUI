@@ -26,6 +26,9 @@ class ImageManager : ObservableObject {
     var url: URL?
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
+    var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
+    var failureBlock: ((Error) -> Void)?
+    var progressBlock: ((Int, Int) -> Void)?
     
     init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
@@ -34,9 +37,17 @@ class ImageManager : ObservableObject {
     }
     
     func load() {
-        currentOperation = manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, _, _) in
+        currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
+            self?.progressBlock?(receivedSize, expectedSize)
+        }) { [weak self] (image, data, error, cacheType, _, _) in
+            guard let self = self else {
+                return
+            }
             if let image = image {
                 self.image = image
+                self.successBlock?(image, cacheType)
+            } else {
+                self.failureBlock?(error ?? NSError())
             }
         }
     }
