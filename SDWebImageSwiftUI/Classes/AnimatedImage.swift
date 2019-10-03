@@ -36,6 +36,7 @@ public struct AnimatedImage : ViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     
+    var placeholder: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
@@ -70,7 +71,7 @@ public struct AnimatedImage : ViewRepresentable {
     func updateView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
         view.wrapped.image = imageModel.image
         if let url = imageModel.url {
-            view.wrapped.sd_setImage(with: url, placeholderImage: nil, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+            view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
                 self.imageModel.progressBlock?(receivedSize, expectedSize)
             }) { (image, error, cacheType, _) in
                 if let image = image {
@@ -261,6 +262,7 @@ extension AnimatedImage {
 // Initializer
 extension AnimatedImage {
     public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.placeholder = placeholder
         self.webOptions = options
         self.webContext = context
         self.imageModel.url = url
