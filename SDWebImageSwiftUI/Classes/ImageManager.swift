@@ -7,21 +7,13 @@
  */
 
 import SwiftUI
-import Combine
 import SDWebImage
 
 class ImageManager : ObservableObject {
-    
-    var objectWillChange = PassthroughSubject<ImageManager, Never>()
+    @Published var image: PlatformImage?
     
     var manager = SDWebImageManager.shared
     weak var currentOperation: SDWebImageOperation? = nil
-    
-    var image: PlatformImage? {
-        willSet {
-            objectWillChange.send(self)
-        }
-    }
     
     var url: URL?
     var options: SDWebImageOptions
