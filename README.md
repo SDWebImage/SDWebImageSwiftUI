@@ -85,20 +85,24 @@ var body: some View {
 ```swift
 var body: some View {
     Group {
-        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")) // Network
+        // Network
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
         .onFailure(perform: { (error) in
             // Error
         })
         .scaledToFit()
-        AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp"))) // Data
+        // Data
+        AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
         .customLoopCount(1)
-        AnimatedImage(name: "animation1") // Bundle (not Asset Catalog)
+        // Bundle (not Asset Catalog)
+        AnimatedImage(name: "animation1", isAnimating: $isAnimating)) // Animation control binding
         .maxBufferSize(.max)
     }
 }
 ```
 
 - [x] Supports network image as well as local data and bundle image
+- [x] Supports animation control using the SwiftUI Binding
 - [x] Supports advanced control like loop count, incremental load, buffer size.
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
