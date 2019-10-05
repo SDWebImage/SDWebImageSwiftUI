@@ -32,7 +32,7 @@ final class AnimatedImageLayout : ObservableObject {
 }
 
 // View
-public struct AnimatedImage : ViewRepresentable {
+public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     
@@ -64,11 +64,11 @@ public struct AnimatedImage : ViewRepresentable {
     }
     #endif
     
-    func makeView(context: ViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         AnimatedImageViewWrapper()
     }
     
-    func updateView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
+    func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
         view.wrapped.image = imageModel.image
         if let url = imageModel.url {
             view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
@@ -85,7 +85,7 @@ public struct AnimatedImage : ViewRepresentable {
         layoutView(view, context: context)
     }
     
-    func layoutView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
+    func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
         // AspectRatio
         if let _ = imageLayout.aspectRatio {
             // TODO: Needs layer transform and geometry calculation
