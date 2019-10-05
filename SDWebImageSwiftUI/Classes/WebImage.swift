@@ -19,6 +19,11 @@ public struct WebImage : View {
     
     @ObservedObject var imageManager: ImageManager
     
+    /// Create a web image with url, placeholder, custom options and context.
+    /// - Parameter url: The image url
+    /// - Parameter placeholder: The placeholder image to show during loading
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
         self.placeholder = placeholder
@@ -62,22 +67,31 @@ extension WebImage {
         result.configurations.append(block)
         return result
     }
-
+    
+    /// Configurate this view's image with the specified cap insets and options.
+    /// - Parameter capInsets: The values to use for the cap insets.
+    /// - Parameter resizingMode: The resizing mode
     public func resizable(
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> WebImage
     {
         configure { $0.resizable(capInsets: capInsets, resizingMode: resizingMode) }
     }
-
+    
+    /// Configurate this view's rendering mode.
+    /// - Parameter renderingMode: The resizing mode
     public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> WebImage {
         configure { $0.renderingMode(renderingMode) }
     }
-
+    
+    /// Configurate this view's image interpolation quality
+    /// - Parameter interpolation: The interpolation quality
     public func interpolation(_ interpolation: Image.Interpolation) -> WebImage {
         configure { $0.interpolation(interpolation) }
     }
-
+    
+    /// Configurate this view's image antialiasing
+    /// - Parameter isAntialiased: Whether or not to allow antialiasing
     public func antialiased(_ isAntialiased: Bool) -> WebImage {
         configure { $0.antialiased(isAntialiased) }
     }
@@ -85,16 +99,29 @@ extension WebImage {
 
 // Completion Handler
 extension WebImage {
+    
+    /// Provide the action when image load fails.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the error during loading. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load fails.
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> WebImage {
         self.imageManager.failureBlock = action
         return self
     }
     
+    /// Provide the action when image load successes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> WebImage {
         self.imageManager.successBlock = action
         return self
     }
     
+    /// Provide the action when image load progress changes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
         self.imageManager.progressBlock = action
         return self
