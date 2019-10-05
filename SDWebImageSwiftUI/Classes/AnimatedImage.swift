@@ -129,6 +129,12 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 }
             }
         }
+        
+        #if os(macOS)
+        if self.isAnimating != view.wrapped.animates {
+            view.wrapped.animates = self.isAnimating
+        }
+        #else
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
                 view.wrapped.startAnimating()
@@ -136,6 +142,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 view.wrapped.stopAnimating()
             }
         }
+        #endif
         
         configureView(view, context: context)
         layoutView(view, context: context)
