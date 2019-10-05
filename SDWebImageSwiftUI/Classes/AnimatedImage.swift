@@ -48,6 +48,46 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
+    /// A Binding to control the animation. You can bind external logic to control the animation status.
+    /// True to start animation, false to stop animation.
+    @Binding public var isAnimating: Bool
+    
+    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.init(url: url, placeholder: placeholder, options: options, context: context, isAnimating: .constant(true))
+    }
+    
+    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
+        self._isAnimating = isAnimating
+        self.placeholder = placeholder
+        self.webOptions = options
+        self.webContext = context
+        self.imageModel.url = url
+    }
+    
+    public init(name: String, bundle: Bundle? = nil) {
+        self.init(name: name, bundle: bundle, isAnimating: .constant(true))
+    }
+
+    public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
+        self._isAnimating = isAnimating
+        #if os(macOS)
+        let image = SDAnimatedImage(named: name, in: bundle)
+        #else
+        let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
+        #endif
+        self.imageModel.image = image
+    }
+
+    public init(data: Data, scale: CGFloat = 0) {
+        self.init(data: data, scale: scale, isAnimating: .constant(true))
+    }
+    
+    public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
+        self._isAnimating = isAnimating
+        let image = SDAnimatedImage(data: data, scale: scale)
+        self.imageModel.image = image
+    }
+    
     #if os(macOS)
     public typealias NSViewType = AnimatedImageViewWrapper
     #else
@@ -87,6 +127,13 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 } else {
                     self.imageModel.failureBlock?(error ?? NSError())
                 }
+            }
+        }
+        if self.isAnimating != view.wrapped.isAnimating {
+            if self.isAnimating {
+                view.wrapped.startAnimating()
+            } else {
+                view.wrapped.stopAnimating()
             }
         }
         
@@ -307,30 +354,6 @@ extension AnimatedImage {
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
         imageModel.progressBlock = action
         return self
-    }
-}
-
-// Initializer
-extension AnimatedImage {
-    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.placeholder = placeholder
-        self.webOptions = options
-        self.webContext = context
-        self.imageModel.url = url
-    }
-
-    public init(name: String, bundle: Bundle? = nil) {
-        #if os(macOS)
-        let image = SDAnimatedImage(named: name, in: bundle)
-        #else
-        let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
-        #endif
-        self.imageModel.image = image
-    }
-
-    public init(data: Data, scale: CGFloat = 0) {
-        let image = SDAnimatedImage(data: data, scale: scale)
-        self.imageModel.image = image
     }
 }
 
