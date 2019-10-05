@@ -23,36 +23,74 @@ struct DetailView: View {
                 .frame(maxHeight: 6)
             }
             Spacer()
-            HStack {
-                if animated {
-                    AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
-                    .onProgress(perform: { (receivedSize, expectedSize) in
-                        // SwiftUI engine itself ensure the main queue dispatch
-                        if (expectedSize >= 0) {
-                            self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                        } else {
-                            self.progress = 1
-                        }
-                    })
-                    .resizable()
-                    .scaledToFit()
-                    .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
-                        self.isAnimating.toggle()
-                    })
-                } else {
-                    WebImage(url: URL(string:url), options: [.progressiveLoad])
-                    .onProgress(perform: { (receivedSize, expectedSize) in
-                        if (expectedSize >= 0) {
-                            self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                        } else {
-                            self.progress = 1
-                        }
-                    })
-                    .resizable()
-                    .scaledToFit()
-                }
+            #if os(iOS) || os(tvOS)
+            if animated {
+                contentView()
+                .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
+                    self.isAnimating.toggle()
+                })
+            } else {
+                contentView()
             }
+            #endif
+            #if os(macOS)
+            if animated {
+                contentView()
+                .contextMenu {
+                    Button(isAnimating ? "Stop" : "Start") {
+                        self.isAnimating.toggle()
+                    }
+                }
+            } else {
+                contentView()
+            }
+            #endif
+            #if os(watchOS)
+            contentView()
+            #endif
             Spacer()
+        }
+    }
+    
+    func contentView() -> some View {
+        HStack {
+            #if os(iOS) || os(tvOS) || os(macOS)
+            if animated {
+                AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
+                .onProgress(perform: { (receivedSize, expectedSize) in
+                    // SwiftUI engine itself ensure the main queue dispatch
+                    if (expectedSize >= 0) {
+                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                    } else {
+                        self.progress = 1
+                    }
+                })
+                .resizable()
+                .scaledToFit()
+            } else {
+                WebImage(url: URL(string:url), options: [.progressiveLoad])
+                .onProgress(perform: { (receivedSize, expectedSize) in
+                    if (expectedSize >= 0) {
+                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                    } else {
+                        self.progress = 1
+                    }
+                })
+                .resizable()
+                .scaledToFit()
+            }
+            #else
+            WebImage(url: URL(string:url), options: [.progressiveLoad])
+            .onProgress(perform: { (receivedSize, expectedSize) in
+                if (expectedSize >= 0) {
+                    self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                } else {
+                    self.progress = 1
+                }
+            })
+            .resizable()
+            .scaledToFit()
+            #endif
         }
     }
 }
