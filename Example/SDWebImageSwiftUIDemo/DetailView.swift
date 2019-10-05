@@ -13,6 +13,7 @@ struct DetailView: View {
     let url: String
     let animated: Bool
     @State var progress: CGFloat = 1
+    @State var isAnimating: Bool = true
     
     var body: some View {
         VStack {
@@ -24,7 +25,7 @@ struct DetailView: View {
             Spacer()
             HStack {
                 if animated {
-                    AnimatedImage(url: URL(string:url), options: [.progressiveLoad])
+                    AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
                     .onProgress(perform: { (receivedSize, expectedSize) in
                         // SwiftUI engine itself ensure the main queue dispatch
                         if (expectedSize >= 0) {
@@ -35,6 +36,9 @@ struct DetailView: View {
                     })
                     .resizable()
                     .scaledToFit()
+                    .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
+                        self.isAnimating.toggle()
+                    })
                 } else {
                     WebImage(url: URL(string:url), options: [.progressiveLoad])
                     .onProgress(perform: { (receivedSize, expectedSize) in
