@@ -17,7 +17,7 @@ It aims to ensure the following function available for users and try to do some 
 + SwiftUI compatibility
 + Swift source code compatibility
 
-Note we do not guarantee the public API stable for current status. Since SwiftUI is a new platform for us, we need to investigate the API design.
+Note we do not guarantee the public API stable for current status until v1.0 version. Since SwiftUI is a new platform for us, we need to investigate the API design.
 
 ## Requirements
 
@@ -54,7 +54,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.2")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.3")
     ],
 )
 ```
