@@ -31,10 +31,18 @@ final class AnimatedImageLayout : ObservableObject {
     @Published var antialiased: Bool = false
 }
 
+// Configuration Binding Object
+final class AnimatedImageConfiguration: ObservableObject {
+    @Published var incrementalLoad: Bool?
+    @Published var maxBufferSize: UInt?
+    @Published var customLoopCount: Int?
+}
+
 // View
-public struct AnimatedImage : ViewRepresentable {
+public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
+    @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
     
     var placeholder: PlatformImage?
     var webOptions: SDWebImageOptions = []
@@ -64,11 +72,11 @@ public struct AnimatedImage : ViewRepresentable {
     }
     #endif
     
-    func makeView(context: ViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         AnimatedImageViewWrapper()
     }
     
-    func updateView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
+    func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
         view.wrapped.image = imageModel.image
         if let url = imageModel.url {
             view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
@@ -82,10 +90,11 @@ public struct AnimatedImage : ViewRepresentable {
             }
         }
         
+        configureView(view, context: context)
         layoutView(view, context: context)
     }
     
-    func layoutView(_ view: AnimatedImageViewWrapper, context: ViewRepresentableContext<AnimatedImage>) {
+    func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
         // AspectRatio
         if let _ = imageLayout.aspectRatio {
             // TODO: Needs layer transform and geometry calculation
@@ -190,6 +199,30 @@ public struct AnimatedImage : ViewRepresentable {
         view.setNeedsDisplay()
         #endif
     }
+    
+    func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        // IncrementalLoad
+        if let incrementalLoad = imageConfiguration.incrementalLoad {
+            view.wrapped.shouldIncrementalLoad = incrementalLoad
+        }
+        
+        // MaxBufferSize
+        if let maxBufferSize = imageConfiguration.maxBufferSize {
+            view.wrapped.maxBufferSize = maxBufferSize
+        } else {
+            // automatically
+            view.wrapped.maxBufferSize = 0
+        }
+        
+        // CustomLoopCount
+        if let customLoopCount = imageConfiguration.customLoopCount {
+            view.wrapped.shouldCustomLoopCount = true
+            view.wrapped.animationRepeatCount = customLoopCount
+        } else {
+            // disable custom loop count
+            view.wrapped.shouldCustomLoopCount = false
+        }
+    }
 }
 
 // Layout
@@ -238,6 +271,24 @@ extension AnimatedImage {
     
     public func scaledToFill() -> AnimatedImage {
         self.aspectRatio(nil, contentMode: .fill)
+    }
+}
+
+// AnimatedImage Modifier
+extension AnimatedImage {
+    public func customLoopCount(_ loopCount: Int?) -> AnimatedImage {
+        imageConfiguration.customLoopCount = loopCount
+        return self
+    }
+    
+    public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
+        imageConfiguration.maxBufferSize = bufferSize
+        return self
+    }
+    
+    public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
+        imageConfiguration.incrementalLoad = incrementalLoad
+        return self
     }
 }
 
