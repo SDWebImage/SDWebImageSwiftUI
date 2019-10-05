@@ -52,10 +52,21 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
+    /// Create an animated image with url, placeholder, custom options and context.
+    /// - Parameter url: The image url
+    /// - Parameter placeholder: The placeholder image to show during loading
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.init(url: url, placeholder: placeholder, options: options, context: context, isAnimating: .constant(true))
     }
     
+    /// Create an animated image with url, placeholder, custom options and context, including animation control binding.
+    /// - Parameter url: The image url
+    /// - Parameter placeholder: The placeholder image to show during loading
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+    /// - Parameter isAnimating: The binding for animation control
     public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         self.placeholder = placeholder
@@ -64,10 +75,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
         self.imageModel.url = url
     }
     
+    /// Create an animated image with name and bundle.
+    /// - Note: Asset Catalog is not supported.
+    /// - Parameter name: The image name
+    /// - Parameter bundle: The bundle contains image
     public init(name: String, bundle: Bundle? = nil) {
         self.init(name: name, bundle: bundle, isAnimating: .constant(true))
     }
-
+    
+    /// Create an animated image with name and bundle, including animation control binding.
+    /// - Note: Asset Catalog is not supported.
+    /// - Parameter name: The image name
+    /// - Parameter bundle: The bundle contains image
+    /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         #if os(macOS)
@@ -77,11 +97,18 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         self.imageModel.image = image
     }
-
+    
+    /// Create an animated image with data and scale.
+    /// - Parameter data: The image data
+    /// - Parameter scale: The scale factor
     public init(data: Data, scale: CGFloat = 0) {
         self.init(data: data, scale: scale, isAnimating: .constant(true))
     }
     
+    /// Create an animated image with data and scale, including animation control binding.
+    /// - Parameter data: The image data
+    /// - Parameter scale: The scale factor
+    /// - Parameter isAnimating: The binding for animation control
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         let image = SDAnimatedImage(data: data, scale: scale)
@@ -281,6 +308,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
 
 // Layout
 extension AnimatedImage {
+    
+    /// Configurate this view's image with the specified cap insets and options.
+    /// - Warning: Animated Image does not implementes.
+    /// - Parameter capInsets: The values to use for the cap insets.
+    /// - Parameter resizingMode: The resizing mode
     public func resizable(
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> AnimatedImage
@@ -289,28 +321,51 @@ extension AnimatedImage {
         imageLayout.resizingMode = resizingMode
         return self
     }
-
+    
+    /// Configurate this view's rendering mode.
+    /// - Warning: Animated Image does not implementes.
+    /// - Parameter renderingMode: The resizing mode
     public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> AnimatedImage {
         imageLayout.renderingMode = renderingMode
         return self
     }
-
+    
+    /// Configurate this view's image interpolation quality
+    /// - Parameter interpolation: The interpolation quality
     public func interpolation(_ interpolation: Image.Interpolation) -> AnimatedImage {
         imageLayout.interpolation = interpolation
         return self
     }
-
+    
+    /// Configurate this view's image antialiasing
+    /// - Parameter isAntialiased: Whether or not to allow antialiasing
     public func antialiased(_ isAntialiased: Bool) -> AnimatedImage {
         imageLayout.antialiased = isAntialiased
         return self
     }
-    
+    /// Constrains this view's dimensions to the specified aspect ratio.
+    /// - Parameters:
+    ///   - aspectRatio: The ratio of width to height to use for the resulting
+    ///     view. If `aspectRatio` is `nil`, the resulting view maintains this
+    ///     view's aspect ratio.
+    ///   - contentMode: A flag indicating whether this view should fit or
+    ///     fill the parent context.
+    /// - Returns: A view that constrains this view's dimensions to
+    ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
     public func aspectRatio(_ aspectRatio: CGFloat? = nil, contentMode: ContentMode) -> AnimatedImage {
         imageLayout.aspectRatio = aspectRatio
         imageLayout.contentMode = contentMode
         return self
     }
 
+    /// Constrains this view's dimensions to the aspect ratio of the given size.
+    /// - Parameters:
+    ///   - aspectRatio: A size specifying the ratio of width to height to use
+    ///     for the resulting view.
+    ///   - contentMode: A flag indicating whether this view should fit or
+    ///     fill the parent context.
+    /// - Returns: A view that constrains this view's dimensions to
+    ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
     public func aspectRatio(_ aspectRatio: CGSize, contentMode: ContentMode) -> AnimatedImage {
         var ratio: CGFloat?
         if aspectRatio.width > 0 && aspectRatio.height > 0 {
@@ -319,10 +374,16 @@ extension AnimatedImage {
         return self.aspectRatio(ratio, contentMode: contentMode)
     }
 
+    /// Scales this view to fit its parent.
+    /// - Returns: A view that scales this view to fit its parent,
+    ///   maintaining this view's aspect ratio.
     public func scaledToFit() -> AnimatedImage {
         self.aspectRatio(nil, contentMode: .fit)
     }
     
+    /// Scales this view to fill its parent.
+    /// - Returns: A view that scales this view to fit its parent,
+    ///   maintaining this view's aspect ratio.
     public func scaledToFill() -> AnimatedImage {
         self.aspectRatio(nil, contentMode: .fill)
     }
@@ -330,16 +391,29 @@ extension AnimatedImage {
 
 // AnimatedImage Modifier
 extension AnimatedImage {
+    
+    /// Total loop count for animated image rendering. Defaults to nil.
+    /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
+    /// - Parameter loopCount: The animation loop count
     public func customLoopCount(_ loopCount: Int?) -> AnimatedImage {
         imageConfiguration.customLoopCount = loopCount
         return self
     }
     
+    /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
+    // `0` or nil means automatically adjust by calculating current memory usage.
+    // `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+    // `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
         imageConfiguration.maxBufferSize = bufferSize
         return self
     }
     
+    /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
+    /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
+    /// Default is true. Set to false to only render the static poster for incremental animated image.
+    /// - Parameter incrementalLoad: Whether or not to incremental load
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
         imageConfiguration.incrementalLoad = incrementalLoad
         return self
@@ -348,16 +422,29 @@ extension AnimatedImage {
 
 // Completion Handler
 extension AnimatedImage {
+    
+    /// Provide the action when image load fails.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the error during loading. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load fails.
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> AnimatedImage {
         imageModel.failureBlock = action
         return self
     }
     
+    /// Provide the action when image load successes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
         imageModel.successBlock = action
         return self
     }
     
+    /// Provide the action when image load progress changes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
         imageModel.progressBlock = action
         return self
