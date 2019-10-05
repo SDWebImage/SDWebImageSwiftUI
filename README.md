@@ -85,13 +85,15 @@ var body: some View {
 ```swift
 var body: some View {
     Group {
-        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")) // Network
         .onFailure(perform: { (error) in
             // Error
         })
         .scaledToFit()
-        AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
+        AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp"))) // Data
         .customLoopCount(1)
+        AnimatedImage(name: "animation1") // Bundle (not Asset Catalog)
+        .maxBufferSize(.max)
     }
 }
 ```
