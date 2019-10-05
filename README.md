@@ -61,11 +61,10 @@ let package = Package(
 
 ## Usage
 
-+ Using `WebImage` to load network image
+### Using `WebImage` to load network image
 
-Supports the placeholder and detail options control for image loading as SDWebImage.
-
-Supports the success/failure/progress changes event for custom handling.
+- [x] Supports the placeholder and detail options control for image loading as SDWebImage.
+- [x] Supports the success/failure/progress changes event for custom handling.
 
 Note: Unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation. This `WebImage` using `Image` for internal implementation and supports static image format only.
 
@@ -81,19 +80,24 @@ var body: some View {
 }
 ```
 
-+ Using `AnimatedImage` to play animation
+### Using `AnimatedImage` to play animation
 
 ```swift
 var body: some View {
-    AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
-    .onFailure(perform: { (error) in
-        // Error
-    })
-    .scaledToFit()
-    AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
-    .scaledToFill()
+    Group {
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+        .onFailure(perform: { (error) in
+            // Error
+        })
+        .scaledToFit()
+        AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
+        .customLoopCount(1)
+    }
 }
 ```
+
+- [x] Supports network image as well as local data and bundle image
+- [x] Supports advanced control like loop count, incremental load, buffer size.
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
 
