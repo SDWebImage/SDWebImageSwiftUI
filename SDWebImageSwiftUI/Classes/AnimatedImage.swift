@@ -31,10 +31,18 @@ final class AnimatedImageLayout : ObservableObject {
     @Published var antialiased: Bool = false
 }
 
+// Configuration Binding Object
+final class AnimatedImageConfiguration: ObservableObject {
+    @Published var incrementalLoad: Bool?
+    @Published var maxBufferSize: UInt?
+    @Published var customLoopCount: Int?
+}
+
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
+    @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
     
     var placeholder: PlatformImage?
     var webOptions: SDWebImageOptions = []
@@ -82,6 +90,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
         }
         
+        configureView(view, context: context)
         layoutView(view, context: context)
     }
     
@@ -190,6 +199,30 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.setNeedsDisplay()
         #endif
     }
+    
+    func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        // IncrementalLoad
+        if let incrementalLoad = imageConfiguration.incrementalLoad {
+            view.wrapped.shouldIncrementalLoad = incrementalLoad
+        }
+        
+        // MaxBufferSize
+        if let maxBufferSize = imageConfiguration.maxBufferSize {
+            view.wrapped.maxBufferSize = maxBufferSize
+        } else {
+            // automatically
+            view.wrapped.maxBufferSize = 0
+        }
+        
+        // CustomLoopCount
+        if let customLoopCount = imageConfiguration.customLoopCount {
+            view.wrapped.shouldCustomLoopCount = true
+            view.wrapped.animationRepeatCount = customLoopCount
+        } else {
+            // disable custom loop count
+            view.wrapped.shouldCustomLoopCount = false
+        }
+    }
 }
 
 // Layout
@@ -238,6 +271,24 @@ extension AnimatedImage {
     
     public func scaledToFill() -> AnimatedImage {
         self.aspectRatio(nil, contentMode: .fill)
+    }
+}
+
+// AnimatedImage Modifier
+extension AnimatedImage {
+    public func customLoopCount(_ loopCount: Int?) -> AnimatedImage {
+        imageConfiguration.customLoopCount = loopCount
+        return self
+    }
+    
+    public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
+        imageConfiguration.maxBufferSize = bufferSize
+        return self
+    }
+    
+    public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
+        imageConfiguration.incrementalLoad = incrementalLoad
+        return self
     }
 }
 
