@@ -116,17 +116,37 @@ cd Example
 pod install
 ```
 
-Then open the Xcode Workspace to run the demo application. You can run it on iOS and macOS.
+Then open the Xcode Workspace to run the demo application.
+
+Since SwiftUI is aimed to support all Apple platforms, our demo does this as well, one codebase including:
+
++ iOS (iPhone/iPad/Mac Catalyst)
++ macOS
++ tvOS
++ watchOS
+
+Tips:
+
+1. Use `Switch` (right-click on macOS) to switch between `WebImage` and `AnimatedImage`.
+2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
 
 ## Screenshot
 
 + iOS Demo
 
-<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-iOS.png' width=960 />
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-iOS.jpg' width=960 />
 
 + macOS Demo
 
-<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-macOS.png' width=960 />
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-macOS.jpg' width=960 />
+
++ tvOS Demo
+
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-tvOS.jpg' width=960 />
+
++ watchOS Demo
+
+<img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-watchOS.jpg' width=960 />
 
 ## Author
 

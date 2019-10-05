@@ -5,3 +5,21 @@ target 'SDWebImageSwiftUIDemo' do
   pod 'SDWebImageSwiftUI', :path => '../'
   pod 'SDWebImageWebPCoder'
 end
+
+target 'SDWebImageSwiftUIDemo-macOS' do
+  platform :osx, '10.15'
+  pod 'SDWebImageSwiftUI', :path => '../'
+  pod 'SDWebImageWebPCoder'
+end
+
+target 'SDWebImageSwiftUIDemo-tvOS' do
+  platform :tvos, '13.0'
+  pod 'SDWebImageSwiftUI', :path => '../'
+  pod 'SDWebImageWebPCoder'
+end
+
+target 'SDWebImageSwiftUIDemo-watchOS WatchKit Extension' do
+  platform :watchos, '6.0'
+  pod 'SDWebImageSwiftUI', :path => '../'
+  pod 'SDWebImageWebPCoder'
+end

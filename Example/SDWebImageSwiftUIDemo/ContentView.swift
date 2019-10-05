@@ -32,28 +32,12 @@ let imageURLs = [
     "http://via.placeholder.com/200x200.jpg"]
 
 struct ContentView: View {
-    @State var animated: Bool = false
+    @State var animated: Bool = true // You can change between WebImage/AnimatedImage
     
     var body: some View {
-        NavigationView {
-            List(imageURLs) { url in
-                NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
-                    HStack {
-                        if self.animated {
-                            AnimatedImage(url: URL(string:url))
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                        } else {
-                            WebImage(url: URL(string:url))
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                        }
-                        Text(url)
-                    }
-                }
-            }
+        #if os(iOS) || os(tvOS)
+        return NavigationView {
+            contentView()
             .navigationBarTitle(animated ? "AnimatedImage" : "WebImage")
             .navigationBarItems(leading:
                 Button(action: { self.reloadCache() }) {
@@ -63,6 +47,56 @@ struct ContentView: View {
                     Text("Switch")
                 }
             )
+        }
+        #endif
+        #if os(macOS)
+        return NavigationView {
+            contentView()
+            .contextMenu {
+                Button(action: { self.reloadCache() }) {
+                    Text("Reload")
+                }
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
+            }
+        }
+        #endif
+        #if os(watchOS)
+        return contentView()
+            .contextMenu {
+                Button(action: { self.reloadCache() }) {
+                    Text("Reload")
+                }
+            }
+        #endif
+    }
+    
+    func contentView() -> some View {
+        List(imageURLs) { url in
+            NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
+                HStack {
+                    #if os(iOS) || os(tvOS) || os(macOS)
+                    if self.animated {
+                        AnimatedImage(url: URL(string:url))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                    } else {
+                        WebImage(url: URL(string:url))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                    }
+                    #else
+                    WebImage(url: URL(string:url))
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                    #endif
+                    Text((url as NSString).lastPathComponent)
+                }
+            }
         }
     }
     
