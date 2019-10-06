@@ -9,8 +9,6 @@
 import SwiftUI
 import SDWebImage
 
-#if !os(watchOS)
-
 // Data Binding Object
 final class AnimatedImageModel : ObservableObject {
     @Published var image: PlatformImage?
@@ -90,7 +88,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        #if os(macOS)
+        #if os(macOS) || os(watchOS)
         let image = SDAnimatedImage(named: name, in: bundle)
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
@@ -117,8 +115,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     #if os(macOS)
     public typealias NSViewType = AnimatedImageViewWrapper
-    #else
+    #elseif os(iOS) || os(tvOS)
     public typealias UIViewType = AnimatedImageViewWrapper
+    #elseif os(watchOS)
+    public typealias WKInterfaceObjectType = SDAnimatedImageInterface
     #endif
     
     #if os(macOS)
@@ -129,7 +129,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public func updateNSView(_ nsView: AnimatedImageViewWrapper, context: NSViewRepresentableContext<AnimatedImage>) {
         updateView(nsView, context: context)
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         makeView(context: context)
     }
@@ -139,6 +139,26 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     #endif
     
+    #if os(watchOS)
+    public func makeWKInterfaceObject(context: WKInterfaceObjectRepresentableContext<AnimatedImage>) -> SDAnimatedImageInterface {
+        SDAnimatedImageInterface()
+    }
+    
+    public func updateWKInterfaceObject(_ view: SDAnimatedImageInterface, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
+        view.setImage(imageModel.image)
+        if let url = imageModel.url {
+            view.sd_setImage(with: url, completed: nil)
+        }
+        
+//        if self.isAnimating {
+//            view.startAnimating()
+//        } else {
+//            view.stopAnimating()
+//        }
+    }
+    #endif
+    
+    #if os(iOS) || os(tvOS) || os(macOS)
     func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         AnimatedImageViewWrapper()
     }
@@ -304,6 +324,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             view.wrapped.shouldCustomLoopCount = false
         }
     }
+    #endif
 }
 
 // Layout
@@ -462,6 +483,4 @@ struct AnimatedImage_Previews : PreviewProvider {
         }
     }
 }
-#endif
-
 #endif

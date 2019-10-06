@@ -67,6 +67,9 @@ struct ContentView: View {
                 Button(action: { self.reloadCache() }) {
                     Text("Reload")
                 }
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
             }
         #endif
     }
