@@ -17,7 +17,8 @@ extension String : Identifiable {
     }
 }
 
-let imageURLs = [
+struct ContentView: View {
+    @State var imageURLs = [
     "http://assets.sbnation.com/assets/2512203/dogflops.gif",
     "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif",
     "http://apng.onevcat.com/assets/elephant.png",
@@ -30,8 +31,6 @@ let imageURLs = [
     "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
     "http://via.placeholder.com/200x200.jpg"]
-
-struct ContentView: View {
     @State var animated: Bool = true // You can change between WebImage/AnimatedImage
     
     var body: some View {
@@ -73,30 +72,37 @@ struct ContentView: View {
     }
     
     func contentView() -> some View {
-        List(imageURLs) { url in
-            NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
-                HStack {
-                    #if os(iOS) || os(tvOS) || os(macOS)
-                    if self.animated {
-                        AnimatedImage(url: URL(string:url))
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                    } else {
+        List {
+            ForEach(imageURLs) { url in
+                NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
+                    HStack {
+                        #if os(iOS) || os(tvOS) || os(macOS)
+                        if self.animated {
+                            AnimatedImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        } else {
+                            WebImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        }
+                        #else
                         WebImage(url: URL(string:url))
                         .resizable()
                         .scaledToFit()
                         .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        #endif
+                        Text((url as NSString).lastPathComponent)
                     }
-                    #else
-                    WebImage(url: URL(string:url))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                    #endif
-                    Text((url as NSString).lastPathComponent)
                 }
             }
+            .onDelete(perform: { (indexSet) in
+                indexSet.forEach { (index) in
+                    self.imageURLs.remove(at: index)
+                }
+            })
         }
     }
     

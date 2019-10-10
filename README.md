@@ -129,6 +129,7 @@ Tips:
 
 1. Use `Switch` (right-click on macOS) to switch between `WebImage` and `AnimatedImage`.
 2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
+3. Use `Swipe` to delete one image item.
 
 ## Screenshot
 
