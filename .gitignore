@@ -18,6 +18,7 @@ profile
 DerivedData
 *.hmap
 *.ipa
+IDEWorkspaceChecks.plist
 
 # Bundler
 .bundle

@@ -45,6 +45,9 @@ public struct WebImage : View {
             let emptyImage = Image(uiImage: UIImage())
             #endif
             image = emptyImage
+            // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
+            // this can ensure we load the image, SDWebImage take care of the duplicated query
+            self.imageManager.load()
         }
         return configurations.reduce(image) { (previous, configuration) in
             configuration(previous)
