@@ -150,11 +150,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
             view.sd_setImage(with: url, completed: nil)
         }
         
-//        if self.isAnimating {
-//            view.startAnimating()
-//        } else {
-//            view.stopAnimating()
-//        }
+        if self.isAnimating {
+            view.startAnimating()
+        } else {
+            view.stopAnimating()
+        }
     }
     #endif
     

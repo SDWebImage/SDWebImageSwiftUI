@@ -10,6 +10,7 @@
 #import <SDWebImage/SDWebImage.h>
 #import <ImageIO/CGImageAnimation.h>
 
+// This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
 @interface WKInterfaceObject ()
 
 - (instancetype)_initForDynamicCreationWithInterfaceProperty:(NSString *)property;
@@ -27,7 +28,9 @@
 
 @end
 
-@interface SDAnimatedImageInterface ()
+@interface SDAnimatedImageInterface () {
+    UIImage *_image;
+}
 
 @property (nonatomic, strong, readwrite) UIImage *currentFrame;
 @property (nonatomic, assign, readwrite) NSUInteger currentFrameIndex;
@@ -53,13 +56,17 @@
 -(NSDictionary *)interfaceDescriptionForDynamicCreation {
     return @{
         @"type" : @"image",
-        @"property" : self.interfaceProperty
+        @"property" : self.interfaceProperty,
+        @"contentMode" : @(1), // UIViewContentModeScaleAspectFit
     };
 }
 
 - (void)setImage:(UIImage *)image {
-    // Stop animating
-    [self stopAnimating];
+    if (_image == image) {
+        return;
+    }
+    _image = image;
+    
     // Reset all value
     [self resetAnimatedImage];
     
@@ -114,10 +121,15 @@
         // The CGImageRef provided by this API is GET only, should not call CGImageRelease
         self.currentFrame = [[UIImage alloc] initWithCGImage:imageRef scale:self.animatedImageScale orientation:UIImageOrientationUp];
         self.currentFrameIndex = index;
-        [super setImage:self.currentFrame];
+        // Render the frame
+        [self display];
     });
     
     self.currentStatus = status;
+}
+
+- (void)display {
+    [super setImage:self.currentFrame];
 }
 
 - (void)resetAnimatedImage
@@ -147,7 +159,7 @@
 - (void)startAnimating {
     if (self.animatedImage) {
         self.currentStatus.shouldAnimate = YES;
-    } else {
+    } else if (_image.images.count > 0) {
         [super startAnimating];
     }
 }
@@ -155,7 +167,7 @@
 - (void)startAnimatingWithImagesInRange:(NSRange)imageRange duration:(NSTimeInterval)duration repeatCount:(NSInteger)repeatCount {
     if (self.animatedImage) {
         self.currentStatus.shouldAnimate = YES;
-    } else {
+    } else if (_image.images.count > 0) {
         [super startAnimatingWithImagesInRange:imageRange duration:duration repeatCount:repeatCount];
     }
 }
@@ -163,7 +175,7 @@
 - (void)stopAnimating {
     if (self.animatedImage) {
         self.currentStatus.shouldAnimate = YES;
-    } else {
+    } else if (_image.images.count > 0) {
         [super stopAnimating];
     }
 }
