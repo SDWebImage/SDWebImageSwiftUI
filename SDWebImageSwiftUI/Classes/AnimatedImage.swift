@@ -147,7 +147,15 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public func updateWKInterfaceObject(_ view: SDAnimatedImageInterface, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
         view.setImage(imageModel.image)
         if let url = imageModel.url {
-            view.sd_setImage(with: url, completed: nil)
+            view.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+                self.imageModel.progressBlock?(receivedSize, expectedSize)
+            }) { (image, error, cacheType, _) in
+                if let image = image {
+                    self.imageModel.successBlock?(image, cacheType)
+                } else {
+                    self.imageModel.failureBlock?(error ?? NSError())
+                }
+            }
         }
         
         if self.isAnimating {

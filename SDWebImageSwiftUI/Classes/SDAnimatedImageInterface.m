@@ -1,10 +1,10 @@
-//
-//  SDAnimatedImageInterface.m
-//  SDWebImageSwiftUI
-//
-//  Created by lizhuoli on 2019/10/6.
-//  Copyright © 2019 SDWebImage. All rights reserved.
-//
+/*
+* This file is part of the SDWebImage package.
+* (c) DreamPiggy <lizhuoli1126@126.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
 #import "SDAnimatedImageInterface.h"
 #import <SDWebImage/SDWebImage.h>
@@ -57,17 +57,36 @@
 @implementation SDAnimatedImageInterface
 
 - (instancetype)init {
-    Class cls = [super class];
+    Class cls = [self class];
     NSString *UUID = [NSUUID UUID].UUIDString;
     NSString *property = [NSString stringWithFormat:@"%@_%@", cls, UUID];
     self = [self _initForDynamicCreationWithInterfaceProperty:property];
     return self;
 }
 
++ (UIImage *)sharedEmptyImage {
+    // This is used for placeholder on `WKInterfaceImage`
+    // Do not using `[UIImage new]` because WatchKit will ignore it
+    static dispatch_once_t onceToken;
+    static UIImage *image;
+    dispatch_once(&onceToken, ^{
+        UIColor *color = UIColor.clearColor;
+        CGRect rect = CGRectMake(0, 0, 1, 1);
+        UIGraphicsBeginImageContext(rect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, [color CGColor]);
+        CGContextFillRect(context, rect);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    });
+    return image;
+}
+
 -(NSDictionary *)interfaceDescriptionForDynamicCreation {
     return @{
         @"type" : @"image",
-        @"property" : self.interfaceProperty
+        @"property" : self.interfaceProperty,
+        @"image" : [self.class sharedEmptyImage]
     };
 }
 

@@ -1,10 +1,10 @@
-//
-//  SDAnimatedImageInterface.h
-//  SDWebImageSwiftUI
-//
-//  Created by lizhuoli on 2019/10/6.
-//  Copyright © 2019 SDWebImage. All rights reserved.
-//
+/*
+* This file is part of the SDWebImage package.
+* (c) DreamPiggy <lizhuoli1126@126.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
 #import <WatchKit/WatchKit.h>
 #import <SDWebImage/SDWebImage.h>
