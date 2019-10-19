@@ -12,6 +12,7 @@
 
 @protocol CALayerProtocol <NSObject>
 @property (nullable, strong) id contents;
+@property CGFloat contentsScale;
 @end
 
 @protocol UIViewProtocol <NSObject>
@@ -159,7 +160,9 @@
 
 - (void)displayLayer {
     if (self.currentFrame) {
-        [self _interfaceView].layer.contents = (__bridge id)self.currentFrame.CGImage;
+        id<CALayerProtocol> layer = [self _interfaceView].layer;
+        layer.contentsScale = self.animatedImageScale;
+        layer.contents = (__bridge id)self.currentFrame.CGImage;
     }
 }
 
