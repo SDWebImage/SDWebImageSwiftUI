@@ -155,6 +155,23 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else {
             view.stopAnimating()
         }
+        
+        layoutView(view, context: context)
+    }
+    
+    func layoutView(_ view: SDAnimatedImageInterface, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        // AspectRatio
+        if let _ = imageLayout.aspectRatio {
+            // TODO: Needs layer transform and geometry calculation
+        }
+        
+        // ContentMode
+        switch imageLayout.contentMode {
+        case .fit:
+            view.setContentMode(.aspectFit)
+        case .fill:
+            view.setContentMode(.fill)
+        }
     }
     #endif
     

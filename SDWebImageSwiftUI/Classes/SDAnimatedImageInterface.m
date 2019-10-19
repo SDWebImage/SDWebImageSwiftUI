@@ -10,10 +10,21 @@
 #import <SDWebImage/SDWebImage.h>
 #import <ImageIO/CGImageAnimation.h>
 
-// This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
+@protocol CALayerProtocol <NSObject>
+@property (nullable, strong) id contents;
+@end
+
+@protocol UIViewProtocol <NSObject>
+@property (nonatomic, strong, readonly) id<CALayerProtocol> layer;
+@property (nonatomic, assign) SDImageScaleMode contentMode;
+@end
+
 @interface WKInterfaceObject ()
 
+// This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
 - (instancetype)_initForDynamicCreationWithInterfaceProperty:(NSString *)property;
+// This is remote UIView
+@property (nonatomic, strong, readonly) id<UIViewProtocol> _interfaceView;
 
 @end
 
@@ -46,7 +57,7 @@
 @implementation SDAnimatedImageInterface
 
 - (instancetype)init {
-    Class cls = [self class];
+    Class cls = [super class];
     NSString *UUID = [NSUUID UUID].UUIDString;
     NSString *property = [NSString stringWithFormat:@"%@_%@", cls, UUID];
     self = [self _initForDynamicCreationWithInterfaceProperty:property];
@@ -56,8 +67,7 @@
 -(NSDictionary *)interfaceDescriptionForDynamicCreation {
     return @{
         @"type" : @"image",
-        @"property" : self.interfaceProperty,
-        @"contentMode" : @(1), // UIViewContentModeScaleAspectFit
+        @"property" : self.interfaceProperty
     };
 }
 
@@ -122,14 +132,16 @@
         self.currentFrame = [[UIImage alloc] initWithCGImage:imageRef scale:self.animatedImageScale orientation:UIImageOrientationUp];
         self.currentFrameIndex = index;
         // Render the frame
-        [self display];
+        [self displayLayer];
     });
     
     self.currentStatus = status;
 }
 
-- (void)display {
-    [super setImage:self.currentFrame];
+- (void)displayLayer {
+    if (self.currentFrame) {
+        [self _interfaceView].layer.contents = (__bridge id)self.currentFrame.CGImage;
+    }
 }
 
 - (void)resetAnimatedImage
@@ -178,6 +190,10 @@
     } else if (_image.images.count > 0) {
         [super stopAnimating];
     }
+}
+
+- (void)setContentMode:(SDImageScaleMode)contentMode {
+    [self _interfaceView].contentMode = contentMode;
 }
 
 - (void)sd_setImageWithURL:(nullable NSURL *)url
