@@ -6,16 +6,12 @@
 * file that was distributed with this source code.
 */
 
-#import <WatchKit/WatchKit.h>
 #import <SDWebImage/SDWebImage.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
+#if SD_WATCH
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 - (void)setContentMode:(SDImageScaleMode)contentMode;
 
 @end
-
-NS_ASSUME_NONNULL_END
+#endif

@@ -7,8 +7,11 @@
 */
 
 #import "SDAnimatedImageInterface.h"
+#if SD_WATCH
 #import <SDWebImage/SDWebImage.h>
 #import <ImageIO/CGImageAnimation.h>
+
+#pragma mark - SPI
 
 @protocol CALayerProtocol <NSObject>
 @property (nullable, strong) id contents;
@@ -65,6 +68,15 @@
     return self;
 }
 
+- (NSDictionary *)interfaceDescriptionForDynamicCreation {
+    // This is called by WatchKit
+    return @{
+        @"type" : @"image",
+        @"property" : self.interfaceProperty,
+        @"image" : [self.class sharedEmptyImage]
+    };
+}
+
 + (UIImage *)sharedEmptyImage {
     // This is used for placeholder on `WKInterfaceImage`
     // Do not using `[UIImage new]` because WatchKit will ignore it
@@ -81,14 +93,6 @@
         UIGraphicsEndImageContext();
     });
     return image;
-}
-
--(NSDictionary *)interfaceDescriptionForDynamicCreation {
-    return @{
-        @"type" : @"image",
-        @"property" : self.interfaceProperty,
-        @"image" : [self.class sharedEmptyImage]
-    };
 }
 
 - (void)setImage:(UIImage *)image {
@@ -218,12 +222,22 @@
     [self _interfaceView].contentMode = contentMode;
 }
 
+@end
+
+#pragma mark - Web Cache
+
+@interface SDAnimatedImageInterface (WebCache)
+
+@end
+
+@implementation SDAnimatedImageInterface (WebCache)
+
 - (void)sd_setImageWithURL:(nullable NSURL *)url
-placeholderImage:(nullable UIImage *)placeholder
-         options:(SDWebImageOptions)options
-         context:(nullable SDWebImageContext *)context
-        progress:(nullable SDImageLoaderProgressBlock)progressBlock
-       completed:(nullable SDExternalCompletionBlock)completedBlock {
+          placeholderImage:(nullable UIImage *)placeholder
+                   options:(SDWebImageOptions)options
+                   context:(nullable SDWebImageContext *)context
+                  progress:(nullable SDImageLoaderProgressBlock)progressBlock
+                 completed:(nullable SDExternalCompletionBlock)completedBlock {
     Class animatedImageClass = [SDAnimatedImage class];
     SDWebImageMutableContext *mutableContext;
     if (context) {
@@ -239,10 +253,11 @@ placeholderImage:(nullable UIImage *)placeholder
                        setImageBlock:nil
                             progress:progressBlock
                            completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-                               if (completedBlock) {
-                                   completedBlock(image, error, cacheType, imageURL);
-                               }
-                           }];
+        if (completedBlock) {
+            completedBlock(image, error, cacheType, imageURL);
+        }
+    }];
 }
 
 @end
+#endif
