@@ -129,6 +129,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public func updateNSView(_ nsView: AnimatedImageViewWrapper, context: NSViewRepresentableContext<AnimatedImage>) {
         updateView(nsView, context: context)
     }
+    
+    public static func dismantleNSView(_ nsView: AnimatedImageViewWrapper, coordinator: ()) {
+        dismantleView(nsView, coordinator: coordinator)
+    }
     #else
     public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         makeView(context: context)
@@ -136,6 +140,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     public func updateUIView(_ uiView: AnimatedImageViewWrapper, context: UIViewRepresentableContext<AnimatedImage>) {
         updateView(uiView, context: context)
+    }
+    
+    public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: ()) {
+        dismantleView(uiView, coordinator: coordinator)
     }
     #endif
     
@@ -173,6 +181,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         configureView(view, context: context)
         layoutView(view, context: context)
+    }
+    
+    static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: ()) {
+        #if os(macOS)
+        view.wrapped.animates = false
+        #else
+        view.wrapped.stopAnimating()
+        #endif
     }
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
