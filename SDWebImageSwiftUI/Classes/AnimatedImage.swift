@@ -175,6 +175,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
         layoutView(view, context: context)
     }
     
+    public static func dismantleWKInterfaceObject(_ view: SDAnimatedImageInterface, coordinator: ()) {
+        view.stopAnimating()
+    }
+    
     func layoutView(_ view: SDAnimatedImageInterface, context: PlatformViewRepresentableContext<AnimatedImage>) {
         // AspectRatio
         if let _ = imageLayout.aspectRatio {
