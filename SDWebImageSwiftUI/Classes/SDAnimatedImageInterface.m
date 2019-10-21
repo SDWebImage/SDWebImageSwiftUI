@@ -59,6 +59,7 @@
 @property (nonatomic, strong) UIImage<SDAnimatedImage> *animatedImage;
 @property (nonatomic, assign) CGFloat animatedImageScale;
 @property (nonatomic, strong) SDAnimatedImageStatus *currentStatus;
+@property (nonatomic, strong) NSNumber *animationRepeatCount;
 
 @end
 
@@ -136,7 +137,12 @@
 
 - (void)startBuiltInAnimationWithImage:(UIImage<SDAnimatedImage> *)animatedImage {
     NSData *animatedImageData = animatedImage.animatedImageData;
-    NSUInteger maxLoopCount = 0;
+    NSUInteger maxLoopCount;
+    if (self.animationRepeatCount != nil) {
+        maxLoopCount = self.animationRepeatCount.unsignedIntegerValue;
+    } else {
+        maxLoopCount = animatedImage.animatedImageLoopCount;
+    }
     if (maxLoopCount == 0) {
         // The documentation says `kCFNumberPositiveInfinity may be used`, but it actually treat as 1 loop count
         // 0 was treated as 1 loop count as well, not the same as Image/IO or UIKit

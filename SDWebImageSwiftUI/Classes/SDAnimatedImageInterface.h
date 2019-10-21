@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 - (void)setContentMode:(SDImageScaleMode)contentMode;
+- (void)setAnimationRepeatCount:(nullable NSNumber *)repeatCount;
 
 @end
 

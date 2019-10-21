@@ -383,6 +383,13 @@ public struct AnimatedImage : PlatformViewRepresentable {
             // disable custom loop count
             view.wrapped.shouldCustomLoopCount = false
         }
+        #elseif os(watchOS)
+        if let customLoopCount = imageConfiguration.customLoopCount {
+            view.wrapped.setAnimationRepeatCount(customLoopCount as NSNumber)
+        } else {
+            // disable custom loop count
+            view.wrapped.setAnimationRepeatCount(nil)
+        }
         #endif
     }
 }
