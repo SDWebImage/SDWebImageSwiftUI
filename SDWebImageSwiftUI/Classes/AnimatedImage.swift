@@ -489,9 +489,11 @@ extension AnimatedImage {
     }
     
     /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
-    // `0` or nil means automatically adjust by calculating current memory usage.
-    // `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
-    // `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    ///
+    /// `0` or nil means automatically adjust by calculating current memory usage.
+    /// `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+    /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    /// - Warning: watchOS does not implementes.
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
         imageConfiguration.maxBufferSize = bufferSize
@@ -501,6 +503,7 @@ extension AnimatedImage {
     /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
     /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
     /// Default is true. Set to false to only render the static poster for incremental animated image.
+    /// - Warning: watchOS does not implementes.
     /// - Parameter incrementalLoad: Whether or not to incremental load
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
         imageConfiguration.incrementalLoad = incrementalLoad
