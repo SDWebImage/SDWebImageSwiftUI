@@ -107,7 +107,7 @@ var body: some View {
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
 
-Note: `AnimatedImage` does not support watchOS currently. Because there are no Public API to implement it via `WKInterfaceObjectRepresentable` or `SwiftUI.Image`. We need Apple to provide a better solution. But if you're really interested in this, checkout [feature_watchOS_animation](https://github.com/SDWebImage/SDWebImageSwiftUI/tree/feature_watchOS_animation) branch, which using some super hack to support animated image on watchOS.
+Note: From v0.4.0, `AnimatedImage` supports watchOS as well. However, it's not backed by SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) like iOS/tvOS/macOS. It use some tricks and hacks because of the limitation on current Apple's API. It also use Image/IO decoding system, which means it supports GIF and APNG format only, but not external format like WebP.
 
 ## Demo
 
