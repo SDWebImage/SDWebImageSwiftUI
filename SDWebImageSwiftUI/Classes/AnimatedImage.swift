@@ -36,6 +36,16 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var customLoopCount: Int?
 }
 
+// Convenient
+#if os(watchOS)
+public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
+extension SDAnimatedImageInterface {
+    var wrapped: SDAnimatedImageInterface {
+        return self
+    }
+}
+#endif
+
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
@@ -118,7 +128,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     #elseif os(iOS) || os(tvOS)
     public typealias UIViewType = AnimatedImageViewWrapper
     #elseif os(watchOS)
-    public typealias WKInterfaceObjectType = SDAnimatedImageInterface
+    public typealias WKInterfaceObjectType = AnimatedImageViewWrapper
     #endif
     
     #if os(macOS)
@@ -145,63 +155,30 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: ()) {
         dismantleView(uiView, coordinator: coordinator)
     }
-    #endif
-    
-    #if os(watchOS)
-    public func makeWKInterfaceObject(context: WKInterfaceObjectRepresentableContext<AnimatedImage>) -> SDAnimatedImageInterface {
-        SDAnimatedImageInterface()
+    #elseif os(watchOS)
+    public func makeWKInterfaceObject(context: WKInterfaceObjectRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+        makeView(context: context)
     }
     
-    public func updateWKInterfaceObject(_ view: SDAnimatedImageInterface, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
-        view.setImage(imageModel.image)
-        if let url = imageModel.url {
-            view.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
-                self.imageModel.progressBlock?(receivedSize, expectedSize)
-            }) { (image, error, cacheType, _) in
-                if let image = image {
-                    self.imageModel.successBlock?(image, cacheType)
-                } else {
-                    self.imageModel.failureBlock?(error ?? NSError())
-                }
-            }
-        }
-        
-        if self.isAnimating {
-            view.startAnimating()
-        } else {
-            view.stopAnimating()
-        }
-        
-        layoutView(view, context: context)
+    public func updateWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
+        updateView(wkInterfaceObject, context: context)
     }
     
-    public static func dismantleWKInterfaceObject(_ view: SDAnimatedImageInterface, coordinator: ()) {
-        view.stopAnimating()
-    }
-    
-    func layoutView(_ view: SDAnimatedImageInterface, context: PlatformViewRepresentableContext<AnimatedImage>) {
-        // AspectRatio
-        if let _ = imageLayout.aspectRatio {
-            // TODO: Needs layer transform and geometry calculation
-        }
-        
-        // ContentMode
-        switch imageLayout.contentMode {
-        case .fit:
-            view.setContentMode(.aspectFit)
-        case .fill:
-            view.setContentMode(.fill)
-        }
+    public static func dismantleWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, coordinator: ()) {
+        dismantleView(wkInterfaceObject, coordinator: coordinator)
     }
     #endif
     
-    #if os(iOS) || os(tvOS) || os(macOS)
     func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         AnimatedImageViewWrapper()
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        #if os(watchOS)
+        view.wrapped.setImage(imageModel.image)
+        #else
         view.wrapped.image = imageModel.image
+        #endif
         if let url = imageModel.url {
             view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
                 self.imageModel.progressBlock?(receivedSize, expectedSize)
@@ -218,13 +195,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if self.isAnimating != view.wrapped.animates {
             view.wrapped.animates = self.isAnimating
         }
-        #else
+        #elseif os(iOS) || os(tvOS)
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
                 view.wrapped.startAnimating()
             } else {
                 view.wrapped.stopAnimating()
             }
+        }
+        #elseif os(watchOS)
+        if self.isAnimating {
+            view.wrapped.startAnimating()
+        } else {
+            view.wrapped.stopAnimating()
         }
         #endif
         
@@ -251,17 +234,22 @@ public struct AnimatedImage : PlatformViewRepresentable {
         case .fit:
             #if os(macOS)
             view.wrapped.imageScaling = .scaleProportionallyUpOrDown
-            #else
+            #elseif os(iOS) || os(tvOS)
             view.wrapped.contentMode = .scaleAspectFit
+            #else
+            view.wrapped.setContentMode(.aspectFit)
             #endif
         case .fill:
             #if os(macOS)
             view.wrapped.imageScaling = .scaleAxesIndependently
-            #else
+            #elseif os(iOS) || os(tvOS)
             view.wrapped.contentMode = .scaleToFill
+            #else
+            view.wrapped.setContentMode(.fill)
             #endif
         }
         
+        #if os(macOS) || os(iOS) || os(tvOS)
         // Animated Image does not support resizing mode and rendering mode
         if let image = view.wrapped.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             // ResizingMode
@@ -344,9 +332,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.setNeedsLayout()
         view.setNeedsDisplay()
         #endif
+        #endif
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        #if os(macOS) || os(iOS) || os(tvOS)
         // IncrementalLoad
         if let incrementalLoad = imageConfiguration.incrementalLoad {
             view.wrapped.shouldIncrementalLoad = incrementalLoad
@@ -368,8 +358,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
             // disable custom loop count
             view.wrapped.shouldCustomLoopCount = false
         }
+        #endif
     }
-    #endif
 }
 
 // Layout

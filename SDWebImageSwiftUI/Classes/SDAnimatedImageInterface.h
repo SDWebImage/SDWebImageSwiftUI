@@ -8,10 +8,14 @@
 
 #import <SDWebImage/SDWebImage.h>
 #if SD_WATCH
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 - (void)setContentMode:(SDImageScaleMode)contentMode;
 
 @end
+
+NS_ASSUME_NONNULL_END
 #endif
