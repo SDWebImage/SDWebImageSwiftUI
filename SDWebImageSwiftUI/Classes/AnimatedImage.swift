@@ -8,6 +8,9 @@
 
 import SwiftUI
 import SDWebImage
+#if canImport(SDWebImageSwiftUIObjC)
+import SDWebImageSwiftUIObjC
+#endif
 
 // Data Binding Object
 final class AnimatedImageModel : ObservableObject {

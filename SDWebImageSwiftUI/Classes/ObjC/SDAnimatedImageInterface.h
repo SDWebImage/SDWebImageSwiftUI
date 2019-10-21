@@ -6,7 +6,8 @@
 * file that was distributed with this source code.
 */
 
-#import <SDWebImage/SDWebImage.h>
+@import SDWebImage;
+
 #if SD_WATCH
 NS_ASSUME_NONNULL_BEGIN
 

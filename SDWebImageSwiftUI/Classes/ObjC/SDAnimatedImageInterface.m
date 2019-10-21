@@ -8,7 +8,6 @@
 
 #import "SDAnimatedImageInterface.h"
 #if SD_WATCH
-#import <SDWebImage/SDWebImage.h>
 // ImageIO.modulemap does not contains this public header
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincomplete-umbrella"

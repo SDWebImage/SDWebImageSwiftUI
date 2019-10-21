@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
 		326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
@@ -39,14 +47,6 @@
 		32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
-		32D9204E2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32D9204F2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32D920502349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32D920512349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32D920522349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */; };
-		32D920532349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */; };
-		32D920542349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */; };
-		32D920552349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -97,6 +97,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAnimatedImageInterface.h; sourceTree = "<group>"; };
+		324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAnimatedImageInterface.m; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -112,8 +114,6 @@
 		32C43E2922FD586200BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/tvOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/watchOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImageSwiftUI.swift; sourceTree = "<group>"; };
-		32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDAnimatedImageInterface.h; sourceTree = "<group>"; };
-		32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDAnimatedImageInterface.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +152,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		324F61C4235E07EC003973B8 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */,
+				324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
 		32C43DC222FD540D00BE87F5 = {
 			isa = PBXGroup;
 			children = (
@@ -185,13 +194,12 @@
 		32C43DDB22FD54C600BE87F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				324F61C4235E07EC003973B8 /* ObjC */,
 				32C43DDC22FD54C600BE87F5 /* ImageManager.swift */,
 				32C43DDE22FD54C600BE87F5 /* WebImage.swift */,
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
 				32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */,
 				326E480923431C0F00C633E9 /* ImageViewWrapper.swift */,
-				32D9204C2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h */,
-				32D9204D2349DBFC00C9CBE9 /* SDAnimatedImageInterface.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -214,7 +222,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32D9204E2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */,
+				324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,7 +231,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32D9204F2349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */,
+				324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2222FD583A00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,7 +240,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32D920502349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */,
+				324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2322FD583B00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,7 +249,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32D920512349DBFC00C9CBE9 /* SDAnimatedImageInterface.h in Headers */,
+				324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2422FD583C00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -414,7 +422,7 @@
 				326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
-				32D920522349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */,
+				324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,7 +435,7 @@
 				326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
-				32D920532349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */,
+				324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +448,7 @@
 				326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
-				32D920542349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */,
+				324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,7 +461,7 @@
 				326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
-				32D920552349DBFC00C9CBE9 /* SDAnimatedImageInterface.m in Sources */,
+				324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
