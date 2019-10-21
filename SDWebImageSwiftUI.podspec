@@ -26,7 +26,7 @@ Which aims to provide a better support for SwiftUI users.
   s.tvos.deployment_target = '13.0'
   s.watchos.deployment_target = '6.0'
 
-  s.source_files = 'SDWebImageSwiftUI/Classes/**/*'
+  s.source_files = 'SDWebImageSwiftUI/Classes/**/*', 'SDWebImageSwiftUI/Module/*.h'
 
   s.frameworks = 'SwiftUI'
   s.dependency 'SDWebImage', '~> 5.1'

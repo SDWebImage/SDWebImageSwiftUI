@@ -11,7 +11,7 @@ PODS:
   - SDWebImage (5.2.3):
     - SDWebImage/Core (= 5.2.3)
   - SDWebImage/Core (5.2.3)
-  - SDWebImageSwiftUI (0.3.2):
+  - SDWebImageSwiftUI (0.3.3):
     - SDWebImage (~> 5.1)
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
@@ -34,7 +34,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   SDWebImage: 46a7f73228f84ce80990c786e4372cf4db5875ce
-  SDWebImageSwiftUI: a8a03ef596dde2e9668a76794f6c59d194289bb0
+  SDWebImageSwiftUI: 2284857313ca5085ab7b5310d372420d23c0817f
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
 
 PODFILE CHECKSUM: 3fb06a5173225e197f3a4bf2be7e5586a693257a
