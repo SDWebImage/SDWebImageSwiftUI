@@ -33,7 +33,6 @@ let package = Package(
             name: "SDWebImageSwiftUIObjC",
             dependencies: ["SDWebImage"],
             path: "SDWebImageSwiftUI/Classes/ObjC",
-            sources: ["SDAnimatedImageInterface.h", "SDAnimatedImageInterface.m"],
             publicHeadersPath: "."
         )
     ]
