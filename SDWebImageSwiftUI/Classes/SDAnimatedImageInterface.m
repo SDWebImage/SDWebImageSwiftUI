@@ -212,7 +212,7 @@
 
 - (void)stopAnimating {
     if (self.animatedImage) {
-        self.currentStatus.shouldAnimate = YES;
+        self.currentStatus.shouldAnimate = NO;
     } else if (_image.images.count > 0) {
         [super stopAnimating];
     }
