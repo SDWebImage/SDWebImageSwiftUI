@@ -8,13 +8,13 @@
 
 import SwiftUI
 import SDWebImage
-
-#if !os(watchOS)
+#if canImport(SDWebImageSwiftUIObjC)
+import SDWebImageSwiftUIObjC
+#endif
 
 // Data Binding Object
 final class AnimatedImageModel : ObservableObject {
     @Published var image: PlatformImage?
-    @Published var url: URL?
     @Published var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
     @Published var failureBlock: ((Error) -> Void)?
     @Published var progressBlock: ((Int, Int) -> Void)?
@@ -38,12 +38,23 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var customLoopCount: Int?
 }
 
+// Convenient
+#if os(watchOS)
+public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
+extension SDAnimatedImageInterface {
+    var wrapped: SDAnimatedImageInterface {
+        return self
+    }
+}
+#endif
+
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
     
+    var url: URL?
     var placeholder: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
@@ -72,7 +83,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         self.placeholder = placeholder
         self.webOptions = options
         self.webContext = context
-        self.imageModel.url = url
+        self.url = url
     }
     
     /// Create an animated image with name and bundle.
@@ -90,7 +101,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        #if os(macOS)
+        #if os(macOS) || os(watchOS)
         let image = SDAnimatedImage(named: name, in: bundle)
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
@@ -117,8 +128,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     #if os(macOS)
     public typealias NSViewType = AnimatedImageViewWrapper
-    #else
+    #elseif os(iOS) || os(tvOS)
     public typealias UIViewType = AnimatedImageViewWrapper
+    #elseif os(watchOS)
+    public typealias WKInterfaceObjectType = AnimatedImageViewWrapper
     #endif
     
     #if os(macOS)
@@ -133,7 +146,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public static func dismantleNSView(_ nsView: AnimatedImageViewWrapper, coordinator: ()) {
         dismantleView(nsView, coordinator: coordinator)
     }
-    #else
+    #elseif os(iOS) || os(tvOS)
     public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         makeView(context: context)
     }
@@ -145,6 +158,18 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: ()) {
         dismantleView(uiView, coordinator: coordinator)
     }
+    #elseif os(watchOS)
+    public func makeWKInterfaceObject(context: WKInterfaceObjectRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+        makeView(context: context)
+    }
+    
+    public func updateWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
+        updateView(wkInterfaceObject, context: context)
+    }
+    
+    public static func dismantleWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, coordinator: ()) {
+        dismantleView(wkInterfaceObject, coordinator: coordinator)
+    }
     #endif
     
     func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
@@ -152,15 +177,23 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
-        view.wrapped.image = imageModel.image
-        if let url = imageModel.url {
-            view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
-                self.imageModel.progressBlock?(receivedSize, expectedSize)
-            }) { (image, error, cacheType, _) in
-                if let image = image {
-                    self.imageModel.successBlock?(image, cacheType)
-                } else {
-                    self.imageModel.failureBlock?(error ?? NSError())
+        if let image = imageModel.image {
+            #if os(watchOS)
+            view.wrapped.setImage(image)
+            #else
+            view.wrapped.image = image
+            #endif
+        } else {
+            if let url = url {
+                view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+                    self.imageModel.progressBlock?(receivedSize, expectedSize)
+                }) { (image, error, cacheType, _) in
+                    self.imageModel.image =  image
+                    if let image = image {
+                        self.imageModel.successBlock?(image, cacheType)
+                    } else {
+                        self.imageModel.failureBlock?(error ?? NSError())
+                    }
                 }
             }
         }
@@ -169,13 +202,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if self.isAnimating != view.wrapped.animates {
             view.wrapped.animates = self.isAnimating
         }
-        #else
+        #elseif os(iOS) || os(tvOS)
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
                 view.wrapped.startAnimating()
             } else {
                 view.wrapped.stopAnimating()
             }
+        }
+        #elseif os(watchOS)
+        if self.isAnimating {
+            view.wrapped.startAnimating()
+        } else {
+            view.wrapped.stopAnimating()
         }
         #endif
         
@@ -202,19 +241,24 @@ public struct AnimatedImage : PlatformViewRepresentable {
         case .fit:
             #if os(macOS)
             view.wrapped.imageScaling = .scaleProportionallyUpOrDown
-            #else
+            #elseif os(iOS) || os(tvOS)
             view.wrapped.contentMode = .scaleAspectFit
+            #elseif os(watchOS)
+            view.wrapped.setContentMode(.aspectFit)
             #endif
         case .fill:
             #if os(macOS)
             view.wrapped.imageScaling = .scaleAxesIndependently
-            #else
+            #elseif os(iOS) || os(tvOS)
             view.wrapped.contentMode = .scaleToFill
+            #elseif os(watchOS)
+            view.wrapped.setContentMode(.fill)
             #endif
         }
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = view.wrapped.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+            var image = image
             // ResizingMode
             if let resizingMode = imageLayout.resizingMode {
                 #if os(macOS)
@@ -228,14 +272,24 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     view.wrapped.image?.resizingMode = .stretch
                     view.wrapped.image?.capInsets = capInsets
                     #else
-                    view.wrapped.image = view.wrapped.image?.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
+                    image = image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
+                    #if os(iOS) || os(tvOS)
+                    view.wrapped.image = image
+                    #elseif os(watchOS)
+                    view.wrapped.setImage(image)
+                    #endif
                     #endif
                 case .tile:
                     #if os(macOS)
                     view.wrapped.image?.resizingMode = .tile
                     view.wrapped.image?.capInsets = capInsets
                     #else
-                    view.wrapped.image = view.wrapped.image?.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
+                    image = image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
+                    #if os(iOS) || os(tvOS)
+                    view.wrapped.image = image
+                    #elseif os(watchOS)
+                    view.wrapped.setImage(image)
+                    #endif
                     #endif
                 @unknown default:
                     // Future cases, not implements
@@ -250,13 +304,23 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #if os(macOS)
                     view.wrapped.image?.isTemplate = true
                     #else
-                    view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysTemplate)
+                    image = image.withRenderingMode(.alwaysTemplate)
+                    #if os(iOS) || os(tvOS)
+                    view.wrapped.image = image
+                    #elseif os(watchOS)
+                    view.wrapped.setImage(image)
+                    #endif
                     #endif
                 case .original:
                     #if os(macOS)
                     view.wrapped.image?.isTemplate = false
                     #else
-                    view.wrapped.image = view.wrapped.image?.withRenderingMode(.alwaysOriginal)
+                    image = image.withRenderingMode(.alwaysOriginal)
+                    #if os(iOS) || os(tvOS)
+                    view.wrapped.image = image
+                    #elseif os(watchOS)
+                    view.wrapped.setImage(image)
+                    #endif
                     #endif
                 @unknown default:
                     // Future cases, not implements
@@ -265,6 +329,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
         }
         
+        #if os(macOS) || os(iOS) || os(tvOS)
         // Interpolation
         if let interpolation = imageLayout.interpolation {
             switch interpolation {
@@ -295,9 +360,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.setNeedsLayout()
         view.setNeedsDisplay()
         #endif
+        #endif
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+        #if os(macOS) || os(iOS) || os(tvOS)
         // IncrementalLoad
         if let incrementalLoad = imageConfiguration.incrementalLoad {
             view.wrapped.shouldIncrementalLoad = incrementalLoad
@@ -319,6 +386,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
             // disable custom loop count
             view.wrapped.shouldCustomLoopCount = false
         }
+        #elseif os(watchOS)
+        if let customLoopCount = imageConfiguration.customLoopCount {
+            view.wrapped.setAnimationRepeatCount(customLoopCount as NSNumber)
+        } else {
+            // disable custom loop count
+            view.wrapped.setAnimationRepeatCount(nil)
+        }
+        #endif
     }
 }
 
@@ -417,9 +492,11 @@ extension AnimatedImage {
     }
     
     /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
-    // `0` or nil means automatically adjust by calculating current memory usage.
-    // `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
-    // `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    ///
+    /// `0` or nil means automatically adjust by calculating current memory usage.
+    /// `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+    /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    /// - Warning: watchOS does not implementes.
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
         imageConfiguration.maxBufferSize = bufferSize
@@ -429,6 +506,7 @@ extension AnimatedImage {
     /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
     /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
     /// Default is true. Set to false to only render the static poster for incremental animated image.
+    /// - Warning: watchOS does not implementes.
     /// - Parameter incrementalLoad: Whether or not to incremental load
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
         imageConfiguration.incrementalLoad = incrementalLoad
@@ -478,6 +556,4 @@ struct AnimatedImage_Previews : PreviewProvider {
         }
     }
 }
-#endif
-
 #endif

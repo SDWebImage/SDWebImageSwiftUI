@@ -33,4 +33,5 @@ script:
   - pod install --project-directory=Example
   - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -sdk iphonesimulator -destination 'name=iPhone 8' ONLY_ACTIVE_ARCH=NO | xcpretty -c
 
-  - swift build
+  - carthage update --platform iOS
+  - xcodebuild build -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUI' -sdk iphonesimulator -configuration Debug | xcpretty -c

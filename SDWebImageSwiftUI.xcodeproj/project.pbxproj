@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
+		324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
 		326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
@@ -89,6 +97,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAnimatedImageInterface.h; sourceTree = "<group>"; };
+		324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAnimatedImageInterface.m; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -142,6 +152,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		324F61C4235E07EC003973B8 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */,
+				324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
 		32C43DC222FD540D00BE87F5 = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +194,7 @@
 		32C43DDB22FD54C600BE87F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				324F61C4235E07EC003973B8 /* ObjC */,
 				32C43DDC22FD54C600BE87F5 /* ImageManager.swift */,
 				32C43DDE22FD54C600BE87F5 /* WebImage.swift */,
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
@@ -202,6 +222,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,6 +231,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2222FD583A00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,6 +240,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2322FD583B00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -226,6 +249,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2422FD583C00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,15 +344,19 @@
 				TargetAttributes = {
 					32C43DCB22FD540D00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 					32C43DF322FD57FD00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 					32C43E0022FD581400BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 					32C43E0D22FD581C00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 				};
 			};
@@ -394,6 +422,7 @@
 				326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
+				324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +435,7 @@
 				326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
+				324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +448,7 @@
 				326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
+				324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +461,7 @@
 				326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
+				324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,6 +597,7 @@
 		32C43DD522FD540D00BE87F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -585,6 +618,7 @@
 				PRODUCT_NAME = SDWebImageSwiftUI;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -593,6 +627,7 @@
 		32C43DD622FD540D00BE87F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -621,6 +656,7 @@
 		32C43DFA22FD57FD00BE87F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -643,6 +679,7 @@
 				PRODUCT_NAME = SDWebImageSwiftUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -650,6 +687,7 @@
 		32C43DFB22FD57FD00BE87F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -679,6 +717,7 @@
 		32C43E0722FD581400BE87F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -699,6 +738,7 @@
 				PRODUCT_NAME = SDWebImageSwiftUI;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
@@ -707,6 +747,7 @@
 		32C43E0822FD581400BE87F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -736,6 +777,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -756,6 +798,7 @@
 				PRODUCT_NAME = SDWebImageSwiftUI;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 			};
@@ -765,6 +808,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

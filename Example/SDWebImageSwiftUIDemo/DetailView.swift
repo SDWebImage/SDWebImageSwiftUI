@@ -33,7 +33,7 @@ struct DetailView: View {
                 contentView()
             }
             #endif
-            #if os(macOS)
+            #if os(macOS) || os(watchOS)
             if animated {
                 contentView()
                 .contextMenu {
@@ -45,16 +45,12 @@ struct DetailView: View {
                 contentView()
             }
             #endif
-            #if os(watchOS)
-            contentView()
-            #endif
             Spacer()
         }
     }
     
     func contentView() -> some View {
         HStack {
-            #if os(iOS) || os(tvOS) || os(macOS)
             if animated {
                 AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
                 .onProgress(perform: { (receivedSize, expectedSize) in
@@ -79,18 +75,6 @@ struct DetailView: View {
                 .resizable()
                 .scaledToFit()
             }
-            #else
-            WebImage(url: URL(string:url), options: [.progressiveLoad])
-            .onProgress(perform: { (receivedSize, expectedSize) in
-                if (expectedSize >= 0) {
-                    self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                } else {
-                    self.progress = 1
-                }
-            })
-            .resizable()
-            .scaledToFit()
-            #endif
         }
     }
 }

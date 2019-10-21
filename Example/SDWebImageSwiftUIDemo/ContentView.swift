@@ -67,6 +67,9 @@ struct ContentView: View {
                 Button(action: { self.reloadCache() }) {
                     Text("Reload")
                 }
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
             }
         #endif
     }
@@ -76,7 +79,6 @@ struct ContentView: View {
             ForEach(imageURLs) { url in
                 NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
                     HStack {
-                        #if os(iOS) || os(tvOS) || os(macOS)
                         if self.animated {
                             AnimatedImage(url: URL(string:url))
                             .resizable()
@@ -88,12 +90,6 @@ struct ContentView: View {
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                         }
-                        #else
-                        WebImage(url: URL(string:url))
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                        #endif
                         Text((url as NSString).lastPathComponent)
                     }
                 }
