@@ -36,15 +36,12 @@ public struct WebImage : View {
         let image: Image
         if let platformImage = imageManager.image {
             image = Image(platformImage: platformImage)
-        } else if let placeholder = placeholder {
-            image = placeholder
         } else {
-            #if os(macOS)
-            let emptyImage = Image(nsImage: NSImage())
-            #else
-            let emptyImage = Image(uiImage: UIImage())
-            #endif
-            image = emptyImage
+            if let placeholder = placeholder {
+                image = placeholder
+            } else {
+                image = Image(platformImage: PlatformImage())
+            }
             // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
             // this can ensure we load the image, SDWebImage take care of the duplicated query
             self.imageManager.load()
