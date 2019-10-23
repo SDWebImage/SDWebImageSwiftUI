@@ -71,9 +71,9 @@ Note: Unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animatio
 ```swift
 var body: some View {
     WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
-        .onSuccess(perform: { (image, cacheType) in
+        .onSuccess { image, cacheType in
             // Success
-        })
+        }
         .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
@@ -87,9 +87,9 @@ var body: some View {
     Group {
         // Network
         AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
-        .onFailure(perform: { (error) in
+        .onFailure { error in
             // Error
-        })
+        }
         .scaledToFit()
         // Data
         AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))

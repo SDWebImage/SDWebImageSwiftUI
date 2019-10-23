@@ -94,11 +94,11 @@ struct ContentView: View {
                     }
                 }
             }
-            .onDelete(perform: { (indexSet) in
-                indexSet.forEach { (index) in
+            .onDelete { indexSet in
+                indexSet.forEach { index in
                     self.imageURLs.remove(at: index)
                 }
-            })
+            }
         }
     }
     

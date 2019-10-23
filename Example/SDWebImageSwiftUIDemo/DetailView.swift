@@ -53,25 +53,25 @@ struct DetailView: View {
         HStack {
             if animated {
                 AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
-                .onProgress(perform: { (receivedSize, expectedSize) in
+                .onProgress { receivedSize, expectedSize in
                     // SwiftUI engine itself ensure the main queue dispatch
-                    if (expectedSize >= 0) {
+                    if (expectedSize > 0) {
                         self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
                     } else {
                         self.progress = 1
                     }
-                })
+                }
                 .resizable()
                 .scaledToFit()
             } else {
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .onProgress(perform: { (receivedSize, expectedSize) in
-                    if (expectedSize >= 0) {
+                .onProgress { receivedSize, expectedSize in
+                    if (expectedSize > 0) {
                         self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
                     } else {
                         self.progress = 1
                     }
-                })
+                }
                 .resizable()
                 .scaledToFit()
             }
