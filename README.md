@@ -9,15 +9,13 @@
 
 ## What's for
 
-This is an experimental project for [SDWebImage](https://github.com/SDWebImage/SDWebImage).
+SDWebImageSwiftUI is a SwiftUI image loading framework, which based on [SDWebImage](https://github.com/SDWebImage/SDWebImage).
 
-It aims to ensure the following function available for users and try to do some experiments for Swift platform.
+It brings all your favorite features from SDWebImage, like async image loading, memory/disk caching, animated image playback and performances.
 
-+ Swift Package Manager integration
-+ SwiftUI compatibility
-+ Swift source code compatibility
+Besides all these features, we do optimization for SwiftUI, like Binding, View Modifier, using the same design pattern to become a good SwiftUI citizen.
 
-Note we do not guarantee the public API stable for current status until v1.0 version. Since SwiftUI is a new platform for us, we need to investigate the API design.
+Note we do not guarantee the public API stable for current status until v1.0 version. Since SwiftUI is a new platform for us. This framework is under development, feature requests, contributions, and GitHub stars are welcomed.
 
 ## Requirements
 
@@ -150,6 +148,16 @@ Tips:
 + watchOS Demo
 
 <img src='https://raw.githubusercontent.com/SDWebImage/SDWebImageSwiftUI/master/Example/Screenshot/Demo-watchOS.jpg' width=480 />
+
+## Extra Notes
+
+Besides all above things, this project can also ensure the following function available on Swift platform for SDWebImage itself.
+
++ SwiftUI compatibility
++ Swift Package Manager integration
++ Swift source code compatibility and Swifty
+
+Which means, this project is one core use case and downstream dependency, which driven SDWebImage itself future development.
 
 ## Author
 
