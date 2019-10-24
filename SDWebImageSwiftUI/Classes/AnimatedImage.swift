@@ -360,15 +360,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         // Antialiased
         view.shouldAntialias = imageLayout.antialiased
-        
-        // Display
-        #if os(macOS)
-        view.needsLayout = true
-        view.needsDisplay = true
-        #else
-        view.setNeedsLayout()
-        view.setNeedsDisplay()
-        #endif
         #endif
     }
     
