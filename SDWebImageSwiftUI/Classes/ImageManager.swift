@@ -29,17 +29,24 @@ class ImageManager : ObservableObject {
     }
     
     func load() {
+        if currentOperation != nil {
+            return
+        }
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             self?.progressBlock?(receivedSize, expectedSize)
-        }) { [weak self] (image, data, error, cacheType, _, _) in
+        }) { [weak self] (image, data, error, cacheType, finished, _) in
             guard let self = self else {
                 return
             }
             if let image = image {
                 self.image = image
-                self.successBlock?(image, cacheType)
-            } else {
-                self.failureBlock?(error ?? NSError())
+            }
+            if finished {
+                if let image = image {
+                    self.successBlock?(image, cacheType)
+                } else {
+                    self.failureBlock?(error ?? NSError())
+                }
             }
         }
     }
