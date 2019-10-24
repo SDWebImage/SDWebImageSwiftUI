@@ -172,6 +172,24 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     #endif
     
+    func loadImage(_ view: AnimatedImageViewWrapper, url: URL) {
+        let operationKey = NSStringFromClass(type(of: view.wrapped))
+        let currentOperation = view.wrapped.sd_imageLoadOperation(forKey: operationKey)
+        if currentOperation != nil {
+            return
+        }
+        view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+            self.imageModel.progressBlock?(receivedSize, expectedSize)
+        }) { (image, error, cacheType, _) in
+            if let image = image {
+                self.imageModel.image = image
+                self.imageModel.successBlock?(image, cacheType)
+            } else {
+                self.imageModel.failureBlock?(error ?? NSError())
+            }
+        }
+    }
+    
     func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         AnimatedImageViewWrapper()
     }
@@ -185,16 +203,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             #endif
         } else {
             if let url = url {
-                view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
-                    self.imageModel.progressBlock?(receivedSize, expectedSize)
-                }) { (image, error, cacheType, _) in
-                    self.imageModel.image =  image
-                    if let image = image {
-                        self.imageModel.successBlock?(image, cacheType)
-                    } else {
-                        self.imageModel.failureBlock?(error ?? NSError())
-                    }
-                }
+                loadImage(view, url: url)
             }
         }
         
