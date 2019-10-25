@@ -36,6 +36,9 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var incrementalLoad: Bool?
     @Published var maxBufferSize: UInt?
     @Published var customLoopCount: Int?
+    // These configurations only useful for web image loading
+    @Published var indicator: SDWebImageIndicator?
+    @Published var transition: SDWebImageTransition?
 }
 
 // Convenient
@@ -203,6 +206,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
             #endif
         } else {
             if let url = url {
+                view.wrapped.sd_imageIndicator = imageConfiguration.indicator
+                view.wrapped.sd_imageTransition = imageConfiguration.transition
                 loadImage(view, url: url)
             }
         }
@@ -541,6 +546,26 @@ extension AnimatedImage {
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
         imageModel.progressBlock = action
+        return self
+    }
+}
+
+// Web Image convenience
+extension AnimatedImage {
+    
+    /// Associate a indicator when loading image with url
+    /// - Note: If you do not need indicator, specify nil. Defaults to nil
+    /// - Parameter indicator: indicator, see more in `SDWebImageIndicator`
+    public func indicator(_ indicator: SDWebImageIndicator?) -> AnimatedImage {
+        imageConfiguration.indicator = indicator
+        return self
+    }
+    
+    /// Associate a transition when loading image with url
+    /// - Note: If you specify nil, do not do transition. Defautls to nil.
+    /// - Parameter transition: transition, see more in `SDWebImageTransition`
+    public func transition(_ transition: SDWebImageTransition?) -> AnimatedImage {
+        imageConfiguration.transition = transition
         return self
     }
 }
