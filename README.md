@@ -52,7 +52,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.4")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.5")
     ],
 )
 ```
