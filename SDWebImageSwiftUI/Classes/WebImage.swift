@@ -172,12 +172,10 @@ extension WebImage {
 extension WebImage {
     
     /// Associate a indicator when loading image with url
-    /// - Parameter builder: builder description
-    /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
-    /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
-    public func indicator<T>(_ builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> WebImage where T : View {
+    /// - Parameter indicator: The indicator type, see `Indicator`
+    public func indicator(_ indicator: Indicator) -> WebImage {
         var result = self
-        result.indicator = Indicator(builder: builder)
+        result.indicator = indicator
         return result
     }
 }

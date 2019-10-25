@@ -57,18 +57,18 @@ struct DetailView: View {
             } else {
                 #if os(macOS) || os(iOS) || os(tvOS)
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .indicator { isAnimating, progress in
-                    ProgressIndicator(isAnimating, progress: progress)
-                }
+                .indicator(.progress)
                 .resizable()
                 .scaledToFit()
                 #else
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .indicator { isAnimating, progress in
-                    ProgressBar(value: progress)
-                    .foregroundColor(.blue)
-                    .frame(maxHeight: 6)
-                }
+                .indicator(
+                    Indicator { isAnimating, progress in
+                        ProgressBar(value: progress)
+                        .foregroundColor(.blue)
+                        .frame(maxHeight: 6)
+                    }
+                )
                 .resizable()
                 .scaledToFit()
                 #endif

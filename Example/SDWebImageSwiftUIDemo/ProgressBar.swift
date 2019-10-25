@@ -16,7 +16,7 @@ public struct ProgressBar: View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                     .frame(width: geometry.size.width)
+                    .frame(width: geometry.size.width)
                     .opacity(0.3)
                 Rectangle()
                     .frame(width: geometry.size.width * self.value)

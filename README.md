@@ -61,9 +61,9 @@ let package = Package(
 
 ### Using `WebImage` to load network image
 
-- [x] Supports the placeholder and detail options control for image loading as SDWebImage
-- [x] Supports the success/failure/progress changes event for custom handling
-- [x] Supports the indicator with activity/progress indicator and customization
+- [x] Supports placeholder and detail options control for image loading as SDWebImage
+- [x] Supports success/failure/progress changes event for custom handling
+- [x] Supports indicator with activity/progress indicator and customization
 
 Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation.
 
@@ -73,9 +73,7 @@ var body: some View {
         .onSuccess { image, cacheType in
             // Success
         }
-        .indicator { isAnimating, _ in
-            ActivityIndicator(isAnimating) // Activity Indicator
-        }
+        .indicator(.activity) // Activity Indicator
         .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)

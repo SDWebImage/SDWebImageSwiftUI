@@ -96,9 +96,7 @@ struct ContentView: View {
                         } else {
                             #if os(macOS) || os(iOS) || os(tvOS)
                             WebImage(url: URL(string:url))
-                            .indicator { isAnimating, _ in
-                                ActivityIndicator(isAnimating)
-                            }
+                            .indicator(.activity)
                             .resizable()
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
