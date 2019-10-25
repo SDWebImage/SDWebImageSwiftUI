@@ -106,6 +106,7 @@ var body: some View {
 - [x] Supports animation control using the SwiftUI Binding
 - [x] Supports indicator and transition powered by SDWebImage and CoreAnimation
 - [x] Supports advanced control like loop count, incremental load, buffer size
+- [x] Supports coordinate with native UIKit/AppKit/WKInterface view
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, if you need advanced customized layout and animation, you need CoreAnimation to help.
 
