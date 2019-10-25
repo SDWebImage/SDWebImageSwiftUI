@@ -11,7 +11,7 @@ import SDWebImage
 
 #if !os(watchOS)
 
-// View Wrapper
+/// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
 public class AnimatedImageViewWrapper : PlatformView {
     var wrapped = SDAnimatedImageView()
     var interpolationQuality = CGInterpolationQuality.default
@@ -40,6 +40,38 @@ public class AnimatedImageViewWrapper : PlatformView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         wrapped.frame = self.bounds
+    }
+    #endif
+    
+    public override init(frame frameRect: CGRect) {
+        super.init(frame: frameRect)
+        addSubview(wrapped)
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addSubview(wrapped)
+    }
+}
+
+/// Use wrapper to solve the `UIProgressView`/`NSProgressIndicator` frame origin NaN crash (SwiftUI's bug)
+public class ProgressIndicatorWrapper : PlatformView {
+    #if os(macOS)
+    var wrapped = NSProgressIndicator()
+    #else
+    var wrapped = UIProgressView(progressViewStyle: .default)
+    #endif
+    
+    #if os(macOS)
+    public override func layout() {
+        super.layout()
+        wrapped.frame = self.bounds
+    }
+    #else
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        wrapped.frame = self.bounds
+        wrapped.center = self.center
     }
     #endif
     

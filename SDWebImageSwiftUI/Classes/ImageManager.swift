@@ -39,7 +39,6 @@ class ImageManager : ObservableObject {
             guard let self = self else {
                 return
             }
-            self.progressBlock?(receivedSize, expectedSize)
             let progress: CGFloat
             if (expectedSize > 0) {
                 progress = CGFloat(receivedSize) / CGFloat(expectedSize)
@@ -49,6 +48,7 @@ class ImageManager : ObservableObject {
             DispatchQueue.main.async {
                 self.progress = progress
             }
+            self.progressBlock?(receivedSize, expectedSize)
         }) { [weak self] (image, data, error, cacheType, finished, _) in
             guard let self = self else {
                 return
@@ -58,6 +58,7 @@ class ImageManager : ObservableObject {
             }
             if finished {
                 self.isLoading = false
+                self.progress = 1
                 if let image = image {
                     self.successBlock?(image, cacheType)
                 } else {

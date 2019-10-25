@@ -6,13 +6,13 @@
 * file that was distributed with this source code.
 */
 
-import Swift
 import SwiftUI
 
+/// An activity indicator (system style)
 public struct ActivityIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
     
-    public init(_ isAnimating: Binding<Bool> = .constant(true)) {
+    public init(_ isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
     }
     

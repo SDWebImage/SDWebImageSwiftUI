@@ -65,12 +65,8 @@ struct DetailView: View {
                 .scaledToFit()
             } else {
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .onProgress { receivedSize, expectedSize in
-                    if (expectedSize > 0) {
-                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                    } else {
-                        self.progress = 1
-                    }
+                .indicator { isAnimating, progress in
+                    ProgressIndicator(isAnimating, progress: progress)
                 }
                 .resizable()
                 .scaledToFit()

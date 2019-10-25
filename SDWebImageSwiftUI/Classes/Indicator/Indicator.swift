@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 
+/// A container view to hold the indicator builder
 public struct Indicator : View {
     var builder: (Binding<Bool>, Binding<CGFloat>) -> AnyView
     public typealias Body = Never
