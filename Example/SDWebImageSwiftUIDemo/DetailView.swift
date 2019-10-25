@@ -64,12 +64,26 @@ struct DetailView: View {
                 .resizable()
                 .scaledToFit()
             } else {
+                #if os(macOS) || os(iOS) || os(tvOS)
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
                 .indicator { isAnimating, progress in
                     ProgressIndicator(isAnimating, progress: progress)
                 }
                 .resizable()
                 .scaledToFit()
+                #else
+                WebImage(url: URL(string:url), options: [.progressiveLoad])
+                .onProgress { receivedSize, expectedSize in
+                    // SwiftUI engine itself ensure the main queue dispatch
+                    if (expectedSize > 0) {
+                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                    } else {
+                        self.progress = 1
+                    }
+                }
+                .resizable()
+                .scaledToFit()
+                #endif
             }
         }
     }

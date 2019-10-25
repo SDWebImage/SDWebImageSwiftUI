@@ -36,9 +36,11 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var incrementalLoad: Bool?
     @Published var maxBufferSize: UInt?
     @Published var customLoopCount: Int?
+    #if os(macOS) || os(iOS) || os(tvOS)
     // These configurations only useful for web image loading
     @Published var indicator: SDWebImageIndicator?
     @Published var transition: SDWebImageTransition?
+    #endif
 }
 
 // Convenient
@@ -206,8 +208,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
             #endif
         } else {
             if let url = url {
+                #if os(macOS) || os(iOS) || os(tvOS)
                 view.wrapped.sd_imageIndicator = imageConfiguration.indicator
                 view.wrapped.sd_imageTransition = imageConfiguration.transition
+                #endif
                 loadImage(view, url: url)
             }
         }
@@ -550,6 +554,7 @@ extension AnimatedImage {
     }
 }
 
+#if os(macOS) || os(iOS) || os(tvOS)
 // Web Image convenience
 extension AnimatedImage {
     
@@ -569,6 +574,7 @@ extension AnimatedImage {
         return self
     }
 }
+#endif
 
 #if DEBUG
 struct AnimatedImage_Previews : PreviewProvider {

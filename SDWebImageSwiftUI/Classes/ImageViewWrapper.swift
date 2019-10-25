@@ -66,6 +66,7 @@ public class ProgressIndicatorWrapper : PlatformView {
     public override func layout() {
         super.layout()
         wrapped.frame = self.bounds
+        wrapped.setFrameOrigin(CGPoint(x: (self.bounds.width - wrapped.frame.width) / 2, y: (self.bounds.height - wrapped.frame.height) / 2))
     }
     #else
     public override func layoutSubviews() {

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(macOS) || os(iOS) || os(tvOS)
 /// A progress bar indicator (system style)
 public struct ProgressIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
@@ -78,6 +79,6 @@ public struct ProgressIndicator: PlatformViewRepresentable {
             }
         }
     }
-    
     #endif
 }
+#endif

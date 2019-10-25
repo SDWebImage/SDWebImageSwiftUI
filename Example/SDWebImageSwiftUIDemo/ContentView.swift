@@ -80,13 +80,21 @@ struct ContentView: View {
                 NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
                     HStack {
                         if self.animated {
+                            #if os(macOS) || os(iOS) || os(tvOS)
                             AnimatedImage(url: URL(string:url))
                             .indicator(SDWebImageActivityIndicator.medium)
                             .transition(.fade)
                             .resizable()
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            #else
+                            AnimatedImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            #endif
                         } else {
+                            #if os(macOS) || os(iOS) || os(tvOS)
                             WebImage(url: URL(string:url))
                             .indicator { isAnimating, _ in
                                 ActivityIndicator(isAnimating)
@@ -94,6 +102,12 @@ struct ContentView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            #else
+                            WebImage(url: URL(string:url))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            #endif
                         }
                         Text((url as NSString).lastPathComponent)
                     }

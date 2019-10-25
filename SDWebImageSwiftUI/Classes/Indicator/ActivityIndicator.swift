@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if os(macOS) || os(iOS) || os(tvOS)
 /// An activity indicator (system style)
 public struct ActivityIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
@@ -48,3 +49,4 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     
     #endif
 }
+#endif
