@@ -61,16 +61,20 @@ let package = Package(
 
 ### Using `WebImage` to load network image
 
-- [x] Supports the placeholder and detail options control for image loading as SDWebImage.
-- [x] Supports the success/failure/progress changes event for custom handling.
+- [x] Supports the placeholder and detail options control for image loading as SDWebImage
+- [x] Supports the success/failure/progress changes event for custom handling
+- [x] Supports the indicator with activity/progress indicator and customization
 
-Note: Unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation. This `WebImage` using `Image` for internal implementation and supports static image format only.
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation.
 
 ```swift
 var body: some View {
     WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
         .onSuccess { image, cacheType in
             // Success
+        }
+        .indicator { isAnimating, _ in
+            ActivityIndicator(isAnimating) // Activity Indicator
         }
         .resizable()
         .scaledToFit()
@@ -88,6 +92,7 @@ var body: some View {
         .onFailure { error in
             // Error
         }
+        .transition(.fade) // Fade Transition
         .scaledToFit()
         // Data
         AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
@@ -101,9 +106,10 @@ var body: some View {
 
 - [x] Supports network image as well as local data and bundle image
 - [x] Supports animation control using the SwiftUI Binding
-- [x] Supports advanced control like loop count, incremental load, buffer size.
+- [x] Supports indicator and transition powered by SDWebImage and CoreAnimation
+- [x] Supports advanced control like loop count, incremental load, buffer size
 
-Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation.
+Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, if you need advanced customized layout and animation, you need CoreAnimation to help.
 
 Note: From v0.4.0, `AnimatedImage` supports watchOS as well. However, it's not backed by SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) like iOS/tvOS/macOS. It use some tricks and hacks because of the limitation on current Apple's API. It also use Image/IO decoding system, which means it supports GIF and APNG format only, but not external format like WebP.
 
