@@ -14,15 +14,15 @@ public struct ProgressBar: View {
     
     public var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .topLeading) {
-                Capsule()
-                    .frame(width: geometry.size.width)
+            ZStack(alignment: .leading) {
+                Rectangle()
+                     .frame(width: geometry.size.width)
                     .opacity(0.3)
                 Rectangle()
                     .frame(width: geometry.size.width * self.value)
+                    .opacity(0.6)
             }
         }
-        .clipShape(Capsule())
-        .opacity(self.value < 1 ? 1 : 0)
+        .cornerRadius(2)
     }
 }

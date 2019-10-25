@@ -21,6 +21,9 @@ public struct WebImage : View {
     @ObservedObject var imageManager: ImageManager
     @State var progress: CGFloat = 0
     @State var isLoading: Bool = false
+    var isFinished: Bool {
+        !isLoading && (imageManager.image != nil)
+    }
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -82,12 +85,16 @@ public struct WebImage : View {
             #endif
         }
         if let indicator = indicator {
-            return AnyView(
-                ZStack {
-                    view
-                    indicator.builder($isLoading, $progress)
-                }
-            )
+            if isFinished {
+                return AnyView(view)
+            } else {
+                return AnyView(
+                    ZStack {
+                        view
+                        indicator.builder($isLoading, $progress)
+                    }
+                )
+            }
         } else {
             return AnyView(view)
         }
@@ -166,7 +173,7 @@ extension WebImage {
     
     /// Associate a indicator when loading image with url
     /// - Parameter builder: builder description
-    /// - Parameter isAnimating: A Binding to control the animation. If image is loading, the value is true, else false.
+    /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
     /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
     public func indicator<T>(_ builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> WebImage where T : View {
         var result = self
