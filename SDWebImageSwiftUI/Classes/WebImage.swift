@@ -60,9 +60,27 @@ public struct WebImage : View {
         .onDisappear {
             self.imageManager.cancel()
         }
-        // Convert Combine.Publisher to Binding, I think this need a better API from Apple :)
-        .onReceive(imageManager.$isLoading) { self.isLoading = $0 }
-        .onReceive(imageManager.$progress) { self.progress = $0 }
+        // Convert Combine.Publisher to Binding
+        .onReceive(imageManager.$isLoading) { isLoading in
+            // only Apple Watch complain that "Modifying state during view update, this will cause undefined behavior."
+            // Use dispatch to workaround, Thanks Apple :)
+            #if os(watchOS)
+            DispatchQueue.main.async {
+                self.isLoading = isLoading
+            }
+            #else
+            self.isLoading = isLoading
+            #endif
+        }
+        .onReceive(imageManager.$progress) { progress in
+            #if os(watchOS)
+            DispatchQueue.main.async {
+                self.progress = progress
+            }
+            #else
+            self.progress = progress
+            #endif
+        }
         if let indicator = indicator {
             return AnyView(
                 ZStack {
