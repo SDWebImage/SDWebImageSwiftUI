@@ -16,8 +16,11 @@ public struct WebImage : View {
     var context: [SDWebImageContextOption : Any]?
     
     var configurations: [(Image) -> Image] = []
+    var indicator: Indicator?
     
     @ObservedObject var imageManager: ImageManager
+    @State var progress: CGFloat = 0
+    @State var isLoading: Bool = false
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -46,7 +49,7 @@ public struct WebImage : View {
             // this can ensure we load the image, SDWebImage take care of the duplicated query
             self.imageManager.load()
         }
-        return configurations.reduce(image) { (previous, configuration) in
+        let view = configurations.reduce(image) { (previous, configuration) in
             configuration(previous)
         }
         .onAppear {
@@ -56,6 +59,19 @@ public struct WebImage : View {
         }
         .onDisappear {
             self.imageManager.cancel()
+        }
+        // Convert Combine.Publisher to Binding, I think this need a better API from Apple :)
+        .onReceive(imageManager.$isLoading) { self.isLoading = $0 }
+        .onReceive(imageManager.$progress) { self.progress = $0 }
+        if let indicator = indicator {
+            return AnyView(
+                ZStack {
+                    view
+                    indicator.builder($isLoading, $progress)
+                }
+            )
+        } else {
+            return AnyView(view)
         }
     }
 }
@@ -125,6 +141,19 @@ extension WebImage {
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
         self.imageManager.progressBlock = action
         return self
+    }
+}
+
+extension WebImage {
+    
+    /// Associate a indicator when loading image with url
+    /// - Parameter builder: builder description
+    /// - Parameter isAnimating: A Binding to control the animation. If image is loading, the value is true, else false.
+    /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
+    public func indicator<T>(_ builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> WebImage where T : View {
+        var result = self
+        result.indicator = Indicator(builder: builder)
+        return result
     }
 }
 

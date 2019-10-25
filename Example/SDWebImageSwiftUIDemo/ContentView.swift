@@ -81,11 +81,16 @@ struct ContentView: View {
                     HStack {
                         if self.animated {
                             AnimatedImage(url: URL(string:url))
+                            .indicator(SDWebImageActivityIndicator.medium)
+                            .transition(.fade)
                             .resizable()
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                         } else {
                             WebImage(url: URL(string:url))
+                            .indicator { isAnimating, _ in
+                                ActivityIndicator(isAnimating)
+                            }
                             .resizable()
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
