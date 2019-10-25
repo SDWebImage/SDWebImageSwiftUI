@@ -25,7 +25,7 @@ public struct Indicator {
     }
 }
 
-#if os(macOS) || os(iOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(tvOS)
 extension Indicator {
     /// Activity Indicator
     public static var activity: Indicator {

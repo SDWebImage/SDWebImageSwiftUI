@@ -20,6 +20,12 @@ final class AnimatedImageModel : ObservableObject {
     @Published var progressBlock: ((Int, Int) -> Void)?
 }
 
+// Coordinator Life Cycle Binding Object
+final class AnimatedImageCoordinator : ObservableObject {
+    @Published var viewCreateBlock: ((PlatformView) -> Void)?
+    @Published var viewUpdateBlock: ((PlatformView) -> Void)?
+}
+
 // Layout Binding Object
 final class AnimatedImageLayout : ObservableObject {
     @Published var contentMode: ContentMode = .fill
@@ -58,6 +64,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
+    @ObservedObject var imageCoordinator = AnimatedImageCoordinator()
     
     var url: URL?
     var placeholder: PlatformImage?
@@ -196,7 +203,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
-        AnimatedImageViewWrapper()
+        let view = AnimatedImageViewWrapper()
+        if let viewCreateBlock = imageCoordinator.viewCreateBlock {
+            viewCreateBlock(view)
+        }
+        return view
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
@@ -238,6 +249,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         configureView(view, context: context)
         layoutView(view, context: context)
+        if let viewUpdateBlock = imageCoordinator.viewUpdateBlock {
+            viewUpdateBlock(view)
+        }
     }
     
     static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: ()) {
@@ -550,6 +564,26 @@ extension AnimatedImage {
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
         imageModel.progressBlock = action
+        return self
+    }
+}
+
+// View Coordinator Handler
+extension AnimatedImage {
+    
+    /// Provide the action when view representable create the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Returns: A view that triggers `action` when view representable create the native view.
+    public func onViewCreate(perform action: ((PlatformView) -> Void)? = nil) -> AnimatedImage {
+        imageCoordinator.viewCreateBlock = action
+        return self
+    }
+    
+    /// Provide the action when view representable update the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Returns: A view that triggers `action` when view representable update the native view.
+    public func onViewUpdate(perform action: ((PlatformView) -> Void)? = nil) -> AnimatedImage {
+        imageCoordinator.viewUpdateBlock = action
         return self
     }
 }
