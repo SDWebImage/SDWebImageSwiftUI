@@ -12,17 +12,10 @@ import SDWebImageSwiftUI
 struct DetailView: View {
     let url: String
     let animated: Bool
-    @State var progress: CGFloat = 1
     @State var isAnimating: Bool = true
     
     var body: some View {
         VStack {
-            HStack {
-                ProgressBar(value: $progress)
-                .foregroundColor(.blue)
-                .frame(maxHeight: 6)
-            }
-            Spacer()
             #if os(iOS) || os(tvOS)
             if animated {
                 contentView()
@@ -45,35 +38,40 @@ struct DetailView: View {
                 contentView()
             }
             #endif
-            Spacer()
         }
     }
     
     func contentView() -> some View {
         HStack {
             if animated {
+                #if os(macOS) || os(iOS) || os(tvOS)
                 AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
-                .onProgress { receivedSize, expectedSize in
-                    // SwiftUI engine itself ensure the main queue dispatch
-                    if (expectedSize > 0) {
-                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                    } else {
-                        self.progress = 1
-                    }
-                }
+                .indicator(SDWebImageProgressIndicator.default)
                 .resizable()
                 .scaledToFit()
+                #else
+                AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
+                .resizable()
+                .scaledToFit()
+                #endif
             } else {
+                #if os(macOS) || os(iOS) || os(tvOS)
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .onProgress { receivedSize, expectedSize in
-                    if (expectedSize > 0) {
-                        self.progress = CGFloat(receivedSize) / CGFloat(expectedSize)
-                    } else {
-                        self.progress = 1
-                    }
-                }
+                .indicator(.progress)
                 .resizable()
                 .scaledToFit()
+                #else
+                WebImage(url: URL(string:url), options: [.progressiveLoad])
+                .indicator(
+                    Indicator { isAnimating, progress in
+                        ProgressBar(value: progress)
+                        .foregroundColor(.blue)
+                        .frame(maxHeight: 6)
+                    }
+                )
+                .resizable()
+                .scaledToFit()
+                #endif
             }
         }
     }

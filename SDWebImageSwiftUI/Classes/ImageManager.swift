@@ -11,6 +11,8 @@ import SDWebImage
 
 class ImageManager : ObservableObject {
     @Published var image: PlatformImage?
+    @Published var isLoading: Bool = false
+    @Published var progress: CGFloat = 0
     
     var manager = SDWebImageManager.shared
     weak var currentOperation: SDWebImageOperation? = nil
@@ -32,8 +34,21 @@ class ImageManager : ObservableObject {
         if currentOperation != nil {
             return
         }
+        self.isLoading = true
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
-            self?.progressBlock?(receivedSize, expectedSize)
+            guard let self = self else {
+                return
+            }
+            let progress: CGFloat
+            if (expectedSize > 0) {
+                progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+            } else {
+                progress = 0
+            }
+            DispatchQueue.main.async {
+                self.progress = progress
+            }
+            self.progressBlock?(receivedSize, expectedSize)
         }) { [weak self] (image, data, error, cacheType, finished, _) in
             guard let self = self else {
                 return
@@ -42,6 +57,8 @@ class ImageManager : ObservableObject {
                 self.image = image
             }
             if finished {
+                self.isLoading = false
+                self.progress = 1
                 if let image = image {
                     self.successBlock?(image, cacheType)
                 } else {

@@ -36,6 +36,11 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var incrementalLoad: Bool?
     @Published var maxBufferSize: UInt?
     @Published var customLoopCount: Int?
+    #if os(macOS) || os(iOS) || os(tvOS)
+    // These configurations only useful for web image loading
+    @Published var indicator: SDWebImageIndicator?
+    @Published var transition: SDWebImageTransition?
+    #endif
 }
 
 // Convenient
@@ -203,6 +208,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
             #endif
         } else {
             if let url = url {
+                #if os(macOS) || os(iOS) || os(tvOS)
+                view.wrapped.sd_imageIndicator = imageConfiguration.indicator
+                view.wrapped.sd_imageTransition = imageConfiguration.transition
+                #endif
                 loadImage(view, url: url)
             }
         }
@@ -544,6 +553,28 @@ extension AnimatedImage {
         return self
     }
 }
+
+#if os(macOS) || os(iOS) || os(tvOS)
+// Web Image convenience
+extension AnimatedImage {
+    
+    /// Associate a indicator when loading image with url
+    /// - Note: If you do not need indicator, specify nil. Defaults to nil
+    /// - Parameter indicator: indicator, see more in `SDWebImageIndicator`
+    public func indicator(_ indicator: SDWebImageIndicator?) -> AnimatedImage {
+        imageConfiguration.indicator = indicator
+        return self
+    }
+    
+    /// Associate a transition when loading image with url
+    /// - Note: If you specify nil, do not do transition. Defautls to nil.
+    /// - Parameter transition: transition, see more in `SDWebImageTransition`
+    public func transition(_ transition: SDWebImageTransition?) -> AnimatedImage {
+        imageConfiguration.transition = transition
+        return self
+    }
+}
+#endif
 
 #if DEBUG
 struct AnimatedImage_Previews : PreviewProvider {
