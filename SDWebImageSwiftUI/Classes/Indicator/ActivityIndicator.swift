@@ -12,9 +12,11 @@ import SwiftUI
 /// An activity indicator (system style)
 public struct ActivityIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
+    var style: Style
     
-    public init(_ isAnimating: Binding<Bool>) {
+    public init(_ isAnimating: Binding<Bool>, style: Style = .medium) {
         self._isAnimating = isAnimating
+        self.style = style
     }
     
     #if os(macOS)
@@ -25,7 +27,14 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     
     #if os(iOS) || os(tvOS)
     public func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        let indicator = UIActivityIndicatorView(style: .medium)
+        let activityStyle: UIActivityIndicatorView.Style
+        switch style {
+        case .medium:
+            activityStyle = .medium
+        case .large:
+            activityStyle = .large
+        }
+        let indicator = UIActivityIndicatorView(style: activityStyle)
         indicator.hidesWhenStopped = true
         return indicator
     }
@@ -37,8 +46,16 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     
     #if os(macOS)
     public func makeNSView(context: NSViewRepresentableContext<ActivityIndicator>) -> NSProgressIndicator {
+        let controlSize: NSControl.ControlSize
+        switch style {
+        case .medium:
+            controlSize = .small
+        case .large:
+            controlSize = .regular
+        }
         let indicator = NSProgressIndicator()
         indicator.style = .spinning
+        indicator.controlSize = controlSize
         indicator.isDisplayedWhenStopped = false
         return indicator
     }
@@ -48,5 +65,12 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     }
     
     #endif
+}
+
+extension ActivityIndicator {
+    public enum Style {
+        case medium
+        case large
+    }
 }
 #endif

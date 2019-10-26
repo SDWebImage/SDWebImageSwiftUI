@@ -13,10 +13,12 @@ import SwiftUI
 public struct ProgressIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
     @Binding var progress: CGFloat
+    var style: Style
     
-    public init(_ isAnimating: Binding<Bool>, progress: Binding<CGFloat>) {
+    public init(_ isAnimating: Binding<Bool>, progress: Binding<CGFloat>, style: Style = .default) {
         self._isAnimating = isAnimating
         self._progress = progress
+        self.style = style
     }
     
     #if os(macOS)
@@ -27,9 +29,18 @@ public struct ProgressIndicator: PlatformViewRepresentable {
     
     #if os(iOS) || os(tvOS)
     public func makeUIView(context: UIViewRepresentableContext<ProgressIndicator>) -> ProgressIndicatorWrapper {
+        let progressStyle: UIProgressView.Style
+        switch style {
+        #if os(iOS)
+        case .bar:
+            progressStyle = .bar
+        #endif
+        default:
+            progressStyle = .default
+        }
         let uiView = ProgressIndicatorWrapper()
         let view = uiView.wrapped
-        view.progressViewStyle = .default
+        view.progressViewStyle = progressStyle
         return uiView
     }
     
@@ -80,5 +91,12 @@ public struct ProgressIndicator: PlatformViewRepresentable {
         }
     }
     #endif
+}
+
+extension ProgressIndicator {
+    public enum Style {
+        case `default`
+        case bar
+    }
 }
 #endif

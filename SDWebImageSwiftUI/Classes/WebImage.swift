@@ -169,11 +169,12 @@ extension WebImage {
     }
 }
 
+// Indicator
 extension WebImage {
     
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
-    public func indicator(_ indicator: Indicator) -> WebImage {
+    public func indicator(_ indicator: Indicator?) -> WebImage {
         var result = self
         result.indicator = indicator
         return result

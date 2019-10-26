@@ -34,10 +34,26 @@ extension Indicator {
         }
     }
     
+    /// Activity Indicator with style
+    /// - Parameter style: style
+    public static func activity(style: ActivityIndicator.Style) -> Indicator {
+        Indicator { isAnimating, _ in
+            ActivityIndicator(isAnimating, style: style)
+        }
+    }
+    
     /// Progress Indicator
     public static var progress: Indicator {
         Indicator { isAnimating, progress in
             ProgressIndicator(isAnimating, progress: progress)
+        }
+    }
+    
+    /// Progress Indicator with style
+    /// - Parameter style: style
+    public static func progress(style: ProgressIndicator.Style) -> Indicator {
+        Indicator { isAnimating, progress in
+            ProgressIndicator(isAnimating, progress: progress, style: style)
         }
     }
 }
