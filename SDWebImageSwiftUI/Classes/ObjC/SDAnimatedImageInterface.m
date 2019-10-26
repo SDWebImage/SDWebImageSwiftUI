@@ -16,6 +16,8 @@
 
 #pragma mark - SPI
 
+#define kCGImageAnimationStatus_Uninitialized -1
+
 @protocol CALayerProtocol <NSObject>
 @property (nullable, strong) id contents;
 @property CGFloat contentsScale;
@@ -24,6 +26,13 @@
 @protocol UIViewProtocol <NSObject>
 @property (nonatomic, strong, readonly) id<CALayerProtocol> layer;
 @property (nonatomic, assign) SDImageScaleMode contentMode;
+@property (nonatomic, readonly) id<UIViewProtocol> superview;
+@property (nonatomic, readonly, copy) NSArray<id<UIViewProtocol>> *subviews;
+@property (nonatomic, readonly) id window;
+@property (nonatomic) CGFloat alpha;
+@property (nonatomic, getter=isHidden) BOOL hidden;
+@property (nonatomic, getter=isOpaque) BOOL opaque;
+
 @end
 
 @interface WKInterfaceObject ()
@@ -44,6 +53,14 @@
 
 @implementation SDAnimatedImageStatus
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _animationStatus = kCGImageAnimationStatus_Uninitialized;
+    }
+    return self;
+}
+
 @end
 
 @interface SDAnimatedImageInterface () {
@@ -59,6 +76,8 @@
 @property (nonatomic, assign) CGFloat animatedImageScale;
 @property (nonatomic, strong) SDAnimatedImageStatus *currentStatus;
 @property (nonatomic, strong) NSNumber *animationRepeatCount;
+@property (nonatomic, assign, getter=isAnimatedFormat) BOOL animatedFormat;
+@property (nonatomic, assign, getter=isAnimating) BOOL animating;
 
 @end
 
@@ -105,6 +124,8 @@
     }
     _image = image;
     
+    // Stop animating
+    [self stopBuiltInAnimation];
     // Reset all value
     [self resetAnimatedImage];
     
@@ -126,15 +147,29 @@
         NSData *animatedImageData = animatedImage.animatedImageData;
         SDImageFormat format = [NSData sd_imageFormatForImageData:animatedImageData];
         if (format == SDImageFormatGIF || format == SDImageFormatPNG) {
-            [self startBuiltInAnimationWithImage:animatedImage];
+            self.animatedFormat = YES;
+            [self startBuiltInAnimation];
+        } else {
+            self.animatedFormat = NO;
+            [self stopBuiltInAnimation];
         }
-        
-        // Update should animate
-        [self updateShouldAnimate];
     }
 }
 
-- (void)startBuiltInAnimationWithImage:(UIImage<SDAnimatedImage> *)animatedImage {
+- (void)updateAnimation {
+    [self updateShouldAnimate];
+    if (self.currentStatus.shouldAnimate) {
+        [self startBuiltInAnimation];
+    } else {
+        [self stopBuiltInAnimation];
+    }
+}
+
+- (void)startBuiltInAnimation {
+    if (self.currentStatus && self.currentStatus.animationStatus == 0) {
+        return;
+    }
+    UIImage<SDAnimatedImage> *animatedImage = self.animatedImage;
     NSData *animatedImageData = animatedImage.animatedImageData;
     NSUInteger maxLoopCount;
     if (self.animationRepeatCount != nil) {
@@ -148,7 +183,7 @@
         maxLoopCount = ((__bridge NSNumber *)kCFNumberPositiveInfinity).unsignedIntegerValue - 1;
     }
     NSDictionary *options = @{(__bridge NSString *)kCGImageAnimationLoopCount : @(maxLoopCount)};
-    SDAnimatedImageStatus *status = [SDAnimatedImageStatus new];
+    SDAnimatedImageStatus *status = [[SDAnimatedImageStatus alloc] init];
     status.shouldAnimate = YES;
     __weak typeof(self) wself = self;
     status.animationStatus = CGAnimateImageDataWithBlock((__bridge CFDataRef)animatedImageData, (__bridge CFDictionaryRef)options, ^(size_t index, CGImageRef  _Nonnull imageRef, bool * _Nonnull stop) {
@@ -171,6 +206,11 @@
     self.currentStatus = status;
 }
 
+- (void)stopBuiltInAnimation {
+    self.currentStatus.shouldAnimate = NO;
+    self.currentStatus.animationStatus = kCGImageAnimationStatus_Uninitialized;
+}
+
 - (void)displayLayer {
     if (self.currentFrame) {
         id<CALayerProtocol> layer = [self _interfaceView].layer;
@@ -184,44 +224,43 @@
     self.animatedImage = nil;
     self.totalFrameCount = 0;
     self.totalLoopCount = 0;
-    // reset current state
-    self.currentStatus.shouldAnimate = NO;
-    self.currentStatus = nil;
-    [self resetCurrentFrameIndex];
-    self.animatedImageScale = 1;
-}
-
-- (void)resetCurrentFrameIndex
-{
     self.currentFrame = nil;
     self.currentFrameIndex = 0;
     self.currentLoopCount = 0;
+    self.animatedImageScale = 1;
+    self.animatedFormat = NO;
+    self.currentStatus = nil;
 }
 
 - (void)updateShouldAnimate
 {
-    self.currentStatus.shouldAnimate = self.animatedImage && self.totalFrameCount > 1;
+    id<UIViewProtocol> view = [self _interfaceView];
+    BOOL isVisible = view.window && view.superview && ![view isHidden] && view.alpha > 0.0;
+    self.currentStatus.shouldAnimate = self.isAnimating && self.animatedImage && self.isAnimatedFormat && self.totalFrameCount > 1 && isVisible;
 }
 
 - (void)startAnimating {
+    self.animating = YES;
     if (self.animatedImage) {
-        self.currentStatus.shouldAnimate = YES;
+        [self startBuiltInAnimation];
     } else if (_image.images.count > 0) {
         [super startAnimating];
     }
 }
 
 - (void)startAnimatingWithImagesInRange:(NSRange)imageRange duration:(NSTimeInterval)duration repeatCount:(NSInteger)repeatCount {
+    self.animating = YES;
     if (self.animatedImage) {
-        self.currentStatus.shouldAnimate = YES;
+        [self startBuiltInAnimation];
     } else if (_image.images.count > 0) {
         [super startAnimatingWithImagesInRange:imageRange duration:duration repeatCount:repeatCount];
     }
 }
 
 - (void)stopAnimating {
+    self.animating = NO;
     if (self.animatedImage) {
-        self.currentStatus.shouldAnimate = NO;
+        [self stopBuiltInAnimation];
     } else if (_image.images.count > 0) {
         [super stopAnimating];
     }

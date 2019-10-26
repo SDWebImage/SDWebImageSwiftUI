@@ -231,7 +231,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if self.isAnimating != view.wrapped.animates {
             view.wrapped.animates = self.isAnimating
         }
-        #elseif os(iOS) || os(tvOS)
+        #else
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
                 view.wrapped.startAnimating()
@@ -239,12 +239,13 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 view.wrapped.stopAnimating()
             }
         }
-        #elseif os(watchOS)
-        if self.isAnimating {
-            view.wrapped.startAnimating()
-        } else {
-            view.wrapped.stopAnimating()
+        #if os(watchOS)
+        // when onAppear/onDisappear, SwiftUI will call this `updateView(_:context:)`
+        // we use this to start/stop animation, implements `SDAnimatedImageView` like behavior
+        DispatchQueue.main.async {
+            view.wrapped.updateAnimation()
         }
+        #endif
         #endif
         
         configureView(view, context: context)
