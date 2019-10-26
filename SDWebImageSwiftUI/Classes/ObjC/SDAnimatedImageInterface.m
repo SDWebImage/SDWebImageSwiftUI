@@ -236,7 +236,7 @@
 {
     id<UIViewProtocol> view = [self _interfaceView];
     BOOL isVisible = view.window && view.superview && ![view isHidden] && view.alpha > 0.0;
-    self.currentStatus.shouldAnimate = self.animatedImage && self.totalFrameCount > 1 &&  self.isAnimatedFormat && isVisible;
+    self.currentStatus.shouldAnimate = self.isAnimating && self.animatedImage && self.isAnimatedFormat && self.totalFrameCount > 1 && isVisible;
 }
 
 - (void)startAnimating {
