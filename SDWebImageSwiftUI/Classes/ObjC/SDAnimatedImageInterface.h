@@ -14,9 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Do not use this class directly in WatchKit or Storyboard. This class is implementation detail and will be removed in the future.
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
+@property (nonatomic, assign, getter=isAnimating, readonly) BOOL animating;
+
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 - (void)setContentMode:(SDImageScaleMode)contentMode;
 - (void)setAnimationRepeatCount:(nullable NSNumber *)repeatCount;
+- (void)updateAnimation;
 
 @end
 
