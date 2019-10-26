@@ -256,6 +256,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: ()) {
+        view.wrapped.sd_cancelCurrentImageLoad()
         #if os(macOS)
         view.wrapped.animates = false
         #else
