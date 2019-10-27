@@ -179,6 +179,14 @@ extension WebImage {
         result.indicator = indicator
         return result
     }
+    
+    /// Associate a indicator when loading image with url, convenient method with block
+    /// - Parameter indicator: The indicator type, see `Indicator`
+    public func indicator<T>(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> WebImage where T : View {
+        var result = self
+        result.indicator = Indicator(builder: builder)
+        return result
+    }
 }
 
 #if DEBUG

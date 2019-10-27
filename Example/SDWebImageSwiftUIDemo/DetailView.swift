@@ -62,13 +62,11 @@ struct DetailView: View {
                 .scaledToFit()
                 #else
                 WebImage(url: URL(string:url), options: [.progressiveLoad])
-                .indicator(
-                    Indicator { isAnimating, progress in
-                        ProgressBar(value: progress)
-                        .foregroundColor(.blue)
-                        .frame(maxHeight: 6)
-                    }
-                )
+                .indicator { isAnimating, progress in
+                    ProgressBar(value: progress)
+                    .foregroundColor(.blue)
+                    .frame(maxHeight: 6)
+                }
                 .resizable()
                 .scaledToFit()
                 #endif

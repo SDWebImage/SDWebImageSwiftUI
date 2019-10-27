@@ -8,10 +8,10 @@ PODS:
   - libwebp/mux (1.0.3):
     - libwebp/demux
   - libwebp/webp (1.0.3)
-  - SDWebImage (5.2.3):
-    - SDWebImage/Core (= 5.2.3)
-  - SDWebImage/Core (5.2.3)
-  - SDWebImageSwiftUI (0.4.2):
+  - SDWebImage (5.2.5):
+    - SDWebImage/Core (= 5.2.5)
+  - SDWebImage/Core (5.2.5)
+  - SDWebImageSwiftUI (0.5.2):
     - SDWebImage (~> 5.1)
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
@@ -33,8 +33,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
-  SDWebImage: 46a7f73228f84ce80990c786e4372cf4db5875ce
-  SDWebImageSwiftUI: b91be76ecb0cdf74c18f6cd92aae8f19a9ded02d
+  SDWebImage: 4eabf2fa6695c95c47724214417a9c036c965e4a
+  SDWebImageSwiftUI: 3a3e3aa707aeedf024af6f9c718177f681edf9de
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
 
 PODFILE CHECKSUM: 3fb06a5173225e197f3a4bf2be7e5586a693257a
