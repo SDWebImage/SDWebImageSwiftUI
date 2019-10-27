@@ -16,14 +16,8 @@ public struct WebImage : View {
     var context: [SDWebImageContextOption : Any]?
     
     var configurations: [(Image) -> Image] = []
-    var indicator: Indicator?
     
     @ObservedObject var imageManager: ImageManager
-    @State var progress: CGFloat = 0
-    @State var isLoading: Bool = false
-    var isFinished: Bool {
-        !isLoading && (imageManager.image != nil)
-    }
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -52,7 +46,7 @@ public struct WebImage : View {
             // this can ensure we load the image, SDWebImage take care of the duplicated query
             self.imageManager.load()
         }
-        let view = configurations.reduce(image) { (previous, configuration) in
+        return configurations.reduce(image) { (previous, configuration) in
             configuration(previous)
         }
         .onAppear {
@@ -62,41 +56,6 @@ public struct WebImage : View {
         }
         .onDisappear {
             self.imageManager.cancel()
-        }
-        // Convert Combine.Publisher to Binding
-        .onReceive(imageManager.$isLoading) { isLoading in
-            // only Apple Watch complain that "Modifying state during view update, this will cause undefined behavior."
-            // Use dispatch to workaround, Thanks Apple :)
-            #if os(watchOS)
-            DispatchQueue.main.async {
-                self.isLoading = isLoading
-            }
-            #else
-            self.isLoading = isLoading
-            #endif
-        }
-        .onReceive(imageManager.$progress) { progress in
-            #if os(watchOS)
-            DispatchQueue.main.async {
-                self.progress = progress
-            }
-            #else
-            self.progress = progress
-            #endif
-        }
-        if let indicator = indicator {
-            if isFinished {
-                return AnyView(view)
-            } else {
-                return AnyView(
-                    ZStack {
-                        view
-                        indicator.builder($isLoading, $progress)
-                    }
-                )
-            }
-        } else {
-            return AnyView(view)
         }
     }
 }
@@ -174,18 +133,14 @@ extension WebImage {
     
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
-    public func indicator(_ indicator: Indicator?) -> WebImage {
-        var result = self
-        result.indicator = indicator
-        return result
+    public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
+        return IndicatorView(self, indicator: indicator, imageManager: imageManager)
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
     /// - Parameter indicator: The indicator type, see `Indicator`
-    public func indicator<T>(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> WebImage where T : View {
-        var result = self
-        result.indicator = Indicator(builder: builder)
-        return result
+    public func indicator<T>(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> some View where T : View {
+        return indicator(Indicator(builder: builder))
     }
 }
 

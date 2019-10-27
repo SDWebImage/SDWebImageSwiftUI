@@ -10,23 +10,52 @@ import Foundation
 import SwiftUI
 
 /// A  type to build the indicator
-public struct Indicator {
-    var builder: (Binding<Bool>, Binding<CGFloat>) -> AnyView
+public struct Indicator<T> where T : View {
+    var builder: (Binding<Bool>, Binding<CGFloat>) -> T
     
     /// Create a indicator with builder
     /// - Parameter builder: A builder to build indicator
     /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
     /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
     /// Associate a indicator when loading image with url
-    public init<T>(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) where T : View {
-        self.builder = { isAnimating, progress in
-            AnyView(builder(isAnimating, progress))
+    public init(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) {
+        self.builder = builder
+    }
+}
+
+/// A implementation detail View with indicator
+/// SwiftUI View Modifier construced by using a internal View type which modify the `body`
+/// It use type system to represent the view hierarchy, and Swift `some View` syntax to hide the type detail for users
+struct IndicatorView<T, Content> : View where T : View, Content : View {
+    @ObservedObject var imageManager: ImageManager
+    
+    var indicator: Indicator<T>
+    var content: Content
+    
+    var body: some View {
+        if (imageManager.image != nil) && !imageManager.isLoading {
+            // Disable Indiactor
+            return AnyView(content)
+        } else {
+            // Enable indicator
+            return AnyView(
+                ZStack {
+                    content
+                    indicator.builder($imageManager.isLoading, $imageManager.progress)
+                }
+            )
         }
+    }
+    
+    public init(_ view: Content, indicator: Indicator<T>, imageManager: ImageManager) {
+        self.content = view
+        self.indicator = indicator
+        self.imageManager = imageManager
     }
 }
 
 #if os(macOS) || os(iOS) || os(tvOS)
-extension Indicator {
+extension Indicator where T == ActivityIndicator {
     /// Activity Indicator
     public static var activity: Indicator {
         Indicator { isAnimating, _ in
@@ -41,7 +70,9 @@ extension Indicator {
             ActivityIndicator(isAnimating, style: style)
         }
     }
-    
+}
+
+extension Indicator where T == ProgressIndicator {
     /// Progress Indicator
     public static var progress: Indicator {
         Indicator { isAnimating, progress in
