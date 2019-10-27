@@ -98,10 +98,10 @@ struct ContentView: View {
                             WebImage(url: URL(string:url))
                             .resizable()
                             .indicator(.activity)
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             .animation(.easeInOut(duration: 0.5))
                             .transition(.fade)
+                            .scaledToFit()
+                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #else
                             WebImage(url: URL(string:url))
                             .resizable()
