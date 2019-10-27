@@ -31,6 +31,10 @@
 		326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
+		32B933E523659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
+		32B933E623659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
+		32B933E723659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
+		32B933E823659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32C43DEA22FD577300BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; };
 		32C43DEB22FD577300BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -115,6 +119,7 @@
 		326B8486236335110011BDFB /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
+		32B933E423659A1900BB7CAD /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		32C43DDE22FD54C600BE87F5 /* WebImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebImage.swift; sourceTree = "<group>"; };
@@ -186,6 +191,14 @@
 			path = Indicator;
 			sourceTree = "<group>";
 		};
+		32B933E323659A0700BB7CAD /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				32B933E423659A1900BB7CAD /* Transition.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
 		32C43DC222FD540D00BE87F5 = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +232,7 @@
 		32C43DDB22FD54C600BE87F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				32B933E323659A0700BB7CAD /* Transition */,
 				326099472362E09E006EBB22 /* Indicator */,
 				324F61C4235E07EC003973B8 /* ObjC */,
 				32C43DDC22FD54C600BE87F5 /* ImageManager.swift */,
@@ -443,6 +457,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B933E523659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84822363350C0011BDFB /* Indicator.swift in Sources */,
@@ -459,6 +474,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B933E623659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1A22FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848D236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84832363350C0011BDFB /* Indicator.swift in Sources */,
@@ -475,6 +491,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B933E723659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1D22FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848E236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84842363350C0011BDFB /* Indicator.swift in Sources */,
@@ -491,6 +508,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B933E823659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E2022FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848F236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84852363350C0011BDFB /* Indicator.swift in Sources */,
