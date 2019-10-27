@@ -10,6 +10,8 @@ import SwiftUI
 import SDWebImage
 
 public struct WebImage : View {
+    static var emptyImage = Image(platformImage: PlatformImage())
+    
     var url: URL?
     var placeholder: Image?
     var options: SDWebImageOptions
@@ -30,32 +32,34 @@ public struct WebImage : View {
         self.options = options
         self.context = context
         self.imageManager = ImageManager(url: url, options: options, context: context)
+        // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
+        // this can ensure we load the image, SDWebImage take care of the duplicated query
+        self.imageManager.load()
     }
     
     public var body: some View {
-        let image: Image
         if let platformImage = imageManager.image {
-            image = Image(platformImage: platformImage)
+            var image = Image(platformImage: platformImage)
+            image = configurations.reduce(image) { (previous, configuration) in
+                configuration(previous)
+            }
+            let view = image
+            return AnyView(view)
         } else {
-            if let placeholder = placeholder {
-                image = placeholder
-            } else {
-                image = Image(platformImage: PlatformImage())
+            var image = placeholder ?? WebImage.emptyImage
+            image = configurations.reduce(image) { (previous, configuration) in
+                configuration(previous)
             }
-            // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
-            // this can ensure we load the image, SDWebImage take care of the duplicated query
-            self.imageManager.load()
-        }
-        return configurations.reduce(image) { (previous, configuration) in
-            configuration(previous)
-        }
-        .onAppear {
-            if self.imageManager.image == nil {
-                self.imageManager.load()
+            let view = image
+            .onAppear {
+                if self.imageManager.image == nil {
+                    self.imageManager.load()
+                }
             }
-        }
-        .onDisappear {
-            self.imageManager.cancel()
+            .onDisappear {
+                self.imageManager.cancel()
+            }
+            return AnyView(view)
         }
     }
 }
