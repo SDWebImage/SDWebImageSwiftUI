@@ -105,6 +105,8 @@ struct ContentView: View {
                             #else
                             WebImage(url: URL(string:url))
                             .resizable()
+                            .animation(.easeInOut(duration: 0.5))
+                            .transition(.fade)
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #endif
