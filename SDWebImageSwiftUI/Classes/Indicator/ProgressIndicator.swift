@@ -67,6 +67,9 @@ public struct ProgressIndicator: PlatformViewRepresentable {
         view.style = .bar
         view.isDisplayedWhenStopped = false
         view.controlSize = .small
+        view.frame = CGRect(x: 0, y: 0, width: 160, height: 0) // Width from `UIProgressView` default width
+        view.sizeToFit()
+        view.autoresizingMask = [.maxXMargin, .minXMargin, .maxYMargin, .minYMargin]
         return nsView
     }
     

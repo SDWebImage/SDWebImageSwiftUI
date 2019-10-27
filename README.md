@@ -73,8 +73,8 @@ var body: some View {
         .onSuccess { image, cacheType in
             // Success
         }
-        .indicator(.activity) // Activity Indicator
         .resizable()
+        .indicator(.activity) // Activity Indicator
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
 }
