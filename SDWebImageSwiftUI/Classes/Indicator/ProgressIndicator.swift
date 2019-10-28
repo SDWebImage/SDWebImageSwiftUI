@@ -35,7 +35,7 @@ public struct ProgressIndicator: PlatformViewRepresentable {
         case .bar:
             progressStyle = .bar
         #endif
-        default:
+        case .default:
             progressStyle = .default
         }
         let uiView = ProgressIndicatorWrapper()
@@ -99,7 +99,9 @@ public struct ProgressIndicator: PlatformViewRepresentable {
 extension ProgressIndicator {
     public enum Style {
         case `default`
+        #if os(iOS)
         case bar
+        #endif
     }
 }
 #endif
