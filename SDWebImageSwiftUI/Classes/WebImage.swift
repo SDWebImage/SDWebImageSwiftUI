@@ -138,7 +138,7 @@ extension WebImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return IndicatorView(self, indicator: indicator, imageManager: imageManager)
+        return self.modifier(IndicatorViewModifier(imageManager: imageManager, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
