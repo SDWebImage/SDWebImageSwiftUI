@@ -496,6 +496,8 @@ extension AnimatedImage {
         var ratio: CGFloat?
         if aspectRatio.width > 0 && aspectRatio.height > 0 {
             ratio = aspectRatio.width / aspectRatio.height
+        } else {
+            NSException(name: .invalidArgumentException, reason: "\(type(of: self)).\(#function) should be called with positive aspectRatio", userInfo: nil).raise()
         }
         return self.aspectRatio(ratio, contentMode: contentMode)
     }
