@@ -23,16 +23,15 @@ public struct Indicator<T> where T : View {
     }
 }
 
-/// A implementation detail View with indicator
+/// A implementation detail View Modifier with indicator
 /// SwiftUI View Modifier construced by using a internal View type which modify the `body`
 /// It use type system to represent the view hierarchy, and Swift `some View` syntax to hide the type detail for users
-struct IndicatorView<T, Content> : View where T : View, Content : View {
+struct IndicatorViewModifier<T> : ViewModifier where T : View {
     @ObservedObject var imageManager: ImageManager
     
     var indicator: Indicator<T>
-    var content: Content
     
-    var body: some View {
+    func body(content: Content) -> some View {
         if (imageManager.image != nil) && !imageManager.isLoading {
             // Disable Indiactor
             return AnyView(content)
@@ -45,12 +44,6 @@ struct IndicatorView<T, Content> : View where T : View, Content : View {
                 }
             )
         }
-    }
-    
-    public init(_ view: Content, indicator: Indicator<T>, imageManager: ImageManager) {
-        self.content = view
-        self.indicator = indicator
-        self.imageManager = imageManager
     }
 }
 
