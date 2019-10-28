@@ -74,7 +74,7 @@ var body: some View {
         .onSuccess { image, cacheType in
             // Success
         }
-        .resizable()
+        .resizable() // Resizable like SwiftUI.Image
         .indicator(.activity) // Activity Indicator
         .animation(.easeInOut(duration: 0.5))
         .transition(.fade) // Fade Transition
@@ -93,6 +93,7 @@ var body: some View {
         .onFailure { error in
             // Error
         }
+        .resizable() // Actually this is not needed unlike SwiftUI.Image
         .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
         .transition(.fade) // Fade Transition
         .scaledToFit()
