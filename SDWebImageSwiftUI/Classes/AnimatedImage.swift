@@ -495,6 +495,10 @@ extension AnimatedImage {
         imageLayout.antialiased = isAntialiased
         return self
     }
+}
+
+// Aspect Ratio
+extension AnimatedImage {
     /// Constrains this view's dimensions to the specified aspect ratio.
     /// - Parameters:
     ///   - aspectRatio: The ratio of width to height to use for the resulting
