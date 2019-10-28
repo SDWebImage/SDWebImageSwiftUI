@@ -269,12 +269,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
         // AspectRatio
-        if let _ = imageLayout.aspectRatio {
-            // TODO: Needs layer transform and geometry calculation
-        }
+        // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio.
+        let contentMode: ContentMode = imageLayout.aspectRatio == nil ? .fit : .fill
         
         // ContentMode
-        switch imageLayout.contentMode {
+        switch contentMode {
         case .fit:
             #if os(macOS)
             view.wrapped.imageScaling = .scaleProportionallyUpOrDown
@@ -471,10 +470,18 @@ extension AnimatedImage {
     ///     fill the parent context.
     /// - Returns: A view that constrains this view's dimensions to
     ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
-    public func aspectRatio(_ aspectRatio: CGFloat? = nil, contentMode: ContentMode) -> AnimatedImage {
+    public func aspectRatio(_ aspectRatio: CGFloat? = nil, contentMode: ContentMode) -> some View {
+        // The `SwifUI.View.aspectRatio(_:contentMode:)` says:
+        // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio
+        // But 1: there are no public API to declare what `this view's aspect ratio` is
+        // So, if we don't override this method, SwiftUI ignore the content mode on actual ImageView
+        // To workaround, we want to call the default `SwifUI.View.aspectRatio(_:contentMode:)` method
+        // But 2: there are no way to call a Protocol Extention default implementation in Swift 5.1
+        // So, we need a hack, that create a empty modifier, they call method on that view instead
+        // Fired Radar: FB7413534
         imageLayout.aspectRatio = aspectRatio
         imageLayout.contentMode = contentMode
-        return self
+        return self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.
@@ -485,10 +492,12 @@ extension AnimatedImage {
     ///     fill the parent context.
     /// - Returns: A view that constrains this view's dimensions to
     ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
-    public func aspectRatio(_ aspectRatio: CGSize, contentMode: ContentMode) -> AnimatedImage {
+    public func aspectRatio(_ aspectRatio: CGSize, contentMode: ContentMode) -> some View {
         var ratio: CGFloat?
         if aspectRatio.width > 0 && aspectRatio.height > 0 {
             ratio = aspectRatio.width / aspectRatio.height
+        } else {
+            NSException(name: .invalidArgumentException, reason: "\(type(of: self)).\(#function) should be called with positive aspectRatio", userInfo: nil).raise()
         }
         return self.aspectRatio(ratio, contentMode: contentMode)
     }
@@ -496,15 +505,15 @@ extension AnimatedImage {
     /// Scales this view to fit its parent.
     /// - Returns: A view that scales this view to fit its parent,
     ///   maintaining this view's aspect ratio.
-    public func scaledToFit() -> AnimatedImage {
-        self.aspectRatio(nil, contentMode: .fit)
+    public func scaledToFit() -> some View {
+        return self.aspectRatio(nil, contentMode: .fit)
     }
     
     /// Scales this view to fill its parent.
     /// - Returns: A view that scales this view to fit its parent,
     ///   maintaining this view's aspect ratio.
-    public func scaledToFill() -> AnimatedImage {
-        self.aspectRatio(nil, contentMode: .fill)
+    public func scaledToFill() -> some View {
+        return self.aspectRatio(nil, contentMode: .fill)
     }
 }
 
