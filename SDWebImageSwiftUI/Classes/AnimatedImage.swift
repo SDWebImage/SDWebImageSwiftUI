@@ -28,7 +28,7 @@ final class AnimatedImageCoordinator : ObservableObject {
 
 // Layout Binding Object
 final class AnimatedImageLayout : ObservableObject {
-    @Published var contentMode: ContentMode = .fill
+    @Published var contentMode: ContentMode?
     @Published var aspectRatio: CGFloat?
     @Published var capInsets: EdgeInsets = EdgeInsets()
     @Published var resizingMode: Image.ResizingMode?
@@ -268,29 +268,63 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
-        // AspectRatio
-        // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio.
-        let contentMode: ContentMode = imageLayout.aspectRatio == nil ? .fit : .fill
-        
-        // ContentMode
-        switch contentMode {
-        case .fit:
+        // AspectRatio && ContentMode
+        #if os(macOS)
+        let contentMode: NSImageScaling
+        #elseif os(iOS) || os(tvOS)
+        let contentMode: UIView.ContentMode
+        #elseif os(watchOS)
+        let contentMode: SDImageScaleMode
+        #endif
+        if let _ = imageLayout.aspectRatio {
+            // If `aspectRatio` is not `nil`, always scale to fill and SwiftUI will layout the container with custom aspect ratio.
             #if os(macOS)
-            view.wrapped.imageScaling = .scaleProportionallyUpOrDown
+            contentMode = .scaleAxesIndependently
             #elseif os(iOS) || os(tvOS)
-            view.wrapped.contentMode = .scaleAspectFit
+            contentMode = .scaleToFill
             #elseif os(watchOS)
-            view.wrapped.setContentMode(.aspectFit)
+            contentMode = .fill
             #endif
-        case .fill:
-            #if os(macOS)
-            view.wrapped.imageScaling = .scaleAxesIndependently
-            #elseif os(iOS) || os(tvOS)
-            view.wrapped.contentMode = .scaleToFill
-            #elseif os(watchOS)
-            view.wrapped.setContentMode(.fill)
-            #endif
+        } else {
+            // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio.
+            switch imageLayout.contentMode {
+            case .fill:
+                #if os(macOS)
+                // Actually, NSImageView have no `.aspectFill` unlike UIImageView, only `CALayerContentsGravity.resizeAspectFill` have the same concept, but it does not work here
+                // TODO: Need SwiftUI officialy provide a solution
+                contentMode = .scaleProportionallyUpOrDown
+                #elseif os(iOS) || os(tvOS)
+                contentMode = .scaleAspectFill
+                #elseif os(watchOS)
+                contentMode = .aspectFill
+                #endif
+            case .fit:
+                #if os(macOS)
+                contentMode = .scaleProportionallyUpOrDown
+                #elseif os(iOS) || os(tvOS)
+                contentMode = .scaleAspectFit
+                #elseif os(watchOS)
+                contentMode = .aspectFit
+                #endif
+            case .none:
+                // If `contentMode` is not set at all, using scale to fill as SwiftUI default value
+                #if os(macOS)
+                contentMode = .scaleAxesIndependently
+                #elseif os(iOS) || os(tvOS)
+                contentMode = .scaleToFill
+                #elseif os(watchOS)
+                contentMode = .fill
+                #endif
+            }
         }
+        
+        #if os(macOS)
+        view.wrapped.imageScaling = contentMode
+        #elseif os(iOS) || os(tvOS)
+        view.wrapped.contentMode = contentMode
+        #elseif os(watchOS)
+        view.wrapped.setContentMode(contentMode)
+        #endif
         
         // Animated Image does not support resizing mode and rendering mode
         if let image = imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
@@ -461,6 +495,10 @@ extension AnimatedImage {
         imageLayout.antialiased = isAntialiased
         return self
     }
+}
+
+// Aspect Ratio
+extension AnimatedImage {
     /// Constrains this view's dimensions to the specified aspect ratio.
     /// - Parameters:
     ///   - aspectRatio: The ratio of width to height to use for the resulting
