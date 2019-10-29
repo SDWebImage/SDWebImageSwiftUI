@@ -290,8 +290,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
             switch imageLayout.contentMode {
             case .fill:
                 #if os(macOS)
-                // Actually, NSImageView have no `.aspectFill` unlike UIImageView, only `CALayerContentsGravity.resizeAspectFill` have the same concept, but it does not work here
-                // TODO: Need SwiftUI officialy provide a solution
+                // Actually, NSImageView have no `.aspectFill` unlike UIImageView, only `CALayerContentsGravity.resizeAspectFill` have the same concept
+                // However, using `.scaleProportionallyUpOrDown`, SwiftUI still layout the HostingView correctly, so this is OK
                 contentMode = .scaleProportionallyUpOrDown
                 #elseif os(iOS) || os(tvOS)
                 contentMode = .scaleAspectFill
