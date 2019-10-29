@@ -519,7 +519,17 @@ extension AnimatedImage {
         // Fired Radar: FB7413534
         imageLayout.aspectRatio = aspectRatio
         imageLayout.contentMode = contentMode
+        #if os(macOS) || os(iOS) || os(tvOS)
         return self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
+        #else
+        if let aspectRatio = aspectRatio {
+            return AnyView(self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode))
+        } else {
+            // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
+            // To workaround, we do not call default implementation for this case, using original solution instead
+            return AnyView(self)
+        }
+        #endif
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.
