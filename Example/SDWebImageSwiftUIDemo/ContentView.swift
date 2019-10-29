@@ -51,6 +51,8 @@ struct ContentView: View {
         #if os(macOS)
         return NavigationView {
             contentView()
+            .frame(minWidth: 200)
+            .listStyle(SidebarListStyle())
             .contextMenu {
                 Button(action: { self.reloadCache() }) {
                     Text("Reload")
