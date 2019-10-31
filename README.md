@@ -13,7 +13,19 @@ SDWebImageSwiftUI is a SwiftUI image loading framework, which based on [SDWebIma
 
 It brings all your favorite features from SDWebImage, like async image loading, memory/disk caching, animated image playback and performances.
 
-Since it based on SDWebImage, you can get all benefits from the existing community. You can have massive image format support (GIF/APNG/WebP/HEICS/AVIF...) via [Coder Plugins](https://github.com/SDWebImage/SDWebImage/wiki/Coder-Plugin-List), PhotoKit support via [SDWebImagePhotosPlugin](https://github.com/SDWebImage/SDWebImagePhotosPlugin), Firebase integration via [FirebaseUI](https://github.com/firebase/FirebaseUI-iOS), etc.
+## Features
+
+Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box out-of-the-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
+
+- [x] Animated Image full-stack solution, with balance of CPU && RAM
+- [x] Progressive image loading, with animation support
+- [x] Reusable download, never request single URL twice
+- [x] URL Request / Response Modifier, provide custom HTTP Header
+- [x] Image Transformer, apply corner radius or CIFilter
+- [x] Multiple caches system, query from different source
+- [x] Multiple loaders system, load from different resource
+
+You can also get all benefits from the existing community around with SDWebImage. You can have massive image format support (GIF/APNG/WebP/HEIF/AVIF) via [Coder Plugins](https://github.com/SDWebImage/SDWebImage/wiki/Coder-Plugin-List), PhotoKit support via [SDWebImagePhotosPlugin](https://github.com/SDWebImage/SDWebImagePhotosPlugin), Firebase integration via [FirebaseUI](https://github.com/firebase/FirebaseUI-iOS), etc.
 
 Besides all these features, we do optimization for SwiftUI, like Binding, View Modifier, using the same design pattern to become a good SwiftUI citizen.
 
@@ -185,7 +197,7 @@ Which means, this project is one core use case and downstream dependency, which 
 
 ## Author
 
-DreamPiggy
+[DreamPiggy](https://github.com/dreampiggy)
 
 ## License
 
