@@ -29,7 +29,9 @@ You can also get all benefits from the existing community around with SDWebImage
 
 Besides all these features, we do optimization for SwiftUI, like Binding, View Modifier, using the same design pattern to become a good SwiftUI citizen.
 
-Note we do not guarantee the public API stable for current status until v1.0 version. Since SwiftUI is a new platform for us. This framework is under development, feature requests, contributions, and GitHub stars are welcomed.
+Note we do not guarantee the public API stable for current status until v1.0 version, to follow [Semantic Versioning](https://semver.org/).
+
+This framework is under heavily development, feature requests, contributions, and GitHub stars are welcomed.
 
 ## Requirements
 
