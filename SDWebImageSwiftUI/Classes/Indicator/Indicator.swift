@@ -29,10 +29,10 @@ public struct Indicator<T> where T : View {
 struct IndicatorViewModifier<T> : ViewModifier where T : View {
     @ObservedObject var imageManager: ImageManager
     
-    var indicator: Indicator<T>
+    let indicatorView: T
     
     func body(content: Content) -> some View {
-        if (imageManager.image != nil) && !imageManager.isLoading {
+        if !imageManager.isLoading {
             // Disable Indiactor
             return AnyView(content)
         } else {
@@ -40,10 +40,16 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
             return AnyView(
                 ZStack {
                     content
-                    indicator.builder($imageManager.isLoading, $imageManager.progress)
+                    indicatorView
                 }
             )
         }
+    }
+    
+    init(imageManager: ImageManager, indicator: Indicator<T>) {
+        self.imageManager = imageManager
+        // This syntax looks not Swifty, hope for SwiftUI better design
+        self.indicatorView = indicator.builder(_imageManager.projectedValue.isLoading, _imageManager.projectedValue.progress)
     }
 }
 
