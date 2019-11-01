@@ -10,7 +10,7 @@ import SwiftUI
 import SDWebImage
 
 public struct WebImage : View {
-    static var emptyImage = Image(platformImage: PlatformImage())
+    static var emptyImage = PlatformImage()
     
     var url: URL?
     var placeholder: Image?
@@ -46,7 +46,7 @@ public struct WebImage : View {
             let view = image
             return AnyView(view)
         } else {
-            var image = placeholder ?? WebImage.emptyImage
+            var image = placeholder ?? Image(platformImage: WebImage.emptyImage)
             image = configurations.reduce(image) { (previous, configuration) in
                 configuration(previous)
             }
@@ -57,7 +57,10 @@ public struct WebImage : View {
                 }
             }
             .onDisappear {
-                self.imageManager.cancel()
+                // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
+                if self.imageManager.isLoading && !self.imageManager.isIncremental {
+                    self.imageManager.cancel()
+                }
             }
             return AnyView(view)
         }

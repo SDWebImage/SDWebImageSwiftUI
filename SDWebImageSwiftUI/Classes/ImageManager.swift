@@ -12,6 +12,7 @@ import SDWebImage
 class ImageManager : ObservableObject {
     @Published var image: PlatformImage?
     @Published var isLoading: Bool = false
+    @Published var isIncremental: Bool = false
     @Published var progress: CGFloat = 0
     
     var manager = SDWebImageManager.shared
@@ -56,6 +57,7 @@ class ImageManager : ObservableObject {
             if let image = image {
                 self.image = image
             }
+            self.isIncremental = !finished
             if finished {
                 self.isLoading = false
                 self.progress = 1
