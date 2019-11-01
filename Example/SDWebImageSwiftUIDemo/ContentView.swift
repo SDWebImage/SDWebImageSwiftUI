@@ -29,6 +29,7 @@ struct ContentView: View {
     "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
     "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic",
     "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
+    "https://www.sample-videos.com/img/Sample-png-image-1mb.png",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
     "http://via.placeholder.com/200x200.jpg"]
     @State var animated: Bool = true // You can change between WebImage/AnimatedImage
