@@ -31,7 +31,7 @@ Besides all these features, we do optimization for SwiftUI, like Binding, View M
 
 Note we do not guarantee the public API stable for current status until v1.0 version, to follow [Semantic Versioning](https://semver.org/).
 
-This framework is under heavily development, feature requests, contributions, and GitHub stars are welcomed.
+This framework is under heavily development, it's recommended to use [the latest release](https://github.com/SDWebImage/SDWebImageSwiftUI/releases) as much as possible (including SDWebImage dependency). All feature requests, contributions, and GitHub stars are welcomed.
 
 ## Requirements
 
