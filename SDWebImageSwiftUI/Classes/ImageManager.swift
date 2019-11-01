@@ -34,6 +34,7 @@ class ImageManager : ObservableObject {
         if currentOperation != nil {
             return
         }
+        self.image = nil
         self.isLoading = true
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             guard let self = self else {
