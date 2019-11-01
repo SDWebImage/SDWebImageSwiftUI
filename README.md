@@ -78,6 +78,7 @@ let package = Package(
 ### Using `WebImage` to load network image
 
 - [x] Supports placeholder and detail options control for image loading as SDWebImage
+- [x] Supports progressive image loading
 - [x] Supports success/failure/progress changes event for custom handling
 - [x] Supports indicator with activity/progress indicator and customization
 - [x] Supports built-in animation and transition, powered by SwiftUI
@@ -102,6 +103,7 @@ Note: This `WebImage` using `Image` for internal implementation, which is the be
 ### Using `AnimatedImage` to play animation
 
 - [x] Supports network image as well as local data and bundle image
+- [x] Supports animated progressive image loading
 - [x] Supports animation control using the SwiftUI Binding
 - [x] Supports indicator and transition, powered by SDWebImage and Core Animation
 - [x] Supports advanced control like loop count, incremental load, buffer size
@@ -144,6 +146,8 @@ If you don't need animated image, prefer to use `WebImage` firstly. Which behave
 If you need animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types.
+
+For more information, it's really recommended to check our demo below, to learn detailed API usage.
 
 ## Demo
 
