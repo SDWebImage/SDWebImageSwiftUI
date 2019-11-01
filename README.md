@@ -15,7 +15,7 @@ It brings all your favorite features from SDWebImage, like async image loading, 
 
 ## Features
 
-Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box out-of-the-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
+Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
 
 - [x] Animated Image full-stack solution, with balance of CPU && RAM
 - [x] Progressive image loading, with animation support
