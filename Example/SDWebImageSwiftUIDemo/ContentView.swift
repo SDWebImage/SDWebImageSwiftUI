@@ -107,6 +107,11 @@ struct ContentView: View {
                             #else
                             WebImage(url: URL(string:url))
                             .resizable()
+                            .indicator { _, _ in
+                                ActivityBar()
+                                .foregroundColor(Color.white)
+                                .frame(width: 50, height: 50)
+                            }
                             .animation(.easeInOut(duration: 0.5))
                             .transition(.fade)
                             .scaledToFit()

@@ -41,6 +41,10 @@
 		32E529682348A10C00EA46FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320CDC2F22FADB44007CF858 /* ContentView.swift */; };
 		32E529692348A10C00EA46FF /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B0D702345C01900D28269 /* DetailView.swift */; };
 		32E5296A2348A10C00EA46FF /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A6BEF2345EC4E00B5BEFC /* ProgressBar.swift */; };
+		32E7F121236CAAB8001688BC /* ActivityBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E7F120236CAAB8001688BC /* ActivityBar.swift */; };
+		32E7F122236CAAB8001688BC /* ActivityBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E7F120236CAAB8001688BC /* ActivityBar.swift */; };
+		32E7F123236CAAB8001688BC /* ActivityBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E7F120236CAAB8001688BC /* ActivityBar.swift */; };
+		32E7F124236CAAB8001688BC /* ActivityBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E7F120236CAAB8001688BC /* ActivityBar.swift */; };
 		6AE7BEBA0EA1DD0FD6F99D99 /* Pods_SDWebImageSwiftUIDemo_watchOS_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1D3C77C4221915C839DC78 /* Pods_SDWebImageSwiftUIDemo_watchOS_WatchKit_Extension.framework */; };
 		CECA1658ECBAF54E3FF3EF58 /* Pods_SDWebImageSwiftUIDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A371F81C3B5BD6972F7A0E2 /* Pods_SDWebImageSwiftUIDemo.framework */; };
 		E8596B8000E7DC96D492333B /* Pods_SDWebImageSwiftUIDemo_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 188B93ED6CBDC186E30A49C8 /* Pods_SDWebImageSwiftUIDemo_tvOS.framework */; };
@@ -130,6 +134,7 @@
 		32E529512348A0DF00EA46FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		32E529542348A0DF00EA46FF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		32E529562348A0DF00EA46FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		32E7F120236CAAB8001688BC /* ActivityBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBar.swift; sourceTree = "<group>"; };
 		33E5ED2426DFF5E06C9A2FAB /* Pods_SDWebImageSwiftUIDemo_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SDWebImageSwiftUIDemo_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9F8B5F06960FFFBD1A5F99 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		48BE9486C7BDF4F74C8BA94D /* Pods-SDWebImageSwiftUIDemo-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDWebImageSwiftUIDemo-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SDWebImageSwiftUIDemo-tvOS/Pods-SDWebImageSwiftUIDemo-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 				320CDC2F22FADB44007CF858 /* ContentView.swift */,
 				326B0D702345C01900D28269 /* DetailView.swift */,
 				321A6BEF2345EC4E00B5BEFC /* ProgressBar.swift */,
+				32E7F120236CAAB8001688BC /* ActivityBar.swift */,
 				320CDC3122FADB45007CF858 /* Assets.xcassets */,
 				320CDC3622FADB45007CF858 /* LaunchScreen.storyboard */,
 				320CDC3922FADB45007CF858 /* Info.plist */,
@@ -803,6 +809,7 @@
 				326B0D712345C01900D28269 /* DetailView.swift in Sources */,
 				320CDC2E22FADB44007CF858 /* SceneDelegate.swift in Sources */,
 				321A6BF02345EC4E00B5BEFC /* ProgressBar.swift in Sources */,
+				32E7F121236CAAB8001688BC /* ActivityBar.swift in Sources */,
 				320CDC3022FADB44007CF858 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,6 +821,7 @@
 				32E529622348A10B00EA46FF /* ContentView.swift in Sources */,
 				32E529632348A10B00EA46FF /* DetailView.swift in Sources */,
 				32E529642348A10B00EA46FF /* ProgressBar.swift in Sources */,
+				32E7F122236CAAB8001688BC /* ActivityBar.swift in Sources */,
 				32E5290C2348A0C700EA46FF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -825,6 +833,7 @@
 				32E529652348A10B00EA46FF /* ContentView.swift in Sources */,
 				32E529662348A10B00EA46FF /* DetailView.swift in Sources */,
 				32E529672348A10B00EA46FF /* ProgressBar.swift in Sources */,
+				32E7F123236CAAB8001688BC /* ActivityBar.swift in Sources */,
 				32E529232348A0D300EA46FF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,6 +846,7 @@
 				32E529692348A10C00EA46FF /* DetailView.swift in Sources */,
 				32E529502348A0DE00EA46FF /* ExtensionDelegate.swift in Sources */,
 				32E5296A2348A10C00EA46FF /* ProgressBar.swift in Sources */,
+				32E7F124236CAAB8001688BC /* ActivityBar.swift in Sources */,
 				32E529682348A10C00EA46FF /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
