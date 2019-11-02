@@ -36,14 +36,11 @@ public typealias PlatformView = WKInterfaceObject
 #endif
 
 #if os(macOS)
-typealias PlatformViewRepresentable = NSViewRepresentable
-typealias PlatformViewRepresentableContext = NSViewRepresentableContext
+public typealias PlatformViewRepresentable = NSViewRepresentable
 #endif
 #if os(iOS) || os(tvOS)
-typealias PlatformViewRepresentable = UIViewRepresentable
-typealias PlatformViewRepresentableContext = UIViewRepresentableContext
+public typealias PlatformViewRepresentable = UIViewRepresentable
 #endif
 #if os(watchOS)
-typealias PlatformViewRepresentable = WKInterfaceObjectRepresentable
-typealias PlatformViewRepresentableContext = WKInterfaceObjectRepresentableContext
+public typealias PlatformViewRepresentable = WKInterfaceObjectRepresentable
 #endif
