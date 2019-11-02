@@ -62,7 +62,7 @@ public struct WebImage : View {
                 .onDisappear {
                     guard self.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
-                    if self.imageManager.isLoading && !self.imageManager.isIncremental {
+                    if !self.imageManager.isFinished && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
                 }
