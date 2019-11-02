@@ -665,7 +665,7 @@ extension AnimatedImage {
 extension AnimatedImage {
     
     /// Provide the action when view representable create the native view.
-    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable create the native view.
     public func onViewCreate(perform action: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)? = nil) -> AnimatedImage {
         var result = self
@@ -674,7 +674,7 @@ extension AnimatedImage {
     }
     
     /// Provide the action when view representable update the native view.
-    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable update the native view.
     public func onViewUpdate(perform action: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)? = nil) -> AnimatedImage {
         var result = self
@@ -682,6 +682,9 @@ extension AnimatedImage {
         return result
     }
     
+    /// Provide the action when view representable destroy the native view
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the coordinator (with userInfo).
+    /// - Returns: A view that triggers `action` when view representable destroy the native view.
     public static func onViewDestroy(perform action: ((PlatformView, Coordinator) -> Void)? = nil) {
         self.viewDestroyBlock = action
     }
