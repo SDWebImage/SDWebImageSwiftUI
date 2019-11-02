@@ -72,8 +72,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var placeholder: PlatformImage?
     
     // Coordinator
-    var viewCreateBlock: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)?
-    var viewUpdateBlock: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)?
+    var viewCreateBlock: ((PlatformView, Context) -> Void)?
+    var viewUpdateBlock: ((PlatformView, Context) -> Void)?
     static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
     
     /// A Binding to control the animation. You can bind external logic to control the animation status.
@@ -217,7 +217,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
     }
     
-    func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    func makeView(context: Context) -> AnimatedImageViewWrapper {
         let view = AnimatedImageViewWrapper()
         if let viewCreateBlock = viewCreateBlock {
             viewCreateBlock(view.wrapped, context)
@@ -225,7 +225,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         return view
     }
     
-    func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // macOS SDAnimatedImageView.animates should initialize to true in advance before set image
         #if os(macOS)
         view.wrapped.animates = true
@@ -285,7 +285,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
     }
     
-    func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func layoutView(_ view: AnimatedImageViewWrapper, context: Context) {
         // AspectRatio && ContentMode
         #if os(macOS)
         let contentMode: NSImageScaling
@@ -442,7 +442,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
     }
     
-    func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
         #if os(macOS) || os(iOS) || os(tvOS)
         // IncrementalLoad
         if let incrementalLoad = self.incrementalLoad {
@@ -667,7 +667,7 @@ extension AnimatedImage {
     /// Provide the action when view representable create the native view.
     /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable create the native view.
-    public func onViewCreate(perform action: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)? = nil) -> AnimatedImage {
+    public func onViewCreate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
         var result = self
         result.viewCreateBlock = action
         return result
@@ -676,7 +676,7 @@ extension AnimatedImage {
     /// Provide the action when view representable update the native view.
     /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable update the native view.
-    public func onViewUpdate(perform action: ((PlatformView, PlatformViewRepresentableContext<AnimatedImage>) -> Void)? = nil) -> AnimatedImage {
+    public func onViewUpdate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
         var result = self
         result.viewUpdateBlock = action
         return result
