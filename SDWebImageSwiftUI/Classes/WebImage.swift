@@ -138,7 +138,7 @@ extension WebImage {
     }
 }
 
-// Custom Configuration
+// WebImage Modifier
 extension WebImage {
     
     /// Associate a placeholder when loading image with url

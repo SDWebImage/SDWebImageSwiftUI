@@ -47,6 +47,7 @@ final class AnimatedImageConfiguration: ObservableObject {
     @Published var indicator: SDWebImageIndicator?
     @Published var transition: SDWebImageTransition?
     #endif
+    @Published var placeholder: PlatformImage?
 }
 
 // Convenient
@@ -67,7 +68,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageCoordinator = AnimatedImageCoordinator()
     
     var url: URL?
-    var placeholder: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
@@ -80,8 +80,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter placeholder: The placeholder image to show during loading
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.init(url: url, placeholder: placeholder, options: options, context: context, isAnimating: .constant(true))
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
     }
     
     /// Create an animated image with url, placeholder, custom options and context, including animation control binding.
@@ -90,9 +90,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     /// - Parameter isAnimating: The binding for animation control
-    public init(url: URL?, placeholder: PlatformImage? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        self.placeholder = placeholder
         self.webOptions = options
         self.webContext = context
         self.url = url
@@ -190,7 +189,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if currentOperation != nil {
             return
         }
-        view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+        view.wrapped.sd_setImage(with: url, placeholderImage: imageConfiguration.placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
             self.imageModel.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
             if let image = image {
@@ -652,10 +651,17 @@ extension AnimatedImage {
     }
 }
 
-#if os(macOS) || os(iOS) || os(tvOS)
 // Web Image convenience
 extension AnimatedImage {
     
+    /// Associate a placeholder when loading image with url
+    /// - Parameter content: A view that describes the placeholder.
+    public func placeholder(_ placeholder: PlatformImage?) -> AnimatedImage {
+        imageConfiguration.placeholder = placeholder
+        return self
+    }
+    
+    #if os(macOS) || os(iOS) || os(tvOS)
     /// Associate a indicator when loading image with url
     /// - Note: If you do not need indicator, specify nil. Defaults to nil
     /// - Parameter indicator: indicator, see more in `SDWebImageIndicator`
@@ -671,8 +677,8 @@ extension AnimatedImage {
         imageConfiguration.transition = transition
         return self
     }
+    #endif
 }
-#endif
 
 #if DEBUG
 struct AnimatedImage_Previews : PreviewProvider {
