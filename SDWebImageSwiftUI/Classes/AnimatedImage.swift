@@ -522,12 +522,14 @@ extension AnimatedImage {
         #if os(macOS) || os(iOS) || os(tvOS)
         return self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
         #else
-        if let aspectRatio = aspectRatio {
-            return AnyView(self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode))
-        } else {
-            // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
-            // To workaround, we do not call default implementation for this case, using original solution instead
-            return AnyView(self)
+        return Group {
+            if aspectRatio != nil {
+                self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
+            } else {
+                // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
+                // To workaround, we do not call default implementation for this case, using original solution instead
+                self
+            }
         }
         #endif
     }
