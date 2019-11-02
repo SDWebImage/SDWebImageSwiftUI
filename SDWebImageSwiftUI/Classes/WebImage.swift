@@ -52,7 +52,7 @@ public struct WebImage : View {
             }
             let view = image
             .onAppear {
-                if self.imageManager.image == nil {
+                if !self.imageManager.isFinished {
                     self.imageManager.load()
                 }
             }

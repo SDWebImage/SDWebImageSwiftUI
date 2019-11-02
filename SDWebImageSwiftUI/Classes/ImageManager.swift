@@ -10,13 +10,14 @@ import SwiftUI
 import SDWebImage
 
 class ImageManager : ObservableObject {
-    @Published var image: PlatformImage?
-    @Published var isLoading: Bool = false
-    @Published var isIncremental: Bool = false
-    @Published var progress: CGFloat = 0
+    @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
+    @Published var isLoading: Bool = false // whether network is loading or cache is querying
+    @Published var progress: CGFloat = 0 // network progress
     
     var manager = SDWebImageManager.shared
     weak var currentOperation: SDWebImageOperation? = nil
+    var isFinished: Bool = false // true means request end, load() do nothing
+    var isIncremental: Bool = false // true means during incremental loading
     
     var url: URL?
     var options: SDWebImageOptions
@@ -35,7 +36,6 @@ class ImageManager : ObservableObject {
         if currentOperation != nil {
             return
         }
-        self.image = nil
         self.isLoading = true
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             guard let self = self else {
@@ -55,6 +55,13 @@ class ImageManager : ObservableObject {
             guard let self = self else {
                 return
             }
+            if let error = error as? SDWebImageError, error.code == .cancelled {
+                // Ignore user cancelled
+                // There are race condition when quick scroll
+                // Indicator modifier disapper and trigger `WebImage.body`
+                // So previous View struct call `onDisappear` and cancel the currentOperation
+                return
+            }
             if let image = image {
                 self.image = image
             }
@@ -63,6 +70,7 @@ class ImageManager : ObservableObject {
                 self.isLoading = false
                 self.progress = 1
                 if let image = image {
+                    self.isFinished = true
                     self.successBlock?(image, cacheType)
                 } else {
                     self.failureBlock?(error ?? NSError())
