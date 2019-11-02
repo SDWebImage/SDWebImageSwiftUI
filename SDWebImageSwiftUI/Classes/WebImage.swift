@@ -55,14 +55,14 @@ public struct WebImage : View {
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onAppear {
                     guard self.retryOnAppear else { return }
-                    if !self.imageManager.isFinished {
+                    if !self.imageManager.isSuccess {
                         self.imageManager.load()
                     }
                 }
                 .onDisappear {
                     guard self.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
-                    if self.imageManager.isLoading && !self.imageManager.isIncremental {
+                    if !self.imageManager.isSuccess && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
                 }

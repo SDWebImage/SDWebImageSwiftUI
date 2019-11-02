@@ -32,16 +32,12 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
     var indicator: Indicator<T>
     
     func body(content: Content) -> some View {
-        Group {
-            if imageManager.isFinished {
-                // Disable Indiactor
-                content
+        ZStack {
+            content
+            if imageManager.isLoading {
+                indicator.content($imageManager.isLoading, $imageManager.progress)
             } else {
-                // Enable indicator
-                ZStack {
-                    content
-                    indicator.content($imageManager.isLoading, $imageManager.progress)
-                }
+                indicator.content($imageManager.isLoading, $imageManager.progress).hidden()
             }
         }
     }

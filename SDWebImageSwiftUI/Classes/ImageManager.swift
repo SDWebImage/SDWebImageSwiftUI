@@ -11,12 +11,12 @@ import SDWebImage
 
 class ImageManager : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
-    @Published var isLoading: Bool = false // whether network is loading or cache is querying
-    @Published var progress: CGFloat = 0 // network progress
+    @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
+    @Published var progress: CGFloat = 0 // network progress, should only be used for indicator binding
     
     var manager = SDWebImageManager.shared
     weak var currentOperation: SDWebImageOperation? = nil
-    var isFinished: Bool = false // true means request end, load() do nothing
+    var isSuccess: Bool = false // true means request for this URL is ended forever, load() do nothing
     var isIncremental: Bool = false // true means during incremental loading
     
     var url: URL?
@@ -70,7 +70,7 @@ class ImageManager : ObservableObject {
                 self.isLoading = false
                 self.progress = 1
                 if let image = image {
-                    self.isFinished = true
+                    self.isSuccess = true
                     self.successBlock?(image, cacheType)
                 } else {
                     self.failureBlock?(error ?? NSError())
