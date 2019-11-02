@@ -16,8 +16,11 @@ public struct WebImage : View {
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
     
-    var placeholder: AnyView?
     var configurations: [(Image) -> Image] = []
+    
+    var placeholder: AnyView?
+    var retryOnAppear: Bool = true
+    var cancelOnDisappear: Bool = true
     
     @ObservedObject var imageManager: ImageManager
     
@@ -50,11 +53,13 @@ public struct WebImage : View {
                     }
                 }
                 .onAppear {
+                    guard self.retryOnAppear else { return }
                     if !self.imageManager.isFinished {
                         self.imageManager.load()
                     }
                 }
                 .onDisappear {
+                    guard self.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.isLoading && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
@@ -133,7 +138,7 @@ extension WebImage {
     }
 }
 
-// Placeholder
+// Custom Configuration
 extension WebImage {
     
     /// Associate a placeholder when loading image with url
@@ -142,6 +147,22 @@ extension WebImage {
     public func placeholder<T>(@ViewBuilder _ content: () -> T) -> WebImage where T : View {
         var result = self
         result.placeholder = AnyView(content())
+        return result
+    }
+    
+    /// Control the behavior to retry the failed loading when view become appears again
+    /// - Parameter flag: Whether or not to retry the failed loading
+    public func retryOnAppear(_ flag: Bool) -> WebImage {
+        var result = self
+        result.retryOnAppear = flag
+        return result
+    }
+    
+    /// Control the behavior to cancel the pending loading when view become disappear again
+    /// - Parameter flag: Whether or not to cancel the pending loading
+    public func cancelOnDisappear(_ flag: Bool) -> WebImage {
+        var result = self
+        result.cancelOnDisappear = flag
         return result
     }
 }
