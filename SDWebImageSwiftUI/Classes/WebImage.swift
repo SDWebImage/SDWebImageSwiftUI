@@ -52,6 +52,7 @@ public struct WebImage : View {
                         Image(platformImage: WebImage.emptyImage)
                     }
                 }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onAppear {
                     guard self.retryOnAppear else { return }
                     if !self.imageManager.isFinished {
