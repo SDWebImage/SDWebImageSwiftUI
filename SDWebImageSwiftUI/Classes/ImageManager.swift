@@ -81,6 +81,7 @@ class ImageManager : ObservableObject {
     
     func cancel() {
         currentOperation?.cancel()
+        currentOperation = nil
     }
     
 }
