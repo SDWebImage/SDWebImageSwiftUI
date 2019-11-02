@@ -10,14 +10,14 @@ import SwiftUI
 import SDWebImage
 
 class ImageManager : ObservableObject {
-    @Published var image: PlatformImage?
-    @Published var isLoading: Bool = false
-    @Published var progress: CGFloat = 0
+    @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
+    @Published var isLoading: Bool = false // whether network is loading or cache is querying
+    @Published var progress: CGFloat = 0 // network progress
     
     var manager = SDWebImageManager.shared
     weak var currentOperation: SDWebImageOperation? = nil
-    var isFinished: Bool = false
-    var isIncremental: Bool = false
+    var isFinished: Bool = false // true means request end, load() do nothing
+    var isIncremental: Bool = false // true means during incremental loading
     
     var url: URL?
     var options: SDWebImageOptions
