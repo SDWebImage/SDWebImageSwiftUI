@@ -86,6 +86,9 @@ struct ContentView: View {
                             #if os(macOS) || os(iOS) || os(tvOS)
                             AnimatedImage(url: URL(string:url))
                             .indicator(SDWebImageActivityIndicator.medium)
+                            /**
+                            .placeholder(UIImage(systemName: "photo"))
+                            */
                             .transition(.fade)
                             .resizable()
                             .scaledToFit()
@@ -100,6 +103,11 @@ struct ContentView: View {
                             #if os(macOS) || os(iOS) || os(tvOS)
                             WebImage(url: URL(string:url))
                             .resizable()
+                            /**
+                             .placeholder {
+                                 Image(systemName: "photo")
+                             }
+                             */
                             .indicator(.activity)
                             .animation(.easeInOut(duration: 0.5))
                             .transition(.fade)

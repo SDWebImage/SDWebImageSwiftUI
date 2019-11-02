@@ -90,8 +90,11 @@ var body: some View {
             // Success
         }
         .resizable() // Resizable like SwiftUI.Image
+        .placeholder {
+            Image(systemName: "photo") // Placeholder
+        }
         .indicator(.activity) // Activity Indicator
-        .animation(.easeInOut(duration: 0.5))
+        .animation(.easeInOut(duration: 0.5)) // Animation Duration
         .transition(.fade) // Fade Transition
         .scaledToFit()
         .frame(width: 300, height: 300, alignment: .center)
@@ -118,6 +121,7 @@ var body: some View {
             // Error
         }
         .resizable() // Actually this is not needed unlike SwiftUI.Image
+        .placeholder(UIImage(systemName: "photo")) // Placeholder
         .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
         .transition(.fade) // Fade Transition
         .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier
