@@ -133,6 +133,9 @@ var body: some View {
         // Bundle (not Asset Catalog)
         AnimatedImage(name: "animation1", isAnimating: $isAnimating)) // Animation control binding
         .maxBufferSize(.max)
+        .onViewUpdate { view, context in // Advanced native view coordinate
+            view.toolTip = "Mouseover Tip"
+        }
     }
 }
 ```

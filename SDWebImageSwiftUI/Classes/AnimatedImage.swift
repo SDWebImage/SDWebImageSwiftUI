@@ -15,39 +15,6 @@ import SDWebImageSwiftUIObjC
 // Data Binding Object
 final class AnimatedImageModel : ObservableObject {
     @Published var image: PlatformImage?
-    @Published var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
-    @Published var failureBlock: ((Error) -> Void)?
-    @Published var progressBlock: ((Int, Int) -> Void)?
-}
-
-// Coordinator Life Cycle Binding Object
-final class AnimatedImageCoordinator : ObservableObject {
-    @Published var viewCreateBlock: ((PlatformView) -> Void)?
-    @Published var viewUpdateBlock: ((PlatformView) -> Void)?
-}
-
-// Layout Binding Object
-final class AnimatedImageLayout : ObservableObject {
-    @Published var contentMode: ContentMode?
-    @Published var aspectRatio: CGFloat?
-    @Published var capInsets: EdgeInsets = EdgeInsets()
-    @Published var resizingMode: Image.ResizingMode?
-    @Published var renderingMode: Image.TemplateRenderingMode?
-    @Published var interpolation: Image.Interpolation?
-    @Published var antialiased: Bool = false
-}
-
-// Configuration Binding Object
-final class AnimatedImageConfiguration: ObservableObject {
-    @Published var incrementalLoad: Bool?
-    @Published var maxBufferSize: UInt?
-    @Published var customLoopCount: Int?
-    #if os(macOS) || os(iOS) || os(tvOS)
-    // These configurations only useful for web image loading
-    @Published var indicator: SDWebImageIndicator?
-    @Published var transition: SDWebImageTransition?
-    #endif
-    @Published var placeholder: PlatformImage?
 }
 
 // Convenient
@@ -60,20 +27,63 @@ extension SDAnimatedImageInterface {
 }
 #endif
 
+// Coordinator Life Cycle Binding Object
+public final class AnimatedImageCoordinator: NSObject {
+    
+    /// Any user-provided object for actual coordinator, such as delegate method, taget-action
+    public var object: Any?
+    
+    /// Any user-provided info stored into coordinator, such as status value used for coordinator
+    public var userInfo: [AnyHashable : Any]?
+}
+
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
-    @ObservedObject var imageLayout = AnimatedImageLayout()
-    @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
-    @ObservedObject var imageCoordinator = AnimatedImageCoordinator()
     
+    // Options
     var url: URL?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
+    // Completion Handler
+    var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
+    var failureBlock: ((Error) -> Void)?
+    var progressBlock: ((Int, Int) -> Void)?
+    
+    // Layout
+    var contentMode: ContentMode?
+    var aspectRatio: CGFloat?
+    var capInsets: EdgeInsets = EdgeInsets()
+    var resizingMode: Image.ResizingMode?
+    var renderingMode: Image.TemplateRenderingMode?
+    var interpolation: Image.Interpolation?
+    var antialiased: Bool = false
+    
+    // Configuration
+    var incrementalLoad: Bool?
+    var maxBufferSize: UInt?
+    var customLoopCount: Int?
+    #if os(macOS) || os(iOS) || os(tvOS)
+    // These configurations only useful for web image loading
+    var indicator: SDWebImageIndicator?
+    var transition: SDWebImageTransition?
+    #endif
+    var placeholder: PlatformImage?
+    
+    // Coordinator
+    var viewCreateBlock: ((PlatformView, Context) -> Void)?
+    var viewUpdateBlock: ((PlatformView, Context) -> Void)?
+    static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
+    
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
+    
+    /// Current loaded image, may be `SDAnimatedImage` type
+    public var image: PlatformImage? {
+        imageModel.image
+    }
     
     /// Create an animated image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -145,6 +155,12 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public typealias WKInterfaceObjectType = AnimatedImageViewWrapper
     #endif
     
+    public typealias Coordinator = AnimatedImageCoordinator
+    
+    public func makeCoordinator() -> Coordinator {
+        AnimatedImageCoordinator()
+    }
+    
     #if os(macOS)
     public func makeNSView(context: NSViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
         makeView(context: context)
@@ -154,7 +170,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         updateView(nsView, context: context)
     }
     
-    public static func dismantleNSView(_ nsView: AnimatedImageViewWrapper, coordinator: ()) {
+    public static func dismantleNSView(_ nsView: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(nsView, coordinator: coordinator)
     }
     #elseif os(iOS) || os(tvOS)
@@ -166,7 +182,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         updateView(uiView, context: context)
     }
     
-    public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: ()) {
+    public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(uiView, coordinator: coordinator)
     }
     #elseif os(watchOS)
@@ -178,7 +194,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         updateView(wkInterfaceObject, context: context)
     }
     
-    public static func dismantleWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, coordinator: ()) {
+    public static func dismantleWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(wkInterfaceObject, coordinator: coordinator)
     }
     #endif
@@ -189,33 +205,33 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if currentOperation != nil {
             return
         }
-        view.wrapped.sd_setImage(with: url, placeholderImage: imageConfiguration.placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
-            self.imageModel.progressBlock?(receivedSize, expectedSize)
+        view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
+            self.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
             if let image = image {
                 self.imageModel.image = image
-                self.imageModel.successBlock?(image, cacheType)
+                self.successBlock?(image, cacheType)
             } else {
-                self.imageModel.failureBlock?(error ?? NSError())
+                self.failureBlock?(error ?? NSError())
             }
         }
     }
     
-    func makeView(context: PlatformViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    func makeView(context: Context) -> AnimatedImageViewWrapper {
         let view = AnimatedImageViewWrapper()
-        if let viewCreateBlock = imageCoordinator.viewCreateBlock {
-            viewCreateBlock(view)
+        if let viewCreateBlock = viewCreateBlock {
+            viewCreateBlock(view.wrapped, context)
         }
         return view
     }
     
-    func updateView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // macOS SDAnimatedImageView.animates should initialize to true in advance before set image
         #if os(macOS)
         view.wrapped.animates = true
         #endif
         
-        if let image = imageModel.image {
+        if let image = self.imageModel.image {
             #if os(watchOS)
             view.wrapped.setImage(image)
             #else
@@ -224,8 +240,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else {
             if let url = url {
                 #if os(macOS) || os(iOS) || os(tvOS)
-                view.wrapped.sd_imageIndicator = imageConfiguration.indicator
-                view.wrapped.sd_imageTransition = imageConfiguration.transition
+                view.wrapped.sd_imageIndicator = self.indicator
+                view.wrapped.sd_imageTransition = self.transition
                 #endif
                 loadImage(view, url: url)
             }
@@ -252,21 +268,24 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         configureView(view, context: context)
         layoutView(view, context: context)
-        if let viewUpdateBlock = imageCoordinator.viewUpdateBlock {
-            viewUpdateBlock(view)
+        if let viewUpdateBlock = viewUpdateBlock {
+            viewUpdateBlock(view.wrapped, context)
         }
     }
     
-    static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: ()) {
+    static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: Coordinator) {
         view.wrapped.sd_cancelCurrentImageLoad()
         #if os(macOS)
         view.wrapped.animates = false
         #else
         view.wrapped.stopAnimating()
         #endif
+        if let viewDestroyBlock = viewDestroyBlock {
+            viewDestroyBlock(view.wrapped, coordinator)
+        }
     }
     
-    func layoutView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func layoutView(_ view: AnimatedImageViewWrapper, context: Context) {
         // AspectRatio && ContentMode
         #if os(macOS)
         let contentMode: NSImageScaling
@@ -275,7 +294,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #elseif os(watchOS)
         let contentMode: SDImageScaleMode
         #endif
-        if let _ = imageLayout.aspectRatio {
+        if let _ = self.aspectRatio {
             // If `aspectRatio` is not `nil`, always scale to fill and SwiftUI will layout the container with custom aspect ratio.
             #if os(macOS)
             contentMode = .scaleAxesIndependently
@@ -286,7 +305,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             #endif
         } else {
             // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio.
-            switch imageLayout.contentMode {
+            switch self.contentMode {
             case .fill:
                 #if os(macOS)
                 // Actually, NSImageView have no `.aspectFill` unlike UIImageView, only `CALayerContentsGravity.resizeAspectFill` have the same concept
@@ -326,14 +345,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = self.imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             var image = image
             // ResizingMode
-            if let resizingMode = imageLayout.resizingMode {
+            if let resizingMode = self.resizingMode {
                 #if os(macOS)
-                let capInsets = NSEdgeInsets(top: imageLayout.capInsets.top, left: imageLayout.capInsets.leading, bottom: imageLayout.capInsets.bottom, right: imageLayout.capInsets.trailing)
+                let capInsets = NSEdgeInsets(top: self.capInsets.top, left: self.capInsets.leading, bottom: self.capInsets.bottom, right: self.capInsets.trailing)
                 #else
-                let capInsets = UIEdgeInsets(top: imageLayout.capInsets.top, left: imageLayout.capInsets.leading, bottom: imageLayout.capInsets.bottom, right: imageLayout.capInsets.trailing)
+                let capInsets = UIEdgeInsets(top: self.capInsets.top, left: self.capInsets.leading, bottom: self.capInsets.bottom, right: self.capInsets.trailing)
                 #endif
                 switch resizingMode {
                 case .stretch:
@@ -367,7 +386,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
             
             // RenderingMode
-            if let renderingMode = imageLayout.renderingMode {
+            if let renderingMode = self.renderingMode {
                 switch renderingMode {
                 case .template:
                     #if os(macOS)
@@ -400,7 +419,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         #if os(macOS) || os(iOS) || os(tvOS)
         // Interpolation
-        if let interpolation = imageLayout.interpolation {
+        if let interpolation = self.interpolation {
             switch interpolation {
             case .high:
                 view.interpolationQuality = .high
@@ -419,19 +438,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Antialiased
-        view.shouldAntialias = imageLayout.antialiased
+        view.shouldAntialias = self.antialiased
         #endif
     }
     
-    func configureView(_ view: AnimatedImageViewWrapper, context: PlatformViewRepresentableContext<AnimatedImage>) {
+    func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
         #if os(macOS) || os(iOS) || os(tvOS)
         // IncrementalLoad
-        if let incrementalLoad = imageConfiguration.incrementalLoad {
+        if let incrementalLoad = self.incrementalLoad {
             view.wrapped.shouldIncrementalLoad = incrementalLoad
         }
         
         // MaxBufferSize
-        if let maxBufferSize = imageConfiguration.maxBufferSize {
+        if let maxBufferSize = self.maxBufferSize {
             view.wrapped.maxBufferSize = maxBufferSize
         } else {
             // automatically
@@ -439,7 +458,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // CustomLoopCount
-        if let customLoopCount = imageConfiguration.customLoopCount {
+        if let customLoopCount = self.customLoopCount {
             view.wrapped.shouldCustomLoopCount = true
             view.wrapped.animationRepeatCount = customLoopCount
         } else {
@@ -447,7 +466,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             view.wrapped.shouldCustomLoopCount = false
         }
         #elseif os(watchOS)
-        if let customLoopCount = imageConfiguration.customLoopCount {
+        if let customLoopCount = self.customLoopCount {
             view.wrapped.setAnimationRepeatCount(customLoopCount as NSNumber)
         } else {
             // disable custom loop count
@@ -468,31 +487,35 @@ extension AnimatedImage {
         capInsets: EdgeInsets = EdgeInsets(),
         resizingMode: Image.ResizingMode = .stretch) -> AnimatedImage
     {
-        imageLayout.capInsets = capInsets
-        imageLayout.resizingMode = resizingMode
-        return self
+        var result = self
+        result.capInsets = capInsets
+        result.resizingMode = resizingMode
+        return result
     }
     
     /// Configurate this view's rendering mode.
     /// - Warning: Animated Image does not implementes.
     /// - Parameter renderingMode: The resizing mode
     public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> AnimatedImage {
-        imageLayout.renderingMode = renderingMode
-        return self
+        var result = self
+        result.renderingMode = renderingMode
+        return result
     }
     
     /// Configurate this view's image interpolation quality
     /// - Parameter interpolation: The interpolation quality
     public func interpolation(_ interpolation: Image.Interpolation) -> AnimatedImage {
-        imageLayout.interpolation = interpolation
-        return self
+        var result = self
+        result.interpolation = interpolation
+        return result
     }
     
     /// Configurate this view's image antialiasing
     /// - Parameter isAntialiased: Whether or not to allow antialiasing
     public func antialiased(_ isAntialiased: Bool) -> AnimatedImage {
-        imageLayout.antialiased = isAntialiased
-        return self
+        var result = self
+        result.antialiased = isAntialiased
+        return result
     }
 }
 
@@ -516,18 +539,19 @@ extension AnimatedImage {
         // But 2: there are no way to call a Protocol Extention default implementation in Swift 5.1
         // So, we need a hack, that create a empty modifier, they call method on that view instead
         // Fired Radar: FB7413534
-        imageLayout.aspectRatio = aspectRatio
-        imageLayout.contentMode = contentMode
+        var result = self
+        result.aspectRatio = aspectRatio
+        result.contentMode = contentMode
         #if os(macOS) || os(iOS) || os(tvOS)
-        return self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
+        return result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
         #else
         return Group {
             if aspectRatio != nil {
-                self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
+                result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
             } else {
                 // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
                 // To workaround, we do not call default implementation for this case, using original solution instead
-                self
+                result
             }
         }
         #endif
@@ -573,8 +597,9 @@ extension AnimatedImage {
     /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
     /// - Parameter loopCount: The animation loop count
     public func customLoopCount(_ loopCount: Int?) -> AnimatedImage {
-        imageConfiguration.customLoopCount = loopCount
-        return self
+        var result = self
+        result.customLoopCount = loopCount
+        return result
     }
     
     /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
@@ -585,8 +610,9 @@ extension AnimatedImage {
     /// - Warning: watchOS does not implementes.
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
-        imageConfiguration.maxBufferSize = bufferSize
-        return self
+        var result = self
+        result.maxBufferSize = bufferSize
+        return result
     }
     
     /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
@@ -595,8 +621,9 @@ extension AnimatedImage {
     /// - Warning: watchOS does not implementes.
     /// - Parameter incrementalLoad: Whether or not to incremental load
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
-        imageConfiguration.incrementalLoad = incrementalLoad
-        return self
+        var result = self
+        result.incrementalLoad = incrementalLoad
+        return result
     }
 }
 
@@ -608,8 +635,9 @@ extension AnimatedImage {
     ///   - action: The action to perform. The first arg is the error during loading. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load fails.
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> AnimatedImage {
-        imageModel.failureBlock = action
-        return self
+        var result = self
+        result.failureBlock = action
+        return result
     }
     
     /// Provide the action when image load successes.
@@ -617,8 +645,9 @@ extension AnimatedImage {
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
-        imageModel.successBlock = action
-        return self
+        var result = self
+        result.successBlock = action
+        return result
     }
     
     /// Provide the action when image load progress changes.
@@ -626,8 +655,9 @@ extension AnimatedImage {
     ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> AnimatedImage {
-        imageModel.progressBlock = action
-        return self
+        var result = self
+        result.progressBlock = action
+        return result
     }
 }
 
@@ -635,19 +665,28 @@ extension AnimatedImage {
 extension AnimatedImage {
     
     /// Provide the action when view representable create the native view.
-    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable create the native view.
-    public func onViewCreate(perform action: ((PlatformView) -> Void)? = nil) -> AnimatedImage {
-        imageCoordinator.viewCreateBlock = action
-        return self
+    public func onViewCreate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
+        var result = self
+        result.viewCreateBlock = action
+        return result
     }
     
     /// Provide the action when view representable update the native view.
-    /// - Parameter action: The action to perform. The first arg is the native view.
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable update the native view.
-    public func onViewUpdate(perform action: ((PlatformView) -> Void)? = nil) -> AnimatedImage {
-        imageCoordinator.viewUpdateBlock = action
-        return self
+    public func onViewUpdate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
+        var result = self
+        result.viewUpdateBlock = action
+        return result
+    }
+    
+    /// Provide the action when view representable destroy the native view
+    /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the coordinator (with userInfo).
+    /// - Returns: A view that triggers `action` when view representable destroy the native view.
+    public static func onViewDestroy(perform action: ((PlatformView, Coordinator) -> Void)? = nil) {
+        self.viewDestroyBlock = action
     }
 }
 
@@ -657,8 +696,9 @@ extension AnimatedImage {
     /// Associate a placeholder when loading image with url
     /// - Parameter content: A view that describes the placeholder.
     public func placeholder(_ placeholder: PlatformImage?) -> AnimatedImage {
-        imageConfiguration.placeholder = placeholder
-        return self
+        var result = self
+        result.placeholder = placeholder
+        return result
     }
     
     #if os(macOS) || os(iOS) || os(tvOS)
@@ -666,16 +706,18 @@ extension AnimatedImage {
     /// - Note: If you do not need indicator, specify nil. Defaults to nil
     /// - Parameter indicator: indicator, see more in `SDWebImageIndicator`
     public func indicator(_ indicator: SDWebImageIndicator?) -> AnimatedImage {
-        imageConfiguration.indicator = indicator
-        return self
+        var result = self
+        result.indicator = indicator
+        return result
     }
     
     /// Associate a transition when loading image with url
     /// - Note: If you specify nil, do not do transition. Defautls to nil.
     /// - Parameter transition: transition, see more in `SDWebImageTransition`
     public func transition(_ transition: SDWebImageTransition?) -> AnimatedImage {
-        imageConfiguration.transition = transition
-        return self
+        var result = self
+        result.transition = transition
+        return result
     }
     #endif
 }

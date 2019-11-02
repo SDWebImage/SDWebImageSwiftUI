@@ -85,6 +85,11 @@ struct ContentView: View {
                         if self.animated {
                             #if os(macOS) || os(iOS) || os(tvOS)
                             AnimatedImage(url: URL(string:url))
+                            /**
+                             .onViewUpdate { view, context in
+                                 view.toolTip = "Mouseover Tip"
+                             }
+                             */
                             .indicator(SDWebImageActivityIndicator.medium)
                             /**
                             .placeholder(UIImage(systemName: "photo"))
