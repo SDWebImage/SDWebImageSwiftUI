@@ -32,7 +32,7 @@ struct ContentView: View {
     "https://www.sample-videos.com/img/Sample-png-image-1mb.png",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
     "http://via.placeholder.com/200x200.jpg"]
-    @State var animated: Bool = true // You can change between WebImage/AnimatedImage
+    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
     
     var body: some View {
         #if os(iOS) || os(tvOS)

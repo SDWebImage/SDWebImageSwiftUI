@@ -32,7 +32,7 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
     var indicator: Indicator<T>
     
     func body(content: Content) -> some View {
-        if !imageManager.isLoading {
+        if imageManager.isFinished {
             // Disable Indiactor
             return AnyView(content)
         } else {
