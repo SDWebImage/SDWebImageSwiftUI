@@ -11,15 +11,15 @@ import SwiftUI
 
 /// A  type to build the indicator
 public struct Indicator<T> where T : View {
-    var builder: (Binding<Bool>, Binding<CGFloat>) -> T
+    var content: (Binding<Bool>, Binding<CGFloat>) -> T
     
     /// Create a indicator with builder
     /// - Parameter builder: A builder to build indicator
     /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
     /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
     /// Associate a indicator when loading image with url
-    public init(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) {
-        self.builder = builder
+    public init(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) {
+        self.content = content
     }
 }
 
@@ -32,17 +32,17 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
     var indicator: Indicator<T>
     
     func body(content: Content) -> some View {
-        if imageManager.isFinished {
-            // Disable Indiactor
-            return AnyView(content)
-        } else {
-            // Enable indicator
-            return AnyView(
+        Group {
+            if imageManager.isFinished {
+                // Disable Indiactor
+                content
+            } else {
+                // Enable indicator
                 ZStack {
                     content
-                    indicator.builder($imageManager.isLoading, $imageManager.progress)
+                    indicator.content($imageManager.isLoading, $imageManager.progress)
                 }
-            )
+            }
         }
     }
 }

@@ -13,22 +13,20 @@ public struct WebImage : View {
     static var emptyImage = PlatformImage()
     
     var url: URL?
-    var placeholder: Image?
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
     
+    var placeholder: AnyView?
     var configurations: [(Image) -> Image] = []
     
     @ObservedObject var imageManager: ImageManager
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
-    /// - Parameter placeholder: The placeholder image to show during loading
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, placeholder: Image? = nil, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
-        self.placeholder = placeholder
         self.options = options
         self.context = context
         self.imageManager = ImageManager(url: url, options: options, context: context)
@@ -38,31 +36,31 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        if let platformImage = imageManager.image {
-            var image = Image(platformImage: platformImage)
-            image = configurations.reduce(image) { (previous, configuration) in
-                configuration(previous)
-            }
-            let view = image
-            return AnyView(view)
-        } else {
-            var image = placeholder ?? Image(platformImage: WebImage.emptyImage)
-            image = configurations.reduce(image) { (previous, configuration) in
-                configuration(previous)
-            }
-            let view = image
-            .onAppear {
-                if !self.imageManager.isFinished {
-                    self.imageManager.load()
+        Group {
+            if imageManager.image != nil {
+                configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
+                    configuration(previous)
+                }
+            } else {
+                Group {
+                    if placeholder != nil {
+                        placeholder
+                    } else {
+                        Image(platformImage: WebImage.emptyImage)
+                    }
+                }
+                .onAppear {
+                    if !self.imageManager.isFinished {
+                        self.imageManager.load()
+                    }
+                }
+                .onDisappear {
+                    // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
+                    if self.imageManager.isLoading && !self.imageManager.isIncremental {
+                        self.imageManager.cancel()
+                    }
                 }
             }
-            .onDisappear {
-                // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
-                if self.imageManager.isLoading && !self.imageManager.isIncremental {
-                    self.imageManager.cancel()
-                }
-            }
-            return AnyView(view)
         }
     }
 }
@@ -135,6 +133,19 @@ extension WebImage {
     }
 }
 
+// Placeholder
+extension WebImage {
+    
+    /// Associate a placeholder when loading image with url
+    /// - note: The differences between Placeholder and Indicator, is that placeholder does not supports animation, and return type is different
+    /// - Parameter content: A view that describes the placeholder.
+    public func placeholder<T>(@ViewBuilder _ content: () -> T) -> WebImage where T : View {
+        var result = self
+        result.placeholder = AnyView(content())
+        return result
+    }
+}
+
 // Indicator
 extension WebImage {
     
@@ -145,9 +156,9 @@ extension WebImage {
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
-    /// - Parameter indicator: The indicator type, see `Indicator`
-    public func indicator<T>(@ViewBuilder builder: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> some View where T : View {
-        return indicator(Indicator(builder: builder))
+    /// - Parameter content: A view that describes the indicator.
+    public func indicator<T>(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> some View where T : View {
+        return indicator(Indicator(content: content))
     }
 }
 
