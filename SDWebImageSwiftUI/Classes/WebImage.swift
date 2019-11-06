@@ -22,7 +22,10 @@ public struct WebImage : View {
     var retryOnAppear: Bool = true
     var cancelOnDisappear: Bool = true
     
+    @State var currentFrame: PlatformImage? = nil
+    
     @ObservedObject var imageManager: ImageManager
+    var imagePlayer: SDAnimatedImagePlayer?
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -31,6 +34,8 @@ public struct WebImage : View {
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
         self.url = url
         self.options = options
+        var context = context ?? [:]
+        context[.animatedImageClass] = SDAnimatedImage.self
         self.context = context
         self.imageManager = ImageManager(url: url, options: options, context: context)
         // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
@@ -41,8 +46,12 @@ public struct WebImage : View {
     public var body: some View {
         Group {
             if imageManager.image != nil {
-                configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
-                    configuration(previous)
+                if currentFrame != nil {
+                    configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
+                        configuration(previous)
+                    }
+                } else {
+                    queryFrames()
                 }
             } else {
                 Group {
@@ -67,6 +76,21 @@ public struct WebImage : View {
                     }
                 }
             }
+        }
+    }
+    
+    func queryFrames() -> some View {
+        if (imageManager.image as? SDAnimatedImageProvider) != nil {
+            let imagePlayer = SDAnimatedImagePlayer(provider: (imageManager.image as! SDAnimatedImageProvider))
+            var result = self
+            imagePlayer?.animationFrameHandler = { (_, frame) in
+                result.currentFrame = frame
+            }
+            imagePlayer?.startPlaying()
+            result.imagePlayer = imagePlayer
+        }
+        return configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
+            configuration(previous)
         }
     }
 }
