@@ -19,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 - (void)setContentMode:(SDImageScaleMode)contentMode;
 - (void)setAnimationRepeatCount:(nullable NSNumber *)repeatCount;
+- (void)setRunLoopMode:(nonnull NSRunLoopMode)runLoopMode;
+- (void)setPlaybackRate:(double)playbackRate;
+
+/// Trigger the animation check when view appears/disappears
 - (void)updateAnimation;
 
 @end

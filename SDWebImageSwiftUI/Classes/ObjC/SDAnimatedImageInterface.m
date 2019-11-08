@@ -56,6 +56,8 @@
 @property (nonatomic, assign, readwrite) NSUInteger currentLoopCount;
 @property (nonatomic, strong) NSNumber *animationRepeatCount;
 @property (nonatomic, assign) BOOL shouldAnimate;
+@property (nonatomic, copy) NSRunLoopMode runLoopMode;
+@property (nonatomic, assign) double playbackRate;
 @property (nonatomic,strong) SDAnimatedImagePlayer *player; // The animation player.
 @property (nonatomic) id<CALayerProtocol> imageViewLayer; // The actual rendering layer.
 
@@ -68,6 +70,10 @@
     NSString *UUID = [NSUUID UUID].UUIDString;
     NSString *property = [NSString stringWithFormat:@"%@_%@", cls, UUID];
     self = [self _initForDynamicCreationWithInterfaceProperty:property];
+    if (self) {
+        self.runLoopMode = NSRunLoopCommonModes;
+        self.playbackRate = 1.0;
+    }
     return self;
 }
 
@@ -125,11 +131,11 @@
             self.player.totalLoopCount = self.animationRepeatCount.unsignedIntegerValue;
         }
         
-//        // RunLoop Mode
-//        self.player.runLoopMode = self.runLoopMode;
-//
-//        // Play Rate
-//        self.player.playbackRate = self.playbackRate;
+        // RunLoop Mode
+        self.player.runLoopMode = self.runLoopMode;
+
+        // Play Rate
+        self.player.playbackRate = self.playbackRate;
         
         // Setup handler
         __weak typeof(self) wself = self;
