@@ -54,11 +54,9 @@
 @property (nonatomic, strong, readwrite) UIImage *currentFrame;
 @property (nonatomic, assign, readwrite) NSUInteger currentFrameIndex;
 @property (nonatomic, assign, readwrite) NSUInteger currentLoopCount;
-@property (nonatomic, strong) NSNumber *animationRepeatCount;
+@property (nonatomic, assign, getter=isAnimating, readwrite) BOOL animating;
 @property (nonatomic, assign) BOOL shouldAnimate;
-@property (nonatomic, copy) NSRunLoopMode runLoopMode;
-@property (nonatomic, assign) double playbackRate;
-@property (nonatomic,strong) SDAnimatedImagePlayer *player; // The animation player.
+@property (nonatomic, strong) SDAnimatedImagePlayer *player; // The animation player.
 @property (nonatomic) id<CALayerProtocol> imageViewLayer; // The actual rendering layer.
 
 @end
@@ -162,10 +160,18 @@
 
 - (void)updateAnimation {
     [self updateShouldAnimate];
-    if (self.shouldAnimate) {
-        [self startAnimating];
-    } else {
-        [self stopAnimating];
+    if (!self.player) {
+        return;
+    }
+    // Filter automatically animating changes
+    if (self.shouldAnimate && self.isAnimating) {
+        [self.player startPlaying];
+    } else if (!self.shouldAnimate && !self.isAnimating) {
+        if (self.resetFrameIndexWhenStopped) {
+            [self.player stopPlaying];
+        } else {
+            [self.player pausePlaying];
+        }
     }
 }
 
@@ -189,17 +195,8 @@
     self.shouldAnimate = self.player && isVisible;
 }
 
-- (BOOL)isAnimating
-{
-    if (self.player) {
-        return self.player.isPlaying;
-    } else {
-        id<UIImageViewProtocol> view = (id<UIImageViewProtocol>)[self _interfaceView];
-        return [view isAnimating];
-    }
-}
-
 - (void)startAnimating {
+    self.animating = YES;
     if (self.player) {
         [self.player startPlaying];
     } else if (_image.images.count > 0) {
@@ -208,6 +205,7 @@
 }
 
 - (void)startAnimatingWithImagesInRange:(NSRange)imageRange duration:(NSTimeInterval)duration repeatCount:(NSInteger)repeatCount {
+    self.animating = YES;
     if (self.player) {
         [self.player startPlaying];
     } else if (_image.images.count > 0) {
@@ -216,8 +214,16 @@
 }
 
 - (void)stopAnimating {
+    self.animating = NO;
     if (self.player) {
-        [self.player stopPlaying];
+        if (self.resetFrameIndexWhenStopped) {
+            [self.player stopPlaying];
+        } else {
+            [self.player pausePlaying];
+        }
+        if (self.clearBufferWhenStopped) {
+            [self.player clearFrameBuffer];
+        }
     } else if (_image.images.count > 0) {
         [super stopAnimating];
     }
