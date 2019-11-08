@@ -11,7 +11,23 @@
 
 #pragma mark - SPI
 
-#define kCGImageAnimationStatus_Uninitialized -1
+static UIImage * SharedEmptyImage(void) {
+    // This is used for placeholder on `WKInterfaceImage`
+    // Do not using `[UIImage new]` because WatchKit will ignore it
+    static dispatch_once_t onceToken;
+    static UIImage *image;
+    dispatch_once(&onceToken, ^{
+        UIColor *color = UIColor.clearColor;
+        CGRect rect = WKInterfaceDevice.currentDevice.screenBounds;
+        UIGraphicsBeginImageContext(rect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, [color CGColor]);
+        CGContextFillRect(context, rect);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    });
+    return image;
+}
 
 @protocol CALayerProtocol <NSObject>
 @property (nullable, strong) id contents;
@@ -30,8 +46,9 @@
 
 @end
 
-@protocol UIImageViewProtocol <NSObject>
+@protocol UIImageViewProtocol <UIViewProtocol>
 
+@property (nullable, nonatomic, strong) UIImage *image;
 - (void)startAnimating;
 - (void)stopAnimating;
 @property (nonatomic, readonly, getter=isAnimating) BOOL animating;
@@ -43,7 +60,7 @@
 // This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
 - (instancetype)_initForDynamicCreationWithInterfaceProperty:(NSString *)property;
 // This is remote UIView
-@property (nonatomic, strong, readonly) id<UIViewProtocol> _interfaceView;
+@property (nonatomic, strong, readonly) id<UIImageViewProtocol> _interfaceView;
 
 @end
 
@@ -80,26 +97,8 @@
     return @{
         @"type" : @"image",
         @"property" : self.interfaceProperty,
-        @"image" : [self.class sharedEmptyImage]
+        @"image" : SharedEmptyImage()
     };
-}
-
-+ (UIImage *)sharedEmptyImage {
-    // This is used for placeholder on `WKInterfaceImage`
-    // Do not using `[UIImage new]` because WatchKit will ignore it
-    static dispatch_once_t onceToken;
-    static UIImage *image;
-    dispatch_once(&onceToken, ^{
-        UIColor *color = UIColor.clearColor;
-        CGRect rect = CGRectMake(0, 0, 1, 1);
-        UIGraphicsBeginImageContext(rect.size);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, [color CGColor]);
-        CGContextFillRect(context, rect);
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    });
-    return image;
 }
 
 - (void)setImage:(UIImage *)image {
@@ -115,6 +114,7 @@
     self.currentLoopCount = 0;
     
     [super setImage:image];
+    [self _interfaceView].image = image;
     if ([image.class conformsToProtocol:@protocol(SDAnimatedImage)]) {
         // Create animted player
         self.player = [SDAnimatedImagePlayer playerWithProvider:(id<SDAnimatedImage>)image];
@@ -148,11 +148,8 @@
             sself.currentLoopCount = loopCount;
         };
         
-        // Update should animate
-        [self updateShouldAnimate];
-        if (self.shouldAnimate) {
-            [self startAnimating];
-        }
+        // Start animating
+        [self startAnimating];
         
         [self displayLayer:self.imageViewLayer];
     }
@@ -160,18 +157,10 @@
 
 - (void)updateAnimation {
     [self updateShouldAnimate];
-    if (!self.player) {
-        return;
-    }
-    // Filter automatically animating changes
     if (self.shouldAnimate && self.isAnimating) {
-        [self.player startPlaying];
-    } else if (!self.shouldAnimate && !self.isAnimating) {
-        if (self.resetFrameIndexWhenStopped) {
-            [self.player stopPlaying];
-        } else {
-            [self.player pausePlaying];
-        }
+        [self startAnimating];
+    } else {
+        [self stopAnimating];
     }
 }
 
@@ -198,7 +187,10 @@
 - (void)startAnimating {
     self.animating = YES;
     if (self.player) {
-        [self.player startPlaying];
+        [self updateShouldAnimate];
+        if (self.shouldAnimate) {
+            [self.player startPlaying];
+        }
     } else if (_image.images.count > 0) {
         [super startAnimating];
     }
