@@ -12,11 +12,6 @@ import SDWebImage
 import SDWebImageSwiftUIObjC
 #endif
 
-// Data Binding Object
-final class AnimatedImageModel : ObservableObject {
-    @Published var image: PlatformImage?
-}
-
 // Convenient
 #if os(watchOS)
 public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
@@ -39,10 +34,9 @@ public final class AnimatedImageCoordinator: NSObject {
 
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
-    @ObservedObject var imageModel = AnimatedImageModel()
-    
     // Options
     var url: URL?
+    @State var image: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
@@ -64,6 +58,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var incrementalLoad: Bool?
     var maxBufferSize: UInt?
     var customLoopCount: Int?
+    var runLoopMode: RunLoop.Mode?
+    var pausable: Bool?
+    var purgeable: Bool?
+    var playBackRate: Double?
     #if os(macOS) || os(iOS) || os(tvOS)
     // These configurations only useful for web image loading
     var indicator: SDWebImageIndicator?
@@ -79,11 +77,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
-    
-    /// Current loaded image, may be `SDAnimatedImage` type
-    public var image: PlatformImage? {
-        imageModel.image
-    }
     
     /// Create an animated image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -127,7 +120,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
         #endif
-        self.imageModel.image = image
+        self.image = image
     }
     
     /// Create an animated image with data and scale.
@@ -144,7 +137,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         let image = SDAnimatedImage(data: data, scale: scale)
-        self.imageModel.image = image
+        self.image = image
     }
     
     #if os(macOS)
@@ -208,8 +201,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
             self.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
+            DispatchQueue.main.async {
+                self.image = image
+            }
             if let image = image {
-                self.imageModel.image = image
                 self.successBlock?(image, cacheType)
             } else {
                 self.failureBlock?(error ?? NSError())
@@ -226,12 +221,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
-        // macOS SDAnimatedImageView.animates should initialize to true in advance before set image
-        #if os(macOS)
-        view.wrapped.animates = true
-        #endif
-        
-        if let image = self.imageModel.image {
+        if let image = self.image {
             #if os(watchOS)
             view.wrapped.setImage(image)
             #else
@@ -248,7 +238,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         #if os(macOS)
-        view.wrapped.animates = self.isAnimating
+        if self.isAnimating != view.wrapped.animates {
+            view.wrapped.animates = self.isAnimating
+        }
         #else
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
@@ -338,17 +330,15 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         #if os(macOS)
         view.wrapped.imageScaling = contentMode
-        #elseif os(iOS) || os(tvOS)
+        #else
         view.wrapped.contentMode = contentMode
-        #elseif os(watchOS)
-        view.wrapped.setContentMode(contentMode)
         #endif
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = self.imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = self.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             var image = image
             // ResizingMode
-            if let resizingMode = self.resizingMode {
+            if let resizingMode = self.resizingMode, capInsets != EdgeInsets() {
                 #if os(macOS)
                 let capInsets = NSEdgeInsets(top: self.capInsets.top, left: self.capInsets.leading, bottom: self.capInsets.bottom, right: self.capInsets.trailing)
                 #else
@@ -467,12 +457,40 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         #elseif os(watchOS)
         if let customLoopCount = self.customLoopCount {
-            view.wrapped.setAnimationRepeatCount(customLoopCount as NSNumber)
+            view.wrapped.animationRepeatCount = customLoopCount as NSNumber
         } else {
             // disable custom loop count
-            view.wrapped.setAnimationRepeatCount(nil)
+            view.wrapped.animationRepeatCount = nil
         }
         #endif
+        
+        // RunLoop Mode
+        if let runLoopMode = self.runLoopMode {
+            view.wrapped.runLoopMode = runLoopMode
+        } else {
+            view.wrapped.runLoopMode = .common
+        }
+        
+        // Pausable
+        if let pausable = self.pausable {
+            view.wrapped.resetFrameIndexWhenStopped = !pausable
+        } else {
+            view.wrapped.resetFrameIndexWhenStopped = false
+        }
+        
+        // Clear Buffer
+        if let purgeable = self.purgeable {
+            view.wrapped.clearBufferWhenStopped = purgeable
+        } else {
+            view.wrapped.clearBufferWhenStopped = false
+        }
+        
+        // Playback Rate
+        if let playBackRate = self.playBackRate {
+            view.wrapped.playbackRate = playBackRate
+        } else {
+            view.wrapped.playbackRate = 1.0
+        }
     }
 }
 
@@ -623,6 +641,47 @@ extension AnimatedImage {
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
         var result = self
         result.incrementalLoad = incrementalLoad
+        return result
+    }
+    
+    /// The runLoopMode when animation is playing on. Defaults is `.common`
+    ///  You can specify a runloop mode to let it rendering.
+    /// - Note: This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
+    /// - Parameter runLoopMode: The runLoopMode for animation
+    public func runLoopMode(_ runLoopMode: RunLoop.Mode) -> AnimatedImage {
+        var result = self
+        result.runLoopMode = runLoopMode
+        return result
+    }
+    
+    /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When `isAnimating` binding value changed to false. Defaults is true.
+    /// - Note: For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
+    /// - Parameter pausable: Whether or not to pause the animation instead of stop the animation.
+    public func pausable(_ pausable: Bool) -> AnimatedImage {
+        var result = self
+        result.pausable = pausable
+        return result
+    }
+    
+    /// Whether or not to clear frame buffer cache when stopped. Defaults is false.
+    /// Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)
+    /// - Parameter purgeable: Whether or not to clear frame buffer cache when stopped.
+    public func purgeable(_ purgeable: Bool) -> AnimatedImage {
+        var result = self
+        result.purgeable = purgeable
+        return result
+    }
+    
+    /// Control the animation playback rate. Default is 1.0.
+    /// `1.0` means the normal speed.
+    /// `0.0` means stopping the animation.
+    /// `0.0-1.0` means the slow speed.
+    /// `> 1.0` means the fast speed.
+    /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
+    /// - Parameter playBackRate: The animation playback rate.
+    public func playBackRate(_ playBackRate: Double) -> AnimatedImage {
+        var result = self
+        result.playBackRate = playBackRate
         return result
     }
 }

@@ -29,6 +29,6 @@ Which aims to provide a better support for SwiftUI users.
   s.source_files = 'SDWebImageSwiftUI/Classes/**/*', 'SDWebImageSwiftUI/Module/*.h'
 
   s.frameworks = 'SwiftUI'
-  s.dependency 'SDWebImage', '~> 5.1'
+  s.dependency 'SDWebImage', '~> 5.3'
   s.swift_version = '5.1'
 end
