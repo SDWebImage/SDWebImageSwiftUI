@@ -221,11 +221,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
-        // macOS SDAnimatedImageView.animates should initialize to true in advance before set image
-        #if os(macOS)
-        view.wrapped.animates = true
-        #endif
-        
         if let image = self.image {
             #if os(watchOS)
             view.wrapped.setImage(image)
@@ -243,7 +238,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         #if os(macOS)
-        view.wrapped.animates = self.isAnimating
+        if self.isAnimating != view.wrapped.animates {
+            view.wrapped.animates = self.isAnimating
+        }
         #else
         if self.isAnimating != view.wrapped.isAnimating {
             if self.isAnimating {
