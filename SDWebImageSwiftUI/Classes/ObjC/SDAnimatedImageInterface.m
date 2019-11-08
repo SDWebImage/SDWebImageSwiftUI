@@ -196,15 +196,6 @@ static UIImage * SharedEmptyImage(void) {
     }
 }
 
-- (void)startAnimatingWithImagesInRange:(NSRange)imageRange duration:(NSTimeInterval)duration repeatCount:(NSInteger)repeatCount {
-    self.animating = YES;
-    if (self.player) {
-        [self.player startPlaying];
-    } else if (_image.images.count > 0) {
-        [super startAnimatingWithImagesInRange:imageRange duration:duration repeatCount:repeatCount];
-    }
-}
-
 - (void)stopAnimating {
     self.animating = NO;
     if (self.player) {
