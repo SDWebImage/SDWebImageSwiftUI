@@ -174,7 +174,7 @@ static UIImage * SharedEmptyImage(void) {
 
 // on watchOS, it's the native imageView itself's layer
 - (id<CALayerProtocol>)imageViewLayer {
-    return [[self _interfaceView] layer];
+    return [self _interfaceView].layer;
 }
 
 - (void)updateShouldAnimate
@@ -214,6 +214,10 @@ static UIImage * SharedEmptyImage(void) {
 
 - (void)setContentMode:(SDImageScaleMode)contentMode {
     [self _interfaceView].contentMode = contentMode;
+}
+
+- (SDImageScaleMode)contentMode {
+    return [self _interfaceView].contentMode;
 }
 
 @end

@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
 @property (nonatomic, assign, getter=isAnimating, readonly) BOOL animating;
+@property (nonatomic, assign) SDImageScaleMode contentMode;
 @property (nonatomic, strong, nullable) NSNumber *animationRepeatCount;
 @property (nonatomic, copy) NSRunLoopMode runLoopMode;
 @property (nonatomic, assign) BOOL resetFrameIndexWhenStopped;
@@ -22,10 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) double playbackRate;
 
 - (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
-
-/// Set the content mode for image
-/// @param contentMode The contrent mode
-- (void)setContentMode:(SDImageScaleMode)contentMode;
 
 /// Trigger the animation check when view appears/disappears
 - (void)updateAnimation;

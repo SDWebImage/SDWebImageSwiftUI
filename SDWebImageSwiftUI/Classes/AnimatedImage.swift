@@ -330,10 +330,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         #if os(macOS)
         view.wrapped.imageScaling = contentMode
-        #elseif os(iOS) || os(tvOS)
+        #else
         view.wrapped.contentMode = contentMode
-        #elseif os(watchOS)
-        view.wrapped.setContentMode(contentMode)
         #endif
         
         // Animated Image does not support resizing mode and rendering mode
