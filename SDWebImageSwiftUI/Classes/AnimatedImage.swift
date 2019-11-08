@@ -12,11 +12,6 @@ import SDWebImage
 import SDWebImageSwiftUIObjC
 #endif
 
-// Data Binding Object
-final class AnimatedImageModel : ObservableObject {
-    @Published var image: PlatformImage?
-}
-
 // Convenient
 #if os(watchOS)
 public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
@@ -39,10 +34,9 @@ public final class AnimatedImageCoordinator: NSObject {
 
 // View
 public struct AnimatedImage : PlatformViewRepresentable {
-    @ObservedObject var imageModel = AnimatedImageModel()
-    
     // Options
     var url: URL?
+    @State var image: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
@@ -83,11 +77,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
-    
-    /// Current loaded image, may be `SDAnimatedImage` type
-    public var image: PlatformImage? {
-        imageModel.image
-    }
     
     /// Create an animated image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -131,7 +120,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
         #endif
-        self.imageModel.image = image
+        self.image = image
     }
     
     /// Create an animated image with data and scale.
@@ -148,7 +137,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         let image = SDAnimatedImage(data: data, scale: scale)
-        self.imageModel.image = image
+        self.image = image
     }
     
     #if os(macOS)
@@ -212,8 +201,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
             self.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
+            DispatchQueue.main.async {
+                self.image = image
+            }
             if let image = image {
-                self.imageModel.image = image
                 self.successBlock?(image, cacheType)
             } else {
                 self.failureBlock?(error ?? NSError())
@@ -235,7 +226,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.animates = true
         #endif
         
-        if let image = self.imageModel.image {
+        if let image = self.image {
             #if os(watchOS)
             view.wrapped.setImage(image)
             #else
@@ -349,7 +340,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = self.imageModel.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = self.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             var image = image
             // ResizingMode
             if let resizingMode = self.resizingMode {
