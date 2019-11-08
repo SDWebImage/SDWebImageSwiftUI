@@ -340,7 +340,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if let image = self.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             var image = image
             // ResizingMode
-            if let resizingMode = self.resizingMode {
+            if let resizingMode = self.resizingMode, capInsets != EdgeInsets() {
                 #if os(macOS)
                 let capInsets = NSEdgeInsets(top: self.capInsets.top, left: self.capInsets.leading, bottom: self.capInsets.bottom, right: self.capInsets.trailing)
                 #else
