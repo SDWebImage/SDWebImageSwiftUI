@@ -8,11 +8,6 @@
 
 #import "SDAnimatedImageInterface.h"
 #if SD_WATCH
-// ImageIO.modulemap does not contains this public header
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wincomplete-umbrella"
-#import <ImageIO/CGImageAnimation.h>
-#pragma clang diagnostic pop
 
 #pragma mark - SPI
 
@@ -35,31 +30,20 @@
 
 @end
 
+@protocol UIImageViewProtocol <NSObject>
+
+- (void)startAnimating;
+- (void)stopAnimating;
+@property (nonatomic, readonly, getter=isAnimating) BOOL animating;
+
+@end
+
 @interface WKInterfaceObject ()
 
 // This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
 - (instancetype)_initForDynamicCreationWithInterfaceProperty:(NSString *)property;
 // This is remote UIView
 @property (nonatomic, strong, readonly) id<UIViewProtocol> _interfaceView;
-
-@end
-
-@interface SDAnimatedImageStatus : NSObject
-
-@property (nonatomic, assign) BOOL shouldAnimate;
-@property (nonatomic, assign) CGImageAnimationStatus animationStatus;
-
-@end
-
-@implementation SDAnimatedImageStatus
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _animationStatus = kCGImageAnimationStatus_Uninitialized;
-    }
-    return self;
-}
 
 @end
 
@@ -70,14 +54,10 @@
 @property (nonatomic, strong, readwrite) UIImage *currentFrame;
 @property (nonatomic, assign, readwrite) NSUInteger currentFrameIndex;
 @property (nonatomic, assign, readwrite) NSUInteger currentLoopCount;
-@property (nonatomic, assign) NSUInteger totalFrameCount;
-@property (nonatomic, assign) NSUInteger totalLoopCount;
-@property (nonatomic, strong) UIImage<SDAnimatedImage> *animatedImage;
-@property (nonatomic, assign) CGFloat animatedImageScale;
-@property (nonatomic, strong) SDAnimatedImageStatus *currentStatus;
 @property (nonatomic, strong) NSNumber *animationRepeatCount;
-@property (nonatomic, assign, getter=isAnimatedFormat) BOOL animatedFormat;
-@property (nonatomic, assign, getter=isAnimating) BOOL animating;
+@property (nonatomic, assign) BOOL shouldAnimate;
+@property (nonatomic,strong) SDAnimatedImagePlayer *player; // The animation player.
+@property (nonatomic) id<CALayerProtocol> imageViewLayer; // The actual rendering layer.
 
 @end
 
@@ -125,142 +105,113 @@
     _image = image;
     
     // Stop animating
-    [self stopBuiltInAnimation];
-    // Reset all value
-    [self resetAnimatedImage];
+    self.player = nil;
+    self.currentFrame = nil;
+    self.currentFrameIndex = 0;
+    self.currentLoopCount = 0;
     
     [super setImage:image];
     if ([image.class conformsToProtocol:@protocol(SDAnimatedImage)]) {
-        UIImage<SDAnimatedImage> *animatedImage = (UIImage<SDAnimatedImage> *)image;
-        NSUInteger animatedImageFrameCount = animatedImage.animatedImageFrameCount;
-        // Check the frame count
-        if (animatedImageFrameCount <= 1) {
+        // Create animted player
+        self.player = [SDAnimatedImagePlayer playerWithProvider:(id<SDAnimatedImage>)image];
+        
+        if (!self.player) {
+            // animated player nil means the image format is not supported, or frame count <= 1
             return;
         }
-        self.animatedImage = animatedImage;
-        self.totalFrameCount = animatedImageFrameCount;
-        // Get the current frame and loop count.
-        self.totalLoopCount = self.animatedImage.animatedImageLoopCount;
-        // Get the scale
-        self.animatedImageScale = image.scale;
-
-        NSData *animatedImageData = animatedImage.animatedImageData;
-        SDImageFormat format = [NSData sd_imageFormatForImageData:animatedImageData];
-        if (format == SDImageFormatGIF || format == SDImageFormatPNG) {
-            self.animatedFormat = YES;
-            [self startBuiltInAnimation];
-        } else {
-            self.animatedFormat = NO;
-            [self stopBuiltInAnimation];
+        
+        // Custom Loop Count
+        if (self.animationRepeatCount != nil) {
+            self.player.totalLoopCount = self.animationRepeatCount.unsignedIntegerValue;
         }
+        
+//        // RunLoop Mode
+//        self.player.runLoopMode = self.runLoopMode;
+//
+//        // Play Rate
+//        self.player.playbackRate = self.playbackRate;
+        
+        // Setup handler
+        __weak typeof(self) wself = self;
+        self.player.animationFrameHandler = ^(NSUInteger index, UIImage * frame) {
+            __strong typeof(self) sself = wself;
+            sself.currentFrameIndex = index;
+            sself.currentFrame = frame;
+            [sself displayLayer:sself.imageViewLayer];
+        };
+        self.player.animationLoopHandler = ^(NSUInteger loopCount) {
+            __strong typeof(self) sself = wself;
+            sself.currentLoopCount = loopCount;
+        };
+        
+        // Update should animate
+        [self updateShouldAnimate];
+        if (self.shouldAnimate) {
+            [self startAnimating];
+        }
+        
+        [self displayLayer:self.imageViewLayer];
     }
 }
 
 - (void)updateAnimation {
     [self updateShouldAnimate];
-    if (self.currentStatus.shouldAnimate) {
-        [self startBuiltInAnimation];
+    if (self.shouldAnimate) {
+        [self startAnimating];
     } else {
-        [self stopBuiltInAnimation];
+        [self stopAnimating];
     }
 }
 
-- (void)startBuiltInAnimation {
-    if (self.currentStatus && self.currentStatus.animationStatus == 0) {
-        return;
-    }
-    UIImage<SDAnimatedImage> *animatedImage = self.animatedImage;
-    NSData *animatedImageData = animatedImage.animatedImageData;
-    NSUInteger maxLoopCount;
-    if (self.animationRepeatCount != nil) {
-        maxLoopCount = self.animationRepeatCount.unsignedIntegerValue;
-    } else {
-        maxLoopCount = animatedImage.animatedImageLoopCount;
-    }
-    if (maxLoopCount == 0) {
-        // The documentation says `kCFNumberPositiveInfinity may be used`, but it actually treat as 1 loop count
-        // 0 was treated as 1 loop count as well, not the same as Image/IO or UIKit
-        maxLoopCount = ((__bridge NSNumber *)kCFNumberPositiveInfinity).unsignedIntegerValue - 1;
-    }
-    NSDictionary *options = @{(__bridge NSString *)kCGImageAnimationLoopCount : @(maxLoopCount)};
-    SDAnimatedImageStatus *status = [[SDAnimatedImageStatus alloc] init];
-    status.shouldAnimate = YES;
-    __weak typeof(self) wself = self;
-    status.animationStatus = CGAnimateImageDataWithBlock((__bridge CFDataRef)animatedImageData, (__bridge CFDictionaryRef)options, ^(size_t index, CGImageRef  _Nonnull imageRef, bool * _Nonnull stop) {
-        __strong typeof(wself) self = wself;
-        if (!self) {
-            *stop = YES;
-            return;
-        }
-        if (!status.shouldAnimate) {
-            *stop = YES;
-            return;
-        }
-        // The CGImageRef provided by this API is GET only, should not call CGImageRelease
-        self.currentFrame = [[UIImage alloc] initWithCGImage:imageRef scale:self.animatedImageScale orientation:UIImageOrientationUp];
-        self.currentFrameIndex = index;
-        // Render the frame
-        [self displayLayer];
-    });
-    
-    self.currentStatus = status;
-}
-
-- (void)stopBuiltInAnimation {
-    self.currentStatus.shouldAnimate = NO;
-    self.currentStatus.animationStatus = kCGImageAnimationStatus_Uninitialized;
-}
-
-- (void)displayLayer {
-    if (self.currentFrame) {
-        id<CALayerProtocol> layer = [self _interfaceView].layer;
-        layer.contentsScale = self.animatedImageScale;
-        layer.contents = (__bridge id)self.currentFrame.CGImage;
+- (void)displayLayer:(id<CALayerProtocol>)layer {
+    UIImage *currentFrame = self.currentFrame;
+    if (currentFrame) {
+        layer.contentsScale = currentFrame.scale;
+        layer.contents = (__bridge id)currentFrame.CGImage;
     }
 }
 
-- (void)resetAnimatedImage
-{
-    self.animatedImage = nil;
-    self.totalFrameCount = 0;
-    self.totalLoopCount = 0;
-    self.currentFrame = nil;
-    self.currentFrameIndex = 0;
-    self.currentLoopCount = 0;
-    self.animatedImageScale = 1;
-    self.animatedFormat = NO;
-    self.currentStatus = nil;
+// on watchOS, it's the native imageView itself's layer
+- (id<CALayerProtocol>)imageViewLayer {
+    return [[self _interfaceView] layer];
 }
 
 - (void)updateShouldAnimate
 {
     id<UIViewProtocol> view = [self _interfaceView];
     BOOL isVisible = view.window && view.superview && ![view isHidden] && view.alpha > 0.0;
-    self.currentStatus.shouldAnimate = self.isAnimating && self.animatedImage && self.isAnimatedFormat && self.totalFrameCount > 1 && isVisible;
+    self.shouldAnimate = self.player && isVisible;
+}
+
+- (BOOL)isAnimating
+{
+    if (self.player) {
+        return self.player.isPlaying;
+    } else {
+        id<UIImageViewProtocol> view = (id<UIImageViewProtocol>)[self _interfaceView];
+        return [view isAnimating];
+    }
 }
 
 - (void)startAnimating {
-    self.animating = YES;
-    if (self.animatedImage) {
-        [self startBuiltInAnimation];
+    if (self.player) {
+        [self.player startPlaying];
     } else if (_image.images.count > 0) {
         [super startAnimating];
     }
 }
 
 - (void)startAnimatingWithImagesInRange:(NSRange)imageRange duration:(NSTimeInterval)duration repeatCount:(NSInteger)repeatCount {
-    self.animating = YES;
-    if (self.animatedImage) {
-        [self startBuiltInAnimation];
+    if (self.player) {
+        [self.player startPlaying];
     } else if (_image.images.count > 0) {
         [super startAnimatingWithImagesInRange:imageRange duration:duration repeatCount:repeatCount];
     }
 }
 
 - (void)stopAnimating {
-    self.animating = NO;
-    if (self.animatedImage) {
-        [self stopBuiltInAnimation];
+    if (self.player) {
+        [self.player stopPlaying];
     } else if (_image.images.count > 0) {
         [super stopAnimating];
     }
