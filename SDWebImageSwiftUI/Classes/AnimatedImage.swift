@@ -60,7 +60,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var customLoopCount: Int?
     var runLoopMode: RunLoop.Mode?
     var pausable: Bool?
-    var clearBufferWhenStopped: Bool?
+    var purgeable: Bool?
     var playBackRate: Double?
     #if os(macOS) || os(iOS) || os(tvOS)
     // These configurations only useful for web image loading
@@ -481,8 +481,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Clear Buffer
-        if let clearBufferWhenStopped = self.clearBufferWhenStopped {
-            view.wrapped.clearBufferWhenStopped = clearBufferWhenStopped
+        if let purgeable = self.purgeable {
+            view.wrapped.clearBufferWhenStopped = purgeable
         } else {
             view.wrapped.clearBufferWhenStopped = false
         }
@@ -656,8 +656,7 @@ extension AnimatedImage {
         return result
     }
     
-    /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When the `isAnimating` binding value changed to false.
-    /// Defaults is true.
+    /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When `isAnimating` binding value changed to false. Defaults is true.
     /// - Note: For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
     /// - Parameter pausable: Whether or not to pause the animation instead of stop the animation.
     public func pausable(_ pausable: Bool) -> AnimatedImage {
@@ -666,12 +665,12 @@ extension AnimatedImage {
         return result
     }
     
-    /// Whether or not to clear frame buffer cache when stopped.
+    /// Whether or not to clear frame buffer cache when stopped. Defaults is false.
     /// Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)
-    /// - Parameter clearBufferWhenStopped: Whether or not to clear frame buffer cache when stopped.
-    public func clearBufferWhenStopped(_ clearBufferWhenStopped: Bool) -> AnimatedImage {
+    /// - Parameter purgeable: Whether or not to clear frame buffer cache when stopped.
+    public func purgeable(_ purgeable: Bool) -> AnimatedImage {
         var result = self
-        result.clearBufferWhenStopped = clearBufferWhenStopped
+        result.purgeable = purgeable
         return result
     }
     
