@@ -151,6 +151,17 @@ extension WebImage {
         return result
     }
     
+    /// Associate a placeholder image when loading image with url
+    /// - note: This placeholder image will apply the same size and resizable from WebImage for convenience. If you don't want this, use the ViewBuilder one above instead
+    /// - Parameter image: A Image view that describes the placeholder.
+    public func placeholder(_ image: Image) -> WebImage {
+        return placeholder {
+            configurations.reduce(image) { (previous, configuration) in
+                configuration(previous)
+            }
+        }
+    }
+    
     /// Control the behavior to retry the failed loading when view become appears again
     /// - Parameter flag: Whether or not to retry the failed loading
     public func retryOnAppear(_ flag: Bool) -> WebImage {
