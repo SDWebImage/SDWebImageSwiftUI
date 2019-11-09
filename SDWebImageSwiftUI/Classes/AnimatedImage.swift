@@ -122,7 +122,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
         #endif
-        self.image = image
+        _image = .init(wrappedValue: image)
     }
     
     /// Create an animated image with data and scale.
@@ -139,7 +139,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         let image = SDAnimatedImage(data: data, scale: scale)
-        self.image = image
+        _image = .init(wrappedValue: image)
     }
     
     #if os(macOS)
