@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Do not use this class directly in WatchKit or Storyboard. This class is implementation detail and will be removed in the future.
+/// This is not public API at all.
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
 @property (nonatomic, assign, getter=isAnimating, readonly) BOOL animating;
@@ -26,14 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Trigger the animation check when view appears/disappears
 - (void)updateAnimation;
-
-@end
-
-@interface SDAnimatedImageInterfaceWrapper : WKInterfaceGroup
-
-@property (nonatomic, strong, nonnull) SDAnimatedImageInterface *wrapped;
-
-- (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
 
 @end
 

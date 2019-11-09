@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SDWebImageSwiftUI/SDAnimatedImageInterface.h>
+#import <SDWebImageSwiftUI/SDAnimatedImageInterfaceWrapper.h>
 
 //! Project version number for SDWebImageSwiftUI.
 FOUNDATION_EXPORT double SDWebImageSwiftUIVersionNumber;
