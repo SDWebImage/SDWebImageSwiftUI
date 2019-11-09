@@ -14,12 +14,7 @@ import SDWebImageSwiftUIObjC
 
 // Convenient
 #if os(watchOS)
-public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
-extension SDAnimatedImageInterface {
-    var wrapped: SDAnimatedImageInterface {
-        return self
-    }
-}
+public typealias AnimatedImageViewWrapper = SDAnimatedImageInterfaceWrapper
 #endif
 
 // Coordinator Life Cycle Binding Object
@@ -122,7 +117,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #else
         let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
         #endif
-        self.image = image
+        _image = .init(wrappedValue: image)
     }
     
     /// Create an animated image with data and scale.
@@ -139,7 +134,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         let image = SDAnimatedImage(data: data, scale: scale)
-        self.image = image
+        _image = .init(wrappedValue: image)
     }
     
     #if os(macOS)
@@ -432,6 +427,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // Antialiased
         view.shouldAntialias = self.antialiased
         #endif
+        
+        view.invalidateIntrinsicContentSize()
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
@@ -562,19 +559,7 @@ extension AnimatedImage {
         var result = self
         result.aspectRatio = aspectRatio
         result.contentMode = contentMode
-        #if os(macOS) || os(iOS) || os(tvOS)
         return result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
-        #else
-        return Group {
-            if aspectRatio != nil {
-                result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
-            } else {
-                // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
-                // To workaround, we do not call default implementation for this case, using original solution instead
-                result
-            }
-        }
-        #endif
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.

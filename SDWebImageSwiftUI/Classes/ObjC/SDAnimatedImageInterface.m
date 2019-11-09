@@ -11,24 +11,6 @@
 
 #pragma mark - SPI
 
-static UIImage * SharedEmptyImage(void) {
-    // This is used for placeholder on `WKInterfaceImage`
-    // Do not using `[UIImage new]` because WatchKit will ignore it
-    static dispatch_once_t onceToken;
-    static UIImage *image;
-    dispatch_once(&onceToken, ^{
-        UIColor *color = UIColor.clearColor;
-        CGRect rect = WKInterfaceDevice.currentDevice.screenBounds;
-        UIGraphicsBeginImageContext(rect.size);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, [color CGColor]);
-        CGContextFillRect(context, rect);
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    });
-    return image;
-}
-
 @protocol CALayerProtocol <NSObject>
 @property (nullable, strong) id contents;
 @property CGFloat contentsScale;
@@ -43,6 +25,16 @@ static UIImage * SharedEmptyImage(void) {
 @property (nonatomic) CGFloat alpha;
 @property (nonatomic, getter=isHidden) BOOL hidden;
 @property (nonatomic, getter=isOpaque) BOOL opaque;
+@property (nonatomic) CGRect frame;
+@property (nonatomic) CGRect bounds;
+@property (nonatomic) CGPoint center;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+@property(nonatomic) NSInteger tag;
+
+- (void)invalidateIntrinsicContentSize;
+- (void)layoutSubviews;
+- (CGSize)sizeThatFits:(CGSize)size;
+- (void)sizeToFit;
 
 @end
 
@@ -59,8 +51,9 @@ static UIImage * SharedEmptyImage(void) {
 
 // This is needed for dynamic created WKInterfaceObject, like `WKInterfaceMap`
 - (instancetype)_initForDynamicCreationWithInterfaceProperty:(NSString *)property;
+- (NSDictionary *)interfaceDescriptionForDynamicCreation;
 // This is remote UIView
-@property (nonatomic, strong, readonly) id<UIImageViewProtocol> _interfaceView;
+@property (nonatomic, strong, readwrite) id<UIViewProtocol> _interfaceView;
 
 @end
 
@@ -97,7 +90,6 @@ static UIImage * SharedEmptyImage(void) {
     return @{
         @"type" : @"image",
         @"property" : self.interfaceProperty,
-        @"image" : SharedEmptyImage()
     };
 }
 
@@ -113,8 +105,7 @@ static UIImage * SharedEmptyImage(void) {
     self.currentFrameIndex = 0;
     self.currentLoopCount = 0;
     
-    [super setImage:image];
-    [self _interfaceView].image = image;
+    ((id<UIImageViewProtocol>)[self _interfaceView]).image = image;
     if ([image.class conformsToProtocol:@protocol(SDAnimatedImage)]) {
         // Create animted player
         self.player = [SDAnimatedImagePlayer playerWithProvider:(id<SDAnimatedImage>)image];
@@ -258,4 +249,5 @@ static UIImage * SharedEmptyImage(void) {
 }
 
 @end
+
 #endif
