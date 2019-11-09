@@ -8,12 +8,12 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SDWebImageSwiftUI'
-  s.version          = '0.8.1'
-  s.summary          = 'Integration of SDWebImage Asynchronous image loading and SwiftUI framework'
+  s.version          = '0.8.2'
+  s.summary          = 'SwiftUI Image loading and Animation framework powered by SDWebImage'
 
   s.description      = <<-DESC
-This framework is used to integrate SDWebImage' image loading system to the new SwiftUI framework.
-Which aims to provide a better support for SwiftUI users.
+SDWebImageSwiftUI is a SwiftUI image loading framework, which based on SDWebImage.
+It brings all your favorite features from SDWebImage, like async image loading, memory/disk caching, animated image playback and performances.
                        DESC
 
   s.homepage         = 'https://github.com/SDWebImage/SDWebImageSwiftUI'
