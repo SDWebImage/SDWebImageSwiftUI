@@ -90,8 +90,10 @@ var body: some View {
             // Success
         }
         .resizable() // Resizable like SwiftUI.Image
+        .placeholder(Image(systemName: "photo")) // Placeholder Image
+        // Supports ViewBuilder as well
         .placeholder {
-            Image(systemName: "photo") // Placeholder
+            Rectangle().foregroundColor(.gray)
         }
         .indicator(.activity) // Activity Indicator
         .animation(.easeInOut(duration: 0.5)) // Animation Duration
@@ -121,7 +123,7 @@ var body: some View {
             // Error
         }
         .resizable() // Actually this is not needed unlike SwiftUI.Image
-        .placeholder(UIImage(systemName: "photo")) // Placeholder
+        .placeholder(UIImage(systemName: "photo")) // Placeholder Image
         .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
         .transition(.fade) // Fade Transition
         .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier
@@ -155,7 +157,7 @@ If you don't need animated image, prefer to use `WebImage` firstly. Which behave
 
 If you need animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
-But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types.
+But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
 For more information, it's really recommended to check our demo below, to learn detailed API usage.
 
