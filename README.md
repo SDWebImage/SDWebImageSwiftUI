@@ -68,7 +68,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.6")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.8")
     ],
 )
 ```
@@ -128,7 +128,8 @@ var body: some View {
         
         // Data
         AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
-        .customLoopCount(1)
+        .customLoopCount(1) // Custom loop count
+        .playbackRate(2.0) // Playback speed rate
         
         // Bundle (not Asset Catalog)
         AnimatedImage(name: "animation1", isAnimating: $isAnimating)) // Animation control binding
@@ -142,7 +143,9 @@ var body: some View {
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, some advanced SwiftUI layout and animation system may not work as expected. You may need UIKit/AppKit and Core Animation to modify the native view.
 
-Note: From v0.4.0, `AnimatedImage` supports watchOS as well. However, it's not backed by SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) like iOS/tvOS/macOS. It use some tricks and hacks because of the limitation on current Apple's API. It also use Image/IO decoding system, which means it supports GIF and APNG format only, but not external format like WebP.
+Note: From v0.8.0, `AnimatedImage` on watchOS support all features the same as iOS/tvOS/macOS, including Animated WebP rendering, runloop mode, pausable, purgeable, playback rate, etc. It use the SDWebImage's [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530), which is the same backend engine for iOS/tvOS/macOS's Animated ImageView.
+
+Note: From v0.4.0, `AnimatedImage` supports watchOS as well. However, it's not backed by SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) like iOS/tvOS/macOS. It use some tricks and hacks because of the limitation on current Apple's API. It also use Image/IO decoding system, which means it supports GIF and APNG format only, but not external format like Animated WebP.
 
 ### Which View to choose
 
