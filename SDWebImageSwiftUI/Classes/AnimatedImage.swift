@@ -427,6 +427,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // Antialiased
         view.shouldAntialias = self.antialiased
         #endif
+        
+        view.invalidateIntrinsicContentSize()
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: Context) {

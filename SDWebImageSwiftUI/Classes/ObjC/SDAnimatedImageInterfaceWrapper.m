@@ -194,6 +194,10 @@ static CGSize sizeThatFitsIMP(id<UIViewProtocol> self, SEL _cmd, CGSize size) {
     self.wrapped._interfaceView = interfaceView.subviews.firstObject;
 }
 
+- (void)invalidateIntrinsicContentSize {
+    [self._interfaceView invalidateIntrinsicContentSize];
+}
+
 @end
 
 #endif
