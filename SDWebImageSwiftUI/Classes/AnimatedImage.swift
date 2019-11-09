@@ -36,7 +36,6 @@ public final class AnimatedImageCoordinator: NSObject {
 public struct AnimatedImage : PlatformViewRepresentable {
     // Options
     var url: URL?
-    @State var image: PlatformImage?
     var webOptions: SDWebImageOptions = []
     var webContext: [SDWebImageContextOption : Any]? = nil
     
@@ -73,6 +72,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var viewCreateBlock: ((PlatformView, Context) -> Void)?
     var viewUpdateBlock: ((PlatformView, Context) -> Void)?
     static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
+    
+    /// Current loaded image, may be `SDAnimatedImage` type
+    @State public var image: PlatformImage?
     
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
