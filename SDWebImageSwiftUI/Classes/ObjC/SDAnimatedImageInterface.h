@@ -29,5 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface SDAnimatedImageInterfaceWrapper : WKInterfaceGroup
+
+@property (nonatomic, strong, nonnull) SDAnimatedImageInterface *wrapped;
+
+- (instancetype)init WK_AVAILABLE_WATCHOS_ONLY(6.0);
+
+@end
+
 NS_ASSUME_NONNULL_END
 #endif

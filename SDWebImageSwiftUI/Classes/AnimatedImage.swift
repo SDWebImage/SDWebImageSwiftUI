@@ -14,12 +14,7 @@ import SDWebImageSwiftUIObjC
 
 // Convenient
 #if os(watchOS)
-public typealias AnimatedImageViewWrapper = SDAnimatedImageInterface
-extension SDAnimatedImageInterface {
-    var wrapped: SDAnimatedImageInterface {
-        return self
-    }
-}
+public typealias AnimatedImageViewWrapper = SDAnimatedImageInterfaceWrapper
 #endif
 
 // Coordinator Life Cycle Binding Object
@@ -562,19 +557,7 @@ extension AnimatedImage {
         var result = self
         result.aspectRatio = aspectRatio
         result.contentMode = contentMode
-        #if os(macOS) || os(iOS) || os(tvOS)
         return result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
-        #else
-        return Group {
-            if aspectRatio != nil {
-                result.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
-            } else {
-                // on watchOS, there are no workaround like `AnimatedImageViewWrapper` to override `intrinsicContentSize`, so the aspect ratio is undetermined and cause sizing issues
-                // To workaround, we do not call default implementation for this case, using original solution instead
-                result
-            }
-        }
-        #endif
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.
