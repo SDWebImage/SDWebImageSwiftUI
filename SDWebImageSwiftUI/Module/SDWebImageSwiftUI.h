@@ -7,8 +7,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SDWebImageSwiftUI/SDAnimatedImageInterface.h>
-#import <SDWebImageSwiftUI/SDAnimatedImageInterfaceWrapper.h>
 
 //! Project version number for SDWebImageSwiftUI.
 FOUNDATION_EXPORT double SDWebImageSwiftUIVersionNumber;
@@ -17,5 +15,5 @@ FOUNDATION_EXPORT double SDWebImageSwiftUIVersionNumber;
 FOUNDATION_EXPORT const unsigned char SDWebImageSwiftUIVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SDWebImageSwiftUI/PublicHeader.h>
-
-
+#import <SDWebImageSwiftUI/SDAnimatedImageInterface.h>
+#import <SDWebImageSwiftUI/SDAnimatedImageInterfaceWrapper.h>

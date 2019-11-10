@@ -31,6 +31,7 @@ struct ContentView: View {
     "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
     "https://www.sample-videos.com/img/Sample-png-image-1mb.png",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
+    "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg",
     "http://via.placeholder.com/200x200.jpg"]
     @State var animated: Bool = false // You can change between WebImage/AnimatedImage
     
