@@ -10,8 +10,6 @@ import SwiftUI
 import SDWebImage
 
 public struct WebImage : View {
-    static var emptyImage = PlatformImage()
-    
     var url: URL?
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
@@ -49,7 +47,7 @@ public struct WebImage : View {
                     if placeholder != nil {
                         placeholder
                     } else {
-                        Image(platformImage: WebImage.emptyImage)
+                        EmptyView()
                     }
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
