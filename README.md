@@ -78,7 +78,7 @@ let package = Package(
 ### Using `WebImage` to load network image
 
 - [x] Supports placeholder and detail options control for image loading as SDWebImage
-- [x] Supports progressive image loading
+- [x] Supports progressive image loading (like baseline)
 - [x] Supports success/failure/progress changes event for custom handling
 - [x] Supports indicator with activity/progress indicator and customization
 - [x] Supports built-in animation and transition, powered by SwiftUI
@@ -108,17 +108,17 @@ Note: This `WebImage` using `Image` for internal implementation, which is the be
 ### Using `AnimatedImage` to play animation
 
 - [x] Supports network image as well as local data and bundle image
-- [x] Supports animated progressive image loading
+- [x] Supports animated progressive image loading (like web browser)
 - [x] Supports animation control using the SwiftUI Binding
 - [x] Supports indicator and transition, powered by SDWebImage and Core Animation
-- [x] Supports advanced control like loop count, incremental load, buffer size
+- [x] Supports advanced control like loop count, playback rate, buffer size, runloop mode, etc
 - [x] Supports coordinate with native UIKit/AppKit/WatchKit view
 
 ```swift
 var body: some View {
     Group {
         // Network
-        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), options: [.progressiveLoad]) // Progressive Load
         .onFailure { error in
             // Error
         }
