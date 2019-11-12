@@ -163,7 +163,13 @@ If you need animated image, `AnimatedImage` is the one to choose. Remember it su
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
-For more information, it's really recommended to check our demo below, to learn detailed API usage.
+For more information, it's really recommended to check our demo, to learn detailed API usage. You can also have a check at the latest API documentation, for advanced usage.
+
+## Documentation
+
++ [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
++ [SDWebImage API documentation](https://sdwebimage.github.io/)
++ [SDWebImage Wiki](https://github.com/SDWebImage/SDWebImage/wiki/)
 
 ## Demo
 
