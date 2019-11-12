@@ -9,6 +9,7 @@
 import SwiftUI
 import SDWebImage
 
+/// A Image View type to load image from url. Supports static image format.
 public struct WebImage : View {
     var url: URL?
     var options: SDWebImageOptions

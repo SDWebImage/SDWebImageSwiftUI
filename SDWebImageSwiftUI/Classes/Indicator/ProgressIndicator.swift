@@ -15,6 +15,11 @@ public struct ProgressIndicator: PlatformViewRepresentable {
     @Binding var progress: CGFloat
     var style: Style
     
+    /// Create indicator with animation binding, progress binding and the style
+    /// - Parameters:
+    ///   - isAnimating: The binding to control the animation
+    ///   - progress: The binding to update the progress
+    ///   - style: The indicator style
     public init(_ isAnimating: Binding<Bool>, progress: Binding<CGFloat>, style: Style = .default) {
         self._isAnimating = isAnimating
         self._progress = progress
