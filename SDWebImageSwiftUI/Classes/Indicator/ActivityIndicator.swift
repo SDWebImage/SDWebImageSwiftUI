@@ -14,6 +14,10 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
     var style: Style
     
+    /// Create the indicator with animation binding and style
+    /// - Parameters:
+    ///   - isAnimating: The binding to control the animation
+    ///   - style: The indicator style
     public init(_ isAnimating: Binding<Bool>, style: Style = .medium) {
         self._isAnimating = isAnimating
         self.style = style

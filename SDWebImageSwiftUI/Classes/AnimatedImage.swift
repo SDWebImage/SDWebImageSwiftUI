@@ -17,7 +17,7 @@ import SDWebImageSwiftUIObjC
 public typealias AnimatedImageViewWrapper = SDAnimatedImageInterfaceWrapper
 #endif
 
-// Coordinator Life Cycle Binding Object
+/// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit/WatchKit.
 public final class AnimatedImageCoordinator: NSObject {
     
     /// Any user-provided object for actual coordinator, such as delegate method, taget-action
@@ -27,7 +27,7 @@ public final class AnimatedImageCoordinator: NSObject {
     public var userInfo: [AnyHashable : Any]?
 }
 
-// View
+/// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 public struct AnimatedImage : PlatformViewRepresentable {
     // Options
     var url: URL?
