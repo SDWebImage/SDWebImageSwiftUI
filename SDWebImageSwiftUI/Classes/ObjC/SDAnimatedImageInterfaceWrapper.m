@@ -104,7 +104,7 @@ static CGSize sizeThatFitsIMP(id<UIViewProtocol> self, SEL _cmd, CGSize size) {
     NSUInteger tag = self.tag;
     id<UIViewProtocol> interfaceView = self.subviews.firstObject;
     if (tag != SDAnimatedImageInterfaceWrapperTag || !interfaceView) {
-        return ((CGSize(*)(id, SEL))objc_msgSend)(self, NSSelectorFromString(SDAnimatedImageInterfaceWrapperSEL_sizeThatFits));
+        return ((CGSize(*)(id, SEL, CGSize))objc_msgSend)(self, NSSelectorFromString(SDAnimatedImageInterfaceWrapperSEL_sizeThatFits), size);
     }
     return size;
 }
