@@ -622,6 +622,8 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SDWebImageSwiftUIDemo-tvOS/Pods-SDWebImageSwiftUIDemo-tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImagePDFCoder-tvOS/SDWebImagePDFCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImageSVGCoder-tvOS/SDWebImageSVGCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI-tvOS/SDWebImageSwiftUI.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder-tvOS/SDWebImageWebPCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp-tvOS/libwebp.framework",
@@ -629,6 +631,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImagePDFCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSVGCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
@@ -646,6 +650,8 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SDWebImageSwiftUIDemo-macOS/Pods-SDWebImageSwiftUIDemo-macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-macOS/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImagePDFCoder-macOS/SDWebImagePDFCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImageSVGCoder-macOS/SDWebImageSVGCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI-macOS/SDWebImageSwiftUI.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder-macOS/SDWebImageWebPCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp-macOS/libwebp.framework",
@@ -653,6 +659,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImagePDFCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSVGCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
@@ -670,6 +678,8 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SDWebImageSwiftUIDemo/Pods-SDWebImageSwiftUIDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-iOS/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImagePDFCoder-iOS/SDWebImagePDFCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImageSVGCoder-iOS/SDWebImageSVGCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI-iOS/SDWebImageSwiftUI.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder-iOS/SDWebImageWebPCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp-iOS/libwebp.framework",
@@ -677,6 +687,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImagePDFCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSVGCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
@@ -716,6 +728,8 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SDWebImageSwiftUIDemo-watchOS WatchKit Extension/Pods-SDWebImageSwiftUIDemo-watchOS WatchKit Extension-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-watchOS/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImagePDFCoder-watchOS/SDWebImagePDFCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImageSVGCoder-watchOS/SDWebImageSVGCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI-watchOS/SDWebImageSwiftUI.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder-watchOS/SDWebImageWebPCoder.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp-watchOS/libwebp.framework",
@@ -723,6 +737,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImagePDFCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSVGCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",

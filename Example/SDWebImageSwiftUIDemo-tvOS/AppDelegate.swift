@@ -10,6 +10,8 @@ import UIKit
 import SwiftUI
 import SDWebImage
 import SDWebImageWebPCoder
+import SDWebImageSVGCoder
+import SDWebImagePDFCoder
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,8 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.rootViewController = UIHostingController(rootView: contentView)
         self.window = window
         window.makeKeyAndVisible()
-        // Add WebP support
+        // Add WebP/SVG/PDF support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
         
         return true
     }

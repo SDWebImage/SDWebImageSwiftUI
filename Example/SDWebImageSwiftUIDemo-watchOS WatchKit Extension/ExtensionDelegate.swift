@@ -9,13 +9,17 @@
 import WatchKit
 import SDWebImage
 import SDWebImageWebPCoder
+import SDWebImageSVGCoder
+import SDWebImagePDFCoder
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-        // Add WebP support
+        // Add WebP/SVG/PDF support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
     }
 
     func applicationDidBecomeActive() {

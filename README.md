@@ -25,7 +25,7 @@ Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-o
 - [x] Multiple caches system, query from different source
 - [x] Multiple loaders system, load from different resource
 
-You can also get all benefits from the existing community around with SDWebImage. You can have massive image format support (GIF/APNG/WebP/HEIF/AVIF) via [Coder Plugins](https://github.com/SDWebImage/SDWebImage/wiki/Coder-Plugin-List), PhotoKit support via [SDWebImagePhotosPlugin](https://github.com/SDWebImage/SDWebImagePhotosPlugin), Firebase integration via [FirebaseUI](https://github.com/firebase/FirebaseUI-iOS), etc.
+You can also get all benefits from the existing community around with SDWebImage. You can have massive image format support (GIF/APNG/WebP/HEIF/AVIF/SVG/PDF) via [Coder Plugins](https://github.com/SDWebImage/SDWebImage/wiki/Coder-Plugin-List), PhotoKit support via [SDWebImagePhotosPlugin](https://github.com/SDWebImage/SDWebImagePhotosPlugin), Firebase integration via [FirebaseUI](https://github.com/firebase/FirebaseUI-iOS), etc.
 
 Besides all these features, we do optimization for SwiftUI, like Binding, View Modifier, using the same design pattern to become a good SwiftUI citizen.
 
@@ -107,11 +107,12 @@ var body: some View {
 }
 ```
 
-Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animation.
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image and vector image.
 
 ### Using `AnimatedImage` to play animation
 
 - [x] Supports network image as well as local data and bundle image
+- [x] Supports animated image format as well as vector image format
 - [x] Supports animated progressive image loading (like web browser)
 - [x] Supports animation control using the SwiftUI Binding
 - [x] Supports indicator and transition, powered by SDWebImage and Core Animation
