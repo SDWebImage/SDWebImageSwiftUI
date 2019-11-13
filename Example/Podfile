@@ -1,25 +1,28 @@
 use_frameworks!
 
-target 'SDWebImageSwiftUIDemo' do
-  platform :ios, '13.0'
+def all_pods
   pod 'SDWebImageSwiftUI', :path => '../'
   pod 'SDWebImageWebPCoder'
+  pod 'SDWebImageSVGCoder'
+  pod 'SDWebImagePDFCoder'
+end
+
+target 'SDWebImageSwiftUIDemo' do
+  platform :ios, '13.0'
+  all_pods
 end
 
 target 'SDWebImageSwiftUIDemo-macOS' do
   platform :osx, '10.15'
-  pod 'SDWebImageSwiftUI', :path => '../'
-  pod 'SDWebImageWebPCoder'
+  all_pods
 end
 
 target 'SDWebImageSwiftUIDemo-tvOS' do
   platform :tvos, '13.0'
-  pod 'SDWebImageSwiftUI', :path => '../'
-  pod 'SDWebImageWebPCoder'
+  all_pods
 end
 
 target 'SDWebImageSwiftUIDemo-watchOS WatchKit Extension' do
   platform :watchos, '6.0'
-  pod 'SDWebImageSwiftUI', :path => '../'
-  pod 'SDWebImageWebPCoder'
+  all_pods
 end

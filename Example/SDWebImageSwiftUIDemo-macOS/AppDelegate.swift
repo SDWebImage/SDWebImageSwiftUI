@@ -10,6 +10,8 @@ import Cocoa
 import SwiftUI
 import SDWebImage
 import SDWebImageWebPCoder
+import SDWebImageSVGCoder
+import SDWebImagePDFCoder
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -30,8 +32,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        // Add WebP support
+        // Add WebP/SVG/PDF support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
