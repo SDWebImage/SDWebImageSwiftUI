@@ -164,13 +164,44 @@ If you need animated image, `AnimatedImage` is the one to choose. Remember it su
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
+### Customization and configuration setup
+
+This framework is based on SDWebImage, which supports advanced customization and configuration to meet different users' demand.
+
+You can register multiple coder plugins for external image format. You can register multiple caches (different paths and config), multiple loaders (URLSession and Photos URLs). You can control the cache expiration date, size, download priority, etc. All in our [wiki](https://github.com/SDWebImage/SDWebImage/wiki/).
+
+The best place to put these setup code for SwiftUI App, it's the `AppDelegate.swift`:
+
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // Add WebP/SVG/PDF support
+    SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+    SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+    SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
+    
+    // Add default HTTP header
+    SDWebImageDownloader.shared.setValue("image/webp,image/apng,image/*,*/*;q=0.8", forHTTPHeaderField: "Accept")
+    
+    // Add multiple caches
+    let cache = SDImageCache(namespace: "tiny")
+    cache.config.maxMemoryCost = 100 * 1024 * 1024 // 100MB memory
+    cache.config.maxDiskSize = 50 * 1024 * 1024 // 50MB disk
+    SDImageCachesManager.shared.addCache(cache)
+    SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+    
+    // Add multiple loaders with Photos Asset support
+    SDImageLoadersManager.shared.addLoader(SDWebImagePhotosLoader.shared)
+    SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
+    return true
+}
+```
+
 For more information, it's really recommended to check our demo, to learn detailed API usage. You can also have a check at the latest API documentation, for advanced usage.
 
 ## Documentation
 
 + [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
 + [SDWebImage API documentation](https://sdwebimage.github.io/)
-+ [SDWebImage Wiki](https://github.com/SDWebImage/SDWebImage/wiki/)
 
 ## Demo
 
