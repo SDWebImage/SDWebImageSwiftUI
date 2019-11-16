@@ -141,6 +141,7 @@ struct ContentView: View {
                         Text((url as NSString).lastPathComponent)
                     }
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .onDelete { indexSet in
                 indexSet.forEach { index in

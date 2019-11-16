@@ -218,9 +218,15 @@ Button(action: {
 }) {
     WebImage(url: url)
 }
+// NavigationLink create Button implicitly
+NavigationView {
+    NavigationLink(destination: Text("Detail view here")) {
+        WebImage(url: url)
+    }
+}
 ```
 
-Instead, you must override the `.buttonStyle` to use the plain style. Or you can use the `.onTapGesture` modifier for touch handling. See [How to disable the overlay color for images inside Button and NavigationLink](https://www.hackingwithswift.com/quick-start/swiftui/how-to-disable-the-overlay-color-for-images-inside-button-and-navigationlink)
+Instead, you must override the `.buttonStyle` to use the plain style, or the `.renderingMode` to use original mode. You can also use the `.onTapGesture` modifier for touch handling. See [How to disable the overlay color for images inside Button and NavigationLink](https://www.hackingwithswift.com/quick-start/swiftui/how-to-disable-the-overlay-color-for-images-inside-button-and-navigationlink)
 
 ```swift
 // Correct
@@ -230,6 +236,13 @@ Button(action: {
     AnimatedImage(url: url)
 }
 .buttonStyle(PlainButtonStyle())
+// Or
+NavigationView {
+    NavigationLink(destination: Text("Detail view here")) {
+        WebImage(url: url)
+        .renderingMode(.original)
+    }
+}
 ```
 
 ## Demo
