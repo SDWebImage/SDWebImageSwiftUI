@@ -45,10 +45,10 @@ struct DetailView: View {
     }
     
     func zoomView() -> some View {
-        #if os(macOS) || os(iOS) || os(tvOS)
+        #if os(macOS) || os(iOS)
         return contentView()
             .scaleEffect(self.scale)
-                .gesture(MagnificationGesture(minimumScaleDelta: 0.1).onChanged { value in
+            .gesture(MagnificationGesture(minimumScaleDelta: 0.1).onChanged { value in
                 let delta = value / self.lastScaleValue
                 self.lastScaleValue = value
                 let newScale = self.scale * delta
@@ -56,7 +56,22 @@ struct DetailView: View {
             }.onEnded { value in
                 self.lastScaleValue = 1.0
             })
-        #else
+        #endif
+        #if os(tvOS)
+        return contentView()
+            .scaleEffect(self.scale)
+            .focusable(true)
+            .onPlayPauseCommand {
+                switch self.scale {
+                case 1:
+                    self.scale = 2
+                case 2:
+                    self.scale = 1
+                default: break
+                }
+            }
+        #endif
+        #if os(watchOS)
         return contentView()
             // SwiftUI's bug workaround (watchOS 6.1)
             // If use `.focusable(true)` here, after pop the Detail view, the Content view's List does not get focus again
