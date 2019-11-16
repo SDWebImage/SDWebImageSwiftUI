@@ -198,13 +198,18 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 For more information, it's really recommended to check our demo, to learn detailed API usage. You can also have a check at the latest API documentation, for advanced usage.
 
+## Documentation
+
++ [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
++ [SDWebImage API documentation](https://sdwebimage.github.io/)
+
 ## FAQ
 
 ### Common Problems
 
 + Using Image/WebImage/AnimatedImage in Button/NavigationLink
 
-SwiftUI's button apply overlay to its content (except Text) by default, this is common mistake to write code like this, which cause strange behavior:
+SwiftUI's `Button` apply overlay to its content (except `Text`) by default, this is common mistake to write code like this, which cause strange behavior:
 
 ```swift
 // Wrong
@@ -226,11 +231,6 @@ Button(action: {
 }
 .buttonStyle(PlainButtonStyle())
 ```
-
-## Documentation
-
-+ [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
-+ [SDWebImage API documentation](https://sdwebimage.github.io/)
 
 ## Demo
 
