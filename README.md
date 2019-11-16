@@ -198,6 +198,35 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 For more information, it's really recommended to check our demo, to learn detailed API usage. You can also have a check at the latest API documentation, for advanced usage.
 
+## FAQ
+
+### Common Problems
+
++ Using Image/WebImage/AnimatedImage in Button/NavigationLink
+
+SwiftUI's button apply overlay to its content (except Text) by default, this is common mistake to write code like this, which cause strange behavior:
+
+```swift
+// Wrong
+Button(action: {
+    // Clicked
+}) {
+    WebImage(url: url)
+}
+```
+
+Instead, you must override the `.buttonStyle` to use the plain style. Or you can use the `.onTapGesture` modifier for touch handling. See [How to disable the overlay color for images inside Button and NavigationLink](https://www.hackingwithswift.com/quick-start/swiftui/how-to-disable-the-overlay-color-for-images-inside-button-and-navigationlink)
+
+```swift
+// Correct
+Button(action: {
+    // Clicked
+}) {
+    AnimatedImage(url: url)
+}
+.buttonStyle(PlainButtonStyle())
+```
+
 ## Documentation
 
 + [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
