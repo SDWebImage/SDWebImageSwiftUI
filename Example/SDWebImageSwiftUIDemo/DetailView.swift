@@ -13,6 +13,8 @@ struct DetailView: View {
     let url: String
     let animated: Bool
     @State var isAnimating: Bool = true
+    @State var lastScaleValue: CGFloat = 1.0
+    @State var scale: CGFloat = 1.0
     
     var body: some View {
         VStack {
@@ -72,6 +74,15 @@ struct DetailView: View {
                 #endif
             }
         }
+        .scaleEffect(self.scale)
+        .gesture(MagnificationGesture().onChanged { value in
+            let delta = value / self.lastScaleValue
+            self.lastScaleValue = value
+            let newScale = self.scale * delta
+            self.scale = min(max(newScale, 0.5), 2)
+        }.onEnded { value in
+            self.lastScaleValue = 1.0
+        })
     }
 }
 
