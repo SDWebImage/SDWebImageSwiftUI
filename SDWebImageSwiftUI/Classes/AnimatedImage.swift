@@ -8,14 +8,6 @@
 
 import SwiftUI
 import SDWebImage
-#if canImport(SDWebImageSwiftUIObjC)
-import SDWebImageSwiftUIObjC
-#endif
-
-// Convenient
-#if os(watchOS)
-public typealias AnimatedImageViewWrapper = SDAnimatedImageInterfaceWrapper
-#endif
 
 /// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit/WatchKit.
 public final class AnimatedImageCoordinator: NSObject {
