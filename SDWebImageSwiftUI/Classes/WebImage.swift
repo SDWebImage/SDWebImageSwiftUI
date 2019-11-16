@@ -144,7 +144,7 @@ extension WebImage {
     /// Associate a placeholder when loading image with url
     /// - note: The differences between Placeholder and Indicator, is that placeholder does not supports animation, and return type is different
     /// - Parameter content: A view that describes the placeholder.
-    public func placeholder<T>(@ViewBuilder _ content: () -> T) -> WebImage where T : View {
+    public func placeholder<T>(@ViewBuilder content: () -> T) -> WebImage where T : View {
         var result = self
         result.placeholder = AnyView(content())
         return result
