@@ -13,32 +13,77 @@ struct DetailView: View {
     let url: String
     let animated: Bool
     @State var isAnimating: Bool = true
+    @State var lastScaleValue: CGFloat = 1.0
+    @State var scale: CGFloat = 1.0
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
             #if os(iOS) || os(tvOS)
             if animated {
-                contentView()
+                zoomView()
                 .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
                     self.isAnimating.toggle()
                 })
             } else {
-                contentView()
+                zoomView()
             }
             #endif
             #if os(macOS) || os(watchOS)
             if animated {
-                contentView()
+                zoomView()
                 .contextMenu {
                     Button(isAnimating ? "Stop" : "Start") {
                         self.isAnimating.toggle()
                     }
                 }
             } else {
-                contentView()
+                zoomView()
             }
             #endif
         }
+    }
+    
+    func zoomView() -> some View {
+        #if os(macOS) || os(iOS)
+        return contentView()
+            .scaleEffect(self.scale)
+            .gesture(MagnificationGesture(minimumScaleDelta: 0.1).onChanged { value in
+                let delta = value / self.lastScaleValue
+                self.lastScaleValue = value
+                let newScale = self.scale * delta
+                self.scale = min(max(newScale, 0.5), 2)
+            }.onEnded { value in
+                self.lastScaleValue = 1.0
+            })
+        #endif
+        #if os(tvOS)
+        return contentView()
+            .scaleEffect(self.scale)
+            .focusable(true)
+            .onPlayPauseCommand {
+                switch self.scale {
+                case 1:
+                    self.scale = 2
+                case 2:
+                    self.scale = 1
+                default: break
+                }
+            }
+        #endif
+        #if os(watchOS)
+        return contentView()
+            // SwiftUI's bug workaround (watchOS 6.1)
+            // If use `.focusable(true)` here, after pop the Detail view, the Content view's List does not get focus again
+            // After some debug, I found that the pipeline to change focus becomes:
+            // Detail Pop (resign focus) -> Content Appear (List view become focus) -> Detail Disappear (become focus again) -> End
+            // Even you use `onDisappear`, it's too late because `.focusable` is called firstly
+            // Sadly, Content view's List focus is managed by SwiftUI (a UICollectionView actually), call `focusable` on Content view does nothing as well
+            // So, here we must use environment or binding, to not become focus during pop :)
+            .focusable(self.presentationMode.wrappedValue.isPresented)
+            .scaleEffect(self.scale)
+            .digitalCrownRotation($scale, from: 0.5, through: 2, by: 0.1, sensitivity: .low, isHapticFeedbackEnabled: false)
+        #endif
     }
     
     func contentView() -> some View {
