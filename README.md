@@ -233,7 +233,7 @@ Instead, you must override the `.buttonStyle` to use the plain style, or the `.r
 Button(action: {
     // Clicked
 }) {
-    AnimatedImage(url: url)
+    WebImage(url: url)
 }
 .buttonStyle(PlainButtonStyle())
 // Or
