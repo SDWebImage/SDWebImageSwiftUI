@@ -119,7 +119,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// Create an animated image with data and scale.
     /// - Parameter data: The image data
     /// - Parameter scale: The scale factor
-    public init(data: Data, scale: CGFloat = 0) {
+    public init(data: Data, scale: CGFloat = 1) {
         self.init(data: data, scale: scale, isAnimating: .constant(true))
     }
     
@@ -127,7 +127,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter data: The image data
     /// - Parameter scale: The scale factor
     /// - Parameter isAnimating: The binding for animation control
-    public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
+    public init(data: Data, scale: CGFloat = 1, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
         self.imageModel.data = data
         self.imageModel.scale = scale
