@@ -19,12 +19,23 @@ public final class AnimatedImageCoordinator: NSObject {
     public var userInfo: [AnyHashable : Any]?
 }
 
+/// Data Binding Object, only properties in this object can support changes from user with @State and refresh
+final class AnimatedImageModel : ObservableObject {
+    /// URL image
+    @Published var url: URL?
+    @Published var webOptions: SDWebImageOptions = []
+    @Published var webContext: [SDWebImageContextOption : Any]? = nil
+    /// Name image
+    @Published var name: String?
+    @Published var bundle: Bundle?
+    /// Data image
+    @Published var data: Data?
+    @Published var scale: CGFloat = 1
+}
+
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 public struct AnimatedImage : PlatformViewRepresentable {
-    // Options
-    var url: URL?
-    var webOptions: SDWebImageOptions = []
-    var webContext: [SDWebImageContextOption : Any]? = nil
+    @ObservedObject var imageModel = AnimatedImageModel()
     
     // Completion Handler
     var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
@@ -60,9 +71,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     var viewUpdateBlock: ((PlatformView, Context) -> Void)?
     static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
     
-    /// Current loaded image, may be `SDAnimatedImage` type
-    @State public var image: PlatformImage?
-    
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
@@ -84,9 +92,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        self.webOptions = options
-        self.webContext = context
-        self.url = url
+        self.imageModel.url = url
+        self.imageModel.webOptions = options
+        self.imageModel.webContext = context
     }
     
     /// Create an animated image with name and bundle.
@@ -104,12 +112,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        #if os(macOS) || os(watchOS)
-        let image = SDAnimatedImage(named: name, in: bundle)
-        #else
-        let image = SDAnimatedImage(named: name, in: bundle, compatibleWith: nil)
-        #endif
-        _image = .init(wrappedValue: image)
+        self.imageModel.name = name
+        self.imageModel.bundle = bundle
     }
     
     /// Create an animated image with data and scale.
@@ -125,8 +129,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(data: Data, scale: CGFloat = 0, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        let image = SDAnimatedImage(data: data, scale: scale)
-        _image = .init(wrappedValue: image)
+        self.imageModel.data = data
+        self.imageModel.scale = scale
     }
     
     #if os(macOS)
@@ -181,7 +185,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     #endif
     
-    func loadImage(_ view: AnimatedImageViewWrapper, url: URL) {
+    func loadImage(_ view: AnimatedImageViewWrapper, context: Context, url: URL, webOptions: SDWebImageOptions = [], webContext: [SDWebImageContextOption : Any]? = nil) {
         let operationKey = NSStringFromClass(type(of: view.wrapped))
         let currentOperation = view.wrapped.sd_imageLoadOperation(forKey: operationKey)
         if currentOperation != nil {
@@ -190,9 +194,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.sd_setImage(with: url, placeholderImage: placeholder, options: webOptions, context: webContext, progress: { (receivedSize, expectedSize, _) in
             self.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
-            DispatchQueue.main.async {
-                self.image = image
-            }
+            self.layoutView(view, context: context)
             if let image = image {
                 self.successBlock?(image, cacheType)
             } else {
@@ -210,20 +212,23 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
-        if let image = self.image {
-            #if os(watchOS)
-            view.wrapped.setImage(image)
+        // Refresh image, imageModel is the South of Truth, switch the type
+        if let name = imageModel.name {
+            #if os(macOS) || os(watchOS)
+            let image = SDAnimatedImage(named: name, in: imageModel.bundle)
             #else
-            view.wrapped.image = image
+            let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
             #endif
-        } else {
-            if let url = url {
-                #if os(macOS) || os(iOS) || os(tvOS)
-                view.wrapped.sd_imageIndicator = self.indicator
-                view.wrapped.sd_imageTransition = self.transition
-                #endif
-                loadImage(view, url: url)
-            }
+            view.wrapped.image = image
+        } else if let data = imageModel.data {
+            let image = SDAnimatedImage(data: data, scale: imageModel.scale)
+            view.wrapped.image = image
+        } else if let url = imageModel.url {
+            #if os(macOS) || os(iOS) || os(tvOS)
+            view.wrapped.sd_imageIndicator = self.indicator
+            view.wrapped.sd_imageTransition = self.transition
+            #endif
+            loadImage(view, context: context, url: url, webOptions: imageModel.webOptions, webContext: imageModel.webContext)
         }
         
         #if os(macOS)
@@ -324,7 +329,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = self.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = view.wrapped.image, !image.sd_isAnimated, !image.conforms(to: SDAnimatedImageProtocol.self) {
             var image = image
             // ResizingMode
             if let resizingMode = self.resizingMode, capInsets != EdgeInsets() {
