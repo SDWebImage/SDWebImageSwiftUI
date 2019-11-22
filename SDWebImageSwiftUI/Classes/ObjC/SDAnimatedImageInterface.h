@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// This is not public API at all.
 @interface SDAnimatedImageInterface : WKInterfaceImage
 
+@property (nonatomic, strong, readonly, nullable) UIImage *image;
 @property (nonatomic, assign, getter=isAnimating, readonly) BOOL animating;
 @property (nonatomic, assign) SDImageScaleMode contentMode;
 @property (nonatomic, strong, nullable) NSNumber *animationRepeatCount;

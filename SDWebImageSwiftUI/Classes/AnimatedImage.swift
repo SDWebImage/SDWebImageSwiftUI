@@ -231,11 +231,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
             let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
             #endif
             view.wrapped.sd_imageName = name
+            #if os(iOS) || os(tvOS) || os(macOS)
             view.wrapped.image = image
+            #else
+            view.wrapped.setImage(image)
+            #endif
         } else if let data = imageModel.data, data != view.wrapped.sd_imageData {
             let image = SDAnimatedImage(data: data, scale: imageModel.scale)
             view.wrapped.sd_imageData = data
+            #if os(iOS) || os(tvOS) || os(macOS)
             view.wrapped.image = image
+            #else
+            view.wrapped.setImage(image)
+            #endif
         } else if let url = imageModel.url, url != view.wrapped.sd_imageURL {
             #if os(macOS) || os(iOS) || os(tvOS)
             view.wrapped.sd_imageIndicator = imageConfiguration.indicator

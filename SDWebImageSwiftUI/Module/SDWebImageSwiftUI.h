@@ -16,4 +16,5 @@ FOUNDATION_EXPORT const unsigned char SDWebImageSwiftUIVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SDWebImageSwiftUI/PublicHeader.h>
 #import <SDWebImageSwiftUI/SDAnimatedImageInterface.h>
+#import <SDWebImageSwiftUI/SDAnimatedImageInterface+WebCache.h>
 #import <SDWebImageSwiftUI/SDAnimatedImageInterfaceWrapper.h>
