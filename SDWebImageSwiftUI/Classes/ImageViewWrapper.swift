@@ -75,6 +75,28 @@ public class AnimatedImageViewWrapper : PlatformView {
     }
 }
 
+private var sd_imageNameKey: Void?
+private var sd_imageDataKey: Void?
+/// Store the Animated Image loading state, to avoid re-query duinrg `updateView(_:)` until Source of Truth changes
+extension PlatformView {
+    var sd_imageName: String? {
+        get {
+            objc_getAssociatedObject(self, &sd_imageNameKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &sd_imageNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    var sd_imageData: Data? {
+        get {
+            objc_getAssociatedObject(self, &sd_imageDataKey) as? Data
+        }
+        set {
+            objc_setAssociatedObject(self, &sd_imageDataKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
+
 /// Use wrapper to solve the `UIProgressView`/`NSProgressIndicator` frame origin NaN crash (SwiftUI's bug)
 public class ProgressIndicatorWrapper : PlatformView {
     #if os(macOS)
