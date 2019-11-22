@@ -7,6 +7,9 @@
 */
 
 #import "SDAnimatedImageInterface+WebCache.h"
+
+#if SD_WATCH
+
 #import <objc/runtime.h>
 
 @implementation SDAnimatedImageInterface (WebCache)
@@ -55,3 +58,5 @@
 }
 
 @end
+
+#endif
