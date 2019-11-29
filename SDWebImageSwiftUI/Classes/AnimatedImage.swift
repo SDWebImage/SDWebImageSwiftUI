@@ -9,6 +9,8 @@
 import SwiftUI
 import SDWebImage
 
+#if os(iOS) || os(tvOS) || os(macOS)
+
 /// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit/WatchKit.
 public final class AnimatedImageCoordinator: NSObject {
     
@@ -64,11 +66,9 @@ final class AnimatedImageConfiguration: ObservableObject {
     var pausable: Bool?
     var purgeable: Bool?
     var playBackRate: Double?
-    #if os(macOS) || os(iOS) || os(tvOS)
     // These configurations only useful for web image loading
     var indicator: SDWebImageIndicator?
     var transition: SDWebImageTransition?
-    #endif
     var placeholder: PlatformImage?
 }
 
@@ -147,8 +147,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public typealias NSViewType = AnimatedImageViewWrapper
     #elseif os(iOS) || os(tvOS)
     public typealias UIViewType = AnimatedImageViewWrapper
-    #elseif os(watchOS)
-    public typealias WKInterfaceObjectType = AnimatedImageViewWrapper
     #endif
     
     public typealias Coordinator = AnimatedImageCoordinator
@@ -180,18 +178,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(uiView, coordinator: coordinator)
-    }
-    #elseif os(watchOS)
-    public func makeWKInterfaceObject(context: WKInterfaceObjectRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
-        makeView(context: context)
-    }
-    
-    public func updateWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, context: WKInterfaceObjectRepresentableContext<AnimatedImage>) {
-        updateView(wkInterfaceObject, context: context)
-    }
-    
-    public static func dismantleWKInterfaceObject(_ wkInterfaceObject: AnimatedImageViewWrapper, coordinator: Coordinator) {
-        dismantleView(wkInterfaceObject, coordinator: coordinator)
     }
     #endif
     
@@ -225,30 +211,20 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
         if let name = imageModel.name, name != view.wrapped.sd_imageName {
-            #if os(macOS) || os(watchOS)
+            #if os(macOS)
             let image = SDAnimatedImage(named: name, in: imageModel.bundle)
             #else
             let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
             #endif
             view.wrapped.sd_imageName = name
-            #if os(iOS) || os(tvOS) || os(macOS)
             view.wrapped.image = image
-            #else
-            view.wrapped.setImage(image)
-            #endif
         } else if let data = imageModel.data, data != view.wrapped.sd_imageData {
             let image = SDAnimatedImage(data: data, scale: imageModel.scale)
             view.wrapped.sd_imageData = data
-            #if os(iOS) || os(tvOS) || os(macOS)
             view.wrapped.image = image
-            #else
-            view.wrapped.setImage(image)
-            #endif
         } else if let url = imageModel.url, url != view.wrapped.sd_imageURL {
-            #if os(macOS) || os(iOS) || os(tvOS)
             view.wrapped.sd_imageIndicator = imageConfiguration.indicator
             view.wrapped.sd_imageTransition = imageConfiguration.transition
-            #endif
             loadImage(view, context: context)
         }
         
@@ -264,13 +240,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 view.wrapped.stopAnimating()
             }
         }
-        #if os(watchOS)
-        // when onAppear/onDisappear, SwiftUI will call this `updateView(_:context:)`
-        // we use this to start/stop animation, implements `SDAnimatedImageView` like behavior
-        DispatchQueue.main.async {
-            view.wrapped.updateAnimation()
-        }
-        #endif
         #endif
         
         configureView(view, context: context)
@@ -298,8 +267,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
         let contentMode: NSImageScaling
         #elseif os(iOS) || os(tvOS)
         let contentMode: UIView.ContentMode
-        #elseif os(watchOS)
-        let contentMode: SDImageScaleMode
         #endif
         if let _ = imageLayout.aspectRatio {
             // If `aspectRatio` is not `nil`, always scale to fill and SwiftUI will layout the container with custom aspect ratio.
@@ -307,8 +274,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             contentMode = .scaleAxesIndependently
             #elseif os(iOS) || os(tvOS)
             contentMode = .scaleToFill
-            #elseif os(watchOS)
-            contentMode = .fill
             #endif
         } else {
             // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio.
@@ -320,16 +285,12 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 contentMode = .scaleProportionallyUpOrDown
                 #elseif os(iOS) || os(tvOS)
                 contentMode = .scaleAspectFill
-                #elseif os(watchOS)
-                contentMode = .aspectFill
                 #endif
             case .fit:
                 #if os(macOS)
                 contentMode = .scaleProportionallyUpOrDown
                 #elseif os(iOS) || os(tvOS)
                 contentMode = .scaleAspectFit
-                #elseif os(watchOS)
-                contentMode = .aspectFit
                 #endif
             case .none:
                 // If `contentMode` is not set at all, using scale to fill as SwiftUI default value
@@ -337,8 +298,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 contentMode = .scaleAxesIndependently
                 #elseif os(iOS) || os(tvOS)
                 contentMode = .scaleToFill
-                #elseif os(watchOS)
-                contentMode = .fill
                 #endif
             }
         }
@@ -362,28 +321,20 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 switch resizingMode {
                 case .stretch:
                     #if os(macOS)
-                    view.wrapped.image?.resizingMode = .stretch
-                    view.wrapped.image?.capInsets = capInsets
+                    image.resizingMode = .stretch
+                    image.capInsets = capInsets
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
-                    #if os(iOS) || os(tvOS)
+                    #endif
                     view.wrapped.image = image
-                    #elseif os(watchOS)
-                    view.wrapped.setImage(image)
-                    #endif
-                    #endif
                 case .tile:
                     #if os(macOS)
-                    view.wrapped.image?.resizingMode = .tile
-                    view.wrapped.image?.capInsets = capInsets
+                    image.resizingMode = .tile
+                    image.capInsets = capInsets
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
-                    #if os(iOS) || os(tvOS)
+                    #endif
                     view.wrapped.image = image
-                    #elseif os(watchOS)
-                    view.wrapped.setImage(image)
-                    #endif
-                    #endif
                 @unknown default:
                     // Future cases, not implements
                     break
@@ -395,26 +346,18 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 switch renderingMode {
                 case .template:
                     #if os(macOS)
-                    view.wrapped.image?.isTemplate = true
+                    image.isTemplate = true
                     #else
                     image = image.withRenderingMode(.alwaysTemplate)
-                    #if os(iOS) || os(tvOS)
+                    #endif
                     view.wrapped.image = image
-                    #elseif os(watchOS)
-                    view.wrapped.setImage(image)
-                    #endif
-                    #endif
                 case .original:
                     #if os(macOS)
-                    view.wrapped.image?.isTemplate = false
+                    image.isTemplate = false
                     #else
                     image = image.withRenderingMode(.alwaysOriginal)
-                    #if os(iOS) || os(tvOS)
+                    #endif
                     view.wrapped.image = image
-                    #elseif os(watchOS)
-                    view.wrapped.setImage(image)
-                    #endif
-                    #endif
                 @unknown default:
                     // Future cases, not implements
                     break
@@ -422,7 +365,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
         }
         
-        #if os(macOS) || os(iOS) || os(tvOS)
         // Interpolation
         if let interpolation = imageLayout.interpolation {
             switch interpolation {
@@ -444,13 +386,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
         
         // Antialiased
         view.shouldAntialias = imageLayout.antialiased
-        #endif
         
         view.invalidateIntrinsicContentSize()
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
-        #if os(macOS) || os(iOS) || os(tvOS)
         // IncrementalLoad
         if let incrementalLoad = imageConfiguration.incrementalLoad {
             view.wrapped.shouldIncrementalLoad = incrementalLoad
@@ -472,14 +412,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             // disable custom loop count
             view.wrapped.shouldCustomLoopCount = false
         }
-        #elseif os(watchOS)
-        if let customLoopCount = imageConfiguration.customLoopCount {
-            view.wrapped.animationRepeatCount = customLoopCount as NSNumber
-        } else {
-            // disable custom loop count
-            view.wrapped.animationRepeatCount = nil
-        }
-        #endif
         
         // RunLoop Mode
         if let runLoopMode = imageConfiguration.runLoopMode {
@@ -624,7 +556,6 @@ extension AnimatedImage {
     /// `0` or nil means automatically adjust by calculating current memory usage.
     /// `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
     /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
-    /// - Warning: watchOS does not implementes.
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> AnimatedImage {
         self.imageConfiguration.maxBufferSize = bufferSize
@@ -634,7 +565,6 @@ extension AnimatedImage {
     /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
     /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
     /// Default is true. Set to false to only render the static poster for incremental animated image.
-    /// - Warning: watchOS does not implementes.
     /// - Parameter incrementalLoad: Whether or not to incremental load
     public func incrementalLoad(_ incrementalLoad: Bool) -> AnimatedImage {
         self.imageConfiguration.incrementalLoad = incrementalLoad
@@ -747,7 +677,6 @@ extension AnimatedImage {
         return self
     }
     
-    #if os(macOS) || os(iOS) || os(tvOS)
     /// Associate a indicator when loading image with url
     /// - Note: If you do not need indicator, specify nil. Defaults to nil
     /// - Parameter indicator: indicator, see more in `SDWebImageIndicator`
@@ -763,7 +692,6 @@ extension AnimatedImage {
         self.imageConfiguration.transition = transition
         return self
     }
-    #endif
 }
 
 #if DEBUG
@@ -777,4 +705,6 @@ struct AnimatedImage_Previews : PreviewProvider {
         }
     }
 }
+#endif
+
 #endif
