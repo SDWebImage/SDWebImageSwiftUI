@@ -72,7 +72,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.8")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.9")
     ],
 )
 ```
@@ -86,7 +86,7 @@ let package = Package(
 - [x] Supports success/failure/progress changes event for custom handling
 - [x] Supports indicator with activity/progress indicator and customization
 - [x] Supports built-in animation and transition, powered by SwiftUI
-- [x] Supports animated image as well ! (from v0.9.0)
+- [x] Supports animated image as well! (from v0.9.0)
 
 ```swift
 var body: some View {
@@ -109,9 +109,9 @@ var body: some View {
 }
 ```
 
-Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image or vector image.
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. In previous version, `WebImage` supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image or vector image.
 
-Note: From v0.9.0, `WebImage` supports animated image as well ! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). But it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, runloop mode, playback rate, etc.
+Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). But it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, runloop mode, playback rate, etc.
 
 ### Using `AnimatedImage` to play animation
 
