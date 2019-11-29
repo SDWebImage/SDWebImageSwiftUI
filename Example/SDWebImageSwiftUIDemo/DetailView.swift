@@ -95,8 +95,14 @@ struct DetailView: View {
                 .resizable()
                 .scaledToFit()
                 #else
-                AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
+                WebImage(url: URL(string:url), options: [.progressiveLoad])
                 .resizable()
+                .animated(isAnimating)
+                .indicator { isAnimating, progress in
+                    ProgressBar(value: progress)
+                    .foregroundColor(.blue)
+                    .frame(maxHeight: 6)
+                }
                 .scaledToFit()
                 #endif
             } else {

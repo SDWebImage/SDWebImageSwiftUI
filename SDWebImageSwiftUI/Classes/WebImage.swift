@@ -11,10 +11,6 @@ import SDWebImage
 
 /// A Image View type to load image from url. Supports static image format.
 public struct WebImage : View {
-    var url: URL?
-    var options: SDWebImageOptions
-    var context: [SDWebImageContextOption : Any]?
-    
     var configurations: [(Image) -> Image] = []
     
     var placeholder: AnyView?
@@ -23,14 +19,16 @@ public struct WebImage : View {
     
     @ObservedObject var imageManager: ImageManager
     
+    // Animated Image support (Beta)
+    var animated: Bool = false
+    @State var currentFrame: PlatformImage? = nil
+    @State var imagePlayer: SDAnimatedImagePlayer? = nil
+    
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.url = url
-        self.options = options
-        self.context = context
         self.imageManager = ImageManager(url: url, options: options, context: context)
         // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
         // this can ensure we load the image, SDWebImage take care of the duplicated query
@@ -40,8 +38,29 @@ public struct WebImage : View {
     public var body: some View {
         Group {
             if imageManager.image != nil {
-                configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
-                    configuration(previous)
+                if animated {
+                    if currentFrame != nil {
+                        configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
+                            configuration(previous)
+                        }
+                        .onAppear {
+                            self.imagePlayer?.startPlaying()
+                        }
+                        .onDisappear {
+                            self.imagePlayer?.pausePlaying()
+                        }
+                    } else {
+                        configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
+                            configuration(previous)
+                        }
+                        .onReceive(imageManager.$image) { image in
+                            self.setupPlayer(image: image)
+                        }
+                    }
+                } else {
+                    configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
+                        configuration(previous)
+                    }
                 }
             } else {
                 Group {
@@ -191,6 +210,51 @@ extension WebImage {
     /// - Parameter content: A view that describes the indicator.
     public func indicator<T>(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> some View where T : View {
         return indicator(Indicator(content: content))
+    }
+}
+
+// Animated Image support (Beta)
+extension WebImage {
+    
+    /// Make the image to support animated images. The animation will start when view appears, and pause when disappears.
+    /// - Note: Currently we do not have advanced control like binding, reset frame index, playback rate, etc. For those use case, it's recommend to use `AnimatedImage` type instead. (support iOS/tvOS/macOS)
+    /// - Warning: This API need polishing. In the future we may choose to create a new View type instead.
+    ///
+    /// - Parameter animated: Whether or not to enable animationn.
+    public func animated(_ animated: Bool = true) -> WebImage {
+        var result = self
+        result.animated = animated
+        if animated {
+            // Update Image Manager
+            result.imageManager.cancel()
+            var context = result.imageManager.context ?? [:]
+            context[.animatedImageClass] = SDAnimatedImage.self
+            result.imageManager.context = context
+            result.imageManager.load()
+        } else {
+            // Update Image Manager
+            result.imageManager.cancel()
+            var context = result.imageManager.context ?? [:]
+            context[.animatedImageClass] = nil
+            result.imageManager.context = context
+            result.imageManager.load()
+        }
+        return result
+    }
+    
+    func setupPlayer(image: PlatformImage?) {
+        if imagePlayer != nil {
+            return
+        }
+        if let animatedImage = image as? SDAnimatedImageProvider {
+            if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
+                imagePlayer.animationFrameHandler = { (_, frame) in
+                    self.currentFrame = frame
+                }
+                self.imagePlayer = imagePlayer
+                imagePlayer.startPlaying()
+            }
+        }
     }
 }
 

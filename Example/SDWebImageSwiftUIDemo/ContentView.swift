@@ -38,7 +38,7 @@ struct ContentView: View {
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/stack_of_photos.pdf",
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/smartphone_tablet.pdf"
     ]
-    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
+    @State var animated: Bool = true // You can change between WebImage/AnimatedImage
     
     var body: some View {
         #if os(iOS) || os(tvOS)
@@ -105,8 +105,16 @@ struct ContentView: View {
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #else
-                            AnimatedImage(url: URL(string:url))
+                            WebImage(url: URL(string:url))
                             .resizable()
+                            .animated()
+                            .indicator { _, _ in
+                                ActivityBar()
+                                .foregroundColor(Color.white)
+                                .frame(width: 50, height: 50)
+                            }
+                            .animation(.easeInOut(duration: 0.5))
+                            .transition(.fade)
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #endif
