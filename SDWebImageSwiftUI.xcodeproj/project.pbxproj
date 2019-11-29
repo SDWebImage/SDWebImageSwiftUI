@@ -7,22 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
-		324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
-		324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
-		324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */; };
-		3253E05823879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3253E05923879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3253E05A23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3253E05B23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3253E05C23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */; };
-		3253E05D23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */; };
-		3253E05E23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */; };
-		3253E05F23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */; };
 		326B84822363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84832363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84842363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
@@ -39,14 +23,6 @@
 		326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
-		3276EB00237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3276EB01237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3276EB02237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3276EB03237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3276EB04237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */; };
-		3276EB05237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */; };
-		3276EB06237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */; };
-		3276EB07237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */; };
 		32B933E523659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E623659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E723659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
@@ -129,16 +105,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAnimatedImageInterface.h; sourceTree = "<group>"; };
-		324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAnimatedImageInterface.m; sourceTree = "<group>"; };
-		3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SDAnimatedImageInterface+WebCache.h"; sourceTree = "<group>"; };
-		3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SDAnimatedImageInterface+WebCache.m"; sourceTree = "<group>"; };
 		326B84812363350C0011BDFB /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		326B8486236335110011BDFB /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
-		3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDAnimatedImageInterfaceWrapper.h; sourceTree = "<group>"; };
-		3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDAnimatedImageInterfaceWrapper.m; sourceTree = "<group>"; };
 		32B933E423659A1900BB7CAD /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -192,19 +162,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		324F61C4235E07EC003973B8 /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				324F61C5235E07EC003973B8 /* SDAnimatedImageInterface.h */,
-				324F61C6235E07EC003973B8 /* SDAnimatedImageInterface.m */,
-				3253E05623879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h */,
-				3253E05723879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m */,
-				3276EAFE237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h */,
-				3276EAFF237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m */,
-			);
-			path = ObjC;
-			sourceTree = "<group>";
-		};
 		326099472362E09E006EBB22 /* Indicator */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +215,6 @@
 			children = (
 				32B933E323659A0700BB7CAD /* Transition */,
 				326099472362E09E006EBB22 /* Indicator */,
-				324F61C4235E07EC003973B8 /* ObjC */,
 				32C43DDC22FD54C600BE87F5 /* ImageManager.swift */,
 				32C43DDE22FD54C600BE87F5 /* WebImage.swift */,
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
@@ -286,9 +242,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3253E05823879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */,
-				3276EB00237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */,
-				324F61C7235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,9 +250,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3253E05923879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */,
-				3276EB01237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */,
-				324F61C8235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2222FD583A00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,9 +258,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3253E05A23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */,
-				3276EB02237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */,
-				324F61C9235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2322FD583B00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -319,9 +266,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3253E05B23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.h in Headers */,
-				3276EB03237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.h in Headers */,
-				324F61CA235E07EC003973B8 /* SDAnimatedImageInterface.h in Headers */,
 				32C43E2422FD583C00BE87F5 /* SDWebImageSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,7 +433,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3276EB04237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */,
 				32B933E523659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */,
@@ -498,9 +441,7 @@
 				326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				326B8487236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
-				3253E05C23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
-				324F61CB235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,7 +449,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3276EB05237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */,
 				32B933E623659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1A22FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848D236335400011BDFB /* ProgressIndicator.swift in Sources */,
@@ -517,9 +457,7 @@
 				326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				326B8488236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
-				3253E05D23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
-				324F61CC235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,7 +465,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3276EB06237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */,
 				32B933E723659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E1D22FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848E236335400011BDFB /* ProgressIndicator.swift in Sources */,
@@ -536,9 +473,7 @@
 				326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				326B8489236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
-				3253E05E23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
-				324F61CD235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +481,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3276EB07237760D800B385D4 /* SDAnimatedImageInterfaceWrapper.m in Sources */,
 				32B933E823659A1900BB7CAD /* Transition.swift in Sources */,
 				32C43E2022FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848F236335400011BDFB /* ProgressIndicator.swift in Sources */,
@@ -555,9 +489,7 @@
 				326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				326B848A236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
-				3253E05F23879A6F007ACAD8 /* SDAnimatedImageInterface+WebCache.m in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
-				324F61CE235E07EC003973B8 /* SDAnimatedImageInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,16 +8,8 @@
 
 import Foundation
 import SDWebImage
-#if canImport(SDWebImageSwiftUIObjC)
-import SDWebImageSwiftUIObjC
-#endif
 
-#if os(watchOS)
-/// Use wrapper to solve the `WKInterfaceImage` aspect issue (SwiftUI's Bug)
-public typealias AnimatedImageViewWrapper = SDAnimatedImageInterfaceWrapper
-#endif
-
-#if !os(watchOS)
+#if os(iOS) || os(tvOS) || os(macOS)
 
 /// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
 public class AnimatedImageViewWrapper : PlatformView {
