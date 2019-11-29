@@ -190,7 +190,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
     
     // Add multiple loaders with Photos Asset support
-    SDImageLoadersManager.shared.addLoader(SDWebImagePhotosLoader.shared)
+    SDImageLoadersManager.shared.addLoader(SDImagePhotosLoader.shared)
     SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
     return true
 }
