@@ -86,6 +86,7 @@ let package = Package(
 - [x] Supports success/failure/progress changes event for custom handling
 - [x] Supports indicator with activity/progress indicator and customization
 - [x] Supports built-in animation and transition, powered by SwiftUI
+- [x] Supports animated image as well ! (from v0.9.0)
 
 ```swift
 var body: some View {
@@ -99,6 +100,7 @@ var body: some View {
         .placeholder {
             Rectangle().foregroundColor(.gray)
         }
+        .animated() // Supports Animated Image
         .indicator(.activity) // Activity Indicator
         .animation(.easeInOut(duration: 0.5)) // Animation Duration
         .transition(.fade) // Fade Transition
@@ -108,6 +110,8 @@ var body: some View {
 ```
 
 Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But it supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image or vector image.
+
+Note: From v0.9.0, `WebImage` supports animated image as well ! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). But it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, runloop mode, playback rate, etc.
 
 ### Using `AnimatedImage` to play animation
 
@@ -150,9 +154,9 @@ var body: some View {
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, some advanced SwiftUI layout and animation system may not work as expected. You may need UIKit/AppKit and Core Animation to modify the native view.
 
-Note: From v0.8.0, `AnimatedImage` on watchOS support all features the same as iOS/tvOS/macOS, including Animated WebP rendering, runloop mode, pausable, purgeable, playback rate, etc. It use the SDWebImage's [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530), which is the same backend engine for iOS/tvOS/macOS's Animated ImageView.
+Note: From v0.9.0, `AnimatedImage` on watchOS drop the supports on watchOS, because of using hacks and private APIs. For watchOS user, choose `WebImage` instead.
 
-Note: From v0.4.0, `AnimatedImage` supports watchOS as well. However, it's not backed by SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) like iOS/tvOS/macOS. It use some tricks and hacks because of the limitation on current Apple's API. It also use Image/IO decoding system, which means it supports GIF and APNG format only, but not external format like Animated WebP.
+Note: From v0.8.0, `AnimatedImage` on watchOS support all features the same as iOS/tvOS/macOS, including Animated WebP rendering, runloop mode, pausable, purgeable, playback rate, etc. It use the SDWebImage's [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530), which is the same backend engine for iOS/tvOS/macOS's Animated ImageView.
 
 ### Which View to choose
 
@@ -160,7 +164,9 @@ Why we have two different View types here, is because of current SwiftUI limit. 
 
 If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works.
 
-If you need animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
+If you need simple animated image, use v0.9.0 above with `WebImage`. Which provide the animated image support.
+
+If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
