@@ -24,16 +24,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "SDWebImageSwiftUI",
-            dependencies: ["SDWebImage", "SDWebImageSwiftUIObjC"],
+            dependencies: ["SDWebImage"],
             path: "SDWebImageSwiftUI/Classes",
             exclude: ["ObjC"]
         ),
-        // This is implementation detail because SwiftPM does not support mixed Objective-C/Swift code, don't dependent this target
-        .target(
-            name: "SDWebImageSwiftUIObjC",
-            dependencies: ["SDWebImage"],
-            path: "SDWebImageSwiftUI/Classes/ObjC",
-            publicHeadersPath: "."
-        )
     ]
 )
