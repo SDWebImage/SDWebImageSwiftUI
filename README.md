@@ -121,7 +121,7 @@ Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.ani
 - [x] Supports animation control using the SwiftUI Binding
 - [x] Supports indicator and transition, powered by SDWebImage and Core Animation
 - [x] Supports advanced control like loop count, playback rate, buffer size, runloop mode, etc
-- [x] Supports coordinate with native UIKit/AppKit/WatchKit view
+- [x] Supports coordinate with native UIKit/AppKit view
 
 ```swift
 var body: some View {
@@ -164,7 +164,7 @@ Why we have two different View types here, is because of current SwiftUI limit. 
 
 If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works.
 
-If you need simple animated image, use v0.9.0 above with `WebImage`. Which provide the animated image support.
+If you need simple animated image, use v0.9.0 above with `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, playback rate, etc.
 
 If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
