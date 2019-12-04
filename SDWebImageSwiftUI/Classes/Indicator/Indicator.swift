@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 
 /// A  type to build the indicator
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct Indicator<T> where T : View {
     var content: (Binding<Bool>, Binding<CGFloat>) -> T
     
@@ -26,6 +27,7 @@ public struct Indicator<T> where T : View {
 /// A implementation detail View Modifier with indicator
 /// SwiftUI View Modifier construced by using a internal View type which modify the `body`
 /// It use type system to represent the view hierarchy, and Swift `some View` syntax to hide the type detail for users
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 struct IndicatorViewModifier<T> : ViewModifier where T : View {
     @ObservedObject var imageManager: ImageManager
     
@@ -44,6 +46,7 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
 }
 
 #if os(macOS) || os(iOS) || os(tvOS)
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Indicator where T == ActivityIndicator {
     /// Activity Indicator
     public static var activity: Indicator {
@@ -61,6 +64,7 @@ extension Indicator where T == ActivityIndicator {
     }
 }
 
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Indicator where T == ProgressIndicator {
     /// Progress Indicator
     public static var progress: Indicator {

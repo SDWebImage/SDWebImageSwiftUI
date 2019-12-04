@@ -9,6 +9,7 @@
 import SwiftUI
 import SDWebImage
 
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 class ImageManager : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
