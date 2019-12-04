@@ -77,18 +77,18 @@ extension PlatformView {
     
     var sd_imageName: String? {
         get {
-            objc_getAssociatedObject(self, &UIView.sd_imageNameKey) as? String
+            objc_getAssociatedObject(self, &PlatformView.sd_imageNameKey) as? String
         }
         set {
-            objc_setAssociatedObject(self, &UIView.sd_imageNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &PlatformView.sd_imageNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     var sd_imageData: Data? {
         get {
-            objc_getAssociatedObject(self, &UIView.sd_imageDataKey) as? Data
+            objc_getAssociatedObject(self, &PlatformView.sd_imageDataKey) as? Data
         }
         set {
-            objc_setAssociatedObject(self, &UIView.sd_imageDataKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &PlatformView.sd_imageDataKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }

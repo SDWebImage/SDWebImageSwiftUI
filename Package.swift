@@ -25,8 +25,7 @@ let package = Package(
         .target(
             name: "SDWebImageSwiftUI",
             dependencies: ["SDWebImage"],
-            path: "SDWebImageSwiftUI/Classes",
-            exclude: ["ObjC"]
+            path: "SDWebImageSwiftUI/Classes"
         ),
     ]
 )
