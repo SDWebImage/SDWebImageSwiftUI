@@ -72,7 +72,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.9")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.10")
     ],
 )
 ```
@@ -251,21 +251,21 @@ NavigationView {
 }
 ```
 
-#### Use for backward deployment and weak linking SwiftUI
+#### Using for backward deployment and weak linking SwiftUI
 
-SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
+SDWebImageSwiftUI from v0.10.0, supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
 
 To use backward deployment, you have to do the follow things:
 
 + Add `-weak_framework SwiftUI -weak_framework Combine` in your App Target's `Other Linker Flags` build setting
 
-You should notice that all the third party SwiftUI framework should have this build setting as well, not only just ourself (we already added). Or when running on iOS 12 device, it will trigger the runtime dyld error on startup.
+You should notice that all the third party SwiftUI frameworks should have this build setting as well, not only just SDWebImageSwiftUI (we already added in v0.10.0). Or when running on iOS 12 device, it will trigger the runtime dyld error on startup.
 
 + Use CocoaPods or Carthage (SwiftPM does not support weak linking nor backward deployment currently)
 
 For Carthage user, the built binary framework will use [Library Evolution](https://swift.org/blog/abi-stability-and-more/) to support for backward deployment.
 
-For CocoaPods user, you should skip the platform validation in Podfile with
+For CocoaPods user, you can skip the platform version validation in Podfile with:
 
 ```ruby
 platform :ios, '13.0' # This does not effect your App Target's deployment target version, just a hint for CocoaPods
