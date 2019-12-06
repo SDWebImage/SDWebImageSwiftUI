@@ -33,7 +33,7 @@ It brings all your favorite features from SDWebImage, like async image loading, 
     'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
   }
 
-  s.frameworks = 'SwiftUI'
+  s.weak_frameworks = 'SwiftUI', 'Combine'
   s.dependency 'SDWebImage', '~> 5.3'
   s.swift_version = '5.1'
 end
