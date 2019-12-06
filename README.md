@@ -278,7 +278,7 @@ platform :ios, '13.0' # This does not effect your App Target's deployment target
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // ...
     if #available(iOS 13, *) {
-        window.rootViewController = UIHostingController(rootView: contentView)
+        window.rootViewController = UIHostingController(rootView: ContentView())
     } else {
         window.rootViewController = ViewController()
     }
@@ -290,11 +290,11 @@ class ViewController: UIViewController {
     var label: UILabel = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-        self.view.addSubview(label)
-        self.label.text = "Hello World iOS 12!"
-        self.label.sizeToFit()
-        self.label.center = self.view.center
+        view.backgroundColor = .white
+        view.addSubview(label)
+        label.text = "Hello World iOS 12!"
+        label.sizeToFit()
+        label.center = view.center
     }
 }
 
