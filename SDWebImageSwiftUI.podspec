@@ -27,8 +27,13 @@ It brings all your favorite features from SDWebImage, like async image loading, 
   s.watchos.deployment_target = '6.0'
 
   s.source_files = 'SDWebImageSwiftUI/Classes/**/*', 'SDWebImageSwiftUI/Module/*.h'
+  s.pod_target_xcconfig = {
+    'SUPPORTS_MACCATALYST' => 'YES',
+    'DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER' => 'NO',
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
+  }
 
-  s.frameworks = 'SwiftUI'
+  s.weak_frameworks = 'SwiftUI', 'Combine'
   s.dependency 'SDWebImage', '~> 5.3'
   s.swift_version = '5.1'
 end

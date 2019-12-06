@@ -213,7 +213,7 @@ For more information, it's really recommended to check our demo, to learn detail
 
 ### Common Problems
 
-+ Using Image/WebImage/AnimatedImage in Button/NavigationLink
+#### Using Image/WebImage/AnimatedImage in Button/NavigationLink
 
 SwiftUI's `Button` apply overlay to its content (except `Text`) by default, this is common mistake to write code like this, which cause strange behavior:
 
@@ -247,6 +247,65 @@ NavigationView {
     NavigationLink(destination: Text("Detail view here")) {
         WebImage(url: url)
         .renderingMode(.original)
+    }
+}
+```
+
+#### Use for backward deployment and weak linking SwiftUI
+
+SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
+
+To use backward deployment, you have to do the follow things:
+
++ Add `-weak_framework SwiftUI -weak_framework Combine` in your App Target's `Other Linker Flags` build setting
+
+You should notice that all the third party SwiftUI framework should have this build setting as well, not only just ourself (we already added). Or when running on iOS 12 device, it will trigger the runtime dyld error on startup.
+
++ Use CocoaPods or Carthage (SwiftPM does not support weak linking nor backward deployment currently)
+
+For Carthage user, the built binary framework will use [Library Evolution](https://swift.org/blog/abi-stability-and-more/) to support for backward deployment.
+
+For CocoaPods user, you should skip the platform validation in Podfile with
+
+```ruby
+platform :ios, '13.0' # This does not effect your App Target's deployment target version, just a hint for CocoaPods
+```
+    
++ Add **all the SwiftUI code** with the available annotation and runtime check, like this:
+
+```swift
+// AppDelegate.swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // ...
+    if #available(iOS 13, *) {
+        window.rootViewController = UIHostingController(rootView: contentView)
+    } else {
+        window.rootViewController = ViewController()
+    }
+    // ...
+}
+
+// ViewController.swift
+class ViewController: UIViewController {
+    var label: UILabel = UILabel()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .white
+        self.view.addSubview(label)
+        self.label.text = "Hello World iOS 12!"
+        self.label.sizeToFit()
+        self.label.center = self.view.center
+    }
+}
+
+// ContentView.swift
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+struct ContentView : View {
+    var body: some View {
+        Group {
+            Text("Hello World iOS 13!")
+            WebImage(url: URL(string: "https://i.loli.net/2019/09/24/rX2RkVWeGKIuJvc.jpg"))
+        }
     }
 }
 ```
