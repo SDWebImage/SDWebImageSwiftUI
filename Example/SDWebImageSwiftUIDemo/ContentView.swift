@@ -105,9 +105,8 @@ struct ContentView: View {
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #else
-                            WebImage(url: URL(string:url))
+                            WebImage(url: URL(string:url), isAnimating: self.$animated)
                             .resizable()
-                            .animated()
                             .indicator { _, _ in
                                 ActivityBar()
                                 .foregroundColor(Color.white)
