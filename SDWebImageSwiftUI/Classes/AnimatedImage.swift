@@ -66,11 +66,11 @@ final class AnimatedImageLayout : ObservableObject {
 final class AnimatedImageConfiguration: ObservableObject {
     var incrementalLoad: Bool?
     var maxBufferSize: UInt?
-    var customLoopCount: Int?
+    var customLoopCount: UInt?
     var runLoopMode: RunLoop.Mode?
     var pausable: Bool?
     var purgeable: Bool?
-    var playBackRate: Double?
+    var playbackRate: Double?
     // These configurations only useful for web image loading
     var indicator: SDWebImageIndicator?
     var transition: SDWebImageTransition?
@@ -415,7 +415,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // CustomLoopCount
         if let customLoopCount = imageConfiguration.customLoopCount {
             view.wrapped.shouldCustomLoopCount = true
-            view.wrapped.animationRepeatCount = customLoopCount
+            view.wrapped.animationRepeatCount = Int(customLoopCount)
         } else {
             // disable custom loop count
             view.wrapped.shouldCustomLoopCount = false
@@ -443,8 +443,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Playback Rate
-        if let playBackRate = imageConfiguration.playBackRate {
-            view.wrapped.playbackRate = playBackRate
+        if let playbackRate = imageConfiguration.playbackRate {
+            view.wrapped.playbackRate = playbackRate
         } else {
             view.wrapped.playbackRate = 1.0
         }
@@ -557,7 +557,7 @@ extension AnimatedImage {
     /// Total loop count for animated image rendering. Defaults to nil.
     /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
     /// - Parameter loopCount: The animation loop count
-    public func customLoopCount(_ loopCount: Int?) -> AnimatedImage {
+    public func customLoopCount(_ loopCount: UInt?) -> AnimatedImage {
         self.imageConfiguration.customLoopCount = loopCount
         return self
     }
@@ -613,9 +613,9 @@ extension AnimatedImage {
     /// `0.0-1.0` means the slow speed.
     /// `> 1.0` means the fast speed.
     /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
-    /// - Parameter playBackRate: The animation playback rate.
-    public func playBackRate(_ playBackRate: Double) -> AnimatedImage {
-        self.imageConfiguration.playBackRate = playBackRate
+    /// - Parameter playbackRate: The animation playback rate.
+    public func playbackRate(_ playbackRate: Double) -> AnimatedImage {
+        self.imageConfiguration.playbackRate = playbackRate
         return self
     }
 }

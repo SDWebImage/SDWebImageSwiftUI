@@ -28,6 +28,14 @@ public struct WebImage : View {
     @State var currentFrame: PlatformImage? = nil
     @State var imagePlayer: SDAnimatedImagePlayer? = nil
     
+    var incrementalLoad: Bool = true
+    var maxBufferSize: UInt?
+    var customLoopCount: UInt?
+    var runLoopMode: RunLoop.Mode = .common
+    var pausable: Bool = true
+    var purgeable: Bool = false
+    var playbackRate: Double = 1.0
+    
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
@@ -68,7 +76,14 @@ public struct WebImage : View {
                             self.imagePlayer?.startPlaying()
                         }
                         .onDisappear {
-                            self.imagePlayer?.pausePlaying()
+                            if self.pausable {
+                                self.imagePlayer?.pausePlaying()
+                            } else {
+                                self.imagePlayer?.stopPlaying()
+                            }
+                            if self.purgeable {
+                                self.imagePlayer?.clearFrameBuffer()
+                            }
                         }
                     } else {
                         configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
@@ -129,6 +144,16 @@ public struct WebImage : View {
                 imagePlayer.animationFrameHandler = { (_, frame) in
                     self.currentFrame = frame
                 }
+                // Setup configuration
+                if let maxBufferSize = maxBufferSize {
+                    imagePlayer.maxBufferSize = maxBufferSize
+                }
+                if let customLoopCount = customLoopCount {
+                    imagePlayer.totalLoopCount = UInt(customLoopCount)
+                }
+                imagePlayer.runLoopMode = runLoopMode
+                imagePlayer.playbackRate = playbackRate
+                
                 self.imagePlayer = imagePlayer
                 imagePlayer.startPlaying()
             }
@@ -261,6 +286,83 @@ extension WebImage {
     /// - Parameter content: A view that describes the indicator.
     public func indicator<T>(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) -> some View where T : View {
         return indicator(Indicator(content: content))
+    }
+}
+
+// Animated Image
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+extension WebImage {
+    
+    /// Total loop count for animated image rendering. Defaults to nil.
+    /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
+    /// - Parameter loopCount: The animation loop count
+    public func customLoopCount(_ loopCount: UInt?) -> WebImage {
+        var result = self
+        result.customLoopCount = loopCount
+        return result
+    }
+    
+    /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
+    ///
+    /// `0` or nil means automatically adjust by calculating current memory usage.
+    /// `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+    /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    /// - Parameter bufferSize: The max buffer size
+    public func maxBufferSize(_ bufferSize: UInt?) -> WebImage {
+        var result = self
+        result.maxBufferSize = bufferSize
+        return result
+    }
+    
+    /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
+    /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
+    /// Default is true. Set to false to only render the static poster for incremental animated image.
+    /// - Parameter incrementalLoad: Whether or not to incremental load
+    public func incrementalLoad(_ incrementalLoad: Bool) -> WebImage {
+        var result = self
+        result.incrementalLoad = incrementalLoad
+        return result
+    }
+    
+    /// The runLoopMode when animation is playing on. Defaults is `.common`
+    ///  You can specify a runloop mode to let it rendering.
+    /// - Note: This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
+    /// - Parameter runLoopMode: The runLoopMode for animation
+    public func runLoopMode(_ runLoopMode: RunLoop.Mode) -> WebImage {
+        var result = self
+        result.runLoopMode = runLoopMode
+        return result
+    }
+    
+    /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When `isAnimating` binding value changed to false. Defaults is true.
+    /// - Note: For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
+    /// - Parameter pausable: Whether or not to pause the animation instead of stop the animation.
+    public func pausable(_ pausable: Bool) -> WebImage {
+        var result = self
+        result.pausable = pausable
+        return result
+    }
+    
+    /// Whether or not to clear frame buffer cache when stopped. Defaults is false.
+    /// Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)
+    /// - Parameter purgeable: Whether or not to clear frame buffer cache when stopped.
+    public func purgeable(_ purgeable: Bool) -> WebImage {
+        var result = self
+        result.purgeable = purgeable
+        return result
+    }
+    
+    /// Control the animation playback rate. Default is 1.0.
+    /// `1.0` means the normal speed.
+    /// `0.0` means stopping the animation.
+    /// `0.0-1.0` means the slow speed.
+    /// `> 1.0` means the fast speed.
+    /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
+    /// - Parameter playbackRate: The animation playback rate.
+    public func playbackRate(_ playbackRate: Double) -> WebImage {
+        var result = self
+        result.playbackRate = playbackRate
+        return result
     }
 }
 
