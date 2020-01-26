@@ -33,7 +33,7 @@ Besides all these features, we do optimization for SwiftUI, like Binding, View M
 
 This framework is under heavily development, it's recommended to use [the latest release](https://github.com/SDWebImage/SDWebImageSwiftUI/releases) as much as possible (including SDWebImage dependency).
 
-Note we do not guarantee the public API stable for current status until v1.0 version, to follow [Semantic Versioning](https://semver.org/).
+Note we do not guarantee the public API stable for current status until v1.0 version (released soon in February), to follow [Semantic Versioning](https://semver.org/).
 
 All issue reports, feature requests, contributions, and GitHub stars are welcomed. Hope for active feedback and promotion if you find this framework useful.
 
@@ -100,7 +100,6 @@ var body: some View {
         .placeholder {
             Rectangle().foregroundColor(.gray)
         }
-        .animated() // Supports Animated Image
         .indicator(.activity) // Activity Indicator
         .animation(.easeInOut(duration: 0.5)) // Animation Duration
         .transition(.fade) // Fade Transition
@@ -111,7 +110,16 @@ var body: some View {
 
 Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. In previous version, `WebImage` supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image or vector image.
 
-Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). But it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, runloop mode, playback rate, etc.
+Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). The `WebImage` animated image provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering.
+
+```swift
+var body: some View {
+    WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control in 1.0.0 (for 0.x version, use `.animated()` modifier)
+    .customLoopCount(1) // Custom loop count
+    .playbackRate(2.0) // Playback speed rate
+    // In 1.0.0, `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
+}
+```
 
 ### Using `AnimatedImage` to play animation
 
