@@ -25,13 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
         // Dynamic check to support both WebImage/AnimatedImage
         SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
-            var context = context ?? [:]
-            if let _ = context[.animatedImageClass] as? SDAnimatedImageProtocol {
+            var context = context
+            if let _ = context?[.animatedImageClass] as? SDAnimatedImageProtocol {
                 // AnimatedImage supports vector rendering
             } else {
                 // WebImage supports bitmap rendering only
-                context[.svgPrefersBitmap] = true
-                context[.pdfPrefersBitmap] = true
+                context?[.svgPrefersBitmap] = true
+                context?[.pdfPrefersBitmap] = true
             }
             return SDWebImageOptionsResult(options: options, context: context)
         }
