@@ -95,9 +95,8 @@ struct DetailView: View {
                 .resizable()
                 .scaledToFit()
                 #else
-                WebImage(url: URL(string:url), options: [.progressiveLoad])
+                WebImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
                 .resizable()
-                .animated(isAnimating)
                 .indicator { isAnimating, progress in
                     ProgressBar(value: progress)
                     .foregroundColor(.blue)

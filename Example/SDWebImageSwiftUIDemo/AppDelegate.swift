@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Dynamic check to support both WebImage/AnimatedImage
         SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
             var context = context
-            if let _ = context?[.animatedImageClass] as? SDAnimatedImageProtocol {
+            if let _ = context?[.animatedImageClass] as? SDAnimatedImage.Type {
                 // AnimatedImage supports vector rendering
             } else {
                 // WebImage supports bitmap rendering only

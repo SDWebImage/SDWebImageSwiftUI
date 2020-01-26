@@ -21,16 +21,42 @@ public struct WebImage : View {
     
     @ObservedObject var imageManager: ImageManager
     
-    // Animated Image support (Beta)
-    var animated: Bool = false
+    /// A Binding to control the animation. You can bind external logic to control the animation status.
+    /// True to start animation, false to stop animation.
+    @Binding public var isAnimating: Bool
+    
     @State var currentFrame: PlatformImage? = nil
     @State var imagePlayer: SDAnimatedImagePlayer? = nil
+    
+    var maxBufferSize: UInt?
+    var customLoopCount: UInt?
+    var runLoopMode: RunLoop.Mode = .common
+    var pausable: Bool = true
+    var purgeable: Bool = false
+    var playbackRate: Double = 1.0
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.init(url: url, options: options, context: context, isAnimating: .constant(false))
+    }
+    
+    /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
+    /// - Parameter url: The image url
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+    /// - Parameter isAnimating: The binding for animation control. The binding value should be `true` when initialized to setup the correct animated image class. If not, you must provide the `.animatedImageClass` explicitly. When the animation started, this binding can been used to start / stop the animation.
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
+        self._isAnimating = isAnimating
+        var context = context ?? [:]
+        // provide animated image class if the initialized `isAnimating` is true, user can still custom the image class if they want
+        if isAnimating.wrappedValue {
+            if context[.animatedImageClass] == nil {
+                context[.animatedImageClass] = SDAnimatedImage.self
+            }
+        }
         self.imageManager = ImageManager(url: url, options: options, context: context)
         // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
         // this can ensure we load the image, SDWebImage take care of the duplicated query
@@ -40,7 +66,7 @@ public struct WebImage : View {
     public var body: some View {
         Group {
             if imageManager.image != nil {
-                if animated {
+                if isAnimating && !self.imageManager.isIncremental {
                     if currentFrame != nil {
                         configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
                             configuration(previous)
@@ -49,7 +75,14 @@ public struct WebImage : View {
                             self.imagePlayer?.startPlaying()
                         }
                         .onDisappear {
-                            self.imagePlayer?.pausePlaying()
+                            if self.pausable {
+                                self.imagePlayer?.pausePlaying()
+                            } else {
+                                self.imagePlayer?.stopPlaying()
+                            }
+                            if self.purgeable {
+                                self.imagePlayer?.clearFrameBuffer()
+                            }
                         }
                     } else {
                         configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
@@ -60,8 +93,14 @@ public struct WebImage : View {
                         }
                     }
                 } else {
-                    configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
-                        configuration(previous)
+                    if currentFrame != nil {
+                        configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
+                            configuration(previous)
+                        }
+                    } else {
+                        configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
+                            configuration(previous)
+                        }
                     }
                 }
             } else {
@@ -90,6 +129,32 @@ public struct WebImage : View {
                         self.imageManager.cancel()
                     }
                 }
+            }
+        }
+    }
+    
+    /// Animated Image Support
+    func setupPlayer(image: PlatformImage?) {
+        if imagePlayer != nil {
+            return
+        }
+        if let animatedImage = image as? SDAnimatedImageProvider {
+            if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
+                imagePlayer.animationFrameHandler = { (_, frame) in
+                    self.currentFrame = frame
+                }
+                // Setup configuration
+                if let maxBufferSize = maxBufferSize {
+                    imagePlayer.maxBufferSize = maxBufferSize
+                }
+                if let customLoopCount = customLoopCount {
+                    imagePlayer.totalLoopCount = UInt(customLoopCount)
+                }
+                imagePlayer.runLoopMode = runLoopMode
+                imagePlayer.playbackRate = playbackRate
+                
+                self.imagePlayer = imagePlayer
+                imagePlayer.startPlaying()
             }
         }
     }
@@ -223,49 +288,70 @@ extension WebImage {
     }
 }
 
-// Animated Image support (Beta)
+// Animated Image
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension WebImage {
     
-    /// Make the image to support animated images. The animation will start when view appears, and pause when disappears.
-    /// - Note: Currently we do not have advanced control like binding, reset frame index, playback rate, etc. For those use case, it's recommend to use `AnimatedImage` type instead. (support iOS/tvOS/macOS)
-    /// - Warning: This API need polishing. In the future we may choose to create a new View type instead.
-    ///
-    /// - Parameter animated: Whether or not to enable animationn.
-    public func animated(_ animated: Bool = true) -> WebImage {
+    /// Total loop count for animated image rendering. Defaults to nil.
+    /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
+    /// - Parameter loopCount: The animation loop count
+    public func customLoopCount(_ loopCount: UInt?) -> WebImage {
         var result = self
-        result.animated = animated
-        if animated {
-            // Update Image Manager
-            result.imageManager.cancel()
-            var context = result.imageManager.context ?? [:]
-            context[.animatedImageClass] = SDAnimatedImage.self
-            result.imageManager.context = context
-            result.imageManager.load()
-        } else {
-            // Update Image Manager
-            result.imageManager.cancel()
-            var context = result.imageManager.context ?? [:]
-            context[.animatedImageClass] = nil
-            result.imageManager.context = context
-            result.imageManager.load()
-        }
+        result.customLoopCount = loopCount
         return result
     }
     
-    func setupPlayer(image: PlatformImage?) {
-        if imagePlayer != nil {
-            return
-        }
-        if let animatedImage = image as? SDAnimatedImageProvider {
-            if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
-                imagePlayer.animationFrameHandler = { (_, frame) in
-                    self.currentFrame = frame
-                }
-                self.imagePlayer = imagePlayer
-                imagePlayer.startPlaying()
-            }
-        }
+    /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
+    ///
+    /// `0` or nil means automatically adjust by calculating current memory usage.
+    /// `1` means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+    /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
+    /// - Parameter bufferSize: The max buffer size
+    public func maxBufferSize(_ bufferSize: UInt?) -> WebImage {
+        var result = self
+        result.maxBufferSize = bufferSize
+        return result
+    }
+    
+    /// The runLoopMode when animation is playing on. Defaults is `.common`
+    ///  You can specify a runloop mode to let it rendering.
+    /// - Note: This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
+    /// - Parameter runLoopMode: The runLoopMode for animation
+    public func runLoopMode(_ runLoopMode: RunLoop.Mode) -> WebImage {
+        var result = self
+        result.runLoopMode = runLoopMode
+        return result
+    }
+    
+    /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When `isAnimating` binding value changed to false. Defaults is true.
+    /// - Note: For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
+    /// - Parameter pausable: Whether or not to pause the animation instead of stop the animation.
+    public func pausable(_ pausable: Bool) -> WebImage {
+        var result = self
+        result.pausable = pausable
+        return result
+    }
+    
+    /// Whether or not to clear frame buffer cache when stopped. Defaults is false.
+    /// Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)
+    /// - Parameter purgeable: Whether or not to clear frame buffer cache when stopped.
+    public func purgeable(_ purgeable: Bool) -> WebImage {
+        var result = self
+        result.purgeable = purgeable
+        return result
+    }
+    
+    /// Control the animation playback rate. Default is 1.0.
+    /// `1.0` means the normal speed.
+    /// `0.0` means stopping the animation.
+    /// `0.0-1.0` means the slow speed.
+    /// `> 1.0` means the fast speed.
+    /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
+    /// - Parameter playbackRate: The animation playback rate.
+    public func playbackRate(_ playbackRate: Double) -> WebImage {
+        var result = self
+        result.playbackRate = playbackRate
+        return result
     }
 }
 
