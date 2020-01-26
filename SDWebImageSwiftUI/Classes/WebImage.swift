@@ -12,6 +12,7 @@ import SDWebImage
 /// A Image View type to load image from url. Supports static/animated image format.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct WebImage : View {
+    static var emptyImage = PlatformImage()
     var configurations: [(Image) -> Image] = []
     
     var placeholder: AnyView?
@@ -68,7 +69,11 @@ public struct WebImage : View {
                     if placeholder != nil {
                         placeholder
                     } else {
-                        EmptyView()
+                        // Should not use `EmptyView`, which does not respect to the container's frame modifier
+                        // Using a empty image instead for better compatible
+                        configurations.reduce(Image(platformImage: WebImage.emptyImage)) { (previous, configuration) in
+                            configuration(previous)
+                        }
                     }
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
