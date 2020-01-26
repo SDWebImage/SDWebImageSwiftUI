@@ -400,6 +400,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // IncrementalLoad
         if let incrementalLoad = imageConfiguration.incrementalLoad {
             view.wrapped.shouldIncrementalLoad = incrementalLoad
+        } else {
+            view.wrapped.shouldIncrementalLoad = true
         }
         
         // MaxBufferSize
