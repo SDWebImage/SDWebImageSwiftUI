@@ -28,7 +28,6 @@ public struct WebImage : View {
     @State var currentFrame: PlatformImage? = nil
     @State var imagePlayer: SDAnimatedImagePlayer? = nil
     
-    var incrementalLoad: Bool = true
     var maxBufferSize: UInt?
     var customLoopCount: UInt?
     var runLoopMode: RunLoop.Mode = .common
@@ -67,7 +66,7 @@ public struct WebImage : View {
     public var body: some View {
         Group {
             if imageManager.image != nil {
-                if isAnimating {
+                if isAnimating && !self.imageManager.isIncremental {
                     if currentFrame != nil {
                         configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
                             configuration(previous)
@@ -311,16 +310,6 @@ extension WebImage {
     public func maxBufferSize(_ bufferSize: UInt?) -> WebImage {
         var result = self
         result.maxBufferSize = bufferSize
-        return result
-    }
-    
-    /// Whehter or not to enable incremental image load for animated image. See `SDAnimatedImageView` for detailed explanation for this.
-    /// - Note: If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
-    /// Default is true. Set to false to only render the static poster for incremental animated image.
-    /// - Parameter incrementalLoad: Whether or not to incremental load
-    public func incrementalLoad(_ incrementalLoad: Bool) -> WebImage {
-        var result = self
-        result.incrementalLoad = incrementalLoad
         return result
     }
     
