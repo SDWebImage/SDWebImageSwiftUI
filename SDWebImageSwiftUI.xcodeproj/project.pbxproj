@@ -3,10 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3211F84723DE984D00FC757F /* AnimatedImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3211F84623DE984D00FC757F /* AnimatedImageTests.swift */; };
+		3211F84923DE984D00FC757F /* SDWebImageSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */; };
+		3211F85023DE98E300FC757F /* WebImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3211F84F23DE98E300FC757F /* WebImageTests.swift */; };
+		3211F85323DE996700FC757F /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 3211F85223DE996700FC757F /* ViewInspector */; };
+		321C1D3223DE9FD1009CF62A /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 321C1D3123DE9FD1009CF62A /* Introspect */; };
+		321C1D3323DEA28E009CF62A /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; };
+		321C1D3623DEA9E8009CF62A /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3211F85423DE9D2700FC757F /* Images.bundle */; };
 		326B84822363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84832363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84842363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
@@ -57,6 +64,16 @@
 		32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3211F84A23DE984D00FC757F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 32C43DC322FD540D00BE87F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 32C43DCB22FD540D00BE87F5;
+			remoteInfo = SDWebImageSwiftUI;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		32C43DEC22FD577300BE87F5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -105,6 +122,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3211F84423DE984D00FC757F /* SDWebImageSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDWebImageSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3211F84623DE984D00FC757F /* AnimatedImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImageTests.swift; sourceTree = "<group>"; };
+		3211F84823DE984D00FC757F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3211F84F23DE98E300FC757F /* WebImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageTests.swift; sourceTree = "<group>"; };
+		3211F85423DE9D2700FC757F /* Images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Images.bundle; sourceTree = "<group>"; };
 		326B84812363350C0011BDFB /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		326B8486236335110011BDFB /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
@@ -127,6 +149,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3211F84123DE984D00FC757F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				321C1D3323DEA28E009CF62A /* SDWebImage.framework in Frameworks */,
+				3211F84923DE984D00FC757F /* SDWebImageSwiftUI.framework in Frameworks */,
+				321C1D3223DE9FD1009CF62A /* Introspect in Frameworks */,
+				3211F85323DE996700FC757F /* ViewInspector in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DC922FD540D00BE87F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,6 +195,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3211F84523DE984D00FC757F /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3211F85423DE9D2700FC757F /* Images.bundle */,
+				3211F84823DE984D00FC757F /* Info.plist */,
+				3211F84623DE984D00FC757F /* AnimatedImageTests.swift */,
+				3211F84F23DE98E300FC757F /* WebImageTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		326099472362E09E006EBB22 /* Indicator */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +230,7 @@
 				32C43DCE22FD540D00BE87F5 /* SDWebImageSwiftUI */,
 				32C43DE522FD54CD00BE87F5 /* Info.plist */,
 				32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */,
+				3211F84523DE984D00FC757F /* Tests */,
 				32C43DCD22FD540D00BE87F5 /* Products */,
 				32C43DE822FD577300BE87F5 /* Frameworks */,
 			);
@@ -198,6 +243,7 @@
 				32C43DF422FD57FD00BE87F5 /* SDWebImageSwiftUI.framework */,
 				32C43E0122FD581400BE87F5 /* SDWebImageSwiftUI.framework */,
 				32C43E0E22FD581C00BE87F5 /* SDWebImageSwiftUI.framework */,
+				3211F84423DE984D00FC757F /* SDWebImageSwiftUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -273,6 +319,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3211F84323DE984D00FC757F /* SDWebImageSwiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3211F84E23DE984D00FC757F /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUITests" */;
+			buildPhases = (
+				3211F84023DE984D00FC757F /* Sources */,
+				3211F84123DE984D00FC757F /* Frameworks */,
+				3211F84223DE984D00FC757F /* Resources */,
+				321C1D3523DEA309009CF62A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3211F84B23DE984D00FC757F /* PBXTargetDependency */,
+			);
+			name = SDWebImageSwiftUITests;
+			packageProductDependencies = (
+				3211F85223DE996700FC757F /* ViewInspector */,
+				321C1D3123DE9FD1009CF62A /* Introspect */,
+			);
+			productName = SDWebImageSwiftUITests;
+			productReference = 3211F84423DE984D00FC757F /* SDWebImageSwiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		32C43DCB22FD540D00BE87F5 /* SDWebImageSwiftUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32C43DD422FD540D00BE87F5 /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUI" */;
@@ -355,9 +424,13 @@
 		32C43DC322FD540D00BE87F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = SDWebImage;
 				TargetAttributes = {
+					3211F84323DE984D00FC757F = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 					32C43DCB22FD540D00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
 						LastSwiftMigration = 1100;
@@ -385,6 +458,10 @@
 				Base,
 			);
 			mainGroup = 32C43DC222FD540D00BE87F5;
+			packageReferences = (
+				3211F85123DE996700FC757F /* XCRemoteSwiftPackageReference "ViewInspector" */,
+				321C1D3023DE9FD1009CF62A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = 32C43DCD22FD540D00BE87F5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -393,11 +470,20 @@
 				32C43DF322FD57FD00BE87F5 /* SDWebImageSwiftUI macOS */,
 				32C43E0022FD581400BE87F5 /* SDWebImageSwiftUI tvOS */,
 				32C43E0D22FD581C00BE87F5 /* SDWebImageSwiftUI watchOS */,
+				3211F84323DE984D00FC757F /* SDWebImageSwiftUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3211F84223DE984D00FC757F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				321C1D3623DEA9E8009CF62A /* Images.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DCA22FD540D00BE87F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -428,7 +514,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		321C1D3523DEA309009CF62A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		3211F84023DE984D00FC757F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3211F85023DE98E300FC757F /* WebImageTests.swift in Sources */,
+				3211F84723DE984D00FC757F /* AnimatedImageTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DC822FD540D00BE87F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -495,7 +612,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3211F84B23DE984D00FC757F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 32C43DCB22FD540D00BE87F5 /* SDWebImageSwiftUI */;
+			targetProxy = 3211F84A23DE984D00FC757F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		3211F84C23DE984D00FC757F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreampiggy.SDWebImageSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3211F84D23DE984D00FC757F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreampiggy.SDWebImageSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		32C43DD222FD540D00BE87F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -879,6 +1048,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3211F84E23DE984D00FC757F /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3211F84C23DE984D00FC757F /* Debug */,
+				3211F84D23DE984D00FC757F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		32C43DC622FD540D00BE87F5 /* Build configuration list for PBXProject "SDWebImageSwiftUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -925,6 +1103,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3211F85123DE996700FC757F /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.0;
+			};
+		};
+		321C1D3023DE9FD1009CF62A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3211F85223DE996700FC757F /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3211F85123DE996700FC757F /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+		321C1D3123DE9FD1009CF62A /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 321C1D3023DE9FD1009CF62A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 32C43DC322FD540D00BE87F5 /* Project object */;
 }
