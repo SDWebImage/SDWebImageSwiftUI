@@ -31,9 +31,9 @@ script:
 
   - echo Build example
   - pod install --project-directory=Example
-  - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -sdk iphonesimulator -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
+  - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
 
-  - carthage update
+  - carthage update --configuration Debug
   - xcodebuild build -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUI' -sdk iphonesimulator -configuration Debug | xcpretty -c
 
   - echo Clean DerivedData
@@ -41,11 +41,11 @@ script:
   - mkdir DerivedData
 
   - echo Run the tests
-  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests' -sdk iphonesimulator -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests' -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
   - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/iOS
-  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests macOS' -sdk iphonesimulator -destination 'platform=macOS,arch=x86_64' -configuration Debug | xcpretty -c
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests macOS' -destination 'platform=macOS,arch=x86_64' -configuration Debug | xcpretty -c
   - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/macOS 
-  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests tvOS' -sdk iphonesimulator -destination 'platform=tvOS Simulator,name=Apple TV' -configuration Debug | xcpretty -c
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests tvOS' -destination 'platform=tvOS Simulator,name=Apple TV' -configuration Debug | xcpretty -c
   - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/tvOS
 
 after_success:
