@@ -98,13 +98,25 @@ class AnimatedImageTests: XCTestCase {
             } else {
                 XCTFail("SDAnimatedImageView.image invalid")
             }
+            #if os(iOS) || os(tvOS)
             XCTAssertTrue(animatedImageView.isAnimating)
+            #else
+            XCTAssertTrue(animatedImageView.animates)
+            #endif
             binding.wrappedValue = false
             XCTAssertFalse(binding.wrappedValue)
             XCTAssertFalse(imageView.isAnimating)
             // TODO: current the Binding value can not been mocked, hardcode here to call `SDAnimatedImageView.stopAnimating`
+            #if os(iOS) || os(tvOS)
             animatedImageView.stopAnimating()
+            #else
+            animatedImageView.animates = false
+            #endif
+            #if os(iOS) || os(tvOS)
             XCTAssertFalse(animatedImageView.isAnimating)
+            #else
+            XCTAssertFalse(animatedImageView.animates)
+            #endif
             expectation.fulfill()
         }
         _ = try introspectView.inspect(AnimatedImage.self)
@@ -118,7 +130,7 @@ class AnimatedImageTests: XCTestCase {
     }
     
     func testImageBundle() -> Bundle {
-        let imagePath = (testBundle().bundlePath as NSString).appendingPathComponent("Images.bundle")
+        let imagePath = (testBundle().resourcePath! as NSString).appendingPathComponent("Images.bundle")
         return Bundle(path: imagePath)!
     }
     

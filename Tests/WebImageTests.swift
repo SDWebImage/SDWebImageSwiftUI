@@ -22,7 +22,11 @@ class WebImageTests: XCTestCase {
         let imageUrl = URL(string: "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png")
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, cacheType in
+            #if os(iOS) || os(tvOS)
             let displayImage = try? imageView.inspect().group().image(0).uiImage()
+            #else
+            let displayImage = try? imageView.inspect().group().image(0).nsImage()
+            #endif
             XCTAssertNotNil(displayImage)
             expectation.fulfill()
         }.onFailure { error in
@@ -42,7 +46,11 @@ class WebImageTests: XCTestCase {
             if let animatedImage = image as? SDAnimatedImage {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     XCTAssertTrue(imageView.isAnimating)
+                    #if os(iOS) || os(tvOS)
                     let displayImage = try? imageView.inspect().group().image(0).uiImage()
+                    #else
+                    let displayImage = try? imageView.inspect().group().image(0).nsImage()
+                    #endif
                     XCTAssertNotNil(displayImage)
                     // Check display image should match the animated poster frame
                     let posterImage = animatedImage.animatedImageFrame(at: 0)
