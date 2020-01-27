@@ -31,7 +31,24 @@ script:
 
   - echo Build example
   - pod install --project-directory=Example
-  - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -sdk iphonesimulator -destination 'name=iPhone 8' ONLY_ACTIVE_ARCH=NO | xcpretty -c
+  - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -sdk iphonesimulator -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
 
-  - carthage update --platform iOS
+  - carthage update
   - xcodebuild build -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUI' -sdk iphonesimulator -configuration Debug | xcpretty -c
+
+  - echo Clean DerivedData
+  - rm -rf ~/Library/Developer/Xcode/DerivedData/
+  - mkdir DerivedData
+
+  - echo Run the tests
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests' -sdk iphonesimulator -destination 'name=iPhone 11 Pro' -configuration Debug | xcpretty -c
+  - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/iOS
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests macOS' -sdk iphonesimulator -destination 'platform=macOS,arch=x86_64' -configuration Debug | xcpretty -c
+  - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/macOS 
+  - xcodebuild clean test -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUITests tvOS' -sdk iphonesimulator -destination 'platform=tvOS Simulator,name=Apple TV' -configuration Debug | xcpretty -c
+  - mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/tvOS
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -D './DerivedData/macOS' -J '^SDWebImage$' -F macos
+  - bash <(curl -s https://codecov.io/bash) -D './DerivedData/iOS' -J '^SDWebImage$' -F ios
+  - bash <(curl -s https://codecov.io/bash) -D './DerivedData/tvOS' -J '^SDWebImage$'-F tvos
