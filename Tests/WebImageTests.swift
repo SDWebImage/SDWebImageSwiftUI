@@ -39,24 +39,22 @@ class WebImageTests: XCTestCase {
     
     func testWebImageWithAnimatedURL() throws {
         let expectation = self.expectation(description: "WebImage animated url initializer")
-        let imageUrl = URL(string: "http://apng.onevcat.com/assets/elephant.png")
+        let imageUrl = URL(string: "https://apng.onevcat.com/assets/elephant.png")
         let binding = Binding<Bool>(wrappedValue: true)
         let imageView = WebImage(url: imageUrl, isAnimating: binding)
         let introspectView = imageView.onSuccess { image, cacheType in
             if let animatedImage = image as? SDAnimatedImage {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    XCTAssertTrue(imageView.isAnimating)
-                    #if os(iOS) || os(tvOS)
-                    let displayImage = try? imageView.inspect().group().image(0).uiImage()
-                    #else
-                    let displayImage = try? imageView.inspect().group().image(0).nsImage()
-                    #endif
-                    XCTAssertNotNil(displayImage)
-                    // Check display image should match the animated poster frame
-                    let posterImage = animatedImage.animatedImageFrame(at: 0)
-                    XCTAssertEqual(displayImage?.size, posterImage?.size)
-                    expectation.fulfill()
-                }
+                XCTAssertTrue(imageView.isAnimating)
+                #if os(iOS) || os(tvOS)
+                let displayImage = try? imageView.inspect().group().image(0).uiImage()
+                #else
+                let displayImage = try? imageView.inspect().group().image(0).nsImage()
+                #endif
+                XCTAssertNotNil(displayImage)
+                // Check display image should match the animated poster frame
+                let posterImage = animatedImage.animatedImageFrame(at: 0)
+                XCTAssertEqual(displayImage?.size, posterImage?.size)
+                expectation.fulfill()
             } else {
                 XCTFail("WebImage animated image invalid")
             }
