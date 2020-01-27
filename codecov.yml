@@ -1,0 +1,13 @@
+coverage:
+  ignore:
+    - "Example"
+    - "Tests"
+  status:
+    project:
+      default: off
+      ios:
+        flags: ios
+      macos:
+        flags: macos
+      tvos:
+        flags: tvos
