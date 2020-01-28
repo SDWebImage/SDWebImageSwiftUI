@@ -127,6 +127,10 @@ class AnimatedImageTests: XCTestCase {
     func testAnimatedImageModifier() throws {
         let expectation = self.expectation(description: "WebImage modifier")
         let imageUrl = URL(string: "https://assets.sbnation.com/assets/2512203/dogflops.gif")
+        AnimatedImage.onViewDestroy { view, coordinator in
+            XCTAssert(view.isKind(of: SDAnimatedImageView.self))
+            XCTAssertEqual(coordinator.userInfo?["foo"] as? String, "bar")
+        }
         let imageView = AnimatedImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
         let introspectView = imageView
         .onSuccess { _, _ in
@@ -137,6 +141,14 @@ class AnimatedImageTests: XCTestCase {
         }
         .onProgress { _, _ in
             
+        }
+        .onViewCreate { view, context in
+            XCTAssert(view.isKind(of: SDAnimatedImageView.self))
+            context.coordinator.userInfo = ["foo" : "bar"]
+        }
+        .onViewUpdate { view, context in
+            XCTAssert(view.isKind(of: SDAnimatedImageView.self))
+            XCTAssertEqual(context.coordinator.userInfo?["foo"] as? String, "bar")
         }
         .placeholder(WebImage.emptyImage)
         .indicator(SDWebImageActivityIndicator.medium)
@@ -157,6 +169,7 @@ class AnimatedImageTests: XCTestCase {
         _ = try introspectView.inspect(AnimatedImage.self)
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
+        AnimatedImage.onViewDestroy()
     }
     
     // MARK: Helper
