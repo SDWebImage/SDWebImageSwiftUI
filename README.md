@@ -30,11 +30,15 @@ You can also get all benefits from the existing community around with SDWebImage
 
 Besides all these features, we do optimization for SwiftUI, like Binding, View Modifier, using the same design pattern to become a good SwiftUI citizen.
 
-## Contribution
+## Version
 
 This framework is under heavily development, it's recommended to use [the latest release](https://github.com/SDWebImage/SDWebImageSwiftUI/releases) as much as possible (including SDWebImage dependency).
 
-Note we do not guarantee the public API stable for current status until v1.0 version (released soon in February), to follow [Semantic Versioning](https://semver.org/).
+The v1.0.0 version is now **on beta**, all the previous users are recommended to use, test and report issues. We need you feedback to drive the future development. The official version may released in February.
+
+The v1.0.0 version provide all the function above, with the stable API, fully documentation and unit test. This framework follows [Semantic Versioning](https://semver.org/).
+
+## Contribution
 
 All issue reports, feature requests, contributions, and GitHub stars are welcomed. Hope for active feedback and promotion if you find this framework useful.
 
@@ -73,7 +77,7 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "0.10")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.0")
     ],
 )
 ```
