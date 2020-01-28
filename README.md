@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/SDWebImageSwiftUI.svg?style=flat)](https://cocoapods.org/pods/SDWebImageSwiftUI)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://swift.org/package-manager/)
+[![codecov](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI/branch/master/graph/badge.svg)](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI)
 
 ## What's for
 
@@ -344,6 +345,23 @@ Demo Tips:
 4. Pinch gesture (Digital Crown on watchOS, play button on tvOS) to zoom-in detail page image.
 5. Clear cache and go to detail page to see progressive loading.
 
+## Test
+
+SDWebImageSwiftUI has Unit Test to increase code quality. For SwiftUI, there are no official Unit Test solution provided by Apple.
+
+However, since SwiftUI is State-Based and Attributed-Implemented layout system, there are open source projects who provide the solution:
+
++ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`
++ [SwiftUI-Introspect](https://github.com/siteline/SwiftUI-Introspect): Introspect the native UIKit/AppKit View, even for SwiftUI component (like `List`, which is actually `UITableView` in implementation). We use this to test `AnimatedImage`
+
+To run the test:
+
+1. Run `carthage build` on root directory to install the dependency.
+2. Open `SDWebImageSwiftUI.xcodeproj`, wait for SwiftPM finishing downloading the test dependency.
+3. Choose `SDWebImageSwiftUITests` scheme and start testing.
+
+We've already setup the CI pipeline, each PR will run the test case and upload the test report to [codecov](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI).
+
 ## Screenshot
 
 + iOS Demo
@@ -375,6 +393,15 @@ Which means, this project is one core use case and downstream dependency, which 
 ## Author
 
 [DreamPiggy](https://github.com/dreampiggy)
+
+## Thanks
+
+- [SDWebImage](https://github.com/SDWebImage/SDWebImage)
+- [libwebp](https://github.com/SDWebImage/libwebp-Xcode)
+- [Kingfisher](https://github.com/onevcat/Kingfisher)
+- [SwiftUIX](https://github.com/SwiftUIX/SwiftUIX)
+- [SwiftUI-Introspect](https://github.com/siteline/SwiftUI-Introspect)
+- [ViewInspector](https://github.com/nalexn/ViewInspector)
 
 ## License
 
