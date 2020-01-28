@@ -10,12 +10,34 @@ import SwiftUI
 import SDWebImage
 import SDWebImageSwiftUI
 
+// Allows `String` in `ForEach`
 extension String : Identifiable {
     public typealias ID = Int
     public var id: Int {
         self.hashValue
     }
 }
+
+#if os(watchOS)
+// watchOS does not provide built-in indicator, use Espera's custom indicator
+extension Indicator where T == LoadingFlowerView {
+    /// Activity Indicator
+    public static var activity: Indicator {
+        Indicator { isAnimating, _ in
+            LoadingFlowerView()
+        }
+    }
+}
+
+extension Indicator where T == StretchProgressView {
+    /// Progress Indicator
+    public static var progress: Indicator {
+        Indicator { isAnimating, progress in
+            StretchProgressView(progress: progress)
+        }
+    }
+}
+#endif
 
 struct ContentView: View {
     @State var imageURLs = [
@@ -107,18 +129,13 @@ struct ContentView: View {
                             #else
                             WebImage(url: URL(string:url), isAnimating: self.$animated)
                             .resizable()
-                            .indicator { _, _ in
-                                ActivityBar()
-                                .foregroundColor(Color.white)
-                                .frame(width: 50, height: 50)
-                            }
+                            .indicator(.activity)
                             .animation(.easeInOut(duration: 0.5))
                             .transition(.fade)
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #endif
                         } else {
-                            #if os(macOS) || os(iOS) || os(tvOS)
                             WebImage(url: URL(string:url))
                             .resizable()
                             /**
@@ -131,19 +148,6 @@ struct ContentView: View {
                             .transition(.fade)
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            #else
-                            WebImage(url: URL(string:url))
-                            .resizable()
-                            .indicator { _, _ in
-                                ActivityBar()
-                                .foregroundColor(Color.white)
-                                .frame(width: 50, height: 50)
-                            }
-                            .animation(.easeInOut(duration: 0.5))
-                            .transition(.fade)
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            #endif
                         }
                         Text((url as NSString).lastPathComponent)
                     }
