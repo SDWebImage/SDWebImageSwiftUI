@@ -48,6 +48,9 @@
 		32B933E623659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E723659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E823659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
+		32BD9C4723E03B08008D5F6A /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */; };
+		32BD9C4823E03B08008D5F6A /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */; };
+		32BD9C4923E03B08008D5F6A /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */; };
 		32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32C43DEA22FD577300BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; };
 		32C43DEB22FD577300BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -162,6 +165,7 @@
 		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
 		32B933E423659A1900BB7CAD /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
+		32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTests.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		32C43DDE22FD54C600BE87F5 /* WebImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebImage.swift; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 				3211F84823DE984D00FC757F /* Info.plist */,
 				3211F84623DE984D00FC757F /* AnimatedImageTests.swift */,
 				3211F84F23DE98E300FC757F /* WebImageTests.swift */,
+				32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -704,6 +709,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3211F85023DE98E300FC757F /* WebImageTests.swift in Sources */,
+				32BD9C4723E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				3211F84723DE984D00FC757F /* AnimatedImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,6 +719,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				321C1D6B23DEDB98009CF62A /* WebImageTests.swift in Sources */,
+				32BD9C4823E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6A23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,6 +729,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				321C1D6D23DEDB98009CF62A /* WebImageTests.swift in Sources */,
+				32BD9C4923E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6C23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

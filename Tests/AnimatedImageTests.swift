@@ -124,6 +124,41 @@ class AnimatedImageTests: XCTestCase {
         self.waitForExpectations(timeout: 5, handler: nil)
     }
     
+    func testAnimatedImageModifier() throws {
+        let expectation = self.expectation(description: "WebImage modifier")
+        let imageUrl = URL(string: "https://assets.sbnation.com/assets/2512203/dogflops.gif")
+        let imageView = AnimatedImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
+        let introspectView = imageView
+        .onSuccess { _, _ in
+            expectation.fulfill()
+        }
+        .onFailure { _ in
+            XCTFail()
+        }
+        .onProgress { _, _ in
+            
+        }
+        .placeholder(WebImage.emptyImage)
+        .indicator(SDWebImageActivityIndicator.medium)
+        // Image
+        .resizable()
+        .renderingMode(.original)
+        .interpolation(.high)
+        .antialiased(true)
+        // Animation
+        .runLoopMode(.common)
+        .customLoopCount(1)
+        .maxBufferSize(0)
+        .pausable(true)
+        .purgeable(true)
+        .playbackRate(1)
+        .transition(.fade)
+        .animation(.easeInOut)
+        _ = try introspectView.inspect(AnimatedImage.self)
+        ViewHosting.host(view: introspectView)
+        self.waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     // MARK: Helper
     func testBundle() -> Bundle {
         Bundle(for: type(of: self))

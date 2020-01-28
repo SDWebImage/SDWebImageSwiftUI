@@ -15,6 +15,7 @@ class WebImageTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        SDImageCache.shared.clear(with: .all)
     }
     
     func testWebImageWithStaticURL() throws {
@@ -61,6 +62,46 @@ class WebImageTests: XCTestCase {
         }.onFailure { error in
             XCTFail(error.localizedDescription)
         }
+        _ = try introspectView.inspect(WebImage.self)
+        ViewHosting.host(view: introspectView)
+        self.waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testWebImageModifier() throws {
+        let expectation = self.expectation(description: "WebImage modifier")
+        let imageUrl = URL(string: "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg")
+        let imageView = WebImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
+        let introspectView = imageView
+        .onSuccess { _, _ in
+            expectation.fulfill()
+        }
+        .onFailure { _ in
+            XCTFail()
+        }
+        .onProgress { _, _ in
+            
+        }
+        .placeholder {
+            Circle()
+        }
+        // Image
+        .resizable()
+        .renderingMode(.original)
+        .interpolation(.high)
+        .antialiased(true)
+        // Animation
+        .runLoopMode(.common)
+        .customLoopCount(1)
+        .maxBufferSize(0)
+        .pausable(true)
+        .purgeable(true)
+        .playbackRate(1)
+        // WebImage
+        .retryOnAppear(true)
+        .cancelOnDisappear(true)
+        .indicator(.activity)
+        .transition(.fade)
+        .animation(.easeInOut)
         _ = try introspectView.inspect(WebImage.self)
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
