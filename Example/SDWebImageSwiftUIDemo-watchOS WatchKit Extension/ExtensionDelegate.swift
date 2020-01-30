@@ -20,6 +20,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
         SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
+        // Dynamic check to support vector format for WebImage
+        SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
+            var context = context
+            // WebImage supports bitmap rendering only
+            context?[.svgPrefersBitmap] = true
+            context?[.pdfPrefersBitmap] = true
+            return SDWebImageOptionsResult(options: options, context: context)
+        }
     }
 
     func applicationDidBecomeActive() {

@@ -38,8 +38,6 @@ struct IndicatorViewModifier<T> : ViewModifier where T : View {
             content
             if imageManager.isLoading {
                 indicator.content($imageManager.isLoading, $imageManager.progress)
-            } else {
-                indicator.content($imageManager.isLoading, $imageManager.progress).hidden()
             }
         }
     }
