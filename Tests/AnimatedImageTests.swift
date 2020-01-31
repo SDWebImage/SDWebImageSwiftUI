@@ -90,7 +90,11 @@ class AnimatedImageTests: XCTestCase {
     func testAnimatedImageBinding() throws {
         let expectation = self.expectation(description: "AnimatedImage binding control")
         let binding = Binding<Bool>(wrappedValue: true)
+        var context: AnimatedImage.Context?
         let imageView = AnimatedImage(name: "TestLoopCount.gif", bundle: testImageBundle(), isAnimating: binding)
+            .onViewCreate { _, c in
+                context = c
+        }
         let introspectView = imageView.introspectAnimatedImage { animatedImageView in
             if let animatedImage = animatedImageView.image as? SDAnimatedImage {
                 XCTAssertEqual(animatedImage.animatedImageLoopCount, 1)
@@ -106,12 +110,8 @@ class AnimatedImageTests: XCTestCase {
             binding.wrappedValue = false
             XCTAssertFalse(binding.wrappedValue)
             XCTAssertFalse(imageView.isAnimating)
-            // TODO: current the Binding value can not been mocked, hardcode here to call `SDAnimatedImageView.stopAnimating`
-            #if os(iOS) || os(tvOS)
-            animatedImageView.stopAnimating()
-            #else
-            animatedImageView.animates = false
-            #endif
+            // Currently ViewInspector's @Binding value update does not trigger `UIViewRepresentable.updateUIView`, mock here
+            imageView.updateView(animatedImageView.superview as! AnimatedImageViewWrapper, context: context!)
             #if os(iOS) || os(tvOS)
             XCTAssertFalse(animatedImageView.isAnimating)
             #else
