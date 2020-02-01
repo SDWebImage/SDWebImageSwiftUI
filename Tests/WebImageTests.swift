@@ -110,7 +110,11 @@ class WebImageTests: XCTestCase {
         let expectation = self.expectation(description: "WebImage onSuccess when memory hit")
         let imageUrl = URL(string: "https://foo.bar/buzz.png")
         let cacheKey = SDWebImageManager.shared.cacheKey(for: imageUrl)
+        #if os(macOS)
+        let testImage = TestUtils.testImageBundle().image(forResource: "TestImage")
+        #else
         let testImage = UIImage(named: "TestImage", in: TestUtils.testImageBundle(), compatibleWith: nil)
+        #endif
         SDImageCache.shared.storeImage(toMemory: testImage, forKey: cacheKey)
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, cacheType in
