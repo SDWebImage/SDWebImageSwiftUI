@@ -28,6 +28,9 @@
 		321C1D6B23DEDB98009CF62A /* WebImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3211F84F23DE98E300FC757F /* WebImageTests.swift */; };
 		321C1D6C23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3211F84623DE984D00FC757F /* AnimatedImageTests.swift */; };
 		321C1D6D23DEDB98009CF62A /* WebImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3211F84F23DE98E300FC757F /* WebImageTests.swift */; };
+		322E0F4823E57F09006836DC /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E0F4723E57F09006836DC /* TestUtils.swift */; };
+		322E0F4923E57F09006836DC /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E0F4723E57F09006836DC /* TestUtils.swift */; };
+		322E0F4A23E57F09006836DC /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E0F4723E57F09006836DC /* TestUtils.swift */; };
 		326B84822363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84832363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84842363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
@@ -160,6 +163,7 @@
 		3211F85423DE9D2700FC757F /* Images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Images.bundle; sourceTree = "<group>"; };
 		321C1D3B23DEC17D009CF62A /* SDWebImageSwiftUITests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDWebImageSwiftUITests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		321C1D4A23DEC185009CF62A /* SDWebImageSwiftUITests tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDWebImageSwiftUITests tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		322E0F4723E57F09006836DC /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		326B84812363350C0011BDFB /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		326B8486236335110011BDFB /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
@@ -259,6 +263,7 @@
 				3211F84623DE984D00FC757F /* AnimatedImageTests.swift */,
 				3211F84F23DE98E300FC757F /* WebImageTests.swift */,
 				32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */,
+				322E0F4723E57F09006836DC /* TestUtils.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -711,6 +716,7 @@
 				3211F85023DE98E300FC757F /* WebImageTests.swift in Sources */,
 				32BD9C4723E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				3211F84723DE984D00FC757F /* AnimatedImageTests.swift in Sources */,
+				322E0F4823E57F09006836DC /* TestUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +727,7 @@
 				321C1D6B23DEDB98009CF62A /* WebImageTests.swift in Sources */,
 				32BD9C4823E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6A23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
+				322E0F4923E57F09006836DC /* TestUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,6 +738,7 @@
 				321C1D6D23DEDB98009CF62A /* WebImageTests.swift in Sources */,
 				32BD9C4923E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6C23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
+				322E0F4A23E57F09006836DC /* TestUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
