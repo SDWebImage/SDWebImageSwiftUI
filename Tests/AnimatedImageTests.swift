@@ -34,7 +34,7 @@ class AnimatedImageTests: XCTestCase {
     
     func testAnimatedImageWithName() throws {
         let expectation = self.expectation(description: "AnimatedImage name initializer")
-        let imageView = AnimatedImage(name: "TestImage.gif", bundle: testImageBundle())
+        let imageView = AnimatedImage(name: "TestImage.gif", bundle: TestUtils.testImageBundle())
         let introspectView = imageView.introspectAnimatedImage { animatedImageView in
             if let animatedImage = animatedImageView.image as? SDAnimatedImage {
                 XCTAssertEqual(animatedImage.animatedImageLoopCount, 0)
@@ -51,7 +51,7 @@ class AnimatedImageTests: XCTestCase {
     
     func testAnimatedImageWithData() throws {
         let expectation = self.expectation(description: "AnimatedImage data initializer")
-        let imageData = try XCTUnwrap(testImageData(name: "TestImageAnimated.apng"))
+        let imageData = try XCTUnwrap(TestUtils.testImageData(name: "TestImageAnimated.apng"))
         let imageView = AnimatedImage(data: imageData)
         let introspectView = imageView.introspectAnimatedImage { animatedImageView in
             if let animatedImage = animatedImageView.image as? SDAnimatedImage {
@@ -91,7 +91,7 @@ class AnimatedImageTests: XCTestCase {
         let expectation = self.expectation(description: "AnimatedImage binding control")
         let binding = Binding<Bool>(wrappedValue: true)
         var context: AnimatedImage.Context?
-        let imageView = AnimatedImage(name: "TestLoopCount.gif", bundle: testImageBundle(), isAnimating: binding)
+        let imageView = AnimatedImage(name: "TestLoopCount.gif", bundle: TestUtils.testImageBundle(), isAnimating: binding)
             .onViewCreate { _, c in
                 context = c
         }
@@ -171,22 +171,4 @@ class AnimatedImageTests: XCTestCase {
         self.waitForExpectations(timeout: 5, handler: nil)
         AnimatedImage.onViewDestroy()
     }
-    
-    // MARK: Helper
-    func testBundle() -> Bundle {
-        Bundle(for: type(of: self))
-    }
-    
-    func testImageBundle() -> Bundle {
-        let imagePath = (testBundle().resourcePath! as NSString).appendingPathComponent("Images.bundle")
-        return Bundle(path: imagePath)!
-    }
-    
-    func testImageData(name: String) -> Data? {
-        guard let url = testImageBundle().url(forResource: name, withExtension: nil) else {
-            return nil
-        }
-        return try? Data(contentsOf: url)
-    }
-    
 }

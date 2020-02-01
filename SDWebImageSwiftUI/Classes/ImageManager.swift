@@ -19,6 +19,7 @@ class ImageManager : ObservableObject {
     weak var currentOperation: SDWebImageOperation? = nil
     var isSuccess: Bool = false // true means request for this URL is ended forever, load() do nothing
     var isIncremental: Bool = false // true means during incremental loading
+    var isFirstLoad: Bool = true // false after first call `load()`
     
     var url: URL?
     var options: SDWebImageOptions
@@ -39,6 +40,7 @@ class ImageManager : ObservableObject {
     }
     
     func load() {
+        isFirstLoad = false
         if currentOperation != nil {
             return
         }

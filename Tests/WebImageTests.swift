@@ -15,7 +15,6 @@ class WebImageTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        SDImageCache.shared.clear(with: .all)
     }
     
     func testWebImageWithStaticURL() throws {
@@ -102,6 +101,28 @@ class WebImageTests: XCTestCase {
         .indicator(.activity)
         .transition(.fade)
         .animation(.easeInOut)
+        _ = try introspectView.inspect(WebImage.self)
+        ViewHosting.host(view: introspectView)
+        self.waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testWebImageOnSuccessWhenMemoryCacheHit() throws {
+        let expectation = self.expectation(description: "WebImage onSuccess when memory hit")
+        let imageUrl = URL(string: "https://foo.bar/buzz.png")
+        let cacheKey = SDWebImageManager.shared.cacheKey(for: imageUrl)
+        #if os(macOS)
+        let testImage = TestUtils.testImageBundle().image(forResource: "TestImage")
+        #else
+        let testImage = UIImage(named: "TestImage", in: TestUtils.testImageBundle(), compatibleWith: nil)
+        #endif
+        SDImageCache.shared.storeImage(toMemory: testImage, forKey: cacheKey)
+        let imageView = WebImage(url: imageUrl)
+        let introspectView = imageView.onSuccess { image, cacheType in
+            XCTAssert(cacheType == .memory)
+            XCTAssertNotNil(image)
+            XCTAssertEqual(image, testImage)
+            expectation.fulfill()
+        }
         _ = try introspectView.inspect(WebImage.self)
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
