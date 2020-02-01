@@ -58,13 +58,16 @@ public struct WebImage : View {
             }
         }
         self.imageManager = ImageManager(url: url, options: options, context: context)
-        // load remote image here, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
-        // this can ensure we load the image, SDWebImage take care of the duplicated query
-        self.imageManager.load()
     }
     
     public var body: some View {
-        Group {
+        // load remote image when first called `body`, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
+        // this can ensure we load the image, and display image synchronously when memory cache hit to avoid flashing
+        // called once per struct, SDWebImage take care of the duplicated query
+        if imageManager.isFirstLoad {
+            imageManager.load()
+        }
+        return Group {
             if imageManager.image != nil {
                 if isAnimating && !self.imageManager.isIncremental {
                     if currentFrame != nil {
