@@ -20,6 +20,23 @@ extension View {
     }
 }
 
+extension AnimatedImage {
+    struct WrapperView: View & Inspectable {
+        var name: String
+        var bundle: Bundle?
+        @State var isAnimating: Bool
+
+        var onViewUpdate: (Self, PlatformView, AnimatedImage.Context) -> Void
+
+        var body: some View {
+            AnimatedImage(name: name, bundle: bundle, isAnimating: $isAnimating)
+            .onViewUpdate { view, context in
+                self.onViewUpdate(self, view, context)
+            }
+        }
+    }
+}
+
 class AnimatedImageTests: XCTestCase {
     
     override func setUp() {
@@ -89,38 +106,50 @@ class AnimatedImageTests: XCTestCase {
     
     func testAnimatedImageBinding() throws {
         let expectation = self.expectation(description: "AnimatedImage binding control")
-        let binding = Binding<Bool>(wrappedValue: true)
-        var context: AnimatedImage.Context?
-        let imageView = AnimatedImage(name: "TestLoopCount.gif", bundle: TestUtils.testImageBundle(), isAnimating: binding)
-            .onViewCreate { _, c in
-                context = c
-        }
-        let introspectView = imageView.introspectAnimatedImage { animatedImageView in
+        var viewUpdateCount = 0
+        // Use wrapper to make the @Binding works
+        let wrapperView = AnimatedImage.WrapperView(name: "TestLoopCount.gif", bundle: TestUtils.testImageBundle(), isAnimating: true) { wrapperView, view, context in
+            viewUpdateCount += 1
+            guard let animatedImageView = view as? SDAnimatedImageView else {
+                XCTFail("AnimatedImage's view should be SDAnimatedImageView")
+                return
+            }
             if let animatedImage = animatedImageView.image as? SDAnimatedImage {
                 XCTAssertEqual(animatedImage.animatedImageLoopCount, 1)
                 XCTAssertEqual(animatedImage.animatedImageFrameCount, 2)
             } else {
-                XCTFail("SDAnimatedImageView.image invalid")
+                XCTFail("AnimatedImage's image should be SDAnimatedImage")
             }
-            #if os(iOS) || os(tvOS)
-            XCTAssertTrue(animatedImageView.isAnimating)
+            // View update times before stable from SwiftUI, different behavior for AppKit/UIKit
+            #if os(macOS)
+            let stableViewUpdateCount = 1
             #else
-            XCTAssertTrue(animatedImageView.animates)
+            let stableViewUpdateCount = 2
             #endif
-            binding.wrappedValue = false
-            XCTAssertFalse(binding.wrappedValue)
-            XCTAssertFalse(imageView.isAnimating)
-            // Currently ViewInspector's @Binding value update does not trigger `UIViewRepresentable.updateUIView`, mock here
-            imageView.updateView(animatedImageView.superview as! AnimatedImageViewWrapper, context: context!)
-            #if os(iOS) || os(tvOS)
-            XCTAssertFalse(animatedImageView.isAnimating)
-            #else
-            XCTAssertFalse(animatedImageView.animates)
-            #endif
-            expectation.fulfill()
+            switch viewUpdateCount {
+            case stableViewUpdateCount:
+                // #1 SwiftUI's own updateUIView call
+                #if os(iOS) || os(tvOS)
+                XCTAssertTrue(animatedImageView.isAnimating)
+                #else
+                XCTAssertTrue(animatedImageView.animates)
+                #endif
+                DispatchQueue.main.async {
+                    wrapperView.isAnimating = false
+                }
+            case stableViewUpdateCount + 1:
+                // #3 AnimatedImage's isAnimating @Binding trigger update (from above)
+                #if os(iOS) || os(tvOS)
+                XCTAssertFalse(animatedImageView.isAnimating)
+                #else
+                XCTAssertFalse(animatedImageView.animates)
+                #endif
+                expectation.fulfill()
+            default: break
+                // do not care
+            }
         }
-        _ = try introspectView.inspect(AnimatedImage.self)
-        ViewHosting.host(view: introspectView)
+        ViewHosting.host(view: wrapperView)
         self.waitForExpectations(timeout: 5, handler: nil)
     }
     
