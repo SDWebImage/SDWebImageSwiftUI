@@ -150,7 +150,7 @@ class AnimatedImageTests: XCTestCase {
             XCTAssert(view.isKind(of: SDAnimatedImageView.self))
             XCTAssertEqual(context.coordinator.userInfo?["foo"] as? String, "bar")
         }
-        .placeholder(WebImage.emptyImage)
+        .placeholder(PlatformImage())
         .indicator(SDWebImageActivityIndicator.medium)
         // Image
         .resizable()

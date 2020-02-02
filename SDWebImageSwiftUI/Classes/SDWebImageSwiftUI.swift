@@ -26,6 +26,8 @@ extension Image {
         self.init(uiImage: platformImage)
         #endif
     }
+    
+    static var empty = Image(platformImage: PlatformImage())
 }
 
 #if os(macOS)
