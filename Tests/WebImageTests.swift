@@ -32,9 +32,10 @@ class WebImageTests: XCTestCase {
         }.onFailure { error in
             XCTFail(error.localizedDescription)
         }
-        _ = try introspectView.inspect(WebImage.self)
+        _ = try introspectView.inspect()
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
+        ViewHosting.expel()
     }
     
     func testWebImageWithAnimatedURL() throws {
@@ -61,9 +62,10 @@ class WebImageTests: XCTestCase {
         }.onFailure { error in
             XCTFail(error.localizedDescription)
         }
-        _ = try introspectView.inspect(WebImage.self)
+        _ = try introspectView.inspect()
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
+        ViewHosting.expel()
     }
     
     func testWebImageModifier() throws {
@@ -101,9 +103,10 @@ class WebImageTests: XCTestCase {
         .indicator(.activity)
         .transition(.fade)
         .animation(.easeInOut)
-        _ = try introspectView.inspect(WebImage.self)
+        _ = try introspectView.inspect()
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
+        ViewHosting.expel()
     }
     
     func testWebImageOnSuccessWhenMemoryCacheHit() throws {
@@ -123,9 +126,10 @@ class WebImageTests: XCTestCase {
             XCTAssertEqual(image, testImage)
             expectation.fulfill()
         }
-        _ = try introspectView.inspect(WebImage.self)
+        _ = try introspectView.inspect()
         ViewHosting.host(view: introspectView)
         self.waitForExpectations(timeout: 5, handler: nil)
+        ViewHosting.expel()
     }
     
 }

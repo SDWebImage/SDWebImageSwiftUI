@@ -355,8 +355,7 @@ SDWebImageSwiftUI has Unit Test to increase code quality. For SwiftUI, there are
 
 However, since SwiftUI is State-Based and Attributed-Implemented layout system, there are open source projects who provide the solution:
 
-+ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`
-+ [SwiftUI-Introspect](https://github.com/siteline/SwiftUI-Introspect): Introspect the native UIKit/AppKit View, even for SwiftUI component (like `List`, which is actually `UITableView` in implementation). We use this to test `AnimatedImage`
++ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`. It also allows the inspect to native UIView/NSView, which we use to test `ActivityIndicator` and `ProgressIndicator`.
 
 To run the test:
 

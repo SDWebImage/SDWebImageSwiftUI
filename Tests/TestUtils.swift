@@ -1,5 +1,18 @@
 import XCTest
 import SwiftUI
+import ViewInspector
+@testable import SDWebImageSwiftUI
+
+public extension PlatformViewRepresentable where Self: Inspectable {
+    
+    func platformView() throws -> PlatformViewType {
+        #if os(macOS)
+        return try nsView()
+        #else
+        return try uiView()
+        #endif
+    }
+}
 
 class TestUtils {
     static var testBundle = Bundle(for: TestUtils.self)
