@@ -54,13 +54,13 @@ class AnimatedImageTests: XCTestCase {
     
     func testAnimatedImageWithData() throws {
         let expectation = self.expectation(description: "AnimatedImage data initializer")
-        let imageData = try XCTUnwrap(TestUtils.testImageData(name: "TestImageAnimated.apng"))
+        let imageData = try XCTUnwrap(TestUtils.testImageData(name: "TestLoopCount.gif"))
         let imageView = AnimatedImage(data: imageData)
         ViewHosting.host(view: imageView)
         let animatedImageView = try imageView.inspect().actualView().platformView().wrapped
         if let animatedImage = animatedImageView.image as? SDAnimatedImage {
-            XCTAssertEqual(animatedImage.animatedImageLoopCount, 0)
-            XCTAssertEqual(animatedImage.animatedImageFrameCount, 101)
+            XCTAssertEqual(animatedImage.animatedImageLoopCount, 1)
+            XCTAssertEqual(animatedImage.animatedImageFrameCount, 2)
         } else {
             XCTFail("SDAnimatedImageView.image invalid")
         }
@@ -96,14 +96,14 @@ class AnimatedImageTests: XCTestCase {
         let expectation = self.expectation(description: "AnimatedImage binding control")
         var isStopped = false
         // Use wrapper to make the @Binding works
-        let wrapperView = AnimatedImage.WrapperView(name: "TestLoopCount.gif", bundle: TestUtils.testImageBundle(), isAnimating: true) { wrapperView, view, context in
+        let wrapperView = AnimatedImage.WrapperView(name: "TestImageAnimated.apng", bundle: TestUtils.testImageBundle(), isAnimating: true) { wrapperView, view, context in
             guard let animatedImageView = view as? SDAnimatedImageView else {
                 XCTFail("AnimatedImage's view should be SDAnimatedImageView")
                 return
             }
             if let animatedImage = animatedImageView.image as? SDAnimatedImage {
-                XCTAssertEqual(animatedImage.animatedImageLoopCount, 1)
-                XCTAssertEqual(animatedImage.animatedImageFrameCount, 2)
+                XCTAssertEqual(animatedImage.animatedImageLoopCount, 0)
+                XCTAssertEqual(animatedImage.animatedImageFrameCount, 101)
             } else {
                 XCTFail("AnimatedImage's image should be SDAnimatedImage")
             }
@@ -122,7 +122,6 @@ class AnimatedImageTests: XCTestCase {
                         wrapperView.isAnimating = false
                     } else {
                         // Extra `updateUIView` from SwiftUI, ignore
-                        // During my test, iOS 13.3 (on macOS 10.15 simulator) called 2 times, iOS 13.0.0 (on macOS 10.15 simulator) called 1 time. iOS 13.3.3 (on macOS 10.14 simulator) called 2 times. Unregulated at all. Thanks Apple :)
                     }
                 }
             } else {
