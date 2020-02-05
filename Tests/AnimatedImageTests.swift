@@ -94,10 +94,9 @@ class AnimatedImageTests: XCTestCase {
     
     func testAnimatedImageBinding() throws {
         let expectation = self.expectation(description: "AnimatedImage binding control")
-        var viewUpdateCount = 0
+        var isStopped = false
         // Use wrapper to make the @Binding works
         let wrapperView = AnimatedImage.WrapperView(name: "TestLoopCount.gif", bundle: TestUtils.testImageBundle(), isAnimating: true) { wrapperView, view, context in
-            viewUpdateCount += 1
             guard let animatedImageView = view as? SDAnimatedImageView else {
                 XCTFail("AnimatedImage's view should be SDAnimatedImageView")
                 return
@@ -108,33 +107,32 @@ class AnimatedImageTests: XCTestCase {
             } else {
                 XCTFail("AnimatedImage's image should be SDAnimatedImage")
             }
-            // View update times before stable from SwiftUI, different behavior for AppKit/UIKit
-            #if os(macOS)
-            let stableViewUpdateCount = 1
-            #else
-            let stableViewUpdateCount = 2
-            #endif
-            switch viewUpdateCount {
-            case stableViewUpdateCount:
-                // #1 SwiftUI's own updateUIView call
+            // Wait 1 second for SwiftUI's own `updateUIView` callback finished.
+            // It's suck that the actual callback behavior is different on different iOS version or Simulator version, so I can assume which is the last callback using the callback count.
+            if !isStopped {
+                // # SwiftUI's own updateUIView call
                 #if os(iOS) || os(tvOS)
                 XCTAssertTrue(animatedImageView.isAnimating)
                 #else
                 XCTAssertTrue(animatedImageView.animates)
                 #endif
-                DispatchQueue.main.async {
-                    wrapperView.isAnimating = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    if !isStopped {
+                        isStopped = true
+                        wrapperView.isAnimating = false
+                    } else {
+                        // Extra `updateUIView` from SwiftUI, ignore
+                        // During my test, iOS 13.3 (on macOS 10.15 simulator) called 2 times, iOS 13.0.0 (on macOS 10.15 simulator) called 1 time. iOS 13.3.3 (on macOS 10.14 simulator) called 2 times. Unregulated at all. Thanks Apple :)
+                    }
                 }
-            case stableViewUpdateCount + 1:
-                // #3 AnimatedImage's isAnimating @Binding trigger update (from above)
+            } else {
+                // # AnimatedImage's isAnimating @Binding trigger update (from above)
                 #if os(iOS) || os(tvOS)
                 XCTAssertFalse(animatedImageView.isAnimating)
                 #else
                 XCTAssertFalse(animatedImageView.animates)
                 #endif
                 expectation.fulfill()
-            default: break
-                // do not care
             }
         }
         ViewHosting.host(view: wrapperView)
