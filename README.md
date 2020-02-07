@@ -74,10 +74,32 @@ github "SDWebImage/SDWebImageSwiftUI"
 
 SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org/package-manager/).
 
++ For App integration
+
+For App integration, you should using Xcode 11 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
+
+Note for any pre-release version like 1.0.0 beta, you should use the `Exact` dependency, or the `Range` dependency. Using `Up to next Major` does not resolve the pre-release version.
+
+![](https://user-images.githubusercontent.com/6919743/73805686-5451c180-4802-11ea-9b72-d082ad315bfc.png)
+
++ For downstream framework
+
+For downstream framework author, you should create a `Package.swift` file into your git repo, then add the following line to mark your framework dependent our SDWebImageSwiftUI.
+
 ```swift
 let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.0")
+    ],
+)
+```
+
+Note for any pre-release version like 1.0.0 beta, you should use the SwiftPM [prereleaseIdentifiers](https://developer.apple.com/documentation/swift_packages/version/2878264-prereleaseidentifiers) API to specify it. The default `from:` does not resolve the pre-release version.
+
+```swift
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: Version(1, 0, 0, prereleaseIdentifiers: ["-beta"])))
     ],
 )
 ```
