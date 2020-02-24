@@ -17,6 +17,7 @@ public class AnimatedImageViewWrapper : PlatformView {
     var wrapped = SDAnimatedImageView()
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
+    var resizable = false
     
     override public func draw(_ rect: CGRect) {
         #if os(macOS)
@@ -49,10 +50,15 @@ public class AnimatedImageViewWrapper : PlatformView {
         /// The container will measure its own size with 1:1 firstly, then change image view size, which cause image view sizing smaller than expected
         /// Instead, the container should firstly return its own size with image view's aspect ratio
         let size = wrapped.intrinsicContentSize
-        if size.width > 0 && size.height > 0  {
-            return size
+        if resizable {
+            if size.width > 0 && size.height > 0  {
+                return size
+            } else {
+                return super.intrinsicContentSize
+            }
         } else {
-            return super.intrinsicContentSize
+            /// Not resizable, always use image size, like SwiftUI.Image
+            return size
         }
     }
     
