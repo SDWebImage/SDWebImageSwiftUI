@@ -196,7 +196,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.sd_setImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: imageModel.webOptions, context: imageModel.webContext, progress: { (receivedSize, expectedSize, _) in
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
-            self.layoutView(view, context: context)
+            // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
+            // Here I have to use UIKit API to triger the same effect (the window change implicitly cause re-render)
+            if let hostingView = AnimatedImage.findHostingView(from: view) {
+                hostingView.didMoveToWindow()
+            }
             if let image = image {
                 self.imageHandler.successBlock?(image, cacheType)
             } else {
@@ -448,6 +452,17 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else {
             view.wrapped.playbackRate = 1.0
         }
+    }
+    
+    private static func findHostingView(from entry: PlatformView) -> PlatformView? {
+        var superview = entry.superview
+        while let s = superview {
+            if NSStringFromClass(type(of: s)).contains("HostingView") {
+                return s
+            }
+            superview = s.superview
+        }
+        return nil
     }
 }
 

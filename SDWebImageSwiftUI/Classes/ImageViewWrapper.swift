@@ -50,8 +50,7 @@ public class AnimatedImageViewWrapper : PlatformView {
         /// Instead, the container should firstly return its own size with image view's aspect ratio
         let size = wrapped.intrinsicContentSize
         if size.width > 0 && size.height > 0  {
-            let aspectRatio = size.height / size.width
-            return CGSize(width: 1, height: 1 * aspectRatio)
+            return size
         } else {
             return super.intrinsicContentSize
         }
