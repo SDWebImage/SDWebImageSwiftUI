@@ -46,19 +46,12 @@ public class AnimatedImageViewWrapper : PlatformView {
     #endif
     
     public override var intrinsicContentSize: CGSize {
-        /// Used to fix SwiftUI layout issue when image view is aspectFit/aspectFill :)
-        /// The container will measure its own size with 1:1 firstly, then change image view size, which cause image view sizing smaller than expected
-        /// Instead, the container should firstly return its own size with image view's aspect ratio
-        let size = wrapped.intrinsicContentSize
+        /// Match the behavior of SwiftUI.Image, only when image is resizable, use the super implementation to calculate size
         if resizable {
-            if size.width > 0 && size.height > 0  {
-                return size
-            } else {
-                return super.intrinsicContentSize
-            }
+            return super.intrinsicContentSize
         } else {
             /// Not resizable, always use image size, like SwiftUI.Image
-            return size
+            return wrapped.intrinsicContentSize
         }
     }
     
