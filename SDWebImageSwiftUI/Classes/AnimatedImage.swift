@@ -199,7 +199,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
             // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
             // Here I have to use UIKit API to triger the same effect (the window change implicitly cause re-render)
             if let hostingView = AnimatedImage.findHostingView(from: view) {
+                #if os(macOS)
+                hostingView.viewDidMoveToWindow()
+                #else
                 hostingView.didMoveToWindow()
+                #endif
             }
             if let image = image {
                 self.imageHandler.successBlock?(image, cacheType)
