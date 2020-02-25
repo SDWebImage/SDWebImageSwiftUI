@@ -17,18 +17,29 @@ import SDWebImagePDFCoder
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var settings = UserSettings()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
+        let contentView = ContentView().environmentObject(settings)
 
         // Use a UIHostingController as window root view controller.
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: contentView)
+        let hostingController = UIHostingController(rootView: contentView)
+        window.rootViewController = hostingController
         self.window = window
         window.makeKeyAndVisible()
+        
+        // Hack here because of SwiftUI's bug, when using `NavigationLink`, the focusable no longer works, so the `onExitCommand` does not get called
+        let menuGesture = UITapGestureRecognizer(target: self, action: #selector(handleMenuGesture(_:)))
+        menuGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        hostingController.view.addGestureRecognizer(menuGesture)
+        
+        let playPauseGesture = UITapGestureRecognizer(target: self, action: #selector(handlePlayPauseGesture(_:)))
+        playPauseGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.playPause.rawValue)]
+        hostingController.view.addGestureRecognizer(playPauseGesture)
+        
         // Add WebP/SVG/PDF support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
@@ -49,6 +60,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return true
+    }
+    
+    @objc func handleMenuGesture(_ gesture: UITapGestureRecognizer) {
+        switch settings.editMode {
+        case .inactive:
+            settings.editMode = .active
+        case .active:
+            settings.editMode = .inactive
+        case .transient:
+            break
+        @unknown default:
+            break
+        }
+    }
+    
+    @objc func handlePlayPauseGesture(_ gesture: UITapGestureRecognizer) {
+        settings.zoomed.toggle()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

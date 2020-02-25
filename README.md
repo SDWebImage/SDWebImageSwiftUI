@@ -368,7 +368,7 @@ Demo Tips:
 
 1. Use `Switch` (right-click on macOS/force press on watchOS) to switch between `WebImage` and `AnimatedImage`.
 2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
-3. Use `Swipe` to delete one image item.
+3. Use `Swipe To Delete` (menu button on tvOS) to delete one image url from list.
 4. Pinch gesture (Digital Crown on watchOS, play button on tvOS) to zoom-in detail page image.
 5. Clear cache and go to detail page to see progressive loading.
 

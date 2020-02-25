@@ -16,6 +16,7 @@ struct DetailView: View {
     @State var lastScaleValue: CGFloat = 1.0
     @State var scale: CGFloat = 1.0
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         VStack {
@@ -60,14 +61,9 @@ struct DetailView: View {
         #if os(tvOS)
         return contentView()
             .scaleEffect(self.scale)
-            .focusable(true)
-            .onPlayPauseCommand {
-                switch self.scale {
-                case 1:
-                    self.scale = 2
-                case 2:
-                    self.scale = 1
-                default: break
+            .onReceive(self.settings.$zoomed) { zoomed in
+                withAnimation {
+                    self.scale = zoomed ? 2 : 1
                 }
             }
         #endif

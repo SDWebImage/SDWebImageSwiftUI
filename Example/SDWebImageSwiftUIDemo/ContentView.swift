@@ -10,6 +10,12 @@ import SwiftUI
 import SDWebImage
 import SDWebImageSwiftUI
 
+class UserSettings: ObservableObject {
+    // Some environment configuration
+    @Published var editMode: EditMode = .inactive
+    @Published var zoomed: Bool = false
+}
+
 #if os(watchOS)
 // watchOS does not provide built-in indicator, use Espera's custom indicator
 extension Indicator where T == LoadingFlowerView {
@@ -53,11 +59,27 @@ struct ContentView: View {
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/smartphone_tablet.pdf"
     ]
     @State var animated: Bool = true // You can change between WebImage/AnimatedImage
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
-        #if os(iOS) || os(tvOS)
+        #if os(iOS)
         return NavigationView {
             contentView()
+            .navigationBarTitle(animated ? "AnimatedImage" : "WebImage")
+            .navigationBarItems(leading:
+                Button(action: { self.reloadCache() }) {
+                    Text("Reload")
+                }, trailing:
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
+            )
+        }
+        #endif
+        #if os(tvOS)
+        return NavigationView {
+            contentView()
+            .environment(\EnvironmentValues.editMode, self.$settings.editMode)
             .navigationBarTitle(animated ? "AnimatedImage" : "WebImage")
             .navigationBarItems(leading:
                 Button(action: { self.reloadCache() }) {
