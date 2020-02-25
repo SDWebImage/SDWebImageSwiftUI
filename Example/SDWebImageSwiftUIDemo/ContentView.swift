@@ -10,14 +10,6 @@ import SwiftUI
 import SDWebImage
 import SDWebImageSwiftUI
 
-// Allows `String` in `ForEach`
-extension String : Identifiable {
-    public typealias ID = Int
-    public var id: Int {
-        self.hashValue
-    }
-}
-
 #if os(watchOS)
 // watchOS does not provide built-in indicator, use Espera's custom indicator
 extension Indicator where T == LoadingFlowerView {
@@ -107,7 +99,7 @@ struct ContentView: View {
     
     func contentView() -> some View {
         List {
-            ForEach(imageURLs) { url in
+            ForEach(imageURLs, id: \.self) { url in
                 NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
                     HStack {
                         if self.animated {
