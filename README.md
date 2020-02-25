@@ -121,7 +121,7 @@ var body: some View {
         .onSuccess { image, cacheType in
             // Success
         }
-        .resizable() // Resizable like SwiftUI.Image
+        .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
         .placeholder(Image(systemName: "photo")) // Placeholder Image
         // Supports ViewBuilder as well
         .placeholder {
@@ -141,7 +141,8 @@ Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.ani
 
 ```swift
 var body: some View {
-    WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control in 1.0.0 (for 0.x version, use `.animated()` modifier)
+    WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control in 1.0.0, supports dynamic changes
+    // The initial value of binding should be true (or you can use `.animatedImageClass` context option and pass `SDAnimatedImage`)
     .customLoopCount(1) // Custom loop count
     .playbackRate(2.0) // Playback speed rate
     // In 1.0.0, `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
@@ -166,11 +167,11 @@ var body: some View {
         .onFailure { error in
             // Error
         }
-        .resizable() // Actually this is not needed unlike SwiftUI.Image
+        .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
         .placeholder(UIImage(systemName: "photo")) // Placeholder Image
         .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
         .transition(.fade) // Fade Transition
-        .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier
+        .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier (Swift Protocol Extension method is static dispatched)
         
         // Data
         AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
