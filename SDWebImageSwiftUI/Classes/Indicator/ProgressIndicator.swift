@@ -13,7 +13,7 @@ import SwiftUI
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct ProgressIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
-    @Binding var progress: CGFloat
+    @Binding var progress: Double
     var style: Style
     
     /// Create indicator with animation binding, progress binding and the style
@@ -21,7 +21,7 @@ public struct ProgressIndicator: PlatformViewRepresentable {
     ///   - isAnimating: The binding to control the animation
     ///   - progress: The binding to update the progress
     ///   - style: The indicator style
-    public init(_ isAnimating: Binding<Bool>, progress: Binding<CGFloat>, style: Style = .default) {
+    public init(_ isAnimating: Binding<Bool>, progress: Binding<Double>, style: Style = .default) {
         self._isAnimating = isAnimating
         self._progress = progress
         self.style = style
