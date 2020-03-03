@@ -24,8 +24,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
             var context = context
             // WebImage supports bitmap rendering only
-            context?[.svgPrefersBitmap] = true
-            context?[.pdfPrefersBitmap] = true
+            context?[.imageThumbnailPixelSize] = CGSize.zero
             return SDWebImageOptionsResult(options: options, context: context)
         }
     }

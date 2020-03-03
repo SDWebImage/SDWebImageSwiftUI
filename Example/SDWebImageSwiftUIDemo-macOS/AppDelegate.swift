@@ -45,8 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 options.insert(.avoidDecodeImage)
             } else {
                 // WebImage supports bitmap rendering only
-                context?[.svgPrefersBitmap] = true
-                context?[.pdfPrefersBitmap] = true
+                context?[.imageThumbnailPixelSize] = CGSize.zero
             }
             return SDWebImageOptionsResult(options: options, context: context)
         }
