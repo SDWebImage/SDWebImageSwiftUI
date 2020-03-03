@@ -11,7 +11,7 @@ import SDWebImage
 
 #if os(iOS) || os(tvOS) || os(macOS)
 
-/// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit/WatchKit.
+/// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public final class AnimatedImageCoordinator: NSObject {
     
@@ -35,6 +35,14 @@ final class AnimatedImageModel : ObservableObject {
     /// Data image
     @Published var data: Data?
     @Published var scale: CGFloat = 1
+}
+
+/// Loading Binding Object, only properties in this object can support changes from user with @State and refresh
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+final class AnimatedLoadingModel : ObservableObject, IndicatorReportable {
+    @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
+    @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
+    @Published var progress: Double = 0 // network progress, should only be used for indicator binding
 }
 
 /// Completion Handler Binding Object, supports dynamic @State changes
@@ -81,6 +89,7 @@ final class AnimatedImageConfiguration: ObservableObject {
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel = AnimatedImageModel()
+    @ObservedObject var imageLoading = AnimatedLoadingModel()
     @ObservedObject var imageHandler = AnimatedImageHandler()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
@@ -193,11 +202,21 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if currentOperation != nil {
             return
         }
+        self.imageLoading.isLoading = true
         view.wrapped.sd_setImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: imageModel.webOptions, context: imageModel.webContext, progress: { (receivedSize, expectedSize, _) in
+            let progress: Double
+            if (expectedSize > 0) {
+                progress = Double(receivedSize) / Double(expectedSize)
+            } else {
+                progress = 0
+            }
+            DispatchQueue.main.async {
+                self.imageLoading.progress = progress
+            }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, error, cacheType, _) in
             // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
-            // Here I have to use UIKit API to triger the same effect (the window change implicitly cause re-render)
+            // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
             if let hostingView = AnimatedImage.findHostingView(from: view) {
                 #if os(macOS)
                 hostingView.viewDidMoveToWindow()
@@ -205,6 +224,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 hostingView.didMoveToWindow()
                 #endif
             }
+            self.imageLoading.image = image
+            self.imageLoading.isLoading = false
+            self.imageLoading.progress = 1
             if let image = image {
                 self.imageHandler.successBlock?(image, cacheType)
             } else {
@@ -704,7 +726,7 @@ extension AnimatedImage {
     }
 }
 
-// Web Image convenience
+// Web Image convenience, based on UIKit/AppKit API
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension AnimatedImage {
     
@@ -729,6 +751,23 @@ extension AnimatedImage {
     public func transition(_ transition: SDWebImageTransition?) -> AnimatedImage {
         self.imageConfiguration.transition = transition
         return self
+    }
+}
+
+// Indicator
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+extension AnimatedImage {
+    
+    /// Associate a indicator when loading image with url
+    /// - Parameter indicator: The indicator type, see `Indicator`
+    public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
+        return self.modifier(IndicatorViewModifier(reporter: self.imageLoading, indicator: indicator))
+    }
+    
+    /// Associate a indicator when loading image with url, convenient method with block
+    /// - Parameter content: A view that describes the indicator.
+    public func indicator<T>(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<Double>) -> T) -> some View where T : View {
+        return indicator(Indicator(content: content))
     }
 }
 
