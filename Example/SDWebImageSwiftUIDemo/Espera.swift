@@ -194,10 +194,10 @@ public struct StretchLoadingView: View {
 
 public struct StretchProgressView: View {
     
-    @Binding public var progress: CGFloat
+    @Binding public var progress: Double
     
     public var body: some View {
-        StretchyShape(progress: Double(progress), mode: .stretchy)
+        StretchyShape(progress: progress, mode: .stretchy)
         .frame(width: 140, height: 10)
     }
 }

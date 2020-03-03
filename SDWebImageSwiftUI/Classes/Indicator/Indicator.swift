@@ -12,14 +12,14 @@ import SwiftUI
 /// A  type to build the indicator
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct Indicator<T> where T : View {
-    var content: (Binding<Bool>, Binding<CGFloat>) -> T
+    var content: (Binding<Bool>, Binding<Double>) -> T
     
     /// Create a indicator with builder
     /// - Parameter builder: A builder to build indicator
     /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
-    /// - Parameter progress: A Binding to control the progress during loading. If no progress can be reported, the value is 0.
+    /// - Parameter progress: A Binding to control the progress during loading. Value between [0, 1]. If no progress can be reported, the value is 0.
     /// Associate a indicator when loading image with url
-    public init(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<CGFloat>) -> T) {
+    public init(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<Double>) -> T) {
         self.content = content
     }
 }

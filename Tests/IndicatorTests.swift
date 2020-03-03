@@ -55,7 +55,7 @@ class IndicatorTests: XCTestCase {
     func testProgressIndicator() throws {
         let expectation = self.expectation(description: "Progress indicator")
         let binding = Binding<Bool>(wrappedValue: true)
-        let progress = Binding<CGFloat>(wrappedValue: 0)
+        let progress = Binding<Double>(wrappedValue: 0)
         let indicator = ProgressIndicator(binding, progress: progress)
         ViewHosting.host(view: indicator)
         let indicatorView = try indicator.inspect().actualView().platformView().wrapped

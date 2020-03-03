@@ -13,7 +13,7 @@ import SDWebImage
 class ImageManager : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
-    @Published var progress: CGFloat = 0 // network progress, should only be used for indicator binding
+    @Published var progress: Double = 0 // network progress, should only be used for indicator binding
     
     var manager: SDWebImageManager
     weak var currentOperation: SDWebImageOperation? = nil
@@ -49,9 +49,9 @@ class ImageManager : ObservableObject {
             guard let self = self else {
                 return
             }
-            let progress: CGFloat
+            let progress: Double
             if (expectedSize > 0) {
-                progress = CGFloat(receivedSize) / CGFloat(expectedSize)
+                progress = Double(receivedSize) / Double(expectedSize)
             } else {
                 progress = 0
             }
