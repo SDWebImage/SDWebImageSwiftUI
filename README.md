@@ -40,6 +40,10 @@ The v1.0.0 version is now **released**, which provide all the function above, wi
 
 This framework follows [Semantic Versioning](https://semver.org/). Each source-break API changes will bump to a major version.
 
+## Changelog
+
+This project use [keep a changelog](https://keepachangelog.com/en/1.0.0/) format to record the changes. Check the [CHANGELOG.md](https://github.com/SDWebImage/SDWebImageSwiftUI/blob/master/CHANGELOG.md) about the changes between versions. The changes will also be updated in Release page.
+
 ## Contribution
 
 All issue reports, feature requests, contributions, and GitHub stars are welcomed. Hope for active feedback and promotion if you find this framework useful.
