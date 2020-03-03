@@ -14,6 +14,8 @@ SDWebImageSwiftUI is a SwiftUI image loading framework, which based on [SDWebIma
 
 It brings all your favorite features from SDWebImage, like async image loading, memory/disk caching, animated image playback and performances.
 
+The framework provide the different View structs, which API match the SwiftUI framework guideline. If you're familiar with `Image`, you'll find it easy to use `WebImage` and `AnimatedImage`.
+
 ## Features
 
 Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
@@ -34,9 +36,9 @@ Besides all these features, we do optimization for SwiftUI, like Binding, View M
 
 This framework is under heavily development, it's recommended to use [the latest release](https://github.com/SDWebImage/SDWebImageSwiftUI/releases) as much as possible (including SDWebImage dependency).
 
-The v1.0.0 version is now **on beta**, all the previous users are recommended to use, test and report issues. We need you feedback to drive the future development. The official version may released in February.
+The v1.0.0 version is now **released**, which provide all the function above, with the stable API, fully documentation and unit test.
 
-The v1.0.0 version provide all the function above, with the stable API, fully documentation and unit test. This framework follows [Semantic Versioning](https://semver.org/).
+This framework follows [Semantic Versioning](https://semver.org/). Each source-break API changes will bump to a major version.
 
 ## Contribution
 
@@ -78,10 +80,6 @@ SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org
 
 For App integration, you should using Xcode 11 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
 
-Note for any pre-release version like 1.0.0 beta, you should use the `Exact` dependency, or the `Range` dependency. Using `Up to next Major` does not resolve the pre-release version.
-
-![](https://user-images.githubusercontent.com/6919743/73805686-5451c180-4802-11ea-9b72-d082ad315bfc.png)
-
 + For downstream framework
 
 For downstream framework author, you should create a `Package.swift` file into your git repo, then add the following line to mark your framework dependent our SDWebImageSwiftUI.
@@ -90,16 +88,6 @@ For downstream framework author, you should create a `Package.swift` file into y
 let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.0")
-    ],
-)
-```
-
-Note for any pre-release version like 1.0.0 beta, you should use the SwiftPM [prereleaseIdentifiers](https://developer.apple.com/documentation/swift_packages/version/2878264-prereleaseidentifiers) API to specify it. The default `from:` does not resolve the pre-release version.
-
-```swift
-let package = Package(
-    dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: Version(1, 0, 0, prereleaseIdentifiers: ["-beta"])))
     ],
 )
 ```
@@ -113,7 +101,7 @@ let package = Package(
 - [x] Supports success/failure/progress changes event for custom handling
 - [x] Supports indicator with activity/progress indicator and customization
 - [x] Supports built-in animation and transition, powered by SwiftUI
-- [x] Supports animated image as well! (from v0.9.0)
+- [x] Supports animated image as well!
 
 ```swift
 var body: some View {
@@ -135,17 +123,17 @@ var body: some View {
 }
 ```
 
-Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. In previous version, `WebImage` supports static image format only, because unlike `UIImageView` in UIKit, SwiftUI's `Image` does not support animated image or vector image.
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But unlike SwiftUI's `Image` which does not support animated image or vector image, `WebImage` supports animated image as well.
 
-Note: From v0.9.0, `WebImage` supports animated image as well! You can use `.animated()` to start animation. This is done by using the native SwiftUI rendering system and SDWebImage's powerful [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530). The `WebImage` animated image provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering.
+Note: The `WebImage` animation provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering.
 
 ```swift
 var body: some View {
-    WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control in 1.0.0, supports dynamic changes
+    WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control, supports dynamic changes
     // The initial value of binding should be true (or you can use `.animatedImageClass` context option and pass `SDAnimatedImage`)
     .customLoopCount(1) // Custom loop count
     .playbackRate(2.0) // Playback speed rate
-    // In 1.0.0, `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
+    // `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
 }
 ```
 
@@ -190,17 +178,13 @@ var body: some View {
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, some advanced SwiftUI layout and animation system may not work as expected. You may need UIKit/AppKit and Core Animation to modify the native view.
 
-Note: From v0.9.0, `AnimatedImage` on watchOS drop the supports on watchOS, because of using hacks and private APIs. For watchOS user, choose `WebImage` instead.
-
-Note: From v0.8.0, `AnimatedImage` on watchOS support all features the same as iOS/tvOS/macOS, including Animated WebP rendering, runloop mode, pausable, purgeable, playback rate, etc. It use the SDWebImage's [Animated Player](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-player-530), which is the same backend engine for iOS/tvOS/macOS's Animated ImageView.
-
 ### Which View to choose
 
 Why we have two different View types here, is because of current SwiftUI limit. But we're aimed to provide best solution for all use cases.
 
 If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works.
 
-If you need simple animated image, use v0.9.0 above with `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, playback rate, etc.
+If you need simple animated image, use `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, playback rate, etc.
 
 If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
@@ -289,25 +273,55 @@ NavigationView {
 
 #### Using for backward deployment and weak linking SwiftUI
 
-SDWebImageSwiftUI from v0.10.0, supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
+SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
 
 To use backward deployment, you have to do the follow things:
 
-+ Add `-weak_framework SwiftUI -weak_framework Combine` in your App Target's `Other Linker Flags` build setting
+##### Add weak linking framework
 
-You should notice that all the third party SwiftUI frameworks should have this build setting as well, not only just SDWebImageSwiftUI (we already added in v0.10.0). Or when running on iOS 12 device, it will trigger the runtime dyld error on startup.
+Add `-weak_framework SwiftUI -weak_framework Combine` in your App Target's `Other Linker Flags` build setting. You can also do this using Xcode's `Optional Framework` checkbox, there have the same effect.
 
-+ Use CocoaPods or Carthage (SwiftPM does not support weak linking nor backward deployment currently)
+You should notice that all the third party SwiftUI frameworks should have this build setting as well, not only just SDWebImageSwiftUI. Or when running on iOS 12 device, it will trigger the runtime dyld error on startup.
 
-For Carthage user, the built binary framework will use [Library Evolution](https://swift.org/blog/abi-stability-and-more/) to support for backward deployment.
+##### Backward deployment on iOS 12.1-
 
-For CocoaPods user, you can skip the platform version validation in Podfile with:
+For deployment target version below iOS 12.2 (The first version which Swift 5 Runtime bundled in iOS system), you have to change the min deployment target version of SDWebImageSwiftUI. This may take some side effect on compiler's optimization and trigger massive warnings for some frameworks.
+
+However, for iOS 12.2+, you can still keep the min deployment target version to iOS 13, no extra warnings or performance slow down for iOS 13 client.
+
+Because Swift use the min deployment target version to detect whether to link the App bundled Swift runtime, or the System built-in one (`/usr/lib/swift/libswiftCore.dylib`).
+
++ For CocoaPods user, you can change the min deployment target version in the Podfile via post installer:
+
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0' # version you need
+    end
+  end
+end
+```
+
++ For Carthage user, you can use `carthage update --no-build` to download the dependency, then change the Xcode Project's deployment target version and build the binary framework.
+
++ For SwiftPM user, you have to use the local dependency (with the Git submodule) to change the deployment target version.
+
+##### Backward deployment on iOS 12.2+
+
++ For Carthage user, the built binary framework will use [Library Evolution](https://swift.org/blog/abi-stability-and-more/) to support for backward deployment.
+
++ For CocoaPods user, you can skip the platform version validation in Podfile with:
 
 ```ruby
 platform :ios, '13.0' # This does not effect your App Target's deployment target version, just a hint for CocoaPods
 ```
+
++ For SwiftPM user, SwiftPM does not support weak linking nor Library Evolution, so it can not deployment to iOS 12+ user without changing the min deployment target.
     
-+ Add **all the SwiftUI code** with the available annotation and runtime check, like this:
+##### Add available annotation
+
+Add **all the SwiftUI code** with the available annotation and runtime check, like this:
 
 ```swift
 // AppDelegate.swift
