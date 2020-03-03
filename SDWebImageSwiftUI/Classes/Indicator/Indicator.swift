@@ -40,10 +40,10 @@ public protocol IndicatorReportable : ObservableObject {
 public struct IndicatorViewModifier<T, V> : ViewModifier where T : View, V : IndicatorReportable {
     
     /// The progress reporter
-    @ObservedObject var reporter: V
+    @ObservedObject public var reporter: V
     
     /// The indicator
-    var indicator: Indicator<T>
+    public var indicator: Indicator<T>
     
     public func body(content: Content) -> some View {
         ZStack {
