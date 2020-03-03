@@ -12,8 +12,10 @@ import SDWebImageSwiftUI
 
 class UserSettings: ObservableObject {
     // Some environment configuration
+    #if os(tvOS)
     @Published var editMode: EditMode = .inactive
     @Published var zoomed: Bool = false
+    #endif
 }
 
 #if os(watchOS)
