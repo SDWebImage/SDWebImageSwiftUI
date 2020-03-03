@@ -10,7 +10,7 @@ import SwiftUI
 import SDWebImage
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-class ImageManager : ObservableObject {
+class ImageManager : ObservableObject, IndicatorReportable {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
     @Published var progress: Double = 0 // network progress, should only be used for indicator binding
@@ -70,9 +70,7 @@ class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
-            if let image = image {
-                self.image = image
-            }
+            self.image = image
             self.isIncremental = !finished
             if finished {
                 self.isLoading = false

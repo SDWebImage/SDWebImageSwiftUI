@@ -178,6 +178,16 @@ var body: some View {
 
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, some advanced SwiftUI layout and animation system may not work as expected. You may need UIKit/AppKit and Core Animation to modify the native view.
 
+Note: `AnimatedImage` some methods like `.transition`, `.indicator` and `.aspectRatio` have the same naming as `SwiftUI.View` protocol methods. But the args receive the different type. This is because `AnimatedImage` supports to be used with UIKit/AppKit component and animation. If you find ambiguity, use full type declaration instead of the dot expression syntax.
+
+```swift
+AnimatedImage(name: "animation2") // Just for showcase, don't mix them at the same time
+  .indicator(SDWebImageProgressIndicator.default) // UIKit indicator component
+  .indicator(Indicator.progress) // SwiftUI indicator component
+  .transition(SDWebImageTransition.flipFromLeft) // UIKit animation transition
+  .transition(AnyTransition.flipFromLeft) // SwiftUI animation transition
+```
+
 ### Which View to choose
 
 Why we have two different View types here, is because of current SwiftUI limit. But we're aimed to provide best solution for all use cases.

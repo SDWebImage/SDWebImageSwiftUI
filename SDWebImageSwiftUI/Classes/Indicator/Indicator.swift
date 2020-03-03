@@ -17,27 +17,39 @@ public struct Indicator<T> where T : View {
     /// Create a indicator with builder
     /// - Parameter builder: A builder to build indicator
     /// - Parameter isAnimating: A Binding to control the animation. If image is during loading, the value is true, else (like start loading) the value is false.
-    /// - Parameter progress: A Binding to control the progress during loading. Value between [0, 1]. If no progress can be reported, the value is 0.
+    /// - Parameter progress: A Binding to control the progress during loading. Value between [0.0, 1.0]. If no progress can be reported, the value is 0.
     /// Associate a indicator when loading image with url
     public init(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<Double>) -> T) {
         self.content = content
     }
 }
 
+/// A protocol to report indicator progress
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+public protocol IndicatorReportable : ObservableObject {
+    /// whether indicator is loading or not
+    var isLoading: Bool { get set }
+    /// indicator progress, should only be used for indicator binding, value between [0.0, 1.0]
+    var progress: Double { get set }
+}
+
 /// A implementation detail View Modifier with indicator
 /// SwiftUI View Modifier construced by using a internal View type which modify the `body`
 /// It use type system to represent the view hierarchy, and Swift `some View` syntax to hide the type detail for users
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-struct IndicatorViewModifier<T> : ViewModifier where T : View {
-    @ObservedObject var imageManager: ImageManager
+public struct IndicatorViewModifier<T, V> : ViewModifier where T : View, V : IndicatorReportable {
     
+    /// The progress reporter
+    @ObservedObject var reporter: V
+    
+    /// The indicator
     var indicator: Indicator<T>
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         ZStack {
             content
-            if imageManager.isLoading {
-                indicator.content($imageManager.isLoading, $imageManager.progress)
+            if reporter.isLoading {
+                indicator.content($reporter.isLoading, $reporter.progress)
             }
         }
     }
