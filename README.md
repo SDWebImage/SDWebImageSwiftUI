@@ -132,9 +132,10 @@ Note: This `WebImage` using `Image` for internal implementation, which is the be
 Note: The `WebImage` animation provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering.
 
 ```swift
+@State var isAnimating: Bool = true
 var body: some View {
     WebImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), isAnimating: $isAnimating)) // Animation Control, supports dynamic changes
-    // The initial value of binding should be true (or you can use `.animatedImageClass` context option and pass `SDAnimatedImage`)
+    // The initial value of binding should be true
     .customLoopCount(1) // Custom loop count
     .playbackRate(2.0) // Playback speed rate
     // `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
@@ -175,6 +176,7 @@ var body: some View {
         .maxBufferSize(.max)
         .onViewUpdate { view, context in // Advanced native view coordinate
             view.toolTip = "Mouseover Tip"
+            let coordinator = context.coordinator
         }
     }
 }
@@ -198,7 +200,7 @@ Why we have two different View types here, is because of current SwiftUI limit. 
 
 If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works.
 
-If you need simple animated image, use `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, playback rate, etc.
+If you need simple animated image, use `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, if you don't care about this.
 
 If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
 
@@ -396,7 +398,7 @@ Demo Tips:
 
 1. Use `Switch` (right-click on macOS/force press on watchOS) to switch between `WebImage` and `AnimatedImage`.
 2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
-3. Use `Swipe To Delete` (menu button on tvOS) to delete one image url from list.
+3. Use `Swipe Left` (menu button on tvOS) to delete one image url from list.
 4. Pinch gesture (Digital Crown on watchOS, play button on tvOS) to zoom-in detail page image.
 5. Clear cache and go to detail page to see progressive loading.
 
