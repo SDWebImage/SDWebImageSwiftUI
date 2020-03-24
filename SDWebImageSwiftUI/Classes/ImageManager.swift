@@ -15,6 +15,8 @@ import SDWebImage
 public final class ImageManager : ObservableObject {
     /// loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published public var image: PlatformImage?
+    /// loading error, you can grab the error code and reason listed in `SDWebImageErrorDomain`, to provide a user interface about the error reason
+    @Published public var error: Error?
     /// whether network is loading or cache is querying, should only be used for indicator binding
     @Published public var isLoading: Bool = false
     /// network progress, should only be used for indicator binding
@@ -81,6 +83,7 @@ public final class ImageManager : ObservableObject {
                 return
             }
             self.image = image
+            self.error = error
             self.isIncremental = !finished
             if finished {
                 self.isLoading = false
@@ -110,28 +113,22 @@ extension ImageManager {
     /// Provide the action when image load fails.
     /// - Parameters:
     ///   - action: The action to perform. The first arg is the error during loading. If `action` is `nil`, the call has no effect.
-    /// - Returns: A view that triggers `action` when this image load fails.
-    public func onFailure(perform action: ((Error) -> Void)? = nil) -> ImageManager {
+    public func setOnFailure(perform action: ((Error) -> Void)? = nil) {
         self.failureBlock = action
-        return self
     }
     
     /// Provide the action when image load successes.
     /// - Parameters:
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
-    /// - Returns: A view that triggers `action` when this image load successes.
-    public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> ImageManager {
+    public func setOnSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) {
         self.successBlock = action
-        return self
     }
     
     /// Provide the action when image load progress changes.
     /// - Parameters:
     ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
-    /// - Returns: A view that triggers `action` when this image load successes.
-    public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> ImageManager {
+    public func setOnProgress(perform action: ((Int, Int) -> Void)? = nil) {
         self.progressBlock = action
-        return self
     }
 }
 

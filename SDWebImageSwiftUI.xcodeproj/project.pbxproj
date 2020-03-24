@@ -79,6 +79,9 @@
 		32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
+		32ED4826242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
+		32ED4827242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
+		32ED4828242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +184,7 @@
 		32C43E2922FD586200BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/tvOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/watchOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImageSwiftUI.swift; sourceTree = "<group>"; };
+		32ED4825242A13030053338E /* ImageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +261,7 @@
 				3211F84623DE984D00FC757F /* AnimatedImageTests.swift */,
 				3211F84F23DE98E300FC757F /* WebImageTests.swift */,
 				32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */,
+				32ED4825242A13030053338E /* ImageManagerTests.swift */,
 				322E0F4723E57F09006836DC /* TestUtils.swift */,
 			);
 			path = Tests;
@@ -707,6 +712,7 @@
 				32BD9C4723E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				3211F84723DE984D00FC757F /* AnimatedImageTests.swift in Sources */,
 				322E0F4823E57F09006836DC /* TestUtils.swift in Sources */,
+				32ED4826242A13030053338E /* ImageManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +724,7 @@
 				32BD9C4823E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6A23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
 				322E0F4923E57F09006836DC /* TestUtils.swift in Sources */,
+				32ED4827242A13030053338E /* ImageManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +736,7 @@
 				32BD9C4923E03B08008D5F6A /* IndicatorTests.swift in Sources */,
 				321C1D6C23DEDB98009CF62A /* AnimatedImageTests.swift in Sources */,
 				322E0F4A23E57F09006836DC /* TestUtils.swift in Sources */,
+				32ED4828242A13030053338E /* ImageManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
