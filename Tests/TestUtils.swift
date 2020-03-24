@@ -3,7 +3,7 @@ import SwiftUI
 import ViewInspector
 @testable import SDWebImageSwiftUI
 
-public extension PlatformViewRepresentable where Self: Inspectable {
+extension PlatformViewRepresentable where Self: Inspectable {
     
     func platformView() throws -> PlatformViewType {
         #if os(macOS)

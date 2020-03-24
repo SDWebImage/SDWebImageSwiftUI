@@ -206,6 +206,40 @@ If you need powerful animated image, `AnimatedImage` is the one to choose. Remem
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
+### Use `ImageManager` for your own View type
+
+The `ImageManager` is a class which conforms to Combine's [ObservableObject](https://developer.apple.com/documentation/combine/observableobject) protocol. Which is the core fetching data source of `WebImage` we provided.
+
+For advanced use case, like loading image into the complicated View graph which you don't want to use `WebImage`. You can directly bind your own View type with the Manager.
+
+It looks familiar like `SDWebImageManager`, but it's built for SwiftUI world, which provide the Source of Truth for loading images. You'd better use SwiftUI's `@ObservedObject` to bind each single manager instance for your View instance, which automatically update your View's body when image status changed.
+
+```swift
+struct MyView : View {
+    @ObservedObject var imageManager: ImageManager
+    var body: some View {
+        // Your custom complicated view graph
+        Group {
+            if imageManager.image != nil {
+                Image(uiImage: imageManager.image!)
+            } else {
+                Rectangle().fill(Color.gray)
+            }
+        }
+        // Trigger image loading when appear
+        .onAppear { self.imageManager.load() }
+        // Cancel image loading when disappear
+        .onDisappear { self.imageManager.cancel() }
+    }
+}
+
+struct MyView_Previews: PreviewProvider {
+    static var previews: some View {
+        MyView(imageManager: ImageManager(url: URL(string: "https://via.placeholder.com/200x200.jpg"))
+    }
+}
+```
+
 ### Customization and configuration setup
 
 This framework is based on SDWebImage, which supports advanced customization and configuration to meet different users' demand.
