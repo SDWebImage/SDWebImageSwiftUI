@@ -208,9 +208,11 @@ But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, curr
 
 ### Use `ImageManager` for your own View type
 
-The `ImageManager` is a class which conforms to Combine's `ObservableObject` protocol. Which is the core fetching data source of `WebImage` we provided.
+The `ImageManager` is a class which conforms to Combine's [ObservableObject](https://developer.apple.com/documentation/combine/observableobject) protocol. Which is the core fetching data source of `WebImage` we provided.
 
-For advanced use case, like loading image into the complicated View graph which you don't want to use `WebImage`. You can directly bind your own View type with the Manager, which provide the Source of Truth of loading images.
+For advanced use case, like loading image into the complicated View graph which you don't want to use `WebImage`. You can directly bind your own View type with the Manager.
+
+It looks familiar like `SDWebImageManager`, but it's built for SwiftUI world, which provide the Source of Truth for loading images. You'd better use SwiftUI's `@ObservedObject` to bind each single manager instance for your View instance, which automatically update your View's body when image status changed.
 
 ```swift
 struct MyView : View {
