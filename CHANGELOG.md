@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2020-03-29
+### Added
+- Supports the `delayPlaceholder` for WebImage #91
+- `AnimatedImage` little patch - UIKit/AppKit animated image now applied for `resizingMode` #89
+
+### Fixed
+- Fix the issue when dealloc `AnimatedImage`'s native View, the window does not exist and cause Crash #90
+
 ## [1.1.0] - 2020-03-24
 ### Added
 - `ImageManager` now public. Which allows advanced usage for custom View type. Use `@ObservedObject` to bind the manager with your own View and update the image.
