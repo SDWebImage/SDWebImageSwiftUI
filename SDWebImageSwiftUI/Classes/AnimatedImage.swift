@@ -556,11 +556,11 @@ extension AnimatedImage {
         // So, if we don't override this method, SwiftUI ignore the content mode on actual ImageView
         // To workaround, we want to call the default `SwifUI.View.aspectRatio(_:contentMode:)` method
         // But 2: there are no way to call a Protocol Extention default implementation in Swift 5.1
-        // So, we need a hack, that create a empty modifier, they call method on that view instead
+        // So, we directly call the implementation detail modifier instead
         // Fired Radar: FB7413534
         self.imageLayout.aspectRatio = aspectRatio
         self.imageLayout.contentMode = contentMode
-        return self.modifier(EmptyModifier()).aspectRatio(aspectRatio, contentMode: contentMode)
+        return self.modifier(_AspectRatioLayout(aspectRatio: aspectRatio, contentMode: contentMode))
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.
@@ -572,13 +572,7 @@ extension AnimatedImage {
     /// - Returns: A view that constrains this view's dimensions to
     ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
     public func aspectRatio(_ aspectRatio: CGSize, contentMode: ContentMode) -> some View {
-        var ratio: CGFloat?
-        if aspectRatio.width > 0 && aspectRatio.height > 0 {
-            ratio = aspectRatio.width / aspectRatio.height
-        } else {
-            NSException(name: .invalidArgumentException, reason: "\(type(of: self)).\(#function) should be called with positive aspectRatio", userInfo: nil).raise()
-        }
-        return self.aspectRatio(ratio, contentMode: contentMode)
+        return self.aspectRatio(aspectRatio.width / aspectRatio.height, contentMode: contentMode)
     }
 
     /// Scales this view to fit its parent.
