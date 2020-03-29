@@ -9,6 +9,31 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+// Placeholder when image load failed (with `.delayPlaceholder`)
+#if !os(watchOS)
+extension PlatformImage {
+    static var wifiExclamationmark: PlatformImage {
+        #if os(macOS)
+        return PlatformImage(named: "wifi.exclamationmark")!
+        #else
+        return PlatformImage(systemName: "wifi.exclamationmark")!.withTintColor(.label, renderingMode: .alwaysOriginal)
+        #endif
+    }
+}
+#endif
+
+extension Image {
+    static var wifiExclamationmark: Image {
+        #if os(macOS)
+        return Image("wifi.exclamationmark")
+        .resizable()
+        #else
+        return Image(systemName: "wifi.exclamationmark")
+        .resizable()
+        #endif
+    }
+}
+
 struct DetailView: View {
     let url: String
     let animated: Bool
@@ -86,19 +111,22 @@ struct DetailView: View {
         HStack {
             if animated {
                 #if os(macOS) || os(iOS) || os(tvOS)
-                AnimatedImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
-                .indicator(SDWebImageProgressIndicator.default)
+                AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
                 .resizable()
+                .placeholder(.wifiExclamationmark)
+                .indicator(SDWebImageProgressIndicator.default)
                 .scaledToFit()
                 #else
-                WebImage(url: URL(string:url), options: [.progressiveLoad], isAnimating: $isAnimating)
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
                 .resizable()
+                .placeholder(.wifiExclamationmark)
                 .indicator(.progress)
                 .scaledToFit()
                 #endif
             } else {
-                WebImage(url: URL(string:url), options: [.progressiveLoad])
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder])
                 .resizable()
+                .placeholder(.wifiExclamationmark)
                 .indicator(.progress)
                 .scaledToFit()
             }
