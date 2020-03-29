@@ -110,20 +110,21 @@ let package = Package(
 ```swift
 var body: some View {
     WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
-        .onSuccess { image, cacheType in
-            // Success
-        }
-        .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-        .placeholder(Image(systemName: "photo")) // Placeholder Image
-        // Supports ViewBuilder as well
-        .placeholder {
-            Rectangle().foregroundColor(.gray)
-        }
-        .indicator(.activity) // Activity Indicator
-        .animation(.easeInOut(duration: 0.5)) // Animation Duration
-        .transition(.fade) // Fade Transition
-        .scaledToFit()
-        .frame(width: 300, height: 300, alignment: .center)
+    // Supports options and context, like `.delayPlaceholder` to show placeholder only when error
+    .onSuccess { image, cacheType in
+        // Success
+    }
+    .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
+    .placeholder(Image(systemName: "photo")) // Placeholder Image
+    // Supports ViewBuilder as well
+    .placeholder {
+        Rectangle().foregroundColor(.gray)
+    }
+    .indicator(.activity) // Activity Indicator
+    .animation(.easeInOut(duration: 0.5)) // Animation Duration
+    .transition(.fade) // Fade Transition
+    .scaledToFit()
+    .frame(width: 300, height: 300, alignment: .center)
 }
 ```
 
@@ -155,8 +156,8 @@ var body: some View {
 ```swift
 var body: some View {
     Group {
-        // Network
-        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), options: [.progressiveLoad]) // Progressive Load
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+        // Supports options and context, like `.progressiveLoad` for progressive animation loading
         .onFailure { error in
             // Error
         }
@@ -187,11 +188,13 @@ Note: `AnimatedImage` supports both image url or image data for animated image f
 Note: `AnimatedImage` some methods like `.transition`, `.indicator` and `.aspectRatio` have the same naming as `SwiftUI.View` protocol methods. But the args receive the different type. This is because `AnimatedImage` supports to be used with UIKit/AppKit component and animation. If you find ambiguity, use full type declaration instead of the dot expression syntax.
 
 ```swift
-AnimatedImage(name: "animation2") // Just for showcase, don't mix them at the same time
-  .indicator(SDWebImageProgressIndicator.default) // UIKit indicator component
-  .indicator(Indicator.progress) // SwiftUI indicator component
-  .transition(SDWebImageTransition.flipFromLeft) // UIKit animation transition
-  .transition(AnyTransition.flipFromLeft) // SwiftUI animation transition
+var body: some View {
+    AnimatedImage(name: "animation2") // Just for showcase, don't mix them at the same time
+    .indicator(SDWebImageProgressIndicator.default) // UIKit indicator component
+    .indicator(Indicator.progress) // SwiftUI indicator component
+    .transition(SDWebImageTransition.flipFromLeft) // UIKit animation transition
+    .transition(AnyTransition.flipFromLeft) // SwiftUI animation transition
+}
 ```
 
 ### Which View to choose

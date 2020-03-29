@@ -22,7 +22,7 @@ class UserSettings: ObservableObject {
 // watchOS does not provide built-in indicator, use Espera's custom indicator
 extension Indicator where T == LoadingFlowerView {
     /// Activity Indicator
-    public static var activity: Indicator {
+    static var activity: Indicator {
         Indicator { isAnimating, _ in
             LoadingFlowerView()
         }
@@ -31,7 +31,7 @@ extension Indicator where T == LoadingFlowerView {
 
 extension Indicator where T == StretchProgressView {
     /// Progress Indicator
-    public static var progress: Indicator {
+    static var progress: Indicator {
         Indicator { isAnimating, progress in
             StretchProgressView(progress: progress)
         }

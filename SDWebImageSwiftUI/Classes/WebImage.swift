@@ -106,17 +106,7 @@ public struct WebImage : View {
                     }
                 }
             } else {
-                Group {
-                    if placeholder != nil {
-                        placeholder
-                    } else {
-                        // Should not use `EmptyView`, which does not respect to the container's frame modifier
-                        // Using a empty image instead for better compatible
-                        configurations.reduce(Image.empty) { (previous, configuration) in
-                            configuration(previous)
-                        }
-                    }
-                }
+                setupPlaceholder()
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onAppear {
                     guard self.retryOnAppear else { return }
@@ -133,6 +123,29 @@ public struct WebImage : View {
                     }
                 }
             }
+        }
+    }
+    
+    func configure(image: Image) -> some View {
+        // Should not use `EmptyView`, which does not respect to the container's frame modifier
+        // Using a empty image instead for better compatible
+        configurations.reduce(image) { (previous, configuration) in
+            configuration(previous)
+        }
+    }
+    
+    /// Placeholder View Support
+    func setupPlaceholder() -> some View {
+        // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
+        if let placeholder = placeholder {
+            // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
+            if imageManager.options.contains(.delayPlaceholder) && imageManager.isLoading {
+                return AnyView(configure(image: Image.empty))
+            } else {
+                return placeholder
+            }
+        } else {
+            return AnyView(configure(image: Image.empty))
         }
     }
     
