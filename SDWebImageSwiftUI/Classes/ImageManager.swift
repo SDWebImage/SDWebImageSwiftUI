@@ -106,6 +106,23 @@ public final class ImageManager : ObservableObject {
         }
     }
     
+    /// Prefetch the initial state of image
+    internal func prefetch() {
+        let key = manager.cacheKey(for: url)
+        if let imageCache = manager.imageCache as? SDImageCache {
+            self.image = imageCache.imageFromMemoryCache(forKey: key)
+        } else {
+            // generic API
+            manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
+                if cacheType == .memory {
+                    self.manager.imageCache.queryImage(forKey: key, options: self.options, context: self.context) { [unowned self] (image, data, cacheType) in
+                        self.image = image
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 // Completion Handler
