@@ -58,7 +58,7 @@ public struct WebImage : View {
         }
         self.imageManager = ImageManager(url: url, options: options, context: context)
         // this prefetch the memory cache of image, to immediately render it on screen
-        // this solve the cause when `onAppear` not been called, for example, some transaction indetermite state :)
+        // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
         self.imageManager.prefetch()
     }
     

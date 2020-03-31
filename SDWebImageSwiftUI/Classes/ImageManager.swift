@@ -109,6 +109,7 @@ public final class ImageManager : ObservableObject {
     /// Prefetch the initial state of image, currently query the memory cache only
     func prefetch() {
         // Use the options processor if provided
+        let options = self.options
         var context = self.context
         if let result = manager.optionsProcessor?.processedResult(for: url, options: options, context: context) {
             context = result.context
@@ -118,7 +119,7 @@ public final class ImageManager : ObservableObject {
         // This callback is synchronzied
         manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
             if cacheType == .memory {
-                self.manager.imageCache.queryImage(forKey: key, options: self.options, context: self.context) { [unowned self] (image, data, cacheType) in
+                self.manager.imageCache.queryImage(forKey: key, options: options, context: context) { [unowned self] (image, data, cacheType) in
                     self.image = image
                 }
             }
