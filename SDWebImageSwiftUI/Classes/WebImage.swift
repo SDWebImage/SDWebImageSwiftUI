@@ -57,13 +57,15 @@ public struct WebImage : View {
             }
         }
         self.imageManager = ImageManager(url: url, options: options, context: context)
-        // this prefetch the memory cache of image, to immediately render it on screen
-        // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
-        self.imageManager.prefetch()
     }
     
     public var body: some View {
-        Group {
+        // this prefetch the memory cache of image, to immediately render it on screen
+        // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
+        if imageManager.isFirstPrefetch {
+            self.imageManager.prefetch()
+        }
+        return Group {
             if imageManager.image != nil {
                 if isAnimating && !self.imageManager.isIncremental {
                     if currentFrame != nil {
