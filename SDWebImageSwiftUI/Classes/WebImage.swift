@@ -60,11 +60,10 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        // load remote image when first called `body`, SwiftUI sometimes will create a new View struct without calling `onAppear` (like enter EditMode) :)
-        // this can ensure we load the image, and display image synchronously when memory cache hit to avoid flashing
-        // called once per struct, SDWebImage take care of the duplicated query
-        if imageManager.isFirstLoad {
-            imageManager.load()
+        // this prefetch the memory cache of image, to immediately render it on screen
+        // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
+        if imageManager.isFirstPrefetch {
+            self.imageManager.prefetch()
         }
         return Group {
             if imageManager.image != nil {
@@ -109,6 +108,11 @@ public struct WebImage : View {
                 setupPlaceholder()
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onAppear {
+                    // load remote image when first appear
+                    if self.imageManager.isFirstLoad {
+                        self.imageManager.load()
+                        return
+                    }
                     guard self.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {

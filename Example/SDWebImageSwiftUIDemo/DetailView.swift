@@ -38,7 +38,7 @@ struct DetailView: View {
     let url: String
     let animated: Bool
     @State var isAnimating: Bool = true
-    @State var lastScaleValue: CGFloat = 1.0
+    @State var lastScale: CGFloat = 1.0
     @State var scale: CGFloat = 1.0
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var settings: UserSettings
@@ -75,12 +75,12 @@ struct DetailView: View {
         return contentView()
             .scaleEffect(self.scale)
             .gesture(MagnificationGesture(minimumScaleDelta: 0.1).onChanged { value in
-                let delta = value / self.lastScaleValue
-                self.lastScaleValue = value
+                let delta = value / self.lastScale
+                self.lastScale = value
                 let newScale = self.scale * delta
                 self.scale = min(max(newScale, 0.5), 2)
             }.onEnded { value in
-                self.lastScaleValue = 1.0
+                self.lastScale = 1.0
             })
         #endif
         #if os(tvOS)

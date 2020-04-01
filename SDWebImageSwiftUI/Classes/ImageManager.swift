@@ -27,6 +27,7 @@ public final class ImageManager : ObservableObject {
     var manager: SDWebImageManager
     weak var currentOperation: SDWebImageOperation? = nil
     var isFirstLoad: Bool = true // false after first call `load()`
+    var isFirstPrefetch: Bool = true // false after first call `prefetch()`
     
     var url: URL?
     var options: SDWebImageOptions
@@ -103,6 +104,45 @@ public final class ImageManager : ObservableObject {
             operation.cancel()
             currentOperation = nil
             isLoading = false
+        }
+    }
+    
+    /// Prefetch the initial state of image, currently query the memory cache only
+    func prefetch() {
+        isFirstPrefetch = false
+        // Use the options processor if provided
+        let options = self.options
+        var context = self.context
+        if let result = manager.optionsProcessor?.processedResult(for: url, options: options, context: context) {
+            context = result.context
+        }
+        // TODO: Remove transformer for cache calculation before SDWebImage 5.7.0, this is bug. Remove later
+        let transformer = (context?[.imageTransformer] as? SDImageTransformer) ?? manager.transformer
+        context?[.imageTransformer] = nil
+        // TODO: before SDWebImage 5.7.0, this is the SPI. Remove later
+        var key = manager.perform(Selector(("cacheKeyForURL:context:")), with: url, with: context)?.takeUnretainedValue() as? String
+        if let transformer = transformer {
+            key = SDTransformedKeyForKey(key, transformer.transformerKey)
+        }
+        // Shortcut for built-in cache
+        if let imageCache = manager.imageCache as? SDImageCache {
+            let image = imageCache.imageFromMemoryCache(forKey: key)
+            self.image = image
+            if let image = image {
+                self.successBlock?(image, .memory)
+            }
+        } else {
+            // This callback is synchronzied
+            manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
+                if cacheType == .memory {
+                    self.manager.imageCache.queryImage(forKey: key, options: options, context: context) { [unowned self] (image, data, cacheType) in
+                        self.image = image
+                        if let image = image {
+                            self.successBlock?(image, cacheType)
+                        }
+                    }
+                }
+            }
         }
     }
     
