@@ -116,15 +116,30 @@ public final class ImageManager : ObservableObject {
         if let result = manager.optionsProcessor?.processedResult(for: url, options: options, context: context) {
             context = result.context
         }
+        // TODO: Remove transformer for cache calculation before SDWebImage 5.7.0, this is bug. Remove later
+        let transformer = (context?[.imageTransformer] as? SDImageTransformer) ?? manager.transformer
+        context?[.imageTransformer] = nil
         // TODO: before SDWebImage 5.7.0, this is the SPI. Remove later
-        let key = manager.perform(Selector(("cacheKeyForURL:context:")), with: url, with: context)?.takeUnretainedValue() as? String
-        // This callback is synchronzied
-        manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
-            if cacheType == .memory {
-                self.manager.imageCache.queryImage(forKey: key, options: options, context: context) { [unowned self] (image, data, cacheType) in
-                    self.image = image
-                    if let image = image {
-                        self.successBlock?(image, cacheType)
+        var key = manager.perform(Selector(("cacheKeyForURL:context:")), with: url, with: context)?.takeUnretainedValue() as? String
+        if let transformer = transformer {
+            key = SDTransformedKeyForKey(key, transformer.transformerKey)
+        }
+        // Shortcut for built-in cache
+        if let imageCache = manager.imageCache as? SDImageCache {
+            let image = imageCache.imageFromMemoryCache(forKey: key)
+            self.image = image
+            if let image = image {
+                self.successBlock?(image, .memory)
+            }
+        } else {
+            // This callback is synchronzied
+            manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
+                if cacheType == .memory {
+                    self.manager.imageCache.queryImage(forKey: key, options: options, context: context) { [unowned self] (image, data, cacheType) in
+                        self.image = image
+                        if let image = image {
+                            self.successBlock?(image, cacheType)
+                        }
                     }
                 }
             }
