@@ -120,7 +120,13 @@ public final class ImageManager : ObservableObject {
         let transformer = (context?[.imageTransformer] as? SDImageTransformer) ?? manager.transformer
         context?[.imageTransformer] = nil
         // TODO: before SDWebImage 5.7.0, this is the SPI. Remove later
-        var key = manager.perform(Selector(("cacheKeyForURL:context:")), with: url, with: context)?.takeUnretainedValue() as? String
+        var key: String?
+        let selector = Selector(("cacheKeyForURL:context:"))
+        if manager.responds(to: selector) {
+            key = manager.perform(selector, with: url, with: context)?.takeUnretainedValue() as? String
+        } else {
+            key = manager.cacheKey(for: url)
+        }
         if let transformer = transformer {
             key = SDTransformedKeyForKey(key, transformer.transformerKey)
         }
