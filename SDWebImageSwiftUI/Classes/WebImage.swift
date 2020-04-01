@@ -69,9 +69,7 @@ public struct WebImage : View {
             if imageManager.image != nil {
                 if isAnimating && !self.imageManager.isIncremental {
                     if currentFrame != nil {
-                        configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
-                            configuration(previous)
-                        }
+                        configure(image: Image(platformImage: currentFrame!))
                         .onAppear {
                             self.imagePlayer?.startPlaying()
                         }
@@ -86,22 +84,16 @@ public struct WebImage : View {
                             }
                         }
                     } else {
-                        configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
-                            configuration(previous)
-                        }
+                        configure(image: Image(platformImage: imageManager.image!))
                         .onReceive(imageManager.$image) { image in
                             self.setupPlayer(image: image)
                         }
                     }
                 } else {
                     if currentFrame != nil {
-                        configurations.reduce(Image(platformImage: currentFrame!)) { (previous, configuration) in
-                            configuration(previous)
-                        }
+                        configure(image: Image(platformImage: currentFrame!))
                     } else {
-                        configurations.reduce(Image(platformImage: imageManager.image!)) { (previous, configuration) in
-                            configuration(previous)
-                        }
+                        configure(image: Image(platformImage: imageManager.image!))
                     }
                 }
             } else {
@@ -268,9 +260,7 @@ extension WebImage {
     /// - Parameter image: A Image view that describes the placeholder.
     public func placeholder(_ image: Image) -> WebImage {
         return placeholder {
-            configurations.reduce(image) { (previous, configuration) in
-                configuration(previous)
-            }
+            configure(image: image)
         }
     }
     
