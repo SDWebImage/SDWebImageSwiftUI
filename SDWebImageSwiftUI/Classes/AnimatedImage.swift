@@ -83,6 +83,11 @@ final class AnimatedImageConfiguration: ObservableObject {
     var indicator: SDWebImageIndicator?
     var transition: SDWebImageTransition?
     var placeholder: PlatformImage?
+    var placeholderView: PlatformView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+        }
+    }
 }
 
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
@@ -203,6 +208,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
             return
         }
         self.imageLoading.isLoading = true
+        if imageModel.webOptions.contains(.delayPlaceholder) {
+            self.imageConfiguration.placeholderView?.isHidden = true
+        } else {
+            self.imageConfiguration.placeholderView?.isHidden = false
+        }
         view.wrapped.sd_setImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: imageModel.webOptions, context: imageModel.webContext, progress: { (receivedSize, expectedSize, _) in
             let progress: Double
             if (expectedSize > 0) {
@@ -230,8 +240,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
             self.imageLoading.isLoading = false
             self.imageLoading.progress = 1
             if let image = image {
+                self.imageConfiguration.placeholderView?.isHidden = true
                 self.imageHandler.successBlock?(image, cacheType)
             } else {
+                self.imageConfiguration.placeholderView?.isHidden = false
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
         }
@@ -263,6 +275,21 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else if let url = imageModel.url, url != view.wrapped.sd_imageURL {
             view.wrapped.sd_imageIndicator = imageConfiguration.indicator
             view.wrapped.sd_imageTransition = imageConfiguration.transition
+            if let placeholderView = imageConfiguration.placeholderView {
+                placeholderView.removeFromSuperview()
+                placeholderView.isHidden = true
+                // Placeholder View should below the Indicator View
+                if let indicatorView = imageConfiguration.indicator?.indicatorView {
+                    #if os(macOS)
+                    view.wrapped.addSubview(placeholderView, positioned: .below, relativeTo: indicatorView)
+                    #else
+                    view.wrapped.insertSubview(placeholderView, belowSubview: indicatorView)
+                    #endif
+                } else {
+                    view.wrapped.addSubview(placeholderView)
+                }
+                placeholderView.bindFrameToSuperviewBounds()
+            }
             loadImage(view, context: context)
         }
         
@@ -728,8 +755,21 @@ extension AnimatedImage {
     
     /// Associate a placeholder when loading image with url
     /// - Parameter content: A view that describes the placeholder.
-    public func placeholder(_ placeholder: PlatformImage?) -> AnimatedImage {
-        self.imageConfiguration.placeholder = placeholder
+    /// - note: The differences between this and placeholder image, it's that placeholder image replace the image for image view, but this modify the View Hierarchy to overlay the placeholder hosting view
+    public func placeholder<T>(@ViewBuilder content: () -> T) -> AnimatedImage where T : View {
+        #if os(macOS)
+        let hostingView = NSHostingView(rootView: content())
+        #else
+        let hostingView = _UIHostingView(rootView: content())
+        #endif
+        self.imageConfiguration.placeholderView = hostingView
+        return self
+    }
+    
+    /// Associate a placeholder image when loading image with url
+    /// - Parameter content: A view that describes the placeholder.
+    public func placeholder(_ image: PlatformImage?) -> AnimatedImage {
+        self.imageConfiguration.placeholder = image
         return self
     }
     
