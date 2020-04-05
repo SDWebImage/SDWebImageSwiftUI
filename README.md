@@ -59,23 +59,6 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 ## Installation
 
-#### CocoaPods
-
-SDWebImageSwiftUI is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'SDWebImageSwiftUI'
-```
-
-#### Carthage
-
-SDWebImageSwiftUI is available through [Carthage](https://github.com/Carthage/Carthage).
-
-```
-github "SDWebImage/SDWebImageSwiftUI"
-```
-
 #### Swift Package Manager
 
 SDWebImageSwiftUI is available through [Swift Package Manager](https://swift.org/package-manager/).
@@ -94,6 +77,23 @@ let package = Package(
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.0")
     ],
 )
+```
+
+#### CocoaPods
+
+SDWebImageSwiftUI is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'SDWebImageSwiftUI'
+```
+
+#### Carthage
+
+SDWebImageSwiftUI is available through [Carthage](https://github.com/Carthage/Carthage).
+
+```
+github "SDWebImage/SDWebImageSwiftUI"
 ```
 
 ## Usage
