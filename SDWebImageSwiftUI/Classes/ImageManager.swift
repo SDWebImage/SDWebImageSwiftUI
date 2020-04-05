@@ -110,45 +110,19 @@ public final class ImageManager : ObservableObject {
     /// Prefetch the initial state of image, currently query the memory cache only
     func prefetch() {
         isFirstPrefetch = false
-        // Use the options processor if provided
-        let options = self.options
-        var context = self.context
-        if let result = manager.optionsProcessor?.processedResult(for: url, options: options, context: context) {
-            context = result.context
+        var options = self.options
+        if options.contains(.fromLoaderOnly) {
+            // If user indeed ignore cache, don't do prefetch
+            return
         }
-        // TODO: Remove transformer for cache calculation before SDWebImage 5.7.0, this is bug. Remove later
-        let transformer = (context?[.imageTransformer] as? SDImageTransformer) ?? manager.transformer
-        context?[.imageTransformer] = nil
-        // TODO: before SDWebImage 5.7.0, this is the SPI. Remove later
-        var key: String?
-        let selector = Selector(("cacheKeyForURL:context:"))
-        if manager.responds(to: selector) {
-            key = manager.perform(selector, with: url, with: context)?.takeUnretainedValue() as? String
-        } else {
-            key = manager.cacheKey(for: url)
-        }
-        if let transformer = transformer {
-            key = SDTransformedKeyForKey(key, transformer.transformerKey)
-        }
-        // Shortcut for built-in cache
-        if let imageCache = manager.imageCache as? SDImageCache {
-            let image = imageCache.imageFromMemoryCache(forKey: key)
+        // Use `.fromCacheOnly` to query cache only
+        options.insert(.fromCacheOnly)
+        var context = self.context ?? [:]
+        context[.queryCacheType] = SDImageCacheType.memory.rawValue
+        // Use `.queryCacheType` to query memory cache only
+        manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, finished, imageUrl) in
+            // This will callback immediately
             self.image = image
-            if let image = image {
-                self.successBlock?(image, .memory)
-            }
-        } else {
-            // This callback is synchronzied
-            manager.imageCache.containsImage(forKey: key, cacheType: .memory) { [unowned self] (cacheType) in
-                if cacheType == .memory {
-                    self.manager.imageCache.queryImage(forKey: key, options: options, context: context) { [unowned self] (image, data, cacheType) in
-                        self.image = image
-                        if let image = image {
-                            self.successBlock?(image, cacheType)
-                        }
-                    }
-                }
-            }
         }
     }
     
