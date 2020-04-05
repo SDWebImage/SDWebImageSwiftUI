@@ -82,6 +82,7 @@ class WebImageTests: XCTestCase {
         .onProgress { _, _ in
             
         }
+        .placeholder(.init(platformImage: PlatformImage()))
         .placeholder {
             Circle()
         }

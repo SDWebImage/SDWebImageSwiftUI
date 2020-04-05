@@ -180,7 +180,11 @@ var body: some View {
         AnimatedImage(name: "animation1", isAnimating: $isAnimating)) // Animation control binding
         .maxBufferSize(.max)
         .onViewUpdate { view, context in // Advanced native view coordinate
+            // AppKit tooltip for mouse hover
             view.toolTip = "Mouseover Tip"
+            // UIKit advanced content mode
+            view.contentMode = .topLeft
+            // Coordinator, used for Cocoa Binding or Delegate method
             let coordinator = context.coordinator
         }
     }
@@ -190,6 +194,8 @@ var body: some View {
 Note: `AnimatedImage` supports both image url or image data for animated image format. Which use the SDWebImage's [Animated ImageView](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) for internal implementation. Pay attention that since this base on UIKit/AppKit representable, some advanced SwiftUI layout and animation system may not work as expected. You may need UIKit/AppKit and Core Animation to modify the native view.
 
 Note: `AnimatedImage` some methods like `.transition`, `.indicator` and `.aspectRatio` have the same naming as `SwiftUI.View` protocol methods. But the args receive the different type. This is because `AnimatedImage` supports to be used with UIKit/AppKit component and animation. If you find ambiguity, use full type declaration instead of the dot expression syntax.
+
+Note: some of methods on `AnimatedImage` will return `some View`, a new Modified Content. You'll lose the type related modifier method. For this case, you can either reorder the method call, or use Native View in `.onViewUpdate` for rescue.
 
 ```swift
 var body: some View {
