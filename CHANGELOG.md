@@ -6,9 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2020-04-05
+### Added
+- Supports the `placeholder` View Builder API for `AnimatedImage` #94
+
+### Changed
+- Upgrade the dependency of SDWebImage 5.7.0 #93
+
 ## [1.2.1] - 2020-04-01
 ### Fixed
-- Fix the issue when using WebImage with some transition like scaleEffect, each time the new state update will cause unused image fetching #92
+- Fix the issue when using `WebImage` with some transition like scaleEffect, each time the new state update will cause unused image fetching #92
 
 ## [1.2.0] - 2020-03-29
 ### Added
