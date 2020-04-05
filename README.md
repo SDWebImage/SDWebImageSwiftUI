@@ -163,6 +163,10 @@ var body: some View {
         }
         .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
         .placeholder(UIImage(systemName: "photo")) // Placeholder Image
+        // Supports ViewBuilder as well
+        .placeholder {
+            Circle().foregroundColor(.gray)
+        }
         .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
         .transition(.fade) // Fade Transition
         .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier (Swift Protocol Extension method is static dispatched)
