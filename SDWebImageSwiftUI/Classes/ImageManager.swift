@@ -123,6 +123,9 @@ public final class ImageManager : ObservableObject {
         manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, finished, imageUrl) in
             // This will callback immediately
             self.image = image
+            if let image = image {
+                self.successBlock?(image, cacheType)
+            }
         }
     }
     
