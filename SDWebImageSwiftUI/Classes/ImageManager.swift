@@ -111,7 +111,11 @@ public final class ImageManager : ObservableObject {
     func prefetch() {
         isFirstPrefetch = false
         var options = self.options
-        // use `.fromCacheOnly` to query cache only
+        if options.contains(.fromLoaderOnly) {
+            // If user indeed ignore cache, don't do prefetch
+            return
+        }
+        // Use `.fromCacheOnly` to query cache only
         options.insert(.fromCacheOnly)
         var context = self.context ?? [:]
         context[.queryCacheType] = SDImageCacheType.memory.rawValue
