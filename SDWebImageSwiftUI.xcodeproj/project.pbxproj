@@ -53,7 +53,6 @@
 		32BD9C4923E03B08008D5F6A /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */; };
 		32C43DE622FD54CD00BE87F5 /* SDWebImageSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32C43DEA22FD577300BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; };
-		32C43DEB22FD577300BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43DE922FD577300BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDC22FD54C600BE87F5 /* ImageManager.swift */; };
 		32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDE22FD54C600BE87F5 /* WebImage.swift */; };
 		32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */; };
@@ -70,11 +69,8 @@
 		32C43E2322FD583B00BE87F5 /* SDWebImageSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32C43E2422FD583C00BE87F5 /* SDWebImageSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C43DE422FD54CD00BE87F5 /* SDWebImageSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32C43E2622FD585300BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2522FD585300BE87F5 /* SDWebImage.framework */; };
-		32C43E2722FD585300BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2522FD585300BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32C43E2A22FD586200BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2922FD586200BE87F5 /* SDWebImage.framework */; };
-		32C43E2B22FD586200BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2922FD586200BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32C43E2E22FD586E00BE87F5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */; };
-		32C43E2F22FD586E00BE87F5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32C43E3222FD5DE100BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
@@ -107,53 +103,6 @@
 			remoteInfo = "SDWebImageSwiftUI tvOS";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		32C43DEC22FD577300BE87F5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32C43DEB22FD577300BE87F5 /* SDWebImage.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32C43E2822FD585300BE87F5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32C43E2722FD585300BE87F5 /* SDWebImage.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32C43E2C22FD586200BE87F5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32C43E2B22FD586200BE87F5 /* SDWebImage.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32C43E3022FD586E00BE87F5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32C43E2F22FD586E00BE87F5 /* SDWebImage.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3211F84423DE984D00FC757F /* SDWebImageSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDWebImageSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -456,7 +405,6 @@
 				32C43DC822FD540D00BE87F5 /* Sources */,
 				32C43DC922FD540D00BE87F5 /* Frameworks */,
 				32C43DCA22FD540D00BE87F5 /* Resources */,
-				32C43DEC22FD577300BE87F5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -475,7 +423,6 @@
 				32C43DF022FD57FD00BE87F5 /* Sources */,
 				32C43DF122FD57FD00BE87F5 /* Frameworks */,
 				32C43DF222FD57FD00BE87F5 /* Resources */,
-				32C43E2822FD585300BE87F5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -494,7 +441,6 @@
 				32C43DFD22FD581400BE87F5 /* Sources */,
 				32C43DFE22FD581400BE87F5 /* Frameworks */,
 				32C43DFF22FD581400BE87F5 /* Resources */,
-				32C43E2C22FD586200BE87F5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -513,7 +459,6 @@
 				32C43E0A22FD581C00BE87F5 /* Sources */,
 				32C43E0B22FD581C00BE87F5 /* Frameworks */,
 				32C43E0C22FD581C00BE87F5 /* Resources */,
-				32C43E3022FD586E00BE87F5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
