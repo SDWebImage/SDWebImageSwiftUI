@@ -36,7 +36,7 @@ public struct RotatingCircleWithGap: View {
 private struct LoadingCircle: View {
     let circleColor: Color
     let scale: CGFloat
-    private let circleWidth: CGFloat = 8
+    let circleWidth: CGFloat
 
     var body: some View {
         Circle()
@@ -47,6 +47,7 @@ private struct LoadingCircle: View {
 }
 
 public struct LoadingFlowerView: View {
+
     private let animationDuration: Double = 0.6
     private var singleCircleAnimationDuration: Double {
         return animationDuration/3
@@ -56,37 +57,58 @@ public struct LoadingFlowerView: View {
             .repeatForever(autoreverses: true)
     }
 
-    @State private var color: Color = .init(white: 0.3)
+    private let originalColor: Color
+    public init(color: Color = .white) {
+        self.originalColor = color
+        self.color = color.opacity(0.3)
+    }
+
+    @State private var color = Color.white.opacity(0.3)
     @State private var scale: CGFloat = 0.98
 
-    public init() { }
-
     public var body: some View {
-        HStack(spacing: 1) {
-            VStack(spacing: 2) {
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation.delay(singleCircleAnimationDuration*5))
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation.delay(singleCircleAnimationDuration*4))
-            }
-            VStack(alignment: .center, spacing: 1) {
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation)
-                LoadingCircle(circleColor: .clear, scale: 1)
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation.delay(singleCircleAnimationDuration*3))
-            }
-            VStack(alignment: .center, spacing: 2) {
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation.delay(singleCircleAnimationDuration*1))
-                LoadingCircle(circleColor: color, scale: scale)
-                    .animation(foreverAnimation.delay(singleCircleAnimationDuration*2))
-            }
+        GeometryReader { [color, scale, singleCircleAnimationDuration, foreverAnimation] reader -> AnyView in
+
+            let minLength = min(reader.size.width, reader.size.height)
+            let thirdOfMinLength = minLength / 3
+
+            let proportionalSpacing: CGFloat = 1 / 26
+            let spacing = minLength * proportionalSpacing
+
+            // THIS IS FINE :D
+            // Fix later, ok?
+            let leafDiameter = thirdOfMinLength - (spacing - proportionalSpacing * thirdOfMinLength)
+
+            return AnyView(
+                HStack(spacing: spacing) {
+                    VStack(spacing: spacing) {
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation.delay(singleCircleAnimationDuration*5))
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation.delay(singleCircleAnimationDuration*4))
+                    }
+                    VStack(alignment: .center, spacing: spacing) {
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation)
+                        LoadingCircle(circleColor: .clear, scale: 1, circleWidth: leafDiameter)
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation.delay(singleCircleAnimationDuration*3))
+                    }
+                    VStack(alignment: .center, spacing: spacing) {
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation.delay(singleCircleAnimationDuration*1))
+                        LoadingCircle(circleColor: color, scale: scale, circleWidth: leafDiameter)
+                            .animation(foreverAnimation.delay(singleCircleAnimationDuration*2))
+                    }
+                }
+            )
         }
         .onAppear {
-            self.color = .white
-            self.scale = 1.02
+            self.color = self.originalColor
+            self.scale = 1
         }
+        .aspectRatio(contentMode: .fit)
+        .frame(idealWidth: 26)
     }
 }
 
@@ -198,7 +220,6 @@ public struct StretchProgressView: View {
     
     public var body: some View {
         StretchyShape(progress: progress, mode: .stretchy)
-        .frame(width: 140, height: 10)
     }
 }
 

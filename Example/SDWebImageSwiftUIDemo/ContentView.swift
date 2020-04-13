@@ -20,20 +20,47 @@ class UserSettings: ObservableObject {
 
 #if os(watchOS)
 // watchOS does not provide built-in indicator, use Espera's custom indicator
-extension Indicator where T == LoadingFlowerView {
-    /// Activity Indicator
-    static var activity: Indicator {
-        Indicator { isAnimating, _ in
-            LoadingFlowerView()
+struct ActivityIndicator : View {
+    @Binding var isAnimating: Bool
+    var body: some View {
+        if isAnimating {
+            return AnyView(LoadingFlowerView()
+                .frame(width: 30, height: 30))
+        } else {
+            return AnyView(EmptyView()
+                .frame(width: 30, height: 30))
         }
     }
 }
 
-extension Indicator where T == StretchProgressView {
+struct ProgressIndicator : View {
+    @Binding var isAnimating: Bool
+    @Binding var progress: Double
+    var body: some View {
+        if isAnimating {
+            return AnyView(StretchProgressView(progress: $progress)
+                .frame(width: 140, height: 10))
+        } else {
+            return AnyView(EmptyView()
+                .frame(width: 140, height: 10))
+        }
+    }
+}
+
+extension Indicator where T == ActivityIndicator {
+    /// Activity Indicator
+    static var activity: Indicator {
+        Indicator { isAnimating, _ in
+            ActivityIndicator(isAnimating: isAnimating)
+        }
+    }
+}
+
+extension Indicator where T == ProgressIndicator {
     /// Progress Indicator
     static var progress: Indicator {
         Indicator { isAnimating, progress in
-            StretchProgressView(progress: progress)
+            ProgressIndicator(isAnimating: isAnimating, progress: progress)
         }
     }
 }
