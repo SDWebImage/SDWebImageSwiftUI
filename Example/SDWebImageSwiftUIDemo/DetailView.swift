@@ -40,7 +40,6 @@ struct DetailView: View {
     @State var isAnimating: Bool = true
     @State var lastScale: CGFloat = 1.0
     @State var scale: CGFloat = 1.0
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var settings: UserSettings
     
     var body: some View {
@@ -94,15 +93,8 @@ struct DetailView: View {
         #endif
         #if os(watchOS)
         return contentView()
-            // SwiftUI's bug workaround (watchOS 6.1)
-            // If use `.focusable(true)` here, after pop the Detail view, the Content view's List does not get focus again
-            // After some debug, I found that the pipeline to change focus becomes:
-            // Detail Pop (resign focus) -> Content Appear (List view become focus) -> Detail Disappear (become focus again) -> End
-            // Even you use `onDisappear`, it's too late because `.focusable` is called firstly
-            // Sadly, Content view's List focus is managed by SwiftUI (a UICollectionView actually), call `focusable` on Content view does nothing as well
-            // So, here we must use environment or binding, to not become focus during pop :)
-            .focusable(self.presentationMode.wrappedValue.isPresented)
             .scaleEffect(self.scale)
+            .focusable(true)
             .digitalCrownRotation($scale, from: 0.5, through: 2, by: 0.1, sensitivity: .low, isHapticFeedbackEnabled: false)
         #endif
     }
