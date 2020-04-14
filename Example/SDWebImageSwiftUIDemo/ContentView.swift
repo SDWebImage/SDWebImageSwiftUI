@@ -7,7 +7,6 @@
  */
 
 import SwiftUI
-import SDWebImage
 import SDWebImageSwiftUI
 
 class UserSettings: ObservableObject {
