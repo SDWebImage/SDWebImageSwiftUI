@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2020-04-14
+### Added
+- Automatically import SDWebImage when user write import SDWebImageSwiftUI #100
+
 ## [1.3.1] - 2020-04-10
 ### Fixed
 - Fix Carthage support. Do not embed SDWebImage.framework in SDWebImageSwiftUI.framework #97. Thanks @jonkan
