@@ -124,7 +124,6 @@ public struct WebImage : View {
     
     /// Configure the platform image into the SwiftUI rendering image
     func configure(image: PlatformImage) -> some View {
-        var image = image
         // Actual rendering SwiftUI image
         let result: Image
         // NSImage works well with SwiftUI, include Animated and Vector Image
@@ -133,6 +132,8 @@ public struct WebImage : View {
         #else
         // Fix the SwiftUI.Image rendering issue when use UIImage based, the `.aspectRatio` does not works. SwiftUI's Bug :)
         // See issue #101
+        var image = image
+        var cgImage: CGImage?
         // Case 1: UIAnimatedImage, grab poster image
         if image.sd_isAnimated {
             // check images property
@@ -147,14 +148,21 @@ public struct WebImage : View {
                 // draw vector into bitmap with the screen scale (behavior like AppKit)
                 UIGraphicsBeginImageContextWithOptions(image.size, false, UIScreen.main.scale)
                 image.draw(at: .zero)
-                image = UIGraphicsGetImageFromCurrentImageContext() ?? .empty
+                cgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage
                 UIGraphicsEndImageContext()
+            } else {
+                cgImage = image.cgImage
             }
         }
+        // Case 3: Image with EXIF orientation
+        if image.imageOrientation != .up {
+            cgImage = image.cgImage
+        }
         // If we have CGImage, use CGImage based API, else use UIImage based API
-        if let cgImage = image.cgImage {
+        if let cgImage = cgImage {
+            let scale = image.scale
             let orientation = image.imageOrientation.toSwiftUI
-            result = Image(decorative: cgImage, scale: image.scale, orientation: orientation)
+            result = Image(decorative: cgImage, scale: scale, orientation: orientation)
         } else {
             result = Image(uiImage: image)
         }
