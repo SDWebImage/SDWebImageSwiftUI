@@ -135,14 +135,14 @@ class WebImageTests: XCTestCase {
     
     func testWebImageEXIFImage() throws {
         let expectation = self.expectation(description: "WebImage EXIF image url")
-        // EXIF 2, Up Mirrored
-        let imageUrl = URL(string: "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_2.jpg")
+        // EXIF 5, Left Mirrored
+        let imageUrl = URL(string: "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_5.jpg")
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, cacheType in
             let displayImage = try? imageView.inspect().group().image(0).cgImage()
             let orientation = try! imageView.inspect().group().image(0).orientation()
             XCTAssertNotNil(displayImage)
-            XCTAssertEqual(orientation, .upMirrored)
+            XCTAssertEqual(orientation, .leftMirrored)
             expectation.fulfill()
         }.onFailure { error in
             XCTFail(error.localizedDescription)

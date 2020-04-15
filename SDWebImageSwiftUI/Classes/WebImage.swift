@@ -146,8 +146,8 @@ public struct WebImage : View {
                 cgImage = image.cgImage
             }
         }
-        // Case 2: Image with EXIF orientation
-        else if image.imageOrientation != .up {
+        // Case 2: Image with EXIF orientation (only EXIF 5-8 contains bug)
+        else if [.left, .leftMirrored, .right, .rightMirrored].contains(image.imageOrientation) {
             cgImage = image.cgImage
         }
         // If we have CGImage, use CGImage based API, else use UIImage based API
