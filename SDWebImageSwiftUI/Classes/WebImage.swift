@@ -138,7 +138,12 @@ public struct WebImage : View {
             // ensure CGImage is nil
             if image.cgImage == nil {
                 // draw vector into bitmap with the screen scale (behavior like AppKit)
-                UIGraphicsBeginImageContextWithOptions(image.size, false, UIScreen.main.scale)
+                #if os(iOS) || os(tvOS)
+                let scale = UIScreen.main.scale
+                #else
+                let scale = WKInterfaceDevice.current().screenScale
+                #endif
+                UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
                 image.draw(at: .zero)
                 cgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage
                 UIGraphicsEndImageContext()
@@ -154,11 +159,7 @@ public struct WebImage : View {
         if let cgImage = cgImage {
             let scale = image.scale
             let orientation = image.imageOrientation.toSwiftUI
-            if let label = image.accessibilityLabel {
-                result = Image(cgImage, scale: scale, orientation: orientation, label: Text(label))
-            } else {
-                result = Image(decorative: cgImage, scale: scale, orientation: orientation)
-            }
+            result = Image(decorative: cgImage, scale: scale, orientation: orientation)
         } else {
             result = Image(uiImage: image)
         }
