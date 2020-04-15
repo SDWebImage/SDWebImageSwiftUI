@@ -162,7 +162,11 @@ public struct WebImage : View {
         if let cgImage = cgImage {
             let scale = image.scale
             let orientation = image.imageOrientation.toSwiftUI
-            result = Image(decorative: cgImage, scale: scale, orientation: orientation)
+            if let label = image.accessibilityLabel {
+                result = Image(cgImage, scale: scale, orientation: orientation, label: Text(label))
+            } else {
+                result = Image(decorative: cgImage, scale: scale, orientation: orientation)
+            }
         } else {
             result = Image(uiImage: image)
         }
