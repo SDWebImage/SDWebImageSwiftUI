@@ -63,13 +63,13 @@ public struct WebImage : View {
         // this prefetch the memory cache of image, to immediately render it on screen
         // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
         if imageManager.isFirstPrefetch {
-            self.imageManager.prefetch()
+            imageManager.prefetch()
         }
         return Group {
             if imageManager.image != nil {
-                if isAnimating && !self.imageManager.isIncremental {
+                if isAnimating && !imageManager.isIncremental {
                     if currentFrame != nil {
-                        configure(image: Image(platformImage: currentFrame!))
+                        configure(image: currentFrame!)
                         .onAppear {
                             self.imagePlayer?.startPlaying()
                         }
@@ -84,16 +84,16 @@ public struct WebImage : View {
                             }
                         }
                     } else {
-                        configure(image: Image(platformImage: imageManager.image!))
+                        configure(image: imageManager.image!)
                         .onReceive(imageManager.$image) { image in
                             self.setupPlayer(image: image)
                         }
                     }
                 } else {
                     if currentFrame != nil {
-                        configure(image: Image(platformImage: currentFrame!))
+                        configure(image: currentFrame!)
                     } else {
-                        configure(image: Image(platformImage: imageManager.image!))
+                        configure(image: imageManager.image!)
                     }
                 }
             } else {
@@ -122,10 +122,47 @@ public struct WebImage : View {
         }
     }
     
-    func configure(image: Image) -> some View {
+    /// Configure the platform image into the SwiftUI rendering image
+    func configure(image: PlatformImage) -> some View {
+        var image = image
+        // Actual rendering SwiftUI image
+        let result: Image
+        // NSImage works well with SwiftUI, include Animated and Vector Image
+        #if os(macOS)
+        result = Image(nsImage: image)
+        #else
+        // Fix the SwiftUI.Image rendering issue when use UIImage based, the `.aspectRatio` does not works. SwiftUI's Bug :)
+        // See issue #101
+        // Case 1: UIAnimatedImage, grab poster image
+        if image.sd_isAnimated {
+            // check images property
+            if let images = image.images, images.count > 0 {
+                image = images[0]
+            }
+        }
+        // Case 2: Vector Image, draw bitmap image
+        else if image.sd_isVector {
+            // ensure CGImage is nil
+            if image.cgImage == nil {
+                // draw vector into bitmap with the screen scale (behavior like AppKit)
+                UIGraphicsBeginImageContextWithOptions(image.size, false, UIScreen.main.scale)
+                image.draw(at: .zero)
+                image = UIGraphicsGetImageFromCurrentImageContext() ?? .empty
+                UIGraphicsEndImageContext()
+            }
+        }
+        // If we have CGImage, use CGImage based API, else use UIImage based API
+        if let cgImage = image.cgImage {
+            let orientation = image.imageOrientation.toSwiftUI
+            result = Image(decorative: cgImage, scale: image.scale, orientation: orientation)
+        } else {
+            result = Image(uiImage: image)
+        }
+        #endif
+        
         // Should not use `EmptyView`, which does not respect to the container's frame modifier
         // Using a empty image instead for better compatible
-        configurations.reduce(image) { (previous, configuration) in
+        return configurations.reduce(result) { (previous, configuration) in
             configuration(previous)
         }
     }
@@ -136,12 +173,12 @@ public struct WebImage : View {
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
             if imageManager.options.contains(.delayPlaceholder) && imageManager.isLoading {
-                return AnyView(configure(image: Image.empty))
+                return AnyView(configure(image: .empty))
             } else {
                 return placeholder
             }
         } else {
-            return AnyView(configure(image: Image.empty))
+            return AnyView(configure(image: .empty))
         }
     }
     
@@ -260,7 +297,9 @@ extension WebImage {
     /// - Parameter image: A Image view that describes the placeholder.
     public func placeholder(_ image: Image) -> WebImage {
         return placeholder {
-            configure(image: image)
+            configurations.reduce(image) { (previous, configuration) in
+                configuration(previous)
+            }
         }
     }
     

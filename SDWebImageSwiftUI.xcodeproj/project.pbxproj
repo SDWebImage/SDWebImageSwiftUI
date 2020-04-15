@@ -75,6 +75,10 @@
 		32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
+		32D26A022446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
+		32D26A032446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
+		32D26A042446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
+		32D26A052446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
 		32ED4826242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
 		32ED4827242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
 		32ED4828242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
@@ -133,6 +137,7 @@
 		32C43E2922FD586200BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/tvOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/watchOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImageSwiftUI.swift; sourceTree = "<group>"; };
+		32D26A012446B546005905DA /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		32ED4825242A13030053338E /* ImageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,6 +283,7 @@
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
 				32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */,
 				326E480923431C0F00C633E9 /* ImageViewWrapper.swift */,
+				32D26A012446B546005905DA /* Image.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -698,6 +704,7 @@
 				326B8487236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
+				32D26A022446B546005905DA /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -714,6 +721,7 @@
 				326B8488236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
+				32D26A032446B546005905DA /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +738,7 @@
 				326B8489236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
+				32D26A042446B546005905DA /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,6 +755,7 @@
 				326B848A236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
+				32D26A052446B546005905DA /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
