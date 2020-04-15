@@ -47,13 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Dynamic check to support vector format for both WebImage/AnimatedImage
         SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
             var options = options
-            var context = context
             if let _ = context?[.animatedImageClass] as? SDAnimatedImage.Type {
                 // AnimatedImage supports vector rendering, should not force decode
                 options.insert(.avoidDecodeImage)
-            } else {
-                // WebImage supports bitmap rendering only
-                context?[.imageThumbnailPixelSize] = CGSize.zero
             }
             return SDWebImageOptionsResult(options: options, context: context)
         }

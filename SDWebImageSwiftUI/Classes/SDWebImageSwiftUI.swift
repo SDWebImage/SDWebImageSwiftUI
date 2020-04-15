@@ -18,19 +18,6 @@ public typealias PlatformImage = NSImage
 public typealias PlatformImage = UIImage
 #endif
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-extension Image {
-    init(platformImage: PlatformImage) {
-        #if os(macOS)
-        self.init(nsImage: platformImage)
-        #else
-        self.init(uiImage: platformImage)
-        #endif
-    }
-    
-    static var empty = Image(platformImage: PlatformImage())
-}
-
 #if os(macOS)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public typealias PlatformView = NSView

@@ -81,6 +81,7 @@ struct ContentView: View {
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
     "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg",
     "https://via.placeholder.com/200x200.jpg",
+    "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_5.jpg",
     "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/w3c.svg",
     "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/wikimedia.svg",
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/stack_of_photos.pdf",
