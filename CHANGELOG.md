@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 2020-04-15
+### Fixed
+- Try to solve the SwiftUI bug of rendering EXIF UIImage in WebImage, as well as vector images #102
+- Now `WebImage` will render the vector images as bitmap version even if you don't provide `.thumbnailPixelSize`. To render real vector images, use `AnimatedImage` instead.
+
 ## [1.3.2] - 2020-04-14
 ### Added
 - Automatically import SDWebImage when user write import SDWebImageSwiftUI #100
