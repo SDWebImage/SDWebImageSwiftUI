@@ -211,11 +211,11 @@ var body: some View {
 
 Why we have two different View types here, is because of current SwiftUI limit. But we're aimed to provide best solution for all use cases.
 
-If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works.
+If you don't need animated image, prefer to use `WebImage` firstly. Which behaves the seamless as built-in SwiftUI View. If SwiftUI works, it works. If SwiftUI doesn't work, it either :)
 
-If you need simple animated image, use `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, if you don't care about this.
+If you need simple animated image, use `WebImage`. Which provide the basic animated image support. But it does not support progressive animation rendering, nor vector image, if you don't care about this.
 
-If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it.
+If you need powerful animated image, `AnimatedImage` is the one to choose. Remember it supports static image as well, you don't need to check the format, just use as it. Also, some powerful feature like UIKit/AppKit tint color, vector image, symbol image configuration, tvOS layered image, only available in `AnimatedImage` but not currently in SwfitUI.
 
 But, because `AnimatedImage` use `UIViewRepresentable` and driven by UIKit, currently there may be some small incompatible issues between UIKit and SwiftUI layout and animation system, or bugs related to SwiftUI itself. We try our best to match SwiftUI behavior, and provide the same API as `WebImage`, which make it easy to switch between these two types if needed.
 
