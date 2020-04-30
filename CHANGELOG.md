@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.4] - 2020-04-30
+### Fixed
+- Revert the changes to prefetch the image url from memory cache #106
+
 ## [1.3.3] - 2020-04-15
 ### Fixed
 - Try to solve the SwiftUI bug of rendering EXIF UIImage in WebImage, as well as vector images #102
