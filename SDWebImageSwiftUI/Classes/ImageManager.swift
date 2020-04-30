@@ -15,6 +15,8 @@ import SDWebImage
 public final class ImageManager : ObservableObject {
     /// loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published public var image: PlatformImage?
+    /// loaded image data, may be nil if hit from memory cache. This will only published once even on incremental image loading
+    @Published public var imageData: Data?
     /// loading error, you can grab the error code and reason listed in `SDWebImageErrorDomain`, to provide a user interface about the error reason
     @Published public var error: Error?
     /// whether network is loading or cache is querying, should only be used for indicator binding
@@ -86,6 +88,7 @@ public final class ImageManager : ObservableObject {
             self.error = error
             self.isIncremental = !finished
             if finished {
+                self.imageData = data
                 self.isLoading = false
                 self.progress = 1
                 if let image = image {
