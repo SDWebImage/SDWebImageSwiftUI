@@ -60,10 +60,9 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        // this prefetch the memory cache of image, to immediately render it on screen
-        // this solve the case when `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
-        if imageManager.isFirstPrefetch {
-            imageManager.prefetch()
+        // This solve the case when WebImage created with new URL, but `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
+        if imageManager.isFirstLoad {
+            imageManager.load()
         }
         return Group {
             if imageManager.image != nil {
@@ -100,7 +99,7 @@ public struct WebImage : View {
                 setupPlaceholder()
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onAppear {
-                    // load remote image when first appear
+                    // Load remote image when first appear
                     if self.imageManager.isFirstLoad {
                         self.imageManager.load()
                         return

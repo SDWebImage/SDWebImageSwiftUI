@@ -27,7 +27,6 @@ public final class ImageManager : ObservableObject {
     var manager: SDWebImageManager
     weak var currentOperation: SDWebImageOperation? = nil
     var isFirstLoad: Bool = true // false after first call `load()`
-    var isFirstPrefetch: Bool = true // false after first call `prefetch()`
     
     var url: URL?
     var options: SDWebImageOptions
@@ -104,28 +103,6 @@ public final class ImageManager : ObservableObject {
             operation.cancel()
             currentOperation = nil
             isLoading = false
-        }
-    }
-    
-    /// Prefetch the initial state of image, currently query the memory cache only
-    func prefetch() {
-        isFirstPrefetch = false
-        var options = self.options
-        if options.contains(.fromLoaderOnly) {
-            // If user indeed ignore cache, don't do prefetch
-            return
-        }
-        // Use `.fromCacheOnly` to query cache only
-        options.insert(.fromCacheOnly)
-        var context = self.context ?? [:]
-        context[.queryCacheType] = SDImageCacheType.memory.rawValue
-        // Use `.queryCacheType` to query memory cache only
-        manager.loadImage(with: url, options: options, context: context, progress: nil) { (image, data, error, cacheType, finished, imageUrl) in
-            // This will callback immediately
-            self.image = image
-            if let image = image {
-                self.successBlock?(image, cacheType)
-            }
         }
     }
     
