@@ -21,7 +21,7 @@ class WebImageTests: XCTestCase {
         let expectation = self.expectation(description: "WebImage static url initializer")
         let imageUrl = URL(string: "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png")
         let imageView = WebImage(url: imageUrl)
-        let introspectView = imageView.onSuccess { image, cacheType in
+        let introspectView = imageView.onSuccess { image, data, cacheType in
             #if os(iOS) || os(tvOS)
             let displayImage = try? imageView.inspect().group().image(0).uiImage()
             #else
@@ -43,7 +43,7 @@ class WebImageTests: XCTestCase {
         let imageUrl = URL(string: "https://apng.onevcat.com/assets/elephant.png")
         let binding = Binding<Bool>(wrappedValue: true)
         let imageView = WebImage(url: imageUrl, isAnimating: binding)
-        let introspectView = imageView.onSuccess { image, cacheType in
+        let introspectView = imageView.onSuccess { image, data, cacheType in
             if let animatedImage = image as? SDAnimatedImage {
                 XCTAssertTrue(imageView.isAnimating)
                 #if os(iOS) || os(tvOS)
@@ -73,7 +73,7 @@ class WebImageTests: XCTestCase {
         let imageUrl = URL(string: "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg")
         let imageView = WebImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
         let introspectView = imageView
-        .onSuccess { _, _ in
+        .onSuccess { _, _, _ in
             expectation.fulfill()
         }
         .onFailure { _ in
@@ -111,7 +111,7 @@ class WebImageTests: XCTestCase {
     }
     
     func testWebImageOnSuccessWhenMemoryCacheHit() throws {
-        let expectation = self.expectation(description: "WebImage onSuccess when memory hit")
+        let expectation = self.expectation(description: "WebImage onSuccess when memory cache hit")
         let imageUrl = URL(string: "https://foo.bar/buzz.png")
         let cacheKey = SDWebImageManager.shared.cacheKey(for: imageUrl)
         #if os(macOS)
@@ -121,10 +121,29 @@ class WebImageTests: XCTestCase {
         #endif
         SDImageCache.shared.storeImage(toMemory: testImage, forKey: cacheKey)
         let imageView = WebImage(url: imageUrl)
-        let introspectView = imageView.onSuccess { image, cacheType in
+        let introspectView = imageView.onSuccess { image, data, cacheType in
             XCTAssert(cacheType == .memory)
             XCTAssertNotNil(image)
             XCTAssertEqual(image, testImage)
+            expectation.fulfill()
+        }
+        _ = try introspectView.inspect()
+        ViewHosting.host(view: introspectView)
+        self.waitForExpectations(timeout: 5, handler: nil)
+        ViewHosting.expel()
+    }
+    
+    func testWebImageOnSuccessWhenCacheMiss() throws {
+        let expectation = self.expectation(description: "WebImage onSuccess when cache miss")
+        let imageUrl = URL(string: "http://via.placeholder.com/100x100.png")
+        let cacheKey = SDWebImageManager.shared.cacheKey(for: imageUrl)
+        SDImageCache.shared.removeImageFromMemory(forKey: cacheKey)
+        SDImageCache.shared.removeImageFromDisk(forKey: cacheKey)
+        let imageView = WebImage(url: imageUrl)
+        let introspectView = imageView.onSuccess { image, data, cacheType in
+            XCTAssert(cacheType == .none)
+            XCTAssertNotNil(image)
+            XCTAssertNotNil(data)
             expectation.fulfill()
         }
         _ = try introspectView.inspect()
@@ -138,7 +157,7 @@ class WebImageTests: XCTestCase {
         // EXIF 5, Left Mirrored
         let imageUrl = URL(string: "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_5.jpg")
         let imageView = WebImage(url: imageUrl)
-        let introspectView = imageView.onSuccess { image, cacheType in
+        let introspectView = imageView.onSuccess { image, data, cacheType in
             let displayImage = try? imageView.inspect().group().image(0).cgImage()
             let orientation = try! imageView.inspect().group().image(0).orientation()
             XCTAssertNotNil(displayImage)

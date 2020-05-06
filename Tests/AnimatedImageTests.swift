@@ -74,7 +74,8 @@ class AnimatedImageTests: XCTestCase {
         let expectation = self.expectation(description: "AnimatedImage url initializer")
         let imageUrl = URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif")
         let imageView = AnimatedImage(url: imageUrl)
-        .onSuccess { image, cacheType in
+        .onSuccess { image, data, cacheType in
+            XCTAssertNotNil(image)
             if let animatedImage = image as? SDAnimatedImage {
                 XCTAssertEqual(animatedImage.animatedImageLoopCount, 0)
                 XCTAssertEqual(animatedImage.animatedImageFrameCount, 389)
@@ -88,7 +89,7 @@ class AnimatedImageTests: XCTestCase {
         ViewHosting.host(view: imageView)
         let animatedImageView = try imageView.inspect().actualView().platformView().wrapped
         XCTAssertEqual(animatedImageView.sd_imageURL, imageUrl)
-        self.waitForExpectations(timeout: 5, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
         ViewHosting.expel()
     }
     
