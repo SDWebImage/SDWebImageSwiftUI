@@ -49,7 +49,7 @@ final class AnimatedLoadingModel : ObservableObject, IndicatorReportable {
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 final class AnimatedImageHandler: ObservableObject {
     // Completion Handler
-    @Published var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
+    @Published var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     @Published var failureBlock: ((Error) -> Void)?
     @Published var progressBlock: ((Int, Int) -> Void)?
     // Coordinator Handler
@@ -208,12 +208,15 @@ public struct AnimatedImage : PlatformViewRepresentable {
             return
         }
         self.imageLoading.isLoading = true
-        if imageModel.webOptions.contains(.delayPlaceholder) {
+        let options = imageModel.webOptions
+        if options.contains(.delayPlaceholder) {
             self.imageConfiguration.placeholderView?.isHidden = true
         } else {
             self.imageConfiguration.placeholderView?.isHidden = false
         }
-        view.wrapped.sd_setImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: imageModel.webOptions, context: imageModel.webContext, progress: { (receivedSize, expectedSize, _) in
+        var context = imageModel.webContext ?? [:]
+        context[.animatedImageClass] = SDAnimatedImage.self
+        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: options, context: context, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
             let progress: Double
             if (expectedSize > 0) {
                 progress = Double(receivedSize) / Double(expectedSize)
@@ -224,7 +227,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 self.imageLoading.progress = progress
             }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
-        }) { (image, error, cacheType, _) in
+        }) { (image, data, error, cacheType, finished, _) in
             // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
             // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
             if let hostingView = AnimatedImage.findHostingView(from: view) {
@@ -241,7 +244,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             self.imageLoading.progress = 1
             if let image = image {
                 self.imageConfiguration.placeholderView?.isHidden = true
-                self.imageHandler.successBlock?(image, cacheType)
+                self.imageHandler.successBlock?(image, data, cacheType)
             } else {
                 self.imageConfiguration.placeholderView?.isHidden = false
                 self.imageHandler.failureBlock?(error ?? NSError())
@@ -704,9 +707,31 @@ extension AnimatedImage {
     
     /// Provide the action when image load successes.
     /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
+    public func onSuccess(perform action: @escaping (PlatformImage) -> Void) -> AnimatedImage {
+        self.imageHandler.successBlock = { image, _, _ in
+            action(image)
+        }
+        return self
+    }
+    
+    /// Provide the action when image load successes.
+    /// - Parameters:
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
-    public func onSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
+    public func onSuccess(perform action: @escaping (PlatformImage, SDImageCacheType) -> Void) -> AnimatedImage {
+        self.imageHandler.successBlock = { image, _, cacheType in
+            action(image, cacheType)
+        }
+        return self
+    }
+    
+    /// Provide the action when image load successes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `action` when this image load successes.
+    public func onSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
         self.imageHandler.successBlock = action
         return self
     }
