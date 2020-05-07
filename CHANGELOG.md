@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2020-05-07
+### Added
+- Add the same overload method for onSuccess API, which introduce the image data arg. Keep the source code compatibility #109
+- Add the support for image data observable on ImageManager #107
+
 ## [1.3.4] - 2020-04-30
 ### Fixed
 - Revert the changes to prefetch the image url from memory cache #106
