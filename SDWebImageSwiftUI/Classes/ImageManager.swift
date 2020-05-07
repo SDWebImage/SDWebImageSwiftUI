@@ -17,6 +17,8 @@ public final class ImageManager : ObservableObject {
     @Published public var image: PlatformImage?
     /// loaded image data, may be nil if hit from memory cache. This will only published once even on incremental image loading
     @Published public var imageData: Data?
+    /// loaded image cache type, .none means from network
+    @Published public var cacheType: SDImageCacheType = .none
     /// loading error, you can grab the error code and reason listed in `SDWebImageErrorDomain`, to provide a user interface about the error reason
     @Published public var error: Error?
     /// whether network is loading or cache is querying, should only be used for indicator binding
@@ -33,7 +35,7 @@ public final class ImageManager : ObservableObject {
     var url: URL?
     var options: SDWebImageOptions
     var context: [SDWebImageContextOption : Any]?
-    var successBlock: ((PlatformImage, SDImageCacheType) -> Void)?
+    var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     var failureBlock: ((Error) -> Void)?
     var progressBlock: ((Int, Int) -> Void)?
     
@@ -89,10 +91,11 @@ public final class ImageManager : ObservableObject {
             self.isIncremental = !finished
             if finished {
                 self.imageData = data
+                self.cacheType = cacheType
                 self.isLoading = false
                 self.progress = 1
                 if let image = image {
-                    self.successBlock?(image, cacheType)
+                    self.successBlock?(image, data, cacheType)
                 } else {
                     self.failureBlock?(error ?? NSError())
                 }
@@ -122,8 +125,26 @@ extension ImageManager {
     
     /// Provide the action when image load successes.
     /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image. If `action` is `nil`, the call has no effect.
+    public func setOnSuccess(perform action: @escaping (PlatformImage) -> Void) {
+        self.successBlock = { image, _, _ in
+            action(image)
+        }
+    }
+    
+    /// Provide the action when image load successes.
+    /// - Parameters:
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
-    public func setOnSuccess(perform action: ((PlatformImage, SDImageCacheType) -> Void)? = nil) {
+    public func setOnSuccess(perform action: @escaping (PlatformImage, SDImageCacheType) -> Void) {
+        self.successBlock = { image, _, cacheType in
+            action(image, cacheType)
+        }
+    }
+    
+    /// Provide the action when image load successes.
+    /// - Parameters:
+    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
+    public func setOnSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) {
         self.successBlock = action
     }
     
