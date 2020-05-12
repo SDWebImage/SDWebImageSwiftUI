@@ -158,10 +158,15 @@ class WebImageTests: XCTestCase {
         let imageUrl = URL(string: "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_5.jpg")
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, data, cacheType in
+            #if os(macOS)
+            let displayImage = try? imageView.inspect().group().image(0).nsImage()
+            XCTAssertNotNil(displayImage)
+            #else
             let displayImage = try? imageView.inspect().group().image(0).cgImage()
             let orientation = try! imageView.inspect().group().image(0).orientation()
             XCTAssertNotNil(displayImage)
             XCTAssertEqual(orientation, .leftMirrored)
+            #endif
             expectation.fulfill()
         }.onFailure { error in
             XCTFail(error.localizedDescription)
