@@ -173,8 +173,7 @@ struct ContentView: View {
                             WebImage(url: URL(string:url), isAnimating: self.$animated)
                             .resizable()
                             .indicator(.activity)
-                            .animation(.easeInOut(duration: 0.5))
-                            .transition(.fade)
+                            .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #endif
@@ -187,8 +186,7 @@ struct ContentView: View {
                              }
                              */
                             .indicator(.activity)
-                            .animation(.easeInOut(duration: 0.5))
-                            .transition(.fade)
+                            .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                         }
