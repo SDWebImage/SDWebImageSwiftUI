@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2020-06-01
+### Added
+- Add the convenient API support to use SwiftUI transition with ease-in-out duration #116
+- Update the Travis-CI to use Catalina and enable macOS test case #98
+
 ## [1.4.0] - 2020-05-07
 ### Added
 - Add the same overload method for onSuccess API, which introduce the image data arg. Keep the source code compatibility #109
