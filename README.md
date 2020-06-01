@@ -122,8 +122,7 @@ var body: some View {
         Rectangle().foregroundColor(.gray)
     }
     .indicator(.activity) // Activity Indicator
-    .animation(.easeInOut(duration: 0.5)) // Animation Duration
-    .transition(.fade) // Fade Transition
+    .transition(.fade(duration: 0.5)) // Fade Transition with duration
     .scaledToFit()
     .frame(width: 300, height: 300, alignment: .center)
 }
