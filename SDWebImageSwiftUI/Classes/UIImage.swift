@@ -15,10 +15,10 @@ extension UIImage {
         }
 
         let colorMasking: [CGFloat] = [222, 255, 222, 255, 222, 255]
-        UIGraphicsBeginImageContext(image.size)
+        UIGraphicsBeginImageContext(self.size)
 
         let maskedImageRef = rawImageRef.copy(maskingColorComponents: colorMasking)
-        UIGraphicsGetCurrentContext()?.translateBy(x: 0.0, y: image.size.height)
+        UIGraphicsGetCurrentContext()?.translateBy(x: 0.0, y: self.size.height)
         UIGraphicsGetCurrentContext()?.scaleBy(x: 1.0, y: -1.0)
         UIGraphicsGetCurrentContext()?.draw(maskedImageRef!, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
         let result = UIGraphicsGetImageFromCurrentImageContext()
