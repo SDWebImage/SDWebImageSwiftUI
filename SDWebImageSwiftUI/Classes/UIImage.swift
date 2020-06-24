@@ -14,7 +14,7 @@ extension UIImage {
             return nil
         }
 
-        let colorMasking: [CGFloat] = [222, 255, 222, 255, 222, 255]
+        let colorMasking: [CGFloat] = [200, 255, 200, 255, 200, 255]
         UIGraphicsBeginImageContext(self.size)
 
         let maskedImageRef = rawImageRef.copy(maskingColorComponents: colorMasking)
