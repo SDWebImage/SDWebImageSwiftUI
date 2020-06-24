@@ -82,6 +82,7 @@
 		32ED4826242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
 		32ED4827242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
 		32ED4828242A13030053338E /* ImageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED4825242A13030053338E /* ImageManagerTests.swift */; };
+		ACAF889024A392F500C109DD /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF888F24A392F500C109DD /* UIImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +140,7 @@
 		32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImageSwiftUI.swift; sourceTree = "<group>"; };
 		32D26A012446B546005905DA /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		32ED4825242A13030053338E /* ImageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManagerTests.swift; sourceTree = "<group>"; };
+		ACAF888F24A392F500C109DD /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,6 +286,7 @@
 				32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */,
 				326E480923431C0F00C633E9 /* ImageViewWrapper.swift */,
 				32D26A012446B546005905DA /* Image.swift */,
+				ACAF888F24A392F500C109DD /* UIImage.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B933E523659A1900BB7CAD /* Transition.swift in Sources */,
+				ACAF889024A392F500C109DD /* UIImage.swift in Sources */,
 				32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84822363350C0011BDFB /* Indicator.swift in Sources */,
