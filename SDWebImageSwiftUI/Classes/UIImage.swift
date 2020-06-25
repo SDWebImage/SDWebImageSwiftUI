@@ -9,12 +9,12 @@
 import UIKit
 
 extension UIImage {
-    func removeWhiteBackground() -> UIImage? {
+    func maskBackground() -> UIImage {
         guard let rawImageRef: CGImage = self.cgImage else {
-            return nil
+            return self
         }
 
-        let colorMasking: [CGFloat] = [222, 255, 222, 255, 222, 255]
+        let colorMasking: [CGFloat] = [251.75, 255, 251.75, 255, 251.75, 255]
         UIGraphicsBeginImageContext(self.size)
 
         let maskedImageRef = rawImageRef.copy(maskingColorComponents: colorMasking)
@@ -23,12 +23,6 @@ extension UIImage {
         UIGraphicsGetCurrentContext()?.draw(maskedImageRef!, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return result
-    }
-}
-
-extension UIImage {
-    func maskBackground() -> UIImage {
-        self.removeWhiteBackground() ?? self
+        return result ?? self
     }
 }
