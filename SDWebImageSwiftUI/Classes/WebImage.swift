@@ -34,6 +34,7 @@ public struct WebImage: View {
     var purgeable: Bool = false
     var playbackRate: Double = 1.0
     var maskBackground: Bool = false
+    var url: URL?
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -42,6 +43,7 @@ public struct WebImage: View {
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption: Any]? = nil, maskBackground: Bool = false) {
         self.init(url: url, options: options, context: context, isAnimating: .constant(false))
         self.maskBackground = maskBackground
+        self.url = url
     }
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
@@ -52,6 +54,7 @@ public struct WebImage: View {
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption: Any]? = nil, isAnimating: Binding<Bool>, maskBackground: Bool = false) {
         self._isAnimating = isAnimating
         self.maskBackground = maskBackground
+        self.url = url
         var context = context ?? [:]
         // provide animated image class if the initialized `isAnimating` is true, user can still custom the image class if they want
         if isAnimating.wrappedValue {
@@ -124,6 +127,17 @@ public struct WebImage: View {
         }
     }
     
+    var isPNG: Bool {
+        guard let url = self.url else { return false }
+        let splitURL = url.absoluteString.components(separatedBy: ".")
+        guard let fileExtension = splitURL.last?.lowercased() else { return false }
+        return fileExtension == "png"
+    }
+    
+    var shouldMaskBackground: Bool {
+        maskBackground && !isPNG
+    }
+    
     /// Configure the platform image into the SwiftUI rendering image
     func configure(image: PlatformImage) -> some View {
         // Actual rendering SwiftUI image
@@ -163,7 +177,7 @@ public struct WebImage: View {
             let orientation = image.imageOrientation.toSwiftUI
             result = Image(decorative: cgImage, scale: scale, orientation: orientation)
         } else {
-            result = maskBackground ? Image(uiImage: image.maskBackground()) : Image(uiImage: image)
+            result = shouldMaskBackground ? Image(uiImage: image.maskBackground()) : Image(uiImage: image)
         }
         #endif
         
