@@ -122,6 +122,8 @@ public class ProgressIndicatorWrapper : PlatformView {
         addSubview(wrapped)
     }
 }
+
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension PlatformView {
     /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
     /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
