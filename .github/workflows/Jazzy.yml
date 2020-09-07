@@ -10,10 +10,15 @@ jobs:
   build:
 
     runs-on: macos-latest
-
+    env:
+      GEM_VERSION: $(gem -v)
     steps:
     - uses: actions/checkout@v2
     - name: Install jazzy.
       run: gem install jazzy
-    - name: Jazzy path.
-      run: jazzy --path
+    - name: Jazzy version.
+      run: JAZZY_PATH=$(jazzy --version)
+    - name: Sub string.
+      run: JAZZY_PATH=$(JAZZY_PATH#* )
+    - name: Echo JAZZY_PATH.
+      run: echo $JAZZY_PATH
