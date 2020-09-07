@@ -19,6 +19,6 @@ jobs:
     - name: Jazzy version.
       run: JAZZY_PATH=$(jazzy --version)
     - name: Sub string.
-      run: JAZZY_PATH=$(JAZZY_PATH#* )
+      run: JAZZY_PATH=${JAZZY_PATH#* }
     - name: Echo JAZZY_PATH.
       run: echo $JAZZY_PATH
