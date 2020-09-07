@@ -1,0 +1,17 @@
+name: Swift
+
+on:
+  push:
+    # Push target branch toggle action.
+    branches: [ action ]
+
+jobs:
+  # Job named build.
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@action
+    - name: Install jazzy.
+      run: gem install jazzy
