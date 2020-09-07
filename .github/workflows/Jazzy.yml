@@ -1,4 +1,4 @@
-name: Swift
+name: Jazzy
 
 on:
   push:
@@ -15,3 +15,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install jazzy.
       run: gem install jazzy
+    - name: Jazzy path.
+      run: jazzy --path
