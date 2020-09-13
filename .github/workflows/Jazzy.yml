@@ -17,8 +17,10 @@ jobs:
     - name: Install jazzy.
       run: gem install jazzy
     - name: Jazzy version.
-      run: JAZZY_PATH=$(jazzy --version)
+      run: JAZZY_VERSION=$(jazzy --version)
     - name: Sub string.
-      run: JAZZY_PATH=${JAZZY_PATH#* }
-    - name: Echo JAZZY_PATH.
-      run: echo $JAZZY_PATH
+      run: JAZZY_VERSION=${JAZZY_PATH#*: }
+    - name: Echo JAZZY_VERSION.
+      run: echo $JAZZY_VERSION
+    - name: Echo jazz path.
+      run: jazzy --path
