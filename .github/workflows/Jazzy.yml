@@ -17,7 +17,7 @@ jobs:
     - name: Install jazzy.
       run: gem install jazzy
     - name: Clone themes.
-      run: git clone git@github.com:SDWebImage/jazzy-theme.git ../
+      run: git clone git@github.com:SDWebImage/jazzy-theme.git ../jazzy-theme
       env: 
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
     - name: Generate docs.
