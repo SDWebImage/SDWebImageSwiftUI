@@ -20,8 +20,8 @@ jobs:
       run: JAZZY_VERSION=$(jazzy --version)
     - name: Echo jazz path.
       run: jazzy --path
-    - name: Sub string.
-      run: JAZZY_VERSION=${JAZZY_VERSION#*jazzy version: }
+#    - name: Sub string.
+ #     run: JAZZY_VERSION=${JAZZY_VERSION#*jazzy version: }
     - name: Echo JAZZY_VERSION.
       run: echo $JAZZY_VERSION
     
