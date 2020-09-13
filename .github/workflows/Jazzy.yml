@@ -16,12 +16,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install jazzy.
       run: gem install jazzy
-    - name: Jazzy version.
-      run: JAZZY_VERSION=$(jazzy --version)
-    - name: Echo jazz path.
-      run: jazzy --path
-#    - name: Sub string.
- #     run: JAZZY_VERSION=${JAZZY_VERSION#*jazzy version: }
-    - name: Echo JAZZY_VERSION.
-      run: echo $JAZZY_VERSION
+    - name: Clone themes.
+      run: git clone git@github.com:SDWebImage/jazzy-theme.git ../
+      env: 
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    - name: Generate docs.
+      run: jazzy \
+          --swift \
+          --author SDWebImageSwiftUI \
+          --github_url https://github.com/SDWebImage/SDWebImageSwiftUI \
+          --module-version 1.5.0 \
+          --umbrella-header SDWebImageSwiftUI/SDWebImageSwiftUI.h \
+          --undocumented-text "" \
+          --module SDWebImageSwiftUI \
+          --framework-root . \
+          --sdk iphonesimulator \
+          --output ../sdwebimage.github.io/SDWebImageSwiftUI \
+          --theme ../jazzy-theme/themes/apple
+    - name: List files.
+      run: ls ../sdwebimage.github.io/SDWebImageSwiftUI
     
