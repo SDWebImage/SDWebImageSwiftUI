@@ -14,7 +14,7 @@ jobs:
       GEM_VERSION: $(gem -v)
     steps:
     - uses: actions/checkout@v2
-    - name: Install jazzy.
+    - name: Install jazzy .
       run: gem install jazzy
     - name: Clone themes.
       run: git clone git@github.com:SDWebImage/jazzy-theme.git ../jazzy-theme
