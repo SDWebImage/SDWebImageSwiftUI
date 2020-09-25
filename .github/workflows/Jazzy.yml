@@ -14,28 +14,7 @@ jobs:
       GEM_VERSION: $(gem -v)
     steps:
     - uses: actions/checkout@v2
-    - uses: fregante/setup-git-token@v1
+    - name: Publish Jazzy Docs
+      uses: steven0351/publish-jazzy-docs@v1
       with:
-        token: ${{ secrets.ACCESS_TOKEN }}
-    - name: Install jazzy .
-      run: gem install jazzy
-    - name: Clone themes.
-      run: git clone git@github.com:SDWebImage/jazzy-theme.git ../jazzy-theme
-      env: 
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-    - name: Generate docs.
-      run: jazzy \
-          --swift \
-          --author SDWebImageSwiftUI \
-          --github_url https://github.com/SDWebImage/SDWebImageSwiftUI \
-          --module-version 1.5.0 \
-          --umbrella-header SDWebImageSwiftUI/SDWebImageSwiftUI.h \
-          --undocumented-text "" \
-          --module SDWebImageSwiftUI \
-          --framework-root . \
-          --sdk iphonesimulator \
-          --output ../sdwebimage.github.io/SDWebImageSwiftUI \
-          --theme ../jazzy-theme/themes/apple
-    - name: List files.
-      run: ls ../sdwebimage.github.io/SDWebImageSwiftUI
-    
+        personal_access_token: ${{ secrets.ACCESS_TOKEN }}
