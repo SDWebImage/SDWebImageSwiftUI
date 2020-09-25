@@ -14,6 +14,9 @@ jobs:
       GEM_VERSION: $(gem -v)
     steps:
     - uses: actions/checkout@v2
+    - uses: fregante/setup-git-token@v1
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
     - name: Install jazzy .
       run: gem install jazzy
     - name: Clone themes.
