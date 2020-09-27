@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{name}} {{kind}} Reference</title>
+    <link rel="stylesheet" type="text/css" href="{{path_to_root}}css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="{{path_to_root}}css/highlight.css" />
+    {{#enable_katex}}
+    <link rel="stylesheet" type="text/css" href="{{path_to_root}}css/katex.min.css" />
+    {{/enable_katex}}
+    <meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, viewport-fit=cover, initial-scale=1.0" />
+    <script src="{{path_to_root}}js/jquery.min.js" defer></script>
+    {{#enable_katex}}
+    <script src="{{path_to_root}}js/katex.min.js" defer></script>
+    {{/enable_katex}}
+    <script src="{{path_to_root}}js/jazzy.js" defer></script>
+    {{{custom_head}}}
+  </head>
+  <body>
+    {{#dash_type}}
+    <a name="//apple_ref/{{language_stub}}/{{dash_type}}/{{name}}" class="dashAnchor"></a>
+    {{/dash_type}}
+    <a title="{{name}} {{kind}} Reference"></a>
+    {{> header}}
+    <div id="breadcrumbs-container">
+      <div class="content-wrapper">
+        <p id="breadcrumbs">
+          <span class="no-mobile">
+            <a href="{{path_to_root}}index.html">{{module_name}} Reference</a>
+            <img id="carat" src="{{path_to_root}}img/carat.png" />
+          </span>
+          {{name}} {{kind}} Reference
+        </p>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="article-wrapper">
+        <article class="main-content">
+          <section>
+            <section class="section">
+              {{^hide_name}}<h1>{{name}}</h1>{{/hide_name}}
+              {{> deprecation}}
+              {{#declaration}}
+                <div class="declaration">
+                  <div class="language">
+                    {{#other_language_declaration}}<p class="aside-title">{{language}}</p>{{/other_language_declaration}}
+                    {{{declaration}}}
+                  </div>
+                  {{#other_language_declaration}}
+                  <div class="language">
+                    <p class="aside-title">Swift</p>
+                    {{{other_language_declaration}}}
+                  </div>
+                  {{/other_language_declaration}}
+                </div>
+              {{/declaration}}
+              {{{overview}}}
+              {{#parameters.any?}}
+                <div>
+                  <h4>Parameters</h4>
+                  <table class="graybox">
+                    <tbody>
+                      {{#parameters}}
+                        {{> parameter}}
+                      {{/parameters}}
+                    </tbody>
+                  </table>
+                </div>
+              {{/parameters.any?}}
+              {{#return}}
+                <div>
+                  <h4>Return Value</h4>
+                  {{{return}}}
+                </div>
+              {{/return}}
+              {{#github_token_url}}
+                <div class="slightly-smaller">
+                  <a href="{{{github_token_url}}}">Show on GitHub</a>
+                </div>
+              {{/github_token_url}}
+            </section>
+            {{> tasks}}
+          </section>
+        </article>
+      </div>
+      <div class="nav-wrapper">
+        {{> nav}}
+      </div>
+      <div class="footer-wrapper">
+        {{> footer}}
+      </div>
+    </div>
+  </body>
+</div>
+</html>
