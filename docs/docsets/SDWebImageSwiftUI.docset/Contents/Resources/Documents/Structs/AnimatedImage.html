@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AnimatedImage Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/AnimatedImage" class="dashAnchor"></a>
+    <a title="AnimatedImage Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">SDWebImageSwiftUI 1.5.0 Docs</a> (90% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">SDWebImageSwiftUI Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        AnimatedImage Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedImageCoordinator.html">AnimatedImageCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageManager.html">ImageManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ProgressIndicatorWrapper.html">ProgressIndicatorWrapper</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/AnyTransition.html">AnyTransition</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/IndicatorReportable.html">IndicatorReportable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ActivityIndicator.html">ActivityIndicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActivityIndicator/Style.html">– Style</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnimatedImage.html">AnimatedImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Indicator.html">Indicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IndicatorViewModifier.html">IndicatorViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ProgressIndicator.html">ProgressIndicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ProgressIndicator/Style.html">– Style</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WebImage.html">WebImage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:17SDWebImageSwiftUI25PlatformViewRepresentablea">PlatformViewRepresentable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>AnimatedImage</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">AnimatedImage</span> <span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI25PlatformViewRepresentablea">PlatformViewRepresentable</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>A Image View type to load image from url, data or bundle. Supports animated and static image format.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11isAnimatingSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isAnimating" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11isAnimatingSbvp">isAnimating</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Binding to control the animation. You can bind external logic to control the animation status.
+True to start animation, false to stop animation.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@Binding</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">isAnimating</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">nonmutating</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V3url7options7contextAC10Foundation3URLVSg_So0aB7OptionsVSDySo0aB13ContextOptionaypGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:options:context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V3url7options7contextAC10Foundation3URLVSg_So0aB7OptionsVSDySo0aB13ContextOptionaypGSgtcfc">init(url:<wbr>options:<wbr>context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with url, placeholder, custom options and context.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?,</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">SDWebImageOptions</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">context</span><span class="p">:</span> <span class="p">[</span><span class="kt">SDWebImageContextOption</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image url</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>placeholder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The placeholder image to show during loading</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The options to use when downloading the image. See <code>SDWebImageOptions</code> for the possible values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A context contains different options to perform specify changes or processes, see <code>SDWebImageContextOption</code>. This hold the extra objects which <code>options</code> enum can not hold.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V3url7options7context11isAnimatingAC10Foundation3URLVSg_So0aB7OptionsVSDySo0aB13ContextOptionaypGSg0cD07BindingVySbGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:options:context:isAnimating:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V3url7options7context11isAnimatingAC10Foundation3URLVSg_So0aB7OptionsVSDySo0aB13ContextOptionaypGSg0cD07BindingVySbGtcfc">init(url:<wbr>options:<wbr>context:<wbr>isAnimating:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with url, placeholder, custom options and context, including animation control binding.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?,</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">SDWebImageOptions</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">context</span><span class="p">:</span> <span class="p">[</span><span class="kt">SDWebImageContextOption</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">isAnimating</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image url</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>placeholder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The placeholder image to show during loading</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The options to use when downloading the image. See <code>SDWebImageOptions</code> for the possible values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A context contains different options to perform specify changes or processes, see <code>SDWebImageContextOption</code>. This hold the extra objects which <code>options</code> enum can not hold.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isAnimating</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The binding for animation control</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V4name6bundleACSS_So8NSBundleCSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(name:bundle:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V4name6bundleACSS_So8NSBundleCSgtcfc">init(name:<wbr>bundle:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with name and bundle.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Asset Catalog is not supported.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image name</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bundle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The bundle contains image</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V4name6bundle11isAnimatingACSS_So8NSBundleCSg0cD07BindingVySbGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(name:bundle:isAnimating:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V4name6bundle11isAnimatingACSS_So8NSBundleCSg0cD07BindingVySbGtcfc">init(name:<wbr>bundle:<wbr>isAnimating:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with name and bundle, including animation control binding.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Asset Catalog is not supported.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">isAnimating</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image name</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bundle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The bundle contains image</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isAnimating</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The binding for animation control</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V4data5scaleAC10Foundation4DataV_12CoreGraphics7CGFloatVtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(data:scale:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V4data5scaleAC10Foundation4DataV_12CoreGraphics7CGFloatVtcfc">init(data:<wbr>scale:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with data and scale.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">scale</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scale</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The scale factor</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V4data5scale11isAnimatingAC10Foundation4DataV_12CoreGraphics7CGFloatV0cD07BindingVySbGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(data:scale:isAnimating:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V4data5scale11isAnimatingAC10Foundation4DataV_12CoreGraphics7CGFloatV0cD07BindingVySbGtcfc">init(data:<wbr>scale:<wbr>isAnimating:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an animated image with data and scale, including animation control binding.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">scale</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">isAnimating</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scale</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The scale factor</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isAnimating</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The binding for animation control</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Alias/NSViewType" class="dashAnchor"></a>
+                    <a class="token" href="#/">NSViewType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP0C4TypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/UIViewType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP0C4TypeQa">UIViewType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">UIViewType</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa"></a>
+                    <a name="//apple_ref/swift/Alias/Coordinator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Coordinator</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AnimatedImageCoordinator.html">AnimatedImageCoordinator</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP15makeCoordinator0F0QzyF"></a>
+                    <a name="//apple_ref/swift/Method/makeCoordinator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP15makeCoordinator0F0QzyF">makeCoordinator()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeCoordinator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/makeNSView(context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">makeNSView(context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/updateNSView(_:context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">updateNSView(_:<wbr>context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/dismantleNSView(_:coordinator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">dismantleNSView(_:<wbr>coordinator:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeUIView(context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tF">makeUIView(context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeUIView</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="kt">UIViewRepresentableContext</span><span class="o">&lt;</span><span class="kt">AnimatedImage</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtF"></a>
+                    <a name="//apple_ref/swift/Method/updateUIView(_:context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtF">updateUIView(_:<wbr>context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateUIView</span><span class="p">(</span><span class="n">_</span> <span class="nv">uiView</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt">UIViewRepresentableContext</span><span class="o">&lt;</span><span class="kt">AnimatedImage</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19UIViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZ"></a>
+                    <a name="//apple_ref/swift/Method/dismantleUIView(_:coordinator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19UIViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZ">dismantleUIView(_:<wbr>coordinator:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">dismantleUIView</span><span class="p">(</span><span class="n">_</span> <span class="nv">uiView</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span><span class="p">,</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP0C4TypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/NSViewType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP0C4TypeQa">NSViewType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/NSViewType">NSViewType</a></span> <span class="o">=</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Alias/UIViewType" class="dashAnchor"></a>
+                    <a class="token" href="#/">UIViewType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP11CoordinatorQa"></a>
+                    <a name="//apple_ref/swift/Alias/Coordinator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP11CoordinatorQa">Coordinator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span> <span class="o">=</span> <span class="kt"><a href="../Classes/AnimatedImageCoordinator.html">AnimatedImageCoordinator</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP15makeCoordinator0F0QzyF"></a>
+                    <a name="//apple_ref/swift/Method/makeCoordinator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP15makeCoordinator0F0QzyF">makeCoordinator()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeCoordinator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeNSView(context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tF">makeNSView(context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeNSView</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="kt">NSViewRepresentableContext</span><span class="o">&lt;</span><span class="kt">AnimatedImage</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtF"></a>
+                    <a name="//apple_ref/swift/Method/updateNSView(_:context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtF">updateNSView(_:<wbr>context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateNSView</span><span class="p">(</span><span class="n">_</span> <span class="nv">nsView</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt">NSViewRepresentableContext</span><span class="o">&lt;</span><span class="kt">AnimatedImage</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI19NSViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZ"></a>
+                    <a name="//apple_ref/swift/Method/dismantleNSView(_:coordinator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19NSViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZ">dismantleNSView(_:<wbr>coordinator:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">dismantleNSView</span><span class="p">(</span><span class="n">_</span> <span class="nv">nsView</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnimatedImageViewWrapper.html">AnimatedImageViewWrapper</a></span><span class="p">,</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/makeUIView(context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">makeUIView(context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/updateUIView(_:context:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">updateUIView(_:<wbr>context:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/dismantleUIView(_:coordinator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">dismantleUIView(_:<wbr>coordinator:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9resizable9capInsets12resizingModeAC0cD004EdgeH0V_AG0B0V08ResizingJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/resizable(capInsets:resizingMode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9resizable9capInsets12resizingModeAC0cD004EdgeH0V_AG0B0V08ResizingJ0OtF">resizable(capInsets:<wbr>resizingMode:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Configurate this view&rsquo;s image with the specified cap insets and options.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    Animated Image does not implementes.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resizable</span><span class="p">(</span>
+    <span class="nv">capInsets</span><span class="p">:</span> <span class="kt">EdgeInsets</span> <span class="o">=</span> <span class="kt">EdgeInsets</span><span class="p">(),</span>
+    <span class="nv">resizingMode</span><span class="p">:</span> <span class="kt">Image</span><span class="o">.</span><span class="kt">ResizingMode</span> <span class="o">=</span> <span class="o">.</span><span class="n">stretch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>capInsets</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The values to use for the cap insets.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resizingMode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The resizing mode</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V13renderingModeyAC0cD00B0V017TemplateRenderingG0OSgF"></a>
+                    <a name="//apple_ref/swift/Method/renderingMode(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V13renderingModeyAC0cD00B0V017TemplateRenderingG0OSgF">renderingMode(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Configurate this view&rsquo;s rendering mode.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    Animated Image does not implementes.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">renderingMode</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderingMode</span><span class="p">:</span> <span class="kt">Image</span><span class="o">.</span><span class="kt">TemplateRenderingMode</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>renderingMode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The resizing mode</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V13interpolationyAC0cD00B0V13InterpolationOF"></a>
+                    <a name="//apple_ref/swift/Method/interpolation(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V13interpolationyAC0cD00B0V13InterpolationOF">interpolation(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Configurate this view&rsquo;s image interpolation quality</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">interpolation</span><span class="p">(</span><span class="n">_</span> <span class="nv">interpolation</span><span class="p">:</span> <span class="kt">Image</span><span class="o">.</span><span class="kt">Interpolation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>interpolation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The interpolation quality</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11antialiasedyACSbF"></a>
+                    <a name="//apple_ref/swift/Method/antialiased(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11antialiasedyACSbF">antialiased(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Configurate this view&rsquo;s image antialiasing</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">antialiased</span><span class="p">(</span><span class="n">_</span> <span class="nv">isAntialiased</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isAntialiased</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether or not to allow antialiasing</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11aspectRatio_11contentModeQr12CoreGraphics7CGFloatVSg_0cD007ContentI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/aspectRatio(_:contentMode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11aspectRatio_11contentModeQr12CoreGraphics7CGFloatVSg_0cD007ContentI0OtF">aspectRatio(_:<wbr>contentMode:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constrains this view&rsquo;s dimensions to the specified aspect ratio.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">aspectRatio</span><span class="p">(</span><span class="n">_</span> <span class="nv">aspectRatio</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">contentMode</span><span class="p">:</span> <span class="kt">ContentMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>aspectRatio</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ratio of width to height to use for the resulting
+view. If <code>aspectRatio</code> is <code>nil</code>, the resulting view maintains this
+view&rsquo;s aspect ratio.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentMode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A flag indicating whether this view should fit or
+fill the parent context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that constrains this view&rsquo;s dimensions to
+<code>aspectRatio</code>, using <code>contentMode</code> as its scaling algorithm.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11aspectRatio_11contentModeQrSo6CGSizeV_0cD007ContentI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/aspectRatio(_:contentMode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11aspectRatio_11contentModeQrSo6CGSizeV_0cD007ContentI0OtF">aspectRatio(_:<wbr>contentMode:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constrains this view&rsquo;s dimensions to the aspect ratio of the given size.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">aspectRatio</span><span class="p">(</span><span class="n">_</span> <span class="nv">aspectRatio</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="nv">contentMode</span><span class="p">:</span> <span class="kt">ContentMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>aspectRatio</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A size specifying the ratio of width to height to use
+for the resulting view.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentMode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A flag indicating whether this view should fit or
+fill the parent context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that constrains this view&rsquo;s dimensions to
+<code>aspectRatio</code>, using <code>contentMode</code> as its scaling algorithm.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11scaledToFitQryF"></a>
+                    <a name="//apple_ref/swift/Method/scaledToFit()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11scaledToFitQryF">scaledToFit()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Scales this view to fit its parent.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scaledToFit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that scales this view to fit its parent,
+maintaining this view&rsquo;s aspect ratio.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12scaledToFillQryF"></a>
+                    <a name="//apple_ref/swift/Method/scaledToFill()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12scaledToFillQryF">scaledToFill()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Scales this view to fill its parent.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scaledToFill</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that scales this view to fit its parent,
+maintaining this view&rsquo;s aspect ratio.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V15customLoopCountyACSuSgF"></a>
+                    <a name="//apple_ref/swift/Method/customLoopCount(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V15customLoopCountyACSuSgF">customLoopCount(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Total loop count for animated image rendering. Defaults to nil.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Pass nil to disable customization, use the image itself loop count (<code>animatedImageLoopCount</code>) instead
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">customLoopCount</span><span class="p">(</span><span class="n">_</span> <span class="nv">loopCount</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>loopCount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The animation loop count</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V13maxBufferSizeyACSuSgF"></a>
+                    <a name="//apple_ref/swift/Method/maxBufferSize(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V13maxBufferSizeyACSuSgF">maxBufferSize(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.</p>
+
+<p><code>0</code> or nil means automatically adjust by calculating current memory usage.
+<code>1</code> means without any buffer cache, each of frames will be decoded and then be freed after rendering. (Lowest Memory and Highest CPU)
+<code>UInt.max</code> means cache all the buffer. (Lowest CPU and Highest Memory)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">maxBufferSize</span><span class="p">(</span><span class="n">_</span> <span class="nv">bufferSize</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bufferSize</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The max buffer size</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V15incrementalLoadyACSbF"></a>
+                    <a name="//apple_ref/swift/Method/incrementalLoad(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V15incrementalLoadyACSbF">incrementalLoad(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whehter or not to enable incremental image load for animated image. See <code>SDAnimatedImageView</code> for detailed explanation for this.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    If you are confused about this description, open Chrome browser to view some large GIF images with low network speed to see the animation behavior.
+Default is true. Set to false to only render the static poster for incremental animated image.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">incrementalLoad</span><span class="p">(</span><span class="n">_</span> <span class="nv">incrementalLoad</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>incrementalLoad</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether or not to incremental load</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11runLoopModeyACSo05NSRungH0aF"></a>
+                    <a name="//apple_ref/swift/Method/runLoopMode(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11runLoopModeyACSo05NSRungH0aF">runLoopMode(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The runLoopMode when animation is playing on. Defaults is <code>.common</code>
+ You can specify a runloop mode to let it rendering.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">runLoopMode</span><span class="p">(</span><span class="n">_</span> <span class="nv">runLoopMode</span><span class="p">:</span> <span class="kt">RunLoop</span><span class="o">.</span><span class="kt">Mode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>runLoopMode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The runLoopMode for animation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V8pausableyACSbF"></a>
+                    <a name="//apple_ref/swift/Method/pausable(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V8pausableyACSbF">pausable(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When <code><a href="../Structs/AnimatedImage.html#/s:17SDWebImageSwiftUI08AnimatedB0V11isAnimatingSbvp">isAnimating</a></code> binding value changed to false. Defaults is true.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">pausable</span><span class="p">(</span><span class="n">_</span> <span class="nv">pausable</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pausable</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether or not to pause the animation instead of stop the animation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9purgeableyACSbF"></a>
+                    <a name="//apple_ref/swift/Method/purgeable(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9purgeableyACSbF">purgeable(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether or not to clear frame buffer cache when stopped. Defaults is false.
+Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">purgeable</span><span class="p">(</span><span class="n">_</span> <span class="nv">purgeable</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>purgeable</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether or not to clear frame buffer cache when stopped.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12playbackRateyACSdF"></a>
+                    <a name="//apple_ref/swift/Method/playbackRate(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12playbackRateyACSdF">playbackRate(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Control the animation playback rate. Default is 1.0.
+<code>1.0</code> means the normal speed.
+<code>0.0</code> means stopping the animation.
+<code>0.0-1.0</code> means the slow speed.
+<code>&gt; 1.0</code> means the fast speed.
+<code>&lt; 0.0</code> is not supported currently and stop animation. (may support reverse playback in the future)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">playbackRate</span><span class="p">(</span><span class="n">_</span> <span class="nv">playbackRate</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>playbackRate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The animation playback rate.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onFailure7performACys5Error_pcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onFailure(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onFailure7performACys5Error_pcSg_tF">onFailure(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load fails.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onFailure</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the error during loading. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load fails.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageCc_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageCc_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageC_So16SDImageCacheTypeVtc_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageC_So16SDImageCacheTypeVtc_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">,</span> <span class="kt">SDImageCacheType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageC_10Foundation4DataVSgSo16SDImageCacheTypeVtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7UIImageC_10Foundation4DataVSgSo16SDImageCacheTypeVtcSg_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">,</span> <span class="kt">Data</span><span class="p">?,</span> <span class="kt">SDImageCacheType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V10onProgress7performACySi_SitcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onProgress(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V10onProgress7performACySi_SitcSg_tF">onProgress(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load progress changes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onProgress</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12onViewCreate7performACySo6UIViewC_0cD00J20RepresentableContextVyACGtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onViewCreate(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12onViewCreate7performACySo6UIViewC_0cD00J20RepresentableContextVyACGtcSg_tF">onViewCreate(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable create the native view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onViewCreate</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable create the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12onViewUpdate7performACySo6UIViewC_0cD00J20RepresentableContextVyACGtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onViewUpdate(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12onViewUpdate7performACySo6UIViewC_0cD00J20RepresentableContextVyACGtcSg_tF">onViewUpdate(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable update the native view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onViewUpdate</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable update the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V13onViewDestroy7performyySo6UIViewC_AA0eB11CoordinatorCtcSg_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/onViewDestroy(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V13onViewDestroy7performyySo6UIViewC_AA0eB11CoordinatorCtcSg_tFZ">onViewDestroy(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable destroy the native view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">onViewDestroy</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the coordinator (with userInfo).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable destroy the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11placeholder7contentACxyXE_t0cD04ViewRzlF"></a>
+                    <a name="//apple_ref/swift/Method/placeholder(content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11placeholder7contentACxyXE_t0cD04ViewRzlF">placeholder(content:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a placeholder when loading image with url</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    The differences between this and placeholder image, it&rsquo;s that placeholder image replace the image for image view, but this modify the View Hierarchy to overlay the placeholder hosting view
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">placeholder</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="kd">@ViewBuilder</span> <span class="nv">content</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A view that describes the placeholder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11placeholderyACSo7UIImageCSgF"></a>
+                    <a name="//apple_ref/swift/Method/placeholder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11placeholderyACSo7UIImageCSgF">placeholder(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a placeholder image when loading image with url</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">placeholder</span><span class="p">(</span><span class="n">_</span> <span class="nv">image</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A view that describes the placeholder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9indicatoryACSo0aB9Indicator_pSgF"></a>
+                    <a name="//apple_ref/swift/Method/indicator(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9indicatoryACSo0aB9Indicator_pSgF">indicator(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a indicator when loading image with url</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    If you do not need indicator, specify nil. Defaults to nil
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">indicator</span><span class="p">(</span><span class="n">_</span> <span class="nv">indicator</span><span class="p">:</span> <span class="kt">SDWebImageIndicator</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indicator</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>indicator, see more in <code>SDWebImageIndicator</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V10transitionyACSo0aB10TransitionCSgF"></a>
+                    <a name="//apple_ref/swift/Method/transition(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V10transitionyACSo0aB10TransitionCSgF">transition(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a transition when loading image with url</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    If you specify nil, do not do transition. Defautls to nil.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">transition</span><span class="p">(</span><span class="n">_</span> <span class="nv">transition</span><span class="p">:</span> <span class="kt">SDWebImageTransition</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>transition</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>transition, see more in <code>SDWebImageTransition</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9indicatoryQrAA9IndicatorVyxG0cD04ViewRzlF"></a>
+                    <a name="//apple_ref/swift/Method/indicator(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9indicatoryQrAA9IndicatorVyxG0cD04ViewRzlF">indicator(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a indicator when loading image with url</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">indicator</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">indicator</span><span class="p">:</span> <span class="kt"><a href="../Structs/Indicator.html">Indicator</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indicator</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The indicator type, see <code><a href="../Structs/Indicator.html">Indicator</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9indicator7contentQrx0cD07BindingVySbG_AHySdGtc_tAF4ViewRzlF"></a>
+                    <a name="//apple_ref/swift/Method/indicator(content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9indicator7contentQrx0cD07BindingVySbG_AHySdGtc_tAF4ViewRzlF">indicator(content:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a indicator when loading image with url, convenient method with block</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">indicator</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="kd">@ViewBuilder</span> <span class="nv">content</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">isAnimating</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span> <span class="nv">progress</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Double</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A view that describes the indicator.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageCc_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageCc_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageC_So16SDImageCacheTypeVtc_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageC_So16SDImageCacheTypeVtc_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">,</span> <span class="kt">SDImageCacheType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageC_10Foundation4DataVSgSo16SDImageCacheTypeVtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onSuccess(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V9onSuccess7performACySo7NSImageC_10Foundation4DataVSgSo16SDImageCacheTypeVtcSg_tF">onSuccess(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when image load successes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onSuccess</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">,</span> <span class="kt">Data</span><span class="p">?,</span> <span class="kt">SDImageCacheType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If <code>action</code> is <code>nil</code>, the call has no effect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when this image load successes.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12onViewCreate7performACySo6NSViewC_0cD00J20RepresentableContextVyACGtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onViewCreate(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12onViewCreate7performACySo6NSViewC_0cD00J20RepresentableContextVyACGtcSg_tF">onViewCreate(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable create the native view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onViewCreate</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable create the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V12onViewUpdate7performACySo6NSViewC_0cD00J20RepresentableContextVyACGtcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/onViewUpdate(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V12onViewUpdate7performACySo6NSViewC_0cD00J20RepresentableContextVyACGtcSg_tF">onViewUpdate(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable update the native view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onViewUpdate</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the context.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable update the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V13onViewDestroy7performyySo6NSViewC_AA0eB11CoordinatorCtcSg_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/onViewDestroy(perform:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V13onViewDestroy7performyySo6NSViewC_AA0eB11CoordinatorCtcSg_tFZ">onViewDestroy(perform:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provide the action when view representable destroy the native view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">onViewDestroy</span><span class="p">(</span><span class="n">perform</span> <span class="nv">action</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI12PlatformViewa">PlatformView</a></span><span class="p">,</span> <span class="kt"><a href="../Structs/AnimatedImage.html#/s:7SwiftUI19UIViewRepresentableP11CoordinatorQa">Coordinator</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The action to perform. The first arg is the native view. The seconds arg is the coordinator (with userInfo).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A view that triggers <code>action</code> when view representable destroy the native view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17SDWebImageSwiftUI08AnimatedB0V11placeholderyACSo7NSImageCSgF"></a>
+                    <a name="//apple_ref/swift/Method/placeholder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17SDWebImageSwiftUI08AnimatedB0V11placeholderyACSo7NSImageCSgF">placeholder(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Associate a placeholder image when loading image with url</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">placeholder</span><span class="p">(</span><span class="n">_</span> <span class="nv">image</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:17SDWebImageSwiftUI08PlatformB0a">PlatformImage</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">AnimatedImage</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A view that describes the placeholder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/SDWebImage/SDWebImageSwiftUI" target="_blank" rel="external">SDWebImageSwiftUI</a>. All rights reserved. (Last updated: 2020-10-10)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
