@@ -5,5 +5,5 @@ module: SDWebImageSwiftUI
 output: "./docs"
 theme: "./jazzy-theme/themes/apple"
 xcodebuild_arguments:
-  ["-project", "SDWebImageSwiftUI.xcodeproj", "-scheme", "SDWebImageSwiftUI"]
+  ["-project", "SDWebImageSwiftUI.xcodeproj", "-scheme", "SDWebImageSwiftUI", "-sdk", "iphonesimulator"]
 podspec: SDWebImageSwiftUI.podspec
