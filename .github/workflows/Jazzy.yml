@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Publish Jazzy Docs
-        uses: insofan/SDPublishJazzy@1.0.4
+        uses: insofan/SDPublishJazzy@1.0.5
         with:
           personal_access_token: ${{ secrets.ACCESS_TOKEN }}
