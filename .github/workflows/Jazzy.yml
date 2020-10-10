@@ -3,18 +3,17 @@ name: Jazzy
 on:
   push:
     # Push target branch toggle action.
-    branches: [ action ]
+    branches: [action]
 
 jobs:
   # Job named build.
   build:
-
     runs-on: macos-latest
     env:
       GEM_VERSION: $(gem -v)
     steps:
-    - uses: actions/checkout@v2
-    - name: Publish Jazzy Docs
-      uses: insofan/SDPublishJazzy@1.0.2
-      with:
-        personal_access_token: ${{ secrets.ACCESS_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Publish Jazzy Docs
+        uses: insofan/SDPublishJazzy@1.0.3
+        with:
+          personal_access_token: ${{ secrets.ACCESS_TOKEN }}
