@@ -4,6 +4,8 @@ module: SDWebImageSwiftUI
 output: "./docs"
 theme: "./jazzy-theme/themes/apple"
 xcodebuild_arguments:
+    - "CODE_SIGNING_ALLOWED"
+    - "NO"
     - "-project"
     - "SDWebImageSwiftUI.xcodeproj"
     - "-scheme"
