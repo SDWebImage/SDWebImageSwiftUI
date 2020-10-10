@@ -6,3 +6,6 @@ theme: "./jazzy-theme/themes/apple"
 xcodebuild_arguments:
     - "-project"
     - "SDWebImageSwiftUI.xcodeproj"
+    - "-scheme"
+    - "SDWebImageSwiftUI"
+min-acl: internal
