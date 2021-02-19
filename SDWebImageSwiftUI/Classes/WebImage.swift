@@ -149,10 +149,16 @@ public struct WebImage : View {
             } else {
                 cgImage = image.cgImage
             }
-        }
-        // Case 2: Image with EXIF orientation (only EXIF 5-8 contains bug)
-        else if [.left, .leftMirrored, .right, .rightMirrored].contains(image.imageOrientation) {
-            cgImage = image.cgImage
+        } else {
+            // Case 2: Image with EXIF orientation (only EXIF 5-8 contains bug)
+            if [.left, .leftMirrored, .right, .rightMirrored].contains(image.imageOrientation) {
+                // Fixed by Apple in iOS 14+
+                if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
+                    // Do nothing
+                } else {
+                    cgImage = image.cgImage
+                }
+            }
         }
         // If we have CGImage, use CGImage based API, else use UIImage based API
         if let cgImage = cgImage {
