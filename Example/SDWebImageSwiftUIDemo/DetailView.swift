@@ -36,7 +36,7 @@ extension Image {
 
 struct DetailView: View {
     let url: String
-    let animated: Bool
+    @State var animated: Bool = true // You can change between WebImage/AnimatedImage
     @State var isAnimating: Bool = true
     @State var lastScale: CGFloat = 1.0
     @State var scale: CGFloat = 1.0
@@ -45,25 +45,17 @@ struct DetailView: View {
     var body: some View {
         VStack {
             #if os(iOS) || os(tvOS)
-            if animated {
-                zoomView()
-                .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
-                    self.isAnimating.toggle()
-                })
-            } else {
-                zoomView()
-            }
+            zoomView()
+            .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
+                self.isAnimating.toggle()
+            })
             #endif
             #if os(macOS) || os(watchOS)
-            if animated {
-                zoomView()
-                .contextMenu {
-                    Button(isAnimating ? "Stop" : "Start") {
-                        self.isAnimating.toggle()
-                    }
+            zoomView()
+            .contextMenu {
+                Button(isAnimating ? "Stop" : "Start") {
+                    self.isAnimating.toggle()
                 }
-            } else {
-                zoomView()
             }
             #endif
         }
@@ -116,7 +108,7 @@ struct DetailView: View {
                 .scaledToFit()
                 #endif
             } else {
-                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder])
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
                 .resizable()
                 .placeholder(.wifiExclamationmark)
                 .indicator(.progress)
