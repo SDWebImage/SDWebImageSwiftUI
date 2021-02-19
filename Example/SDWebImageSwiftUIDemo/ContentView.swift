@@ -155,7 +155,7 @@ struct ContentView: View {
                     HStack {
                         if self.animated {
                             #if os(macOS) || os(iOS) || os(tvOS)
-                            AnimatedImage(url: URL(string:url))
+                            AnimatedImage(url: URL(string:url), isAnimating: .constant(true))
                             .onViewUpdate { view, context in
                             #if os(macOS)
                                 view.toolTip = url
@@ -178,7 +178,7 @@ struct ContentView: View {
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                             #endif
                         } else {
-                            WebImage(url: URL(string:url))
+                            WebImage(url: URL(string:url), isAnimating: .constant(true))
                             .resizable()
                             /**
                              .placeholder {
