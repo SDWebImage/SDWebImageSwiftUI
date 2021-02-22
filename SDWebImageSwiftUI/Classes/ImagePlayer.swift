@@ -78,8 +78,12 @@ public final class ImagePlayer : ObservableObject {
                 
                 self.player = imagePlayer
                 
-                let posterFrame = PlatformImage(cgImage: animatedImage.cgImage!, scale: animatedImage.scale, orientation: .up)
-                currentFrame = posterFrame
+                // Setup poster frame
+                if let cgImage = animatedImage.cgImage {
+                    currentFrame = PlatformImage(cgImage: cgImage, scale: animatedImage.scale, orientation: .up)
+                } else {
+                    currentFrame = .empty
+                }
             }
         }
     }
