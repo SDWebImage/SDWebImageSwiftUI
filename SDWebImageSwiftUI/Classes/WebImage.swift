@@ -24,15 +24,10 @@ public struct WebImage : View {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
-    @State var currentFrame: PlatformImage? = nil
-    @State var imagePlayer: SDAnimatedImagePlayer? = nil
+    @ObservedObject var imagePlayer: ImagePlayer
     
-    var maxBufferSize: UInt?
-    var customLoopCount: UInt?
-    var runLoopMode: RunLoop.Mode = .common
     var pausable: Bool = true
     var purgeable: Bool = false
-    var playbackRate: Double = 1.0
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -57,6 +52,7 @@ public struct WebImage : View {
             }
         }
         self.imageManager = ImageManager(url: url, options: options, context: context)
+        self.imagePlayer = ImagePlayer()
     }
     
     public var body: some View {
@@ -67,30 +63,30 @@ public struct WebImage : View {
         return Group {
             if imageManager.image != nil {
                 if isAnimating && !imageManager.isIncremental {
-                    if currentFrame != nil {
-                        configure(image: currentFrame!)
+                    if imagePlayer.currentFrame != nil {
+                        configure(image: imagePlayer.currentFrame!)
                         .onAppear {
-                            self.imagePlayer?.startPlaying()
+                            imagePlayer.startPlaying()
                         }
                         .onDisappear {
                             if self.pausable {
-                                self.imagePlayer?.pausePlaying()
+                                imagePlayer.pausePlaying()
                             } else {
-                                self.imagePlayer?.stopPlaying()
+                                imagePlayer.stopPlaying()
                             }
                             if self.purgeable {
-                                self.imagePlayer?.clearFrameBuffer()
+                                imagePlayer.clearFrameBuffer()
                             }
                         }
                     } else {
                         configure(image: imageManager.image!)
                         .onReceive(imageManager.$image) { image in
-                            self.setupPlayer(image: image)
+                            imagePlayer.setupPlayer(image: image)
                         }
                     }
                 } else {
-                    if currentFrame != nil {
-                        configure(image: currentFrame!)
+                    if imagePlayer.currentFrame != nil {
+                        configure(image: imagePlayer.currentFrame!)
                     } else {
                         configure(image: imageManager.image!)
                     }
@@ -183,32 +179,6 @@ public struct WebImage : View {
             }
         } else {
             return AnyView(configure(image: .empty))
-        }
-    }
-    
-    /// Animated Image Support
-    func setupPlayer(image: PlatformImage?) {
-        if imagePlayer != nil {
-            return
-        }
-        if let animatedImage = image as? SDAnimatedImageProvider {
-            if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
-                imagePlayer.animationFrameHandler = { (_, frame) in
-                    self.currentFrame = frame
-                }
-                // Setup configuration
-                if let maxBufferSize = maxBufferSize {
-                    imagePlayer.maxBufferSize = maxBufferSize
-                }
-                if let customLoopCount = customLoopCount {
-                    imagePlayer.totalLoopCount = UInt(customLoopCount)
-                }
-                imagePlayer.runLoopMode = runLoopMode
-                imagePlayer.playbackRate = playbackRate
-                
-                self.imagePlayer = imagePlayer
-                imagePlayer.startPlaying()
-            }
         }
     }
 }
@@ -372,9 +342,8 @@ extension WebImage {
     /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
     /// - Parameter loopCount: The animation loop count
     public func customLoopCount(_ loopCount: UInt?) -> WebImage {
-        var result = self
-        result.customLoopCount = loopCount
-        return result
+        self.imagePlayer.customLoopCount = loopCount
+        return self
     }
     
     /// Provide a max buffer size by bytes. This is used to adjust frame buffer count and can be useful when the decoding cost is expensive (such as Animated WebP software decoding). Default is nil.
@@ -384,9 +353,8 @@ extension WebImage {
     /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> WebImage {
-        var result = self
-        result.maxBufferSize = bufferSize
-        return result
+        self.imagePlayer.maxBufferSize = bufferSize
+        return self
     }
     
     /// The runLoopMode when animation is playing on. Defaults is `.common`
@@ -394,9 +362,8 @@ extension WebImage {
     /// - Note: This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
     /// - Parameter runLoopMode: The runLoopMode for animation
     public func runLoopMode(_ runLoopMode: RunLoop.Mode) -> WebImage {
-        var result = self
-        result.runLoopMode = runLoopMode
-        return result
+        self.imagePlayer.runLoopMode = runLoopMode
+        return self
     }
     
     /// Whether or not to pause the animation (keep current frame), instead of stop the animation (frame index reset to 0). When `isAnimating` binding value changed to false. Defaults is true.
@@ -425,9 +392,8 @@ extension WebImage {
     /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
     /// - Parameter playbackRate: The animation playback rate.
     public func playbackRate(_ playbackRate: Double) -> WebImage {
-        var result = self
-        result.playbackRate = playbackRate
-        return result
+        self.imagePlayer.playbackRate = playbackRate
+        return self
     }
 }
 
