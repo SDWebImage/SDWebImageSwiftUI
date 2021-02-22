@@ -46,7 +46,6 @@ class AnimatedImageTests: XCTestCase {
         } else {
             XCTFail("SDAnimatedImageView.image invalid")
         }
-        XCTAssertEqual(animatedImageView.sd_imageName, imageName)
         expectation.fulfill()
         self.waitForExpectations(timeout: 5, handler: nil)
         ViewHosting.expel()
@@ -64,7 +63,6 @@ class AnimatedImageTests: XCTestCase {
         } else {
             XCTFail("SDAnimatedImageView.image invalid")
         }
-        XCTAssertEqual(animatedImageView.sd_imageData, imageData)
         expectation.fulfill()
         self.waitForExpectations(timeout: 5, handler: nil)
         ViewHosting.expel()
