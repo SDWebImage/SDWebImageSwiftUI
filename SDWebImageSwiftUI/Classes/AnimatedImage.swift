@@ -43,6 +43,11 @@ final class AnimatedLoadingModel : ObservableObject, IndicatorReportable {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
     @Published var progress: Double = 0 // network progress, should only be used for indicator binding
+    
+    /// Used for  loading status recording to avoid recursive `updateView`. There are 3 types of loading (Name/Data/URL)
+    @Published var imageName: String?
+    @Published var imageData: Data?
+    @Published var imageURL: URL?
 }
 
 /// Completion Handler Binding Object, supports dynamic @State changes
@@ -228,15 +233,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, data, error, cacheType, finished, _) in
-            // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
-            // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
-            if let hostingView = AnimatedImage.findHostingView(from: view) {
-                if let _ = hostingView.window {
-                    #if os(macOS)
-                    hostingView.viewDidMoveToWindow()
-                    #else
-                    hostingView.didMoveToWindow()
-                    #endif
+            if #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *) {
+                // Do nothing
+            } else {
+                // This is a hack because of Xcode 11.3 bug, the @Published does not trigger another `updateUIView` call
+                // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
+                if let hostingView = AnimatedImage.findHostingView(from: view) {
+                    if let _ = hostingView.window {
+                        #if os(macOS)
+                        hostingView.viewDidMoveToWindow()
+                        #else
+                        hostingView.didMoveToWindow()
+                        #endif
+                    }
                 }
             }
             self.imageLoading.image = image
@@ -263,19 +272,20 @@ public struct AnimatedImage : PlatformViewRepresentable {
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
-        if let name = imageModel.name, name != view.wrapped.sd_imageName {
+        if let name = imageModel.name, name != imageLoading.imageName {
             #if os(macOS)
             let image = SDAnimatedImage(named: name, in: imageModel.bundle)
             #else
             let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
             #endif
-            view.wrapped.sd_imageName = name
+            imageLoading.imageName = name
             view.wrapped.image = image
-        } else if let data = imageModel.data, data != view.wrapped.sd_imageData {
+        } else if let data = imageModel.data, data != imageLoading.imageData {
             let image = SDAnimatedImage(data: data, scale: imageModel.scale)
-            view.wrapped.sd_imageData = data
+            imageLoading.imageData = data
             view.wrapped.image = image
-        } else if let url = imageModel.url, url != view.wrapped.sd_imageURL {
+        } else if let url = imageModel.url, url != imageLoading.imageURL {
+            imageLoading.imageURL = url
             view.wrapped.sd_imageIndicator = imageConfiguration.indicator
             view.wrapped.sd_imageTransition = imageConfiguration.transition
             if let placeholderView = imageConfiguration.placeholderView {
