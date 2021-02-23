@@ -126,24 +126,6 @@ extension ImageManager {
     
     /// Provide the action when image load successes.
     /// - Parameters:
-    ///   - action: The action to perform. The first arg is the loaded image. If `action` is `nil`, the call has no effect.
-    public func setOnSuccess(perform action: @escaping (PlatformImage) -> Void) {
-        self.successBlock = { image, _, _ in
-            action(image)
-        }
-    }
-    
-    /// Provide the action when image load successes.
-    /// - Parameters:
-    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
-    public func setOnSuccess(perform action: @escaping (PlatformImage, SDImageCacheType) -> Void) {
-        self.successBlock = { image, _, cacheType in
-            action(image, cacheType)
-        }
-    }
-    
-    /// Provide the action when image load successes.
-    /// - Parameters:
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
     public func setOnSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) {
         self.successBlock = action
