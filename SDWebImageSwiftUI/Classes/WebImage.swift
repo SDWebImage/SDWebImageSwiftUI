@@ -399,6 +399,13 @@ extension WebImage {
         self.imagePlayer.playbackRate = playbackRate
         return self
     }
+    
+    /// Control the animation playback mode. Default is .normal
+    /// - Parameter playbackMode: The playback mode, including normal order, reverse order, bounce order and reversed bounce order.
+    public func playbackMode(_ playbackMode: SDAnimatedImagePlaybackMode) -> WebImage {
+        self.imagePlayer.playbackMode = playbackMode
+        return self
+    }
 }
 
 #if DEBUG

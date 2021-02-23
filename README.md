@@ -160,6 +160,7 @@ var body: some View {
     // The initial value of binding should be true
     .customLoopCount(1) // Custom loop count
     .playbackRate(2.0) // Playback speed rate
+    .playbackMode(.bounce) // Playback normally to the end, then reversely back to the start
     // `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
 }
 ```

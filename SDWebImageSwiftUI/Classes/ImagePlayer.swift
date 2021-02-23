@@ -26,6 +26,9 @@ public final class ImagePlayer : ObservableObject {
     /// Animation playback rate
     public var playbackRate: Double = 1.0
     
+    /// Animation playback mode
+    public var playbackMode: SDAnimatedImagePlaybackMode = .normal
+    
     deinit {
         player?.stopPlaying()
         currentFrame = nil
@@ -71,10 +74,11 @@ public final class ImagePlayer : ObservableObject {
                     imagePlayer.maxBufferSize = maxBufferSize
                 }
                 if let customLoopCount = customLoopCount {
-                    imagePlayer.totalLoopCount = UInt(customLoopCount)
+                    imagePlayer.totalLoopCount = customLoopCount
                 }
                 imagePlayer.runLoopMode = runLoopMode
                 imagePlayer.playbackRate = playbackRate
+                imagePlayer.playbackMode = playbackMode
                 
                 self.player = imagePlayer
                 

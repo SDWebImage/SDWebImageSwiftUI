@@ -114,6 +114,20 @@ extension PlatformView {
         self.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 0).isActive = true
         self.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: 0).isActive = true
     }
+    
+    /// Finding the HostingView for UIKit/AppKit View.
+    /// - Parameter entry: The entry platform view
+    /// - Returns: The hosting view.
+    func findHostingView() -> PlatformView? {
+        var superview = self.superview
+        while let s = superview {
+            if NSStringFromClass(type(of: s)).contains("HostingView") {
+                return s
+            }
+            superview = s.superview
+        }
+        return nil
+    }
 }
 
 #endif
