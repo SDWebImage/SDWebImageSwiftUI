@@ -50,7 +50,7 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 ## Requirements
 
-+ Xcode 11+
++ Xcode 12+
 + iOS 13+
 + macOS 10.15+
 + tvOS 13+
