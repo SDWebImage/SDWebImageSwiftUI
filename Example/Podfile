@@ -23,6 +23,6 @@ target 'SDWebImageSwiftUIDemo-tvOS' do
 end
 
 target 'SDWebImageSwiftUIDemo-watchOS WatchKit Extension' do
-  platform :watchos, '6.0'
+  platform :watchos, '7.0'
   all_pods
 end
