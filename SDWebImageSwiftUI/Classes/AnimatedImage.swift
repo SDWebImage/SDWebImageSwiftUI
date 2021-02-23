@@ -738,28 +738,6 @@ extension AnimatedImage {
     
     /// Provide the action when image load successes.
     /// - Parameters:
-    ///   - action: The action to perform. The first arg is the loaded image. If `action` is `nil`, the call has no effect.
-    /// - Returns: A view that triggers `action` when this image load successes.
-    public func onSuccess(perform action: @escaping (PlatformImage) -> Void) -> AnimatedImage {
-        self.imageHandler.successBlock = { image, _, _ in
-            action(image)
-        }
-        return self
-    }
-    
-    /// Provide the action when image load successes.
-    /// - Parameters:
-    ///   - action: The action to perform. The first arg is the loaded image, the second arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
-    /// - Returns: A view that triggers `action` when this image load successes.
-    public func onSuccess(perform action: @escaping (PlatformImage, SDImageCacheType) -> Void) -> AnimatedImage {
-        self.imageHandler.successBlock = { image, _, cacheType in
-            action(image, cacheType)
-        }
-        return self
-    }
-    
-    /// Provide the action when image load successes.
-    /// - Parameters:
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) -> AnimatedImage {
