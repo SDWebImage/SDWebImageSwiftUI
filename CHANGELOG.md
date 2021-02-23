@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2021-02-23
+### Added
+- Update with the playbackMode support for `WebImage` and `AnimatedImage` #168
+- Update watchOS demo to watchOS 7, remove the custom indicator sample and use `ProgressView` instead #166
+- Update the WebImage to defaults animatable #165
+- Update the Example to make WebImage animatable by default #160
+
+### Fixed
+- Fix the issue sometime the `WebImage` appear/disappear logic wrong. Using UIKit/AppKit to detect the visibility #164
+- Fix the leak of WebImage with animation and NavigationLink. #163
+- Try to fix the recursive updateView when using AnimatedImage inside `ScrollView/LazyVStack`. Which cause App freeze #162
+- Remove the fix for EXIF image in WebImage, which is fixed by Apple in iOS 14 #159
+
+### Changed
+- Bump the limit to Xcode 12, because we need new iOS 14+ APIs check #167
+- Update the WebImage to defaults animatable #165
+
+### Removed
+- Remove the wrong design onSuccess API. Using the full params one instead #169
+
 ## [1.5.0] - 2020-06-01
 ### Added
 - Add the convenient API support to use SwiftUI transition with ease-in-out duration #116
