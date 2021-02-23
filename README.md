@@ -57,6 +57,27 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 + watchOS 6+
 + Swift 5.1+
 
+## SwiftUI 2.0 Compatibility
+
+iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
+
+From v1.6.0, we adopt SwiftUI 2.0 and iOS 14(macOS 11)'s behavior.You can use `WebImage` and `AnimatedImage` inside the new `LazyVStack`.
+
+```swift
+var body: some View {
+    ScrollView {
+        LazyVStack {
+            ForEach(urls, id: \.self) { url in
+                AnimatedImage(url: url)
+            }
+        }
+    }
+}
+```
+
+Note: However, many differences behavior between iOS 13/14's is hard to fixup. Due to maintain issue, in the future v2.0.0, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior.
+
+
 ## Installation
 
 #### Swift Package Manager
@@ -128,9 +149,7 @@ var body: some View {
 }
 ```
 
-Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But unlike SwiftUI's `Image` which does not support animated image or vector image, `WebImage` supports animated image as well.
-
-Note: The `WebImage` animation provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering.
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But unlike SwiftUI's `Image` which does not support animated image or vector image, `WebImage` supports animated image as well (by defaults from v1.6.0)
 
 ```swift
 @State var isAnimating: Bool = true
@@ -142,6 +161,8 @@ var body: some View {
     // `WebImage` supports advanced control just like `AnimatedImage`, but without the progressive animation support
 }
 ```
+
+Note: The `WebImage` animation provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, or vector image rendering. In a word, `WebImage` can render animated image, but not always the best choice.
 
 ### Using `AnimatedImage` to play animation
 

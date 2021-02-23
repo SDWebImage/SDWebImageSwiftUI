@@ -34,7 +34,7 @@ public struct WebImage : View {
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.init(url: url, options: options, context: context, isAnimating: .constant(false))
+        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
     }
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
