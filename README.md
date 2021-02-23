@@ -149,7 +149,9 @@ var body: some View {
 }
 ```
 
-Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But unlike SwiftUI's `Image` which does not support animated image or vector image, `WebImage` supports animated image as well (by defaults from v1.6.0)
+Note: This `WebImage` using `Image` for internal implementation, which is the best compatible for SwiftUI layout and animation system. But unlike SwiftUI's `Image` which does not support animated image or vector image, `WebImage` supports animated image as well (by defaults from v1.6.0).
+
+However, The `WebImage` animation provide simple common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, or vector image rendering.
 
 ```swift
 @State var isAnimating: Bool = true
@@ -162,7 +164,16 @@ var body: some View {
 }
 ```
 
-Note: The `WebImage` animation provide common use case, so it's still recommend to use `AnimatedImage` for advanced controls like progressive animation rendering, or vector image rendering. In a word, `WebImage` can render animated image, but not always the best choice.
+Note: For indicator, you can custom your own as well. For example, iOS 14/watchOS 7 introduce the new `ProgressView`, which can replace our built-in `ProgressIndicator/ActivityIndicator` (where watchOS does not provide).
+
+```swift
+WebImage(url: url)
+.indicator {
+    Indicator { _, _ in
+        ProgressView()
+    }
+}
+```
 
 ### Using `AnimatedImage` to play animation
 
