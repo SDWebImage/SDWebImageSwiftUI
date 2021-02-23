@@ -144,7 +144,7 @@ class AnimatedImageTests: XCTestCase {
         let imageUrl = URL(string: "https://assets.sbnation.com/assets/2512203/dogflops.gif")
         let imageView = AnimatedImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
         let introspectView = imageView
-        .onSuccess { _, _ in
+        .onSuccess { _, _, _ in
             expectation.fulfill()
         }
         .onFailure { _ in
