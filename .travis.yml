@@ -33,8 +33,8 @@ script:
   - pod install --project-directory=Example
   - xcodebuild build -workspace Example/SDWebImageSwiftUI.xcworkspace -scheme SDWebImageSwiftUIDemo -destination 'name=iPhone 11 Pro Max' -configuration Debug | xcpretty -c
 
-  - carthage update --configuration Debug
-  - xcodebuild build -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUI' -sdk iphonesimulator -configuration Debug | xcpretty -c
+  - ./carthage.sh update --configuration Debug
+  - xcodebuild build -project SDWebImageSwiftUI.xcodeproj -scheme 'SDWebImageSwiftUI' -destination 'name=iPhone 11 Pro Max' -configuration Debug | xcpretty -c
 
   - echo Clean DerivedData
   - rm -rf ~/Library/Developer/Xcode/DerivedData/
