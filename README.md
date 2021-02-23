@@ -53,13 +53,13 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 + macOS 10.15+
 + tvOS 13+
 + watchOS 6+
-+ Swift 5.1+
++ Swift 5.2+
 
 ## SwiftUI 2.0 Compatibility
 
 iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
 
-From v2.0.0, we adopt SwiftUI 2.0 and iOS 14(macOS 11)'s behavior.You can use `WebImage` and `AnimatedImage` inside the new `LazyVStack`.
+From v2.0.0, we adopt SwiftUI 2.0 and iOS 14(macOS 11)'s behavior. You can use `WebImage` and `AnimatedImage` inside the new `LazyVStack`.
 
 ```swift
 var body: some View {
