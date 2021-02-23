@@ -84,6 +84,7 @@ final class AnimatedImageConfiguration: ObservableObject {
     var pausable: Bool?
     var purgeable: Bool?
     var playbackRate: Double?
+    var playbackMode: SDAnimatedImagePlaybackMode?
     // These configurations only useful for web image loading
     var indicator: SDWebImageIndicator?
     var transition: SDWebImageTransition?
@@ -253,7 +254,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             } else {
                 // This is a hack because of iOS 13's SwiftUI bug, the @Published does not trigger another `updateUIView` call
                 // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
-                if let hostingView = AnimatedImage.findHostingView(from: view) {
+                if let hostingView = view.findHostingView() {
                     if let _ = hostingView.window {
                         #if os(macOS)
                         hostingView.viewDidMoveToWindow()
@@ -542,17 +543,13 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else {
             view.wrapped.playbackRate = 1.0
         }
-    }
-    
-    private static func findHostingView(from entry: PlatformView) -> PlatformView? {
-        var superview = entry.superview
-        while let s = superview {
-            if NSStringFromClass(type(of: s)).contains("HostingView") {
-                return s
-            }
-            superview = s.superview
+        
+        // Playback Mode
+        if let playbackMode = imageConfiguration.playbackMode {
+            view.wrapped.playbackMode = playbackMode
+        } else {
+            view.wrapped.playbackMode = .normal
         }
-        return nil
     }
 }
 
@@ -715,6 +712,13 @@ extension AnimatedImage {
     /// - Parameter playbackRate: The animation playback rate.
     public func playbackRate(_ playbackRate: Double) -> AnimatedImage {
         self.imageConfiguration.playbackRate = playbackRate
+        return self
+    }
+    
+    /// Control the animation playback mode. Default is .normal
+    /// - Parameter playbackMode: The playback mode, including normal order, reverse order, bounce order and reversed bounce order.
+    public func playbackMode(_ playbackMode: SDAnimatedImagePlaybackMode) -> AnimatedImage {
+        self.imageConfiguration.playbackMode = playbackMode
         return self
     }
 }
