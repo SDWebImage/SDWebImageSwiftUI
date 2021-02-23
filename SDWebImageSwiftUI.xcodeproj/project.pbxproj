@@ -75,6 +75,14 @@
 		32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
 		32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
+		32CBA78025E4D7D800C6A8DC /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
+		32CBA78125E4D7D800C6A8DC /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
+		32CBA78225E4D7D800C6A8DC /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
+		32CBA78325E4D7D800C6A8DC /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
+		32CBA78425E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */; };
+		32CBA78525E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */; };
+		32CBA78625E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */; };
+		32CBA78725E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */; };
 		32D26A022446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
 		32D26A032446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
 		32D26A042446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
@@ -137,6 +145,8 @@
 		32C43E2922FD586200BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/tvOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/watchOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImageSwiftUI.swift; sourceTree = "<group>"; };
+		32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
+		32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUICompatibility.swift; sourceTree = "<group>"; };
 		32D26A012446B546005905DA /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		32ED4825242A13030053338E /* ImageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -279,6 +289,8 @@
 				32B933E323659A0700BB7CAD /* Transition */,
 				326099472362E09E006EBB22 /* Indicator */,
 				32C43DDC22FD54C600BE87F5 /* ImageManager.swift */,
+				32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */,
+				32CBA77F25E4D7D800C6A8DC /* SwiftUICompatibility.swift */,
 				32C43DDE22FD54C600BE87F5 /* WebImage.swift */,
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
 				32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */,
@@ -696,6 +708,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B933E523659A1900BB7CAD /* Transition.swift in Sources */,
+				32CBA78025E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
+				32CBA78425E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */,
 				32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84822363350C0011BDFB /* Indicator.swift in Sources */,
@@ -713,6 +727,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B933E623659A1900BB7CAD /* Transition.swift in Sources */,
+				32CBA78125E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
+				32CBA78525E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */,
 				32C43E1A22FD583700BE87F5 /* WebImage.swift in Sources */,
 				326B848D236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84832363350C0011BDFB /* Indicator.swift in Sources */,
@@ -730,6 +746,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B933E723659A1900BB7CAD /* Transition.swift in Sources */,
+				32CBA78225E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
+				32CBA78625E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */,
 				32C43E1D22FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848E236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84842363350C0011BDFB /* Indicator.swift in Sources */,
@@ -747,6 +765,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B933E823659A1900BB7CAD /* Transition.swift in Sources */,
+				32CBA78325E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
+				32CBA78725E4D7D800C6A8DC /* SwiftUICompatibility.swift in Sources */,
 				32C43E2022FD583800BE87F5 /* WebImage.swift in Sources */,
 				326B848F236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84852363350C0011BDFB /* Indicator.swift in Sources */,

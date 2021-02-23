@@ -65,23 +65,22 @@ public struct WebImage : View {
                 if isAnimating && !imageManager.isIncremental {
                     if imagePlayer.currentFrame != nil {
                         configure(image: imagePlayer.currentFrame!)
-                        .onAppear {
-                            imagePlayer.startPlaying()
-                        }
-                        .onDisappear {
+                        .onPlatformAppear(appear: {
+                            self.imagePlayer.startPlaying()
+                        }, disappear: {
                             if self.pausable {
-                                imagePlayer.pausePlaying()
+                                self.imagePlayer.pausePlaying()
                             } else {
-                                imagePlayer.stopPlaying()
+                                self.imagePlayer.stopPlaying()
                             }
                             if self.purgeable {
-                                imagePlayer.clearFrameBuffer()
+                                self.imagePlayer.clearFrameBuffer()
                             }
-                        }
+                        })
                     } else {
                         configure(image: imageManager.image!)
                         .onReceive(imageManager.$image) { image in
-                            imagePlayer.setupPlayer(image: image)
+                            self.imagePlayer.setupPlayer(image: image)
                         }
                     }
                 } else {
@@ -94,7 +93,7 @@ public struct WebImage : View {
             } else {
                 setupPlaceholder()
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                .onAppear {
+                .onPlatformAppear(appear: {
                     // Load remote image when first appear
                     if self.imageManager.isFirstLoad {
                         self.imageManager.load()
@@ -105,14 +104,13 @@ public struct WebImage : View {
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.load()
                     }
-                }
-                .onDisappear {
+                }, disappear: {
                     guard self.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                }
+                })
             }
         }
     }
