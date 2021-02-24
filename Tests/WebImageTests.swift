@@ -162,10 +162,15 @@ class WebImageTests: XCTestCase {
             let displayImage = try? imageView.inspect().group().image(0).nsImage()
             XCTAssertNotNil(displayImage)
             #else
-            let displayImage = try? imageView.inspect().group().image(0).cgImage()
-            let orientation = try! imageView.inspect().group().image(0).orientation()
-            XCTAssertNotNil(displayImage)
-            XCTAssertEqual(orientation, .leftMirrored)
+            if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
+                let displayImage = try? imageView.inspect().group().image(0).uiImage()
+                XCTAssertEqual(displayImage, image)
+            } else {
+                let displayImage = try? imageView.inspect().group().image(0).cgImage()
+                let orientation = try? imageView.inspect().group().image(0).orientation()
+                XCTAssertNotNil(displayImage)
+                XCTAssertEqual(orientation, .leftMirrored)
+            }
             #endif
             expectation.fulfill()
         }.onFailure { error in
