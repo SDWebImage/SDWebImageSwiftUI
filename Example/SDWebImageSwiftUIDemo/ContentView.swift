@@ -17,6 +17,7 @@ class UserSettings: ObservableObject {
     #endif
 }
 
+#if os(watchOS)
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension Indicator where T == ProgressView<EmptyView, EmptyView> {
     static var activity: Indicator {
@@ -31,6 +32,7 @@ extension Indicator where T == ProgressView<EmptyView, EmptyView> {
         }
     }
 }
+#endif
 
 struct ContentView: View {
     @State var imageURLs = [
@@ -143,6 +145,7 @@ struct ContentView: View {
                             .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            .help(url)
                             #endif
                         } else {
                             WebImage(url: URL(string:url), isAnimating: .constant(true))
@@ -156,6 +159,7 @@ struct ContentView: View {
                             .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                            .help(url)
                         }
                         Text((url as NSString).lastPathComponent)
                     }
