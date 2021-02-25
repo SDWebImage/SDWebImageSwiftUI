@@ -145,7 +145,6 @@ struct ContentView: View {
                             .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            .help(url)
                             #endif
                         } else {
                             WebImage(url: URL(string:url), isAnimating: .constant(true))
@@ -159,7 +158,6 @@ struct ContentView: View {
                             .transition(.fade(duration: 0.5))
                             .scaledToFit()
                             .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            .help(url)
                         }
                         Text((url as NSString).lastPathComponent)
                     }
