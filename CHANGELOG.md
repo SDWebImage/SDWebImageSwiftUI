@@ -6,11 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2021-02-25
+### Fixed
+- Fix the rare cases that WebImage will lost animation when visibility changes. #171
+
 ## [2.0.0] - 2021-02-23
 ### Added
 - Update with the playbackMode support for `WebImage` and `AnimatedImage` #168
 - Update watchOS demo to watchOS 7, remove the custom indicator sample and use `ProgressView` instead #166
-- Update the WebImage to defaults animatable #165
 - Update the Example to make WebImage animatable by default #160
 
 ### Fixed

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SDWebImageSwiftUI'
-  s.version          = '2.0.0'
+  s.version          = '2.0.1'
   s.summary          = 'SwiftUI Image loading and Animation framework powered by SDWebImage'
 
   s.description      = <<-DESC
