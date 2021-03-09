@@ -17,6 +17,10 @@ public struct WebImage : View {
     var placeholder: AnyView?
     var retryOnAppear: Bool = true
     var cancelOnDisappear: Bool = true
+
+    #if !os(macOS)
+    var renderingMode: UIImage.RenderingMode? = nil
+    #endif
     
     @ObservedObject var imageManager: ImageManager
     
@@ -123,6 +127,12 @@ public struct WebImage : View {
         #if os(macOS)
         result = Image(nsImage: image)
         #else
+        var image = image
+
+        if let renderingMode = self.renderingMode {
+            image = image.withRenderingMode(renderingMode)
+        }
+
         // Fix the SwiftUI.Image rendering issue, like when use EXIF UIImage, the `.aspectRatio` does not works. SwiftUI's Bug :)
         // See issue #101
         var cgImage: CGImage?
@@ -209,7 +219,20 @@ extension WebImage {
     /// Configurate this view's rendering mode.
     /// - Parameter renderingMode: The resizing mode
     public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> WebImage {
-        configure { $0.renderingMode(renderingMode) }
+        var result = configure { $0.renderingMode(renderingMode) }
+
+        #if !os(macOS)
+        switch renderingMode {
+        case .original:
+            result.renderingMode = .alwaysOriginal
+        case .template:
+            result.renderingMode = .alwaysTemplate
+        case nil:
+            result.renderingMode = .automatic
+        }
+        #endif
+
+        return result
     }
     
     /// Configurate this view's image interpolation quality
