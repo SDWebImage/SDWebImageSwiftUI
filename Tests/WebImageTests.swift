@@ -22,10 +22,10 @@ class WebImageTests: XCTestCase {
         let imageUrl = URL(string: "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png")
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, data, cacheType in
-            #if os(iOS) || os(tvOS)
-            let displayImage = try? imageView.inspect().group().image(0).uiImage()
-            #else
+            #if os(macOS)
             let displayImage = try? imageView.inspect().group().image(0).nsImage()
+            #else
+            let displayImage = try? imageView.inspect().group().image(0).cgImage()
             #endif
             XCTAssertNotNil(displayImage)
             expectation.fulfill()
@@ -46,15 +46,17 @@ class WebImageTests: XCTestCase {
         let introspectView = imageView.onSuccess { image, data, cacheType in
             if let animatedImage = image as? SDAnimatedImage {
                 XCTAssertTrue(imageView.isAnimating)
-                #if os(iOS) || os(tvOS)
-                let displayImage = try? imageView.inspect().group().image(0).uiImage()
-                #else
+                #if os(macOS)
                 let displayImage = try? imageView.inspect().group().image(0).nsImage()
+                let size = displayImage?.size
+                #else
+                let displayImage = try? imageView.inspect().group().image(0).cgImage()
+                let size = CGSize(width: displayImage?.width ?? 0, height: displayImage?.height ?? 0)
                 #endif
                 XCTAssertNotNil(displayImage)
                 // Check display image should match the animated poster frame
                 let posterImage = animatedImage.animatedImageFrame(at: 0)
-                XCTAssertEqual(displayImage?.size, posterImage?.size)
+                XCTAssertEqual(size, posterImage?.size)
                 expectation.fulfill()
             } else {
                 XCTFail("WebImage animated image invalid")
@@ -162,15 +164,10 @@ class WebImageTests: XCTestCase {
             let displayImage = try? imageView.inspect().group().image(0).nsImage()
             XCTAssertNotNil(displayImage)
             #else
-            if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                let displayImage = try? imageView.inspect().group().image(0).uiImage()
-                XCTAssertEqual(displayImage, image)
-            } else {
-                let displayImage = try? imageView.inspect().group().image(0).cgImage()
-                let orientation = try? imageView.inspect().group().image(0).orientation()
-                XCTAssertNotNil(displayImage)
-                XCTAssertEqual(orientation, .leftMirrored)
-            }
+            let displayImage = try? imageView.inspect().group().image(0).cgImage()
+            let orientation = try? imageView.inspect().group().image(0).orientation()
+            XCTAssertNotNil(displayImage)
+            XCTAssertEqual(orientation, .leftMirrored)
             #endif
             expectation.fulfill()
         }.onFailure { error in
