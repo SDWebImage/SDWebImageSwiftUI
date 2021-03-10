@@ -17,6 +17,8 @@ public struct WebImage : View {
     var placeholder: AnyView?
     var retryOnAppear: Bool = true
     var cancelOnDisappear: Bool = true
+    var pausable: Bool = true
+    var purgeable: Bool = false
     
     @ObservedObject var imageManager: ImageManager
     
@@ -25,9 +27,6 @@ public struct WebImage : View {
     @Binding public var isAnimating: Bool
     
     @ObservedObject var imagePlayer: ImagePlayer
-    
-    var pausable: Bool = true
-    var purgeable: Bool = false
     
     /// Create a web image with url, placeholder, custom options and context.
     /// - Parameter url: The image url
@@ -61,35 +60,26 @@ public struct WebImage : View {
             imageManager.load()
         }
         return Group {
-            if imageManager.image != nil {
+            if let image = imageManager.image {
                 if isAnimating && !imageManager.isIncremental {
-                    if imagePlayer.currentFrame != nil {
-                        configure(image: imagePlayer.currentFrame!)
-                        .onPlatformAppear(appear: {
-                            self.imagePlayer.startPlaying()
-                        }, disappear: {
-                            if self.pausable {
-                                self.imagePlayer.pausePlaying()
-                            } else {
-                                self.imagePlayer.stopPlaying()
-                            }
-                            if self.purgeable {
-                                self.imagePlayer.clearFrameBuffer()
-                            }
-                        })
-                    } else {
-                        configure(image: imageManager.image!)
-                        .onReceive(imageManager.$image) { image in
-                            if let animatedImage = image as? SDAnimatedImageProvider {
-                                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
-                            }
+                    setupPlayer()
+                    .onPlatformAppear(appear: {
+                        self.imagePlayer.startPlaying()
+                    }, disappear: {
+                        if self.pausable {
+                            self.imagePlayer.pausePlaying()
+                        } else {
+                            self.imagePlayer.stopPlaying()
                         }
-                    }
+                        if self.purgeable {
+                            self.imagePlayer.clearFrameBuffer()
+                        }
+                    })
                 } else {
-                    if imagePlayer.currentFrame != nil {
-                        configure(image: imagePlayer.currentFrame!)
+                    if let currentFrame = imagePlayer.currentFrame {
+                        configure(image: currentFrame)
                     } else {
-                        configure(image: imageManager.image!)
+                        configure(image: image)
                     }
                 }
             } else {
@@ -162,6 +152,19 @@ public struct WebImage : View {
         // Using a empty image instead for better compatible
         return configurations.reduce(result) { (previous, configuration) in
             configuration(previous)
+        }
+    }
+    
+    /// Animated Image Support
+    func setupPlayer() -> some View {
+        if let currentFrame = imagePlayer.currentFrame {
+            return configure(image: currentFrame)
+        } else {
+            if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+                self.imagePlayer.startPlaying()
+            }
+            return configure(image: imageManager.image!)
         }
     }
     

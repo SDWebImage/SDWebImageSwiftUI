@@ -78,7 +78,8 @@ public final class ImagePlayer : ObservableObject {
         player?.clearFrameBuffer()
     }
     
-    /// Setup the player using Animated Image
+    /// Setup the player using Animated Image.
+    /// After setup, you can always check `isValid` status, or call `startPlaying` to play the animation.
     /// - Parameter image: animated image
     public func setupPlayer(animatedImage: SDAnimatedImageProvider) {
         if isValid {
@@ -104,8 +105,6 @@ public final class ImagePlayer : ObservableObject {
             imagePlayer.playbackMode = playbackMode
             
             self.player = imagePlayer
-            
-            imagePlayer.startPlaying()
         }
     }
 }
