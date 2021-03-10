@@ -80,7 +80,9 @@ public struct WebImage : View {
                     } else {
                         configure(image: imageManager.image!)
                         .onReceive(imageManager.$image) { image in
-                            self.imagePlayer.setupPlayer(image: image)
+                            if let animatedImage = image as? SDAnimatedImageProvider {
+                                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+                            }
                         }
                     }
                 } else {
@@ -92,7 +94,6 @@ public struct WebImage : View {
                 }
             } else {
                 setupPlaceholder()
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .onPlatformAppear(appear: {
                     // Load remote image when first appear
                     if self.imageManager.isFirstLoad {
