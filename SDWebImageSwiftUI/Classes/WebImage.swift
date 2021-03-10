@@ -123,8 +123,8 @@ public struct WebImage : View {
         #if os(macOS)
         result = Image(nsImage: image)
         #else
-        // Fix the SwiftUI.Image rendering issue, like when use EXIF UIImage, the `.aspectRatio` does not works. SwiftUI's Bug :)
-        // See issue #101
+        // Fix the SwiftUI.Image rendering issue, like when use EXIF UIImage, the `.aspectRatio` does not works. SwiftUI's Bug :). See #101
+        // Always prefers `Image(decorative:scale:)` but not `Image(uiImage:scale:) to avoid bug on `TabbarItem`. See #175
         var cgImage: CGImage?
         // Case 1: Vector Image, draw bitmap image
         if image.sd_isVector {
@@ -144,15 +144,8 @@ public struct WebImage : View {
                 cgImage = image.cgImage
             }
         } else {
-            // Case 2: Image with EXIF orientation (only EXIF 5-8 contains bug)
-            if [.left, .leftMirrored, .right, .rightMirrored].contains(image.imageOrientation) {
-                // Fixed by Apple in iOS 14+
-                if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                    // Do nothing
-                } else {
-                    cgImage = image.cgImage
-                }
-            }
+            // Case 2: EXIF Image and Bitmap Image, prefers CGImage
+            cgImage = image.cgImage
         }
         // If we have CGImage, use CGImage based API, else use UIImage based API
         if let cgImage = cgImage {
