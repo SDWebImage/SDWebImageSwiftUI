@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2021-03-10
+
+### Fixed
+- Fix the issue that using `Image(uiImage:)` will result wrong rendering mode in some component like `TabBarItem`, while using `Image(decorative:scale:orientation:)` works well #177
+
+### Changed
+- Remove the WebImage placeholder maxWidth/maxHeight modifier, this may break some use case like `TabView`. If user want to use placeholder, limit themselves #178 #175
+
 ## [2.0.1] - 2021-02-25
 ### Fixed
 - Fix the rare cases that WebImage will lost animation when visibility changes. #171
