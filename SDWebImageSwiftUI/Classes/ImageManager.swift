@@ -79,20 +79,13 @@ public final class ImageManager : ObservableObject {
             guard let self = self else {
                 return
             }
-            if let error = error as? SDWebImageError, error.code == .cancelled {
-                // Ignore user cancelled
-                // There are race condition when quick scroll
-                // Indicator modifier disapper and trigger `WebImage.body`
-                // So previous View struct call `onDisappear` and cancel the currentOperation
-                return
-            }
-            self.image = image
-            self.error = error
             self.isIncremental = !finished
+            self.image = image
             if finished {
+                self.isLoading = false
+                self.error = error
                 self.imageData = data
                 self.cacheType = cacheType
-                self.isLoading = false
                 self.progress = 1
                 if let image = image {
                     self.successBlock?(image, data, cacheType)
@@ -108,7 +101,6 @@ public final class ImageManager : ObservableObject {
         if let operation = currentOperation {
             operation.cancel()
             currentOperation = nil
-            isLoading = false
         }
     }
     

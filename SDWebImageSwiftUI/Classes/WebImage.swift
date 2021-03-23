@@ -173,8 +173,12 @@ public struct WebImage : View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageManager.options.contains(.delayPlaceholder) && imageManager.isLoading {
-                return AnyView(configure(image: .empty))
+            if imageManager.options.contains(.delayPlaceholder) {
+                if imageManager.error != nil {
+                    return placeholder
+                } else {
+                    return AnyView(configure(image: .empty))
+                }
             } else {
                 return placeholder
             }
