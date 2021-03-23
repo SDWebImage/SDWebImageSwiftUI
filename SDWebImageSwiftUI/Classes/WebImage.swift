@@ -174,7 +174,7 @@ public struct WebImage : View {
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
             if imageManager.options.contains(.delayPlaceholder) {
-                if imageManager.error != nil {
+                if !imageManager.isLoading && imageManager.error != nil {
                     return placeholder
                 } else {
                     return AnyView(configure(image: .empty))
