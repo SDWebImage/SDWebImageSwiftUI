@@ -365,6 +365,101 @@ NavigationView {
 }
 ```
 
+
+#### Using with external loaders/caches/coders
+
+SDWebImage itself, supports many custom loaders (like [Firebase Storage](https://github.com/firebase/FirebaseUI-iOS) and [PhotosKit](https://github.com/SDWebImage/SDWebImagePhotosPlugin)), caches (like [YYCache](https://github.com/SDWebImage/SDWebImageYYPlugin) and [PINCache](https://github.com/SDWebImage/SDWebImagePINPlugin)), and coders (like [WebP](https://github.com/SDWebImage/SDWebImageWebPCoder) and [AVIF](https://github.com/SDWebImage/SDWebImageAVIFCoder), even [Lottie](https://github.com/SDWebImage/SDWebImageLottieCoder)).
+
+Here is the tutorial to setup these external components with SwiftUI environment.
+
+##### Setup external SDKs
+
+You can put the setup code inside your SwiftUI `App.init()` method.
+
+```swift
+@main
+struct MyApp: App {
+    
+    init() {
+        // Custom Firebase Storage Loader
+        FirebaseApp.configure()
+        SDImageLoadersManager.shared.loaders = [FirebaseUI.StorageImageLoader.shared]
+        SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
+        // WebP support
+        SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+or, if your App have complicated `AppDelegate` class, put setup code there:
+
+```swift
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        SDImageCachesManager.shared.caches = [YYCache(name: "default")]
+        SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+        return true
+    }
+}
+
+@main
+struct MyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+##### Use external SDKs
+
+For some of custom loaders, you need to create the `URL` struct with some special APIs, so that SDWebImage can retrieve the context from other SDKs, like:
+
++ FirebaseStorage
+
+```swift
+let storageRef: StorageReference
+let storageURL = NSURL.sd_URL(with: storageRef) as URL?
+// Or via convenience extension
+let storageURL = storageRef.sd_URLRepresentation
+```
+
++ PhotosKit
+
+```swift
+let asset: PHAsset
+let photosURL = NSURL.sd_URL(with: asset) as URL?
+// Or via convenience extension
+let photosURL = asset.sd_URLRepresentation
+```
+
+For some of custom coders, you need to request the image with some options to control the behavior, like Vector Images SVG/PDF. Because SwiftUI.Image or WebImage does not supports vector graph at all.
+
++ SVG/PDF Coder
+
+```swift
+let vectorURL: URL? // URL to SVG or PDF
+WebImage(url: vectorURL, context: [.imageThumbnailPixelSize: CGSize(width: 100, height: 100)])
+```
+
++ Lottie Coder
+
+```swift
+let lottieURL: URL? // URL to Lottie.json
+WebImage(url: lottieURL, isAnimating: $isAnimating)
+```
+
+For caches, you actually don't need to worry about anything. It just works after setup.
+
 #### Using for backward deployment and weak linking SwiftUI
 
 SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
