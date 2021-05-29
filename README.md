@@ -208,7 +208,7 @@ var body: some View {
         .playbackRate(2.0) // Playback speed rate
         
         // Bundle (not Asset Catalog)
-        AnimatedImage(name: "animation1", isAnimating: $isAnimating)) // Animation control binding
+        AnimatedImage(name: "animation1", isAnimating: $isAnimating) // Animation control binding
         .maxBufferSize(.max)
         .onViewUpdate { view, context in // Advanced native view coordinate
             // AppKit tooltip for mouse hover
