@@ -208,7 +208,7 @@ var body: some View {
         .playbackRate(2.0) // Playback speed rate
         
         // Bundle (not Asset Catalog)
-        AnimatedImage(name: "animation1", isAnimating: $isAnimating) // Animation control binding
+        AnimatedImage(name: "animation1.gif", isAnimating: $isAnimating) // Animation control binding
         .maxBufferSize(.max)
         .onViewUpdate { view, context in // Advanced native view coordinate
             // AppKit tooltip for mouse hover
@@ -230,7 +230,7 @@ Note: some of methods on `AnimatedImage` will return `some View`, a new Modified
 
 ```swift
 var body: some View {
-    AnimatedImage(name: "animation2") // Just for showcase, don't mix them at the same time
+    AnimatedImage(name: "animation2.gif") // Just for showcase, don't mix them at the same time
     .indicator(SDWebImageProgressIndicator.default) // UIKit indicator component
     .indicator(Indicator.progress) // SwiftUI indicator component
     .transition(SDWebImageTransition.flipFromLeft) // UIKit animation transition
