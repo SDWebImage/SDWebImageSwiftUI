@@ -154,13 +154,14 @@ public struct WebImage : View {
     /// Animated Image Support
     func setupPlayer() -> some View {
         if let currentFrame = imagePlayer.currentFrame {
-            return configure(image: currentFrame)
+            return configure(image: currentFrame).onAppear()
         } else {
-            if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
-                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
-                self.imagePlayer.startPlaying()
+            return configure(image: imageManager.image!).onAppear {
+                if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+                    self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+                    self.imagePlayer.startPlaying()
+                }
             }
-            return configure(image: imageManager.image!)
         }
     }
     
