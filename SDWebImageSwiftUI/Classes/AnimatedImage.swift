@@ -20,6 +20,8 @@ public final class AnimatedImageCoordinator: NSObject {
     
     /// Any user-provided info stored into coordinator, such as status value used for coordinator
     public var userInfo: [AnyHashable : Any]?
+    
+    var imageLoading = AnimatedLoadingModel()
 }
 
 /// Data Binding Object, only properties in this object can support changes from user with @State and refresh
@@ -41,6 +43,8 @@ final class AnimatedImageModel : ObservableObject {
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 final class AnimatedLoadingModel : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
+    @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
+    @Published var progress: Double = 0 // network progress, should only be used for indicator binding
     
     /// Used for loading status recording to avoid recursive `updateView`. There are 3 types of loading (Name/Data/URL)
     @Published var imageName: String?
@@ -97,11 +101,18 @@ final class AnimatedImageConfiguration: ObservableObject {
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
-    @Backport.StateObject var imageModel = AnimatedImageModel()
-    @Backport.StateObject var imageLoading = AnimatedLoadingModel()
-    @Backport.StateObject var imageHandler = AnimatedImageHandler()
-    @Backport.StateObject var imageLayout = AnimatedImageLayout()
-    @Backport.StateObject var imageConfiguration = AnimatedImageConfiguration()
+    @SwiftUI.StateObject var imageModel_SwiftUI = AnimatedImageModel()
+    @Backport.StateObject var imageModel_Backport = AnimatedImageModel()
+    var imageModel: AnimatedImageModel {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return imageModel_SwiftUI
+        } else {
+            return imageModel_Backport
+        }
+    }
+    @ObservedObject var imageHandler = AnimatedImageHandler()
+    @ObservedObject var imageLayout = AnimatedImageLayout()
+    @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
     
     /// A observed object to pass through the image manager loading status to indicator
     @ObservedObject var indicatorStatus = IndicatorStatus()
@@ -128,10 +139,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     /// - Parameter isAnimating: The binding for animation control
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
-        self._isAnimating = isAnimating
-        self.imageModel.url = url
-        self.imageModel.webOptions = options
-        self.imageModel.webContext = context
+        let imageModel = AnimatedImageModel()
+        imageModel.url = url
+        imageModel.webOptions = options
+        imageModel.webContext = context
+        self.init(imageModel: imageModel, isAnimating: isAnimating)
     }
     
     /// Create an animated image with name and bundle.
@@ -148,9 +160,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter bundle: The bundle contains image
     /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
-        self._isAnimating = isAnimating
-        self.imageModel.name = name
-        self.imageModel.bundle = bundle
+        let imageModel = AnimatedImageModel()
+        imageModel.name = name
+        imageModel.bundle = bundle
+        self.init(imageModel: imageModel, isAnimating: isAnimating)
     }
     
     /// Create an animated image with data and scale.
@@ -165,9 +178,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter scale: The scale factor
     /// - Parameter isAnimating: The binding for animation control
     public init(data: Data, scale: CGFloat = 1, isAnimating: Binding<Bool>) {
+        let imageModel = AnimatedImageModel()
+        imageModel.data = data
+        imageModel.scale = scale
+        self.init(imageModel: imageModel, isAnimating: isAnimating)
+    }
+    
+    init(imageModel: AnimatedImageModel, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        self.imageModel.data = data
-        self.imageModel.scale = scale
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            _imageModel_SwiftUI = SwiftUI.StateObject(wrappedValue: imageModel)
+        } else {
+            _imageModel_Backport = Backport.StateObject(wrappedValue: imageModel)
+        }
     }
     
     #if os(macOS)
@@ -183,11 +206,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     #if os(macOS)
-    public func makeNSView(context: NSViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    public func makeNSView(context: Context) -> AnimatedImageViewWrapper {
         makeView(context: context)
     }
     
-    public func updateNSView(_ nsView: AnimatedImageViewWrapper, context: NSViewRepresentableContext<AnimatedImage>) {
+    public func updateNSView(_ nsView: AnimatedImageViewWrapper, context: Context) {
         updateView(nsView, context: context)
     }
     
@@ -195,11 +218,11 @@ public struct AnimatedImage : PlatformViewRepresentable {
         dismantleView(nsView, coordinator: coordinator)
     }
     #elseif os(iOS) || os(tvOS)
-    public func makeUIView(context: UIViewRepresentableContext<AnimatedImage>) -> AnimatedImageViewWrapper {
+    public func makeUIView(context: Context) -> AnimatedImageViewWrapper {
         makeView(context: context)
     }
     
-    public func updateUIView(_ uiView: AnimatedImageViewWrapper, context: UIViewRepresentableContext<AnimatedImage>) {
+    public func updateUIView(_ uiView: AnimatedImageViewWrapper, context: Context) {
         updateView(uiView, context: context)
     }
     
@@ -229,16 +252,16 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func loadImage(_ view: AnimatedImageViewWrapper, context: Context) {
-        self.indicatorStatus.isLoading = true
-        let options = imageModel.webOptions
-        if options.contains(.delayPlaceholder) {
+        context.coordinator.imageLoading.isLoading = true
+        let webOptions = imageModel.webOptions
+        if webOptions.contains(.delayPlaceholder) {
             self.imageConfiguration.placeholderView?.isHidden = true
         } else {
             self.imageConfiguration.placeholderView?.isHidden = false
         }
-        var context = imageModel.webContext ?? [:]
-        context[.animatedImageClass] = SDAnimatedImage.self
-        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: options, context: context, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
+        var webContext = imageModel.webContext ?? [:]
+        webContext[.animatedImageClass] = SDAnimatedImage.self
+        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: webOptions, context: webContext, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
             let progress: Double
             if (expectedSize > 0) {
                 progress = Double(receivedSize) / Double(expectedSize)
@@ -246,7 +269,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 progress = 0
             }
             DispatchQueue.main.async {
-                self.indicatorStatus.progress = progress
+                context.coordinator.imageLoading.progress = progress
             }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, data, error, cacheType, finished, _) in
@@ -265,9 +288,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     }
                 }
             }
-            self.imageLoading.image = image
-            self.indicatorStatus.isLoading = false
-            self.indicatorStatus.progress = 1
+            context.coordinator.imageLoading.image = image
+            context.coordinator.imageLoading.isLoading = false
+            context.coordinator.imageLoading.progress = 1
             if let image = image {
                 self.imageConfiguration.placeholderView?.isHidden = true
                 self.imageHandler.successBlock?(image, data, cacheType)
@@ -289,30 +312,30 @@ public struct AnimatedImage : PlatformViewRepresentable {
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
-        if let name = imageModel.name, name != imageLoading.imageName {
+        if let name = imageModel.name, name != context.coordinator.imageLoading.imageName {
             #if os(macOS)
             let image = SDAnimatedImage(named: name, in: imageModel.bundle)
             #else
             let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
             #endif
-            imageLoading.imageName = name
+            context.coordinator.imageLoading.imageName = name
             view.wrapped.image = image
-        } else if let data = imageModel.data, data != imageLoading.imageData {
+        } else if let data = imageModel.data, data != context.coordinator.imageLoading.imageData {
             let image = SDAnimatedImage(data: data, scale: imageModel.scale)
-            imageLoading.imageData = data
+            context.coordinator.imageLoading.imageData = data
             view.wrapped.image = image
         } else if let url = imageModel.url {
             // Determine if image already been loaded and URL is match
             var shouldLoad: Bool
-            if url != imageLoading.imageURL {
+            if url != context.coordinator.imageLoading.imageURL {
                 // Change the URL, need new loading
                 shouldLoad = true
-                imageLoading.imageURL = url
+                context.coordinator.imageLoading.imageURL = url
             } else {
                 // Same URL, check if already loaded
-                if indicatorStatus.isLoading {
+                if context.coordinator.imageLoading.isLoading {
                     shouldLoad = false
-                } else if let image = imageLoading.image {
+                } else if let image = context.coordinator.imageLoading.image {
                     shouldLoad = false
                     view.wrapped.image = image
                 } else {
