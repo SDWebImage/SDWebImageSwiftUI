@@ -14,6 +14,10 @@ import SDWebImage
 public final class ImagePlayer : ObservableObject {
     var player: SDAnimatedImagePlayer?
     
+    var waitingPlaying = false
+    
+    public var currentView: Image?
+    
     /// Max buffer size
     public var maxBufferSize: UInt?
     
@@ -48,6 +52,14 @@ public final class ImagePlayer : ObservableObject {
         player != nil
     }
     
+    /// The player is preparing to resume from previous stop state. This is intermediate status when previous frame disappear and new frame appear
+    public var isWaiting: Bool {
+        if let player = player {
+            return player.isPlaying && waitingPlaying
+        }
+        return false
+    }
+    
     /// Current playing status
     public var isPlaying: Bool {
         player?.isPlaying ?? false
@@ -56,6 +68,12 @@ public final class ImagePlayer : ObservableObject {
     /// Start the animation
     public func startPlaying() {
         player?.startPlaying()
+        waitingPlaying = true
+        DispatchQueue.main.async {
+            // This workaround `WebImage` caller
+            // Which previous frame onDisappear and new frame onAppear, cause player status wrong
+            self.waitingPlaying = false
+        }
     }
     
     /// Pause the animation

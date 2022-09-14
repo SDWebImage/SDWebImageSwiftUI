@@ -20,20 +20,31 @@ public struct WebImage : View {
     var pausable: Bool = true
     var purgeable: Bool = false
     
-    @ObservedObject var imageManager: ImageManager
-    
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
-    @ObservedObject var imagePlayer: ImagePlayer
+    /// A observed object to pass through the image manager loading status to indicator
+    @ObservedObject var indicatorStatus = IndicatorStatus()
     
-    /// Create a web image with url, placeholder, custom options and context.
-    /// - Parameter url: The image url
-    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
-    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
+    @SwiftUI.StateObject var imagePlayer_SwiftUI = ImagePlayer()
+    @Backport.StateObject var imagePlayer_Backport = ImagePlayer()
+    var imagePlayer: ImagePlayer {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return imagePlayer_SwiftUI
+        } else {
+            return imagePlayer_Backport
+        }
+    }
+    
+    @SwiftUI.StateObject var imageManager_SwiftUI = ImageManager()
+    @Backport.StateObject var imageManager_Backport = ImageManager()
+    var imageManager: ImageManager {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return imageManager_SwiftUI
+        } else {
+            return imageManager_Backport
+        }
     }
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
@@ -50,31 +61,39 @@ public struct WebImage : View {
                 context[.animatedImageClass] = SDAnimatedImage.self
             }
         }
-        self.imageManager = ImageManager(url: url, options: options, context: context)
-        self.imagePlayer = ImagePlayer()
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            _imageManager_SwiftUI = SwiftUI.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
+        } else {
+            _imageManager_Backport = Backport.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
+        }
+    }
+    
+    /// Create a web image with url, placeholder, custom options and context.
+    /// - Parameter url: The image url
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
     }
     
     public var body: some View {
-        // This solve the case when WebImage created with new URL, but `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
-        if imageManager.isFirstLoad {
-            imageManager.load()
-        }
         return Group {
             if let image = imageManager.image {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
-                    .onPlatformAppear(appear: {
-                        self.imagePlayer.startPlaying()
-                    }, disappear: {
-                        if self.pausable {
-                            self.imagePlayer.pausePlaying()
-                        } else {
-                            self.imagePlayer.stopPlaying()
+                    .onDisappear {
+                        // Only stop the player which is not intermediate status
+                        if !imagePlayer.isWaiting {
+                            if self.pausable {
+                                self.imagePlayer.pausePlaying()
+                            } else {
+                                self.imagePlayer.stopPlaying()
+                            }
+                            if self.purgeable {
+                                self.imagePlayer.clearFrameBuffer()
+                            }
                         }
-                        if self.purgeable {
-                            self.imagePlayer.clearFrameBuffer()
-                        }
-                    })
+                    }
                 } else {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
@@ -84,24 +103,24 @@ public struct WebImage : View {
                 }
             } else {
                 setupPlaceholder()
-                .onPlatformAppear(appear: {
+                .onAppear {
                     // Load remote image when first appear
-                    if self.imageManager.isFirstLoad {
-                        self.imageManager.load()
-                        return
-                    }
+                    self.imageManager.load()
                     guard self.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.load()
                     }
-                }, disappear: {
+                }.onDisappear {
                     guard self.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                })
+                }.onReceive(imageManager.objectWillChange) { _ in
+                    indicatorStatus.isLoading = imageManager.isLoading
+                    indicatorStatus.progress = imageManager.progress
+                }
             }
         }
     }
@@ -158,13 +177,16 @@ public struct WebImage : View {
     /// Animated Image Support
     func setupPlayer() -> some View {
         if let currentFrame = imagePlayer.currentFrame {
-            return configure(image: currentFrame)
-        } else {
-            if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
-                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+            return configure(image: currentFrame).onAppear {
                 self.imagePlayer.startPlaying()
             }
-            return configure(image: imageManager.image!)
+        } else {
+            return configure(image: imageManager.image!).onAppear {
+                if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+                    self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+                    self.imagePlayer.startPlaying()
+                }
+            }
         }
     }
     
@@ -302,7 +324,7 @@ extension WebImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(reporter: imageManager, indicator: indicator))
+        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block

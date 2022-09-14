@@ -39,10 +39,8 @@ final class AnimatedImageModel : ObservableObject {
 
 /// Loading Binding Object, only properties in this object can support changes from user with @State and refresh
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-final class AnimatedLoadingModel : ObservableObject, IndicatorReportable {
+final class AnimatedLoadingModel : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
-    @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
-    @Published var progress: Double = 0 // network progress, should only be used for indicator binding
     
     /// Used for loading status recording to avoid recursive `updateView`. There are 3 types of loading (Name/Data/URL)
     @Published var imageName: String?
@@ -99,11 +97,14 @@ final class AnimatedImageConfiguration: ObservableObject {
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
-    @ObservedObject var imageModel = AnimatedImageModel()
-    @ObservedObject var imageLoading = AnimatedLoadingModel()
-    @ObservedObject var imageHandler = AnimatedImageHandler()
-    @ObservedObject var imageLayout = AnimatedImageLayout()
-    @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
+    @Backport.StateObject var imageModel = AnimatedImageModel()
+    @Backport.StateObject var imageLoading = AnimatedLoadingModel()
+    @Backport.StateObject var imageHandler = AnimatedImageHandler()
+    @Backport.StateObject var imageLayout = AnimatedImageLayout()
+    @Backport.StateObject var imageConfiguration = AnimatedImageConfiguration()
+    
+    /// A observed object to pass through the image manager loading status to indicator
+    @ObservedObject var indicatorStatus = IndicatorStatus()
     
     static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
     
@@ -228,7 +229,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func loadImage(_ view: AnimatedImageViewWrapper, context: Context) {
-        self.imageLoading.isLoading = true
+        self.indicatorStatus.isLoading = true
         let options = imageModel.webOptions
         if options.contains(.delayPlaceholder) {
             self.imageConfiguration.placeholderView?.isHidden = true
@@ -245,7 +246,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 progress = 0
             }
             DispatchQueue.main.async {
-                self.imageLoading.progress = progress
+                self.indicatorStatus.progress = progress
             }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, data, error, cacheType, finished, _) in
@@ -265,8 +266,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 }
             }
             self.imageLoading.image = image
-            self.imageLoading.isLoading = false
-            self.imageLoading.progress = 1
+            self.indicatorStatus.isLoading = false
+            self.indicatorStatus.progress = 1
             if let image = image {
                 self.imageConfiguration.placeholderView?.isHidden = true
                 self.imageHandler.successBlock?(image, data, cacheType)
@@ -309,7 +310,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 imageLoading.imageURL = url
             } else {
                 // Same URL, check if already loaded
-                if imageLoading.isLoading {
+                if indicatorStatus.isLoading {
                     shouldLoad = false
                 } else if let image = imageLoading.image {
                     shouldLoad = false
@@ -831,7 +832,7 @@ extension AnimatedImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(reporter: self.imageLoading, indicator: indicator))
+        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
