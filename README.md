@@ -8,6 +8,8 @@
 [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![codecov](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI/branch/master/graph/badge.svg)](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI)
 
+> If you support iOS 15+/macOS 12+ only and don't care about animated image format, try SwiftUI's [AsyncImage](https://developer.apple.com/documentation/swiftui/asyncimage)
+
 ## What's for
 
 SDWebImageSwiftUI is a SwiftUI image loading framework, which based on [SDWebImage](https://github.com/SDWebImage/SDWebImage).
@@ -49,11 +51,10 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 ## Requirements
 
 + Xcode 12+
-+ iOS 13+
-+ macOS 10.15+
-+ tvOS 13+
-+ watchOS 6+
-+ Swift 5.2+
++ iOS 13+ (14+ Recommended)
++ macOS 10.15+ (11+ Recommended)
++ tvOS 13+ (14+ Recommended)
++ watchOS 6+ (7+ Recommended)
 
 ## SwiftUI 2.0 Compatibility
 
@@ -73,7 +74,9 @@ var body: some View {
 }
 ```
 
-Note: However, many differences behavior between iOS 13/14's is hard to fixup. Due to maintain issue, in the future release, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior.
+Note: However, many differences behavior between iOS 13/14's is hard to fixup. And we may break some APIs (which are not designed to be public) to fixup it.
+
+Due to maintain issue, in the future release, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior. And **v2.1** may be the last version support iOS 13.
 
 
 ## Installation
@@ -639,6 +642,7 @@ Which means, this project is one core use case and downstream dependency, which 
 - [Espera](https://github.com/JagCesar/Espera)
 - [SwiftUI-Introspect](https://github.com/siteline/SwiftUI-Introspect)
 - [ViewInspector](https://github.com/nalexn/ViewInspector)
+- [SwiftUIBackports](https://github.com/shaps80/SwiftUIBackports)
 
 ## License
 
