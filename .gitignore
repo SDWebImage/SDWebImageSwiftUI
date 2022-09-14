@@ -41,3 +41,4 @@ Podfile.lock
 # SwiftPM
 .build
 .swiftpm
+Package.resolved

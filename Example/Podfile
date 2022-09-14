@@ -8,17 +8,17 @@ def all_pods
 end
 
 target 'SDWebImageSwiftUIDemo' do
-  platform :ios, '13.0'
+  platform :ios, '14.0'
   all_pods
 end
 
 target 'SDWebImageSwiftUIDemo-macOS' do
-  platform :osx, '10.15'
+  platform :osx, '11.0'
   all_pods
 end
 
 target 'SDWebImageSwiftUIDemo-tvOS' do
-  platform :tvos, '13.0'
+  platform :tvos, '14.0'
   all_pods
 end
 
