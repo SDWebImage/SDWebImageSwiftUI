@@ -16,8 +16,6 @@ public final class ImagePlayer : ObservableObject {
     
     var waitingPlaying = false
     
-    public var currentView: Image?
-    
     /// Max buffer size
     public var maxBufferSize: UInt?
     

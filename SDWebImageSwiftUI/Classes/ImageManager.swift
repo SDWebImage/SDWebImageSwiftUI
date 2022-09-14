@@ -55,22 +55,6 @@ public final class ImageManager : ObservableObject {
     
     init() {}
     
-    public var isValid: Bool {
-        manager != nil
-    }
-    
-    /// Update the manager with new url, options and context. This is not designed to be used outsize, only provided for `@StateObject`. Must call setup after `init()`
-    func setup(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.url = url
-        self.options = options
-        self.context = context
-        if let manager = context?[.customManager] as? SDWebImageManager {
-            self.manager = manager
-        } else {
-            self.manager = .shared
-        }
-    }
-    
     /// Start to load the url operation
     public func load() {
         guard let manager = manager else {
