@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "322E0E0128D331F00003A55F"
+               BuildableName = "SDWebImageSwiftUITests macOS.xctest"
+               BlueprintName = "SDWebImageSwiftUITests macOS"
+               ReferencedContainer = "container:SDWebImageSwiftUI.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

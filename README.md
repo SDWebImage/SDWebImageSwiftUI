@@ -563,12 +563,9 @@ struct ContentView : View {
 
 To run the example using SwiftUI, following the steps:
 
-```
-cd Example
-pod install
-```
-
-Then open the Xcode Workspace to run the demo application.
+1. Run `pod install` on root directory to install the dependency.
+2. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
+3. Choose `SDWebImageSwiftUIDemo` scheme and run the demo application.
 
 Since SwiftUI is aimed to support all Apple platforms, our demo does this as well, one codebase including:
 
@@ -595,8 +592,8 @@ However, since SwiftUI is State-Based and Attributed-Implemented layout system, 
 
 To run the test:
 
-1. Run `carthage build` on root directory to install the dependency.
-2. Open `SDWebImageSwiftUI.xcodeproj`, wait for SwiftPM finishing downloading the test dependency.
+1. Run `pod install` on root directory to install the dependency.
+2. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
 3. Choose `SDWebImageSwiftUITests` scheme and start testing.
 
 We've already setup the CI pipeline, each PR will run the test case and upload the test report to [codecov](https://codecov.io/gh/SDWebImage/SDWebImageSwiftUI).

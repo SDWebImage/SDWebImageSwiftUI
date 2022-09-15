@@ -53,6 +53,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Clean DerivedData
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData/
+          mkdir DerivedData
+
       - name: Install Cocoapods
         run: gem install cocoapods --no-document --quiet
         
@@ -60,33 +65,27 @@ jobs:
         run: gem install xcpretty --no-document --quiet
         
       - name: Pod Update
-        working-directory: ./Example
         run: pod repo update --silent
         
       - name: Pod Install
-        working-directory: ./Example
         run: pod install
 
       - name: Run demo for OSX
-        working-directory: ./Example
         run: |
           set -o pipefail
           xcodebuild build -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           
       - name: Run demo for iOS
-        working-directory: ./Example
         run: |
           set -o pipefail
           xcodebuild build -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.iOSSCHEME }}" -destination "${{ matrix.iosDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           
       - name: Run demo for TV
-        working-directory: ./Example
         run: |
           set -o pipefail
           xcodebuild build -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.TVSCHEME }}" -destination "${{ matrix.tvOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           
       - name: Run demo for Watch
-        working-directory: ./Example
         run: |
           set -o pipefail
           xcodebuild build -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.WATCHSCHEME }}" -destination "${{ matrix.watchOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
@@ -96,7 +95,7 @@ jobs:
     runs-on: macos-11
     env:
       DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
-      PROJECT_NAME: SDWebImageSwiftUI.xcodeproj
+      WORKSPACE_NAME: SDWebImageSwiftUI.xcworkspace
       OSXSCHEME: SDWebImageSwiftUITests macOS
       iOSSCHEME: SDWebImageSwiftUITests
       TVSCHEME: SDWebImageSwiftUITests tvOS
@@ -108,34 +107,40 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Install Carthage
-        run: brew install carthage
-
-      - name: Carthage Update
-        run: ./carthage.sh update --platform "iOS, tvOS, macOS"
         
       - name: Clean DerivedData
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData/
           mkdir DerivedData
+
+      - name: Install Cocoapods
+        run: gem install cocoapods --no-document --quiet
+        
+      - name: Install Xcpretty
+        run: gem install xcpretty --no-document --quiet
+        
+      - name: Pod Update
+        run: pod repo update --silent
+        
+      - name: Pod Install
+        run: pod install
         
       - name: Test - ${{ matrix.iosDestination }}
         run: |
           set -o pipefail
-          xcodebuild test -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.iOSSCHEME }}" -destination "${{ matrix.iosDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
+          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.iOSSCHEME }}" -destination "${{ matrix.iosDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/iOS
           
       - name: Test - ${{ matrix.macOSDestination }}
         run: |
           set -o pipefail
-          xcodebuild test -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
+          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/macOS
     
       - name: Test - ${{ matrix.tvOSDestination }}
         run: |
           set -o pipefail
-          xcodebuild test -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.TVSCHEME }}" -destination "${{ matrix.tvOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
+          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.TVSCHEME }}" -destination "${{ matrix.tvOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
           mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/tvOS
           
       - name: Code Coverage
@@ -153,7 +158,10 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
       PROJECT_NAME: SDWebImageSwiftUI.xcodeproj
-      SCHEME_NAME: SDWebImageSwiftUI
+      OSXSCHEME: SDWebImageSwiftUI macOS
+      iOSSCHEME: SDWebImageSwiftUI
+      TVSCHEME: SDWebImageSwiftUI tvOS
+      WATCHSCHEME: SDWebImageSwiftUI watchOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -163,3 +171,17 @@ jobs:
           set -o pipefail
           swift build
           rm -rf ~/.build
+
+      - name: Install Carthage
+        run: brew install carthage
+
+      - name: Carthage Update
+        run: ./carthage.sh update --platform "iOS, tvOS, macOS, watchOS"
+
+      - name: Build as dynamic frameworks
+        run: |
+          set -o pipefail
+          xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.OSXSCHEME }}" -sdk macosx -configuration Release | xcpretty -c
+          xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.iOSSCHEME }}" -sdk iphoneos -configuration Release | xcpretty -c
+          xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.TVSCHEME }}" -sdk appletvos -configuration Release | xcpretty -c
+          xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.WATCHSCHEME }}" -sdk watchos -configuration Release | xcpretty -c
