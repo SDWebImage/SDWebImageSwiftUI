@@ -9,31 +9,67 @@
 import SwiftUI
 import SDWebImage
 
+/// Completion Handler Binding Object, supports dynamic @State changes
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+final class WebImageHandler: ObservableObject {
+    // Completion Handler
+    @Published var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
+    @Published var failureBlock: ((Error) -> Void)?
+    @Published var progressBlock: ((Int, Int) -> Void)?
+}
+
+/// Configuration Binding Object, supports dynamic @State changes
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+final class WebImageConfiguration: ObservableObject {
+    var retryOnAppear: Bool = true
+    var cancelOnDisappear: Bool = true
+    var maxBufferSize: UInt?
+    var customLoopCount: UInt?
+    var runLoopMode: RunLoop.Mode = .common
+    var pausable: Bool = true
+    var purgeable: Bool = false
+    var playbackRate: Double = 1.0
+    var playbackMode: SDAnimatedImagePlaybackMode = .normal
+}
+
 /// A Image View type to load image from url. Supports static/animated image format.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct WebImage : View {
     var configurations: [(Image) -> Image] = []
     
     var placeholder: AnyView?
-    var retryOnAppear: Bool = true
-    var cancelOnDisappear: Bool = true
-    var pausable: Bool = true
-    var purgeable: Bool = false
-    
-    @ObservedObject var imageManager: ImageManager
     
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
-    @ObservedObject var imagePlayer: ImagePlayer
+    /// A observed object to pass through the image handler to manager
+    @ObservedObject var imageHandler = WebImageHandler()
     
-    /// Create a web image with url, placeholder, custom options and context.
-    /// - Parameter url: The image url
-    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
-    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
+    /// A observed object to pass through the image configuration to player
+    @ObservedObject var imageConfiguration = WebImageConfiguration()
+    
+    /// A observed object to pass through the image manager loading status to indicator
+    @ObservedObject var indicatorStatus = IndicatorStatus()
+    
+    @SwiftUI.StateObject var imagePlayer_SwiftUI = ImagePlayer()
+    @Backport.StateObject var imagePlayer_Backport = ImagePlayer()
+    var imagePlayer: ImagePlayer {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return imagePlayer_SwiftUI
+        } else {
+            return imagePlayer_Backport
+        }
+    }
+    
+    @SwiftUI.StateObject var imageManager_SwiftUI = ImageManager()
+    @Backport.StateObject var imageManager_Backport = ImageManager()
+    var imageManager: ImageManager {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return imageManager_SwiftUI
+        } else {
+            return imageManager_Backport
+        }
     }
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
@@ -50,31 +86,39 @@ public struct WebImage : View {
                 context[.animatedImageClass] = SDAnimatedImage.self
             }
         }
-        self.imageManager = ImageManager(url: url, options: options, context: context)
-        self.imagePlayer = ImagePlayer()
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            _imageManager_SwiftUI = SwiftUI.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
+        } else {
+            _imageManager_Backport = Backport.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
+        }
+    }
+    
+    /// Create a web image with url, placeholder, custom options and context.
+    /// - Parameter url: The image url
+    /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
+    /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
     }
     
     public var body: some View {
-        // This solve the case when WebImage created with new URL, but `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
-        if imageManager.isFirstLoad {
-            imageManager.load()
-        }
         return Group {
             if let image = imageManager.image {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
-                    .onPlatformAppear(appear: {
-                        self.imagePlayer.startPlaying()
-                    }, disappear: {
-                        if self.pausable {
-                            self.imagePlayer.pausePlaying()
-                        } else {
-                            self.imagePlayer.stopPlaying()
+                    .onDisappear {
+                        // Only stop the player which is not intermediate status
+                        if !imagePlayer.isWaiting {
+                            if self.imageConfiguration.pausable {
+                                self.imagePlayer.pausePlaying()
+                            } else {
+                                self.imagePlayer.stopPlaying()
+                            }
+                            if self.imageConfiguration.purgeable {
+                                self.imagePlayer.clearFrameBuffer()
+                            }
                         }
-                        if self.purgeable {
-                            self.imagePlayer.clearFrameBuffer()
-                        }
-                    })
+                    }
                 } else {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
@@ -84,24 +128,27 @@ public struct WebImage : View {
                 }
             } else {
                 setupPlaceholder()
-                .onPlatformAppear(appear: {
+                .onAppear {
+                    self.imageManager.successBlock = self.imageHandler.successBlock
+                    self.imageManager.failureBlock = self.imageHandler.failureBlock
+                    self.imageManager.progressBlock = self.imageHandler.progressBlock
                     // Load remote image when first appear
-                    if self.imageManager.isFirstLoad {
-                        self.imageManager.load()
-                        return
-                    }
-                    guard self.retryOnAppear else { return }
+                    self.imageManager.load()
+                    guard self.imageConfiguration.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.load()
                     }
-                }, disappear: {
-                    guard self.cancelOnDisappear else { return }
+                }.onDisappear {
+                    guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                })
+                }.onReceive(imageManager.objectWillChange) { _ in
+                    indicatorStatus.isLoading = imageManager.isLoading
+                    indicatorStatus.progress = imageManager.progress
+                }
             }
         }
     }
@@ -158,13 +205,21 @@ public struct WebImage : View {
     /// Animated Image Support
     func setupPlayer() -> some View {
         if let currentFrame = imagePlayer.currentFrame {
-            return configure(image: currentFrame)
-        } else {
-            if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
-                self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+            return configure(image: currentFrame).onAppear {
                 self.imagePlayer.startPlaying()
             }
-            return configure(image: imageManager.image!)
+        } else {
+            return configure(image: imageManager.image!).onAppear {
+                if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+                    self.imagePlayer.customLoopCount = self.imageConfiguration.customLoopCount
+                    self.imagePlayer.maxBufferSize = self.imageConfiguration.maxBufferSize
+                    self.imagePlayer.runLoopMode = self.imageConfiguration.runLoopMode
+                    self.imagePlayer.playbackMode = self.imageConfiguration.playbackMode
+                    self.imagePlayer.playbackRate = self.imageConfiguration.playbackRate
+                    self.imagePlayer.setupPlayer(animatedImage: animatedImage)
+                    self.imagePlayer.startPlaying()
+                }
+            }
         }
     }
     
@@ -231,7 +286,7 @@ extension WebImage {
     ///   - action: The action to perform. The first arg is the error during loading. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load fails.
     public func onFailure(perform action: ((Error) -> Void)? = nil) -> WebImage {
-        self.imageManager.failureBlock = action
+        self.imageHandler.failureBlock = action
         return self
     }
     
@@ -240,7 +295,7 @@ extension WebImage {
     ///   - action: The action to perform. The first arg is the loaded image, the second arg is the loaded image data, the third arg is the cache type loaded from. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) -> WebImage {
-        self.imageManager.successBlock = action
+        self.imageHandler.successBlock = action
         return self
     }
     
@@ -249,7 +304,7 @@ extension WebImage {
     ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
-        self.imageManager.progressBlock = action
+        self.imageHandler.progressBlock = action
         return self
     }
 }
@@ -281,17 +336,15 @@ extension WebImage {
     /// Control the behavior to retry the failed loading when view become appears again
     /// - Parameter flag: Whether or not to retry the failed loading
     public func retryOnAppear(_ flag: Bool) -> WebImage {
-        var result = self
-        result.retryOnAppear = flag
-        return result
+        self.imageConfiguration.retryOnAppear = flag
+        return self
     }
     
     /// Control the behavior to cancel the pending loading when view become disappear again
     /// - Parameter flag: Whether or not to cancel the pending loading
     public func cancelOnDisappear(_ flag: Bool) -> WebImage {
-        var result = self
-        result.cancelOnDisappear = flag
-        return result
+        self.imageConfiguration.cancelOnDisappear = flag
+        return self
     }
 }
 
@@ -302,7 +355,7 @@ extension WebImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(reporter: imageManager, indicator: indicator))
+        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
@@ -320,7 +373,7 @@ extension WebImage {
     /// - Note: Pass nil to disable customization, use the image itself loop count (`animatedImageLoopCount`) instead
     /// - Parameter loopCount: The animation loop count
     public func customLoopCount(_ loopCount: UInt?) -> WebImage {
-        self.imagePlayer.customLoopCount = loopCount
+        self.imageConfiguration.customLoopCount = loopCount
         return self
     }
     
@@ -331,7 +384,7 @@ extension WebImage {
     /// `UInt.max` means cache all the buffer. (Lowest CPU and Highest Memory)
     /// - Parameter bufferSize: The max buffer size
     public func maxBufferSize(_ bufferSize: UInt?) -> WebImage {
-        self.imagePlayer.maxBufferSize = bufferSize
+        self.imageConfiguration.maxBufferSize = bufferSize
         return self
     }
     
@@ -340,7 +393,7 @@ extension WebImage {
     /// - Note: This is useful for some cases, for example, always specify NSDefaultRunLoopMode, if you want to pause the animation when user scroll (for Mac user, drag the mouse or touchpad)
     /// - Parameter runLoopMode: The runLoopMode for animation
     public func runLoopMode(_ runLoopMode: RunLoop.Mode) -> WebImage {
-        self.imagePlayer.runLoopMode = runLoopMode
+        self.imageConfiguration.runLoopMode = runLoopMode
         return self
     }
     
@@ -348,18 +401,16 @@ extension WebImage {
     /// - Note: For some of use case, you may want to reset the frame index to 0 when stop, but some other want to keep the current frame index.
     /// - Parameter pausable: Whether or not to pause the animation instead of stop the animation.
     public func pausable(_ pausable: Bool) -> WebImage {
-        var result = self
-        result.pausable = pausable
-        return result
+        self.imageConfiguration.pausable = pausable
+        return self
     }
     
     /// Whether or not to clear frame buffer cache when stopped. Defaults is false.
     /// Note: This is useful when you want to limit the memory usage during frequently visibility changes (such as image view inside a list view, then push and pop)
     /// - Parameter purgeable: Whether or not to clear frame buffer cache when stopped.
     public func purgeable(_ purgeable: Bool) -> WebImage {
-        var result = self
-        result.purgeable = purgeable
-        return result
+        self.imageConfiguration.purgeable = purgeable
+        return self
     }
     
     /// Control the animation playback rate. Default is 1.0.
@@ -370,14 +421,14 @@ extension WebImage {
     /// `< 0.0` is not supported currently and stop animation. (may support reverse playback in the future)
     /// - Parameter playbackRate: The animation playback rate.
     public func playbackRate(_ playbackRate: Double) -> WebImage {
-        self.imagePlayer.playbackRate = playbackRate
+        self.imageConfiguration.playbackRate = playbackRate
         return self
     }
     
     /// Control the animation playback mode. Default is .normal
     /// - Parameter playbackMode: The playback mode, including normal order, reverse order, bounce order and reversed bounce order.
     public func playbackMode(_ playbackMode: SDAnimatedImagePlaybackMode) -> WebImage {
-        self.imagePlayer.playbackMode = playbackMode
+        self.imageConfiguration.playbackMode = playbackMode
         return self
     }
 }

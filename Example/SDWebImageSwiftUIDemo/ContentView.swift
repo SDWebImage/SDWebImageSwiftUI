@@ -46,7 +46,6 @@ struct ContentView: View {
     "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
     "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic",
     "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
-    "https://www.sample-videos.com/img/Sample-png-image-1mb.png",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
     "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg",
     "https://via.placeholder.com/200x200.jpg",
@@ -56,7 +55,7 @@ struct ContentView: View {
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/stack_of_photos.pdf",
     "https://raw.githubusercontent.com/icons8/flat-color-icons/master/pdf/smartphone_tablet.pdf"
     ]
-    @State var animated: Bool = true // You can change between WebImage/AnimatedImage
+    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
     @EnvironmentObject var settings: UserSettings
     
     var body: some View {

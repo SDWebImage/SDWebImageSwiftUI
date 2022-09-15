@@ -28,13 +28,12 @@ public final class ImageManager : ObservableObject {
     /// true means during incremental loading
     @Published public var isIncremental: Bool = false
     
-    var manager: SDWebImageManager
+    var manager: SDWebImageManager?
     weak var currentOperation: SDWebImageOperation? = nil
-    var isFirstLoad: Bool = true // false after first call `load()`
     
     var url: URL?
-    var options: SDWebImageOptions
-    var context: [SDWebImageContextOption : Any]?
+    var options: SDWebImageOptions = []
+    var context: [SDWebImageContextOption : Any]? = nil
     var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     var failureBlock: ((Error) -> Void)?
     var progressBlock: ((Int, Int) -> Void)?
@@ -54,9 +53,13 @@ public final class ImageManager : ObservableObject {
         }
     }
     
+    init() {}
+    
     /// Start to load the url operation
     public func load() {
-        isFirstLoad = false
+        guard let manager = manager else {
+            return
+        }
         if currentOperation != nil {
             return
         }
@@ -138,7 +141,3 @@ extension ImageManager {
         self.progressBlock = action
     }
 }
-
-// Indicator Reportor
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-extension ImageManager: IndicatorReportable {}
