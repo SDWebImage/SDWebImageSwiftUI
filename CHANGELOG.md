@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2022-09-15
+
+### Fixed
+
+- Refactor WebImage/AnimatedImage using SwiftUIBackports and StateObject #227
+- Fix iOS 16 undefined behavior warnings because of Publishing changes from within view updates.
+- Fix iOS 14+ WebImage behavior using `@StateObject` (and backport on iOS 13)
+
+### Changed
+
+- The `IndicatorReportable` is misused and removed. Use `IndicatorStatus` instead.
+- Deprecate iOS 13 support, this may be the last version to support iOS 13.
+
 ## [2.0.2] - 2021-03-10
 
 ### Fixed
