@@ -18,7 +18,7 @@ class ImageManagerTests: XCTestCase {
     func testImageManager() throws {
         let expectation = self.expectation(description: "ImageManager usage with Combine")
         let imageUrl = URL(string: "https://via.placeholder.com/500x500.jpg")
-        let imageManager = ImageManager(url: imageUrl)
+        let imageManager = ImageManager()
         imageManager.setOnSuccess { image, cacheType, data in
             XCTAssertNotNil(image)
             expectation.fulfill()
@@ -29,7 +29,7 @@ class ImageManagerTests: XCTestCase {
         imageManager.setOnProgress { receivedSize, expectedSize in
             
         }
-        imageManager.load()
+        imageManager.load(url: imageUrl)
         XCTAssertNotNil(imageManager.currentOperation)
         let sub = imageManager.objectWillChange
             .subscribe(on: RunLoop.main)

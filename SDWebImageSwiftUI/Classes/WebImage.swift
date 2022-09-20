@@ -9,6 +9,15 @@
 import SwiftUI
 import SDWebImage
 
+/// Data Binding Object, only properties in this object can support changes from user with @State and refresh
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+final class WebImageModel : ObservableObject {
+    /// URL image
+    @Published var url: URL?
+    @Published var webOptions: SDWebImageOptions = []
+    @Published var webContext: [SDWebImageContextOption : Any]? = nil
+}
+
 /// Completion Handler Binding Object, supports dynamic @State changes
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 final class WebImageHandler: ObservableObject {
@@ -43,6 +52,9 @@ public struct WebImage : View {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
+    /// A observed object to pass through the image model to manager
+    @ObservedObject var imageModel: WebImageModel
+    
     /// A observed object to pass through the image handler to manager
     @ObservedObject var imageHandler = WebImageHandler()
     
@@ -52,25 +64,10 @@ public struct WebImage : View {
     /// A observed object to pass through the image manager loading status to indicator
     @ObservedObject var indicatorStatus = IndicatorStatus()
     
-    @SwiftUI.StateObject var imagePlayer_SwiftUI = ImagePlayer()
-    @Backport.StateObject var imagePlayer_Backport = ImagePlayer()
-    var imagePlayer: ImagePlayer {
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            return imagePlayer_SwiftUI
-        } else {
-            return imagePlayer_Backport
-        }
-    }
+    @ObservedObject var imagePlayer = ImagePlayer()
     
-    @SwiftUI.StateObject var imageManager_SwiftUI = ImageManager()
-    @Backport.StateObject var imageManager_Backport = ImageManager()
-    var imageManager: ImageManager {
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            return imageManager_SwiftUI
-        } else {
-            return imageManager_Backport
-        }
-    }
+    // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
+    @Backport.StateObject var imageManager = ImageManager()
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
     /// - Parameter url: The image url
@@ -86,11 +83,11 @@ public struct WebImage : View {
                 context[.animatedImageClass] = SDAnimatedImage.self
             }
         }
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            _imageManager_SwiftUI = SwiftUI.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
-        } else {
-            _imageManager_Backport = Backport.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
-        }
+        let imageModel = WebImageModel()
+        imageModel.url = url
+        imageModel.webOptions = options
+        imageModel.webContext = context
+        _imageModel = ObservedObject(wrappedValue: imageModel)
     }
     
     /// Create a web image with url, placeholder, custom options and context.
@@ -128,24 +125,24 @@ public struct WebImage : View {
                 }
             } else {
                 setupPlaceholder()
-                .onAppear {
+                .onPlatformAppear(appear: {
                     self.imageManager.successBlock = self.imageHandler.successBlock
                     self.imageManager.failureBlock = self.imageHandler.failureBlock
                     self.imageManager.progressBlock = self.imageHandler.progressBlock
                     // Load remote image when first appear
-                    self.imageManager.load()
+                    self.imageManager.load(url: imageModel.url, options: imageModel.webOptions, context: imageModel.webContext)
                     guard self.imageConfiguration.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
-                        self.imageManager.load()
+                        self.imageManager.load(url: imageModel.url, options: imageModel.webOptions, context: imageModel.webContext)
                     }
-                }.onDisappear {
+                }, disappear: {
                     guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                }.onReceive(imageManager.objectWillChange) { _ in
+                }).onReceive(imageManager.objectWillChange) { _ in
                     indicatorStatus.isLoading = imageManager.isLoading
                     indicatorStatus.progress = imageManager.progress
                 }
@@ -228,7 +225,7 @@ public struct WebImage : View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageManager.options.contains(.delayPlaceholder) && imageManager.isLoading {
+            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.isLoading {
                 return AnyView(configure(image: .empty))
             } else {
                 return placeholder

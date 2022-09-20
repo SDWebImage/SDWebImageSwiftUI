@@ -28,37 +28,24 @@ public final class ImageManager : ObservableObject {
     /// true means during incremental loading
     @Published public var isIncremental: Bool = false
     
-    var manager: SDWebImageManager?
     weak var currentOperation: SDWebImageOperation? = nil
     
-    var url: URL?
-    var options: SDWebImageOptions = []
-    var context: [SDWebImageContextOption : Any]? = nil
     var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     var failureBlock: ((Error) -> Void)?
     var progressBlock: ((Int, Int) -> Void)?
     
-    /// Create a image manager for loading the specify url, with custom options and context.
+    public init() {}
+    
+    /// Start to load the url operation
     /// - Parameter url: The image url
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.url = url
-        self.options = options
-        self.context = context
-        if let manager = context?[.customManager] as? SDWebImageManager {
-            self.manager = manager
+    public func load(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+        let manager: SDWebImageManager
+        if let customManager = context?[.customManager] as? SDWebImageManager {
+            manager = customManager
         } else {
-            self.manager = .shared
-        }
-    }
-    
-    init() {}
-    
-    /// Start to load the url operation
-    public func load() {
-        guard let manager = manager else {
-            return
+            manager = .shared
         }
         if currentOperation != nil {
             return
