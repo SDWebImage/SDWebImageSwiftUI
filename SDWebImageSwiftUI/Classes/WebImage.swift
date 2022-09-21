@@ -61,7 +61,8 @@ public struct WebImage : View {
     /// A observed object to pass through the image configuration to player
     @ObservedObject var imageConfiguration = WebImageConfiguration()
     
-    @ObservedObject var imagePlayer = ImagePlayer()
+    // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
+    @Backport.StateObject var imagePlayer = ImagePlayer()
     
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
     @Backport.StateObject var imageManager = ImageManager()
@@ -219,7 +220,7 @@ public struct WebImage : View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.indicatorStatus.isLoading {
+            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.error == nil {
                 return AnyView(configure(image: .empty))
             } else {
                 return placeholder
