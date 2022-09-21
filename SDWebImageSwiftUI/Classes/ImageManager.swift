@@ -27,7 +27,8 @@ public final class ImageManager : ObservableObject {
     @Published public var indicatorStatus = IndicatorStatus()
     
     weak var currentOperation: SDWebImageOperation? = nil
-    
+
+    var currentURL: URL?
     var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     var failureBlock: ((Error) -> Void)?
     var progressBlock: ((Int, Int) -> Void)?
@@ -45,10 +46,12 @@ public final class ImageManager : ObservableObject {
         } else {
             manager = .shared
         }
-        if currentOperation != nil {
+        if (currentOperation != nil && currentURL == url) {
             return
         }
-        self.indicatorStatus.isLoading = true
+        currentURL = url
+        indicatorStatus.isLoading = true
+        indicatorStatus.progress = 0
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             guard let self = self else {
                 return

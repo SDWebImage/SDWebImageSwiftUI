@@ -84,7 +84,7 @@ extension View {
     /// - Returns: Some view
     func onPlatformAppear(appear: @escaping () -> Void = {}, disappear: @escaping () -> Void = {}) -> some View {
         #if os(iOS) || os(tvOS) || os(macOS)
-        return self.overlay(PlatformAppear(appearAction: appear, disappearAction: disappear))
+        return self.background(PlatformAppear(appearAction: appear, disappearAction: disappear))
         #else
         return self.onAppear(perform: appear).onDisappear(perform: disappear)
         #endif

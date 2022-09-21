@@ -45,6 +45,8 @@ public final class ImagePlayer : ObservableObject {
     /// Current playing loop count
     @Published public var currentLoopCount: UInt = 0
     
+    var currentAnimatedImage: (PlatformImage & SDAnimatedImageProvider)?
+    
     /// Whether current player is valid for playing. This will check the internal player exist or not
     public var isValid: Bool {
         player != nil
@@ -97,10 +99,11 @@ public final class ImagePlayer : ObservableObject {
     /// Setup the player using Animated Image.
     /// After setup, you can always check `isValid` status, or call `startPlaying` to play the animation.
     /// - Parameter image: animated image
-    public func setupPlayer(animatedImage: SDAnimatedImageProvider) {
+    public func setupPlayer(animatedImage: PlatformImage & SDAnimatedImageProvider) {
         if isValid {
             return
         }
+        currentAnimatedImage = animatedImage
         if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
             imagePlayer.animationFrameHandler = { [weak self] (index, frame) in
                 self?.currentFrameIndex = index

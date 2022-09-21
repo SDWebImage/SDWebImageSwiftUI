@@ -34,6 +34,42 @@ extension Indicator where T == ProgressView<EmptyView, EmptyView> {
 }
 #endif
 
+// Test Switching url using @State
+struct ContentView2: View {
+    @State var imageURLs = [
+        "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_1.jpg",
+        "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_2.jpg",
+        "http://assets.sbnation.com/assets/2512203/dogflops.gif",
+        "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"
+    ]
+    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
+    @State var imageIndex : Int = 0
+    var body: some View {
+        Group {
+            Text("\(animated ? "AnimatedImage" : "WebImage") - \((imageURLs[imageIndex] as NSString).lastPathComponent)")
+            Spacer()
+            if self.animated {
+                AnimatedImage(url:URL(string: imageURLs[imageIndex]))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            } else {
+                WebImage(url:URL(string: imageURLs[imageIndex]))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            }
+            Spacer()
+            Button("Next") {
+                if imageIndex + 1 >= imageURLs.count {
+                    imageIndex = 0
+                } else {
+                    imageIndex += 1
+                }
+            }
+            Toggle("Switch", isOn: $animated)
+        }
+    }
+}
+
 struct ContentView: View {
     @State var imageURLs = [
     "http://assets.sbnation.com/assets/2512203/dogflops.gif",

@@ -14,8 +14,8 @@ import SDWebImage
 final class WebImageModel : ObservableObject {
     /// URL image
     @Published var url: URL?
-    @Published var webOptions: SDWebImageOptions = []
-    @Published var webContext: [SDWebImageContextOption : Any]? = nil
+    @Published var options: SDWebImageOptions = []
+    @Published var context: [SDWebImageContextOption : Any]? = nil
 }
 
 /// Completion Handler Binding Object, supports dynamic @State changes
@@ -61,11 +61,13 @@ public struct WebImage : View {
     /// A observed object to pass through the image configuration to player
     @ObservedObject var imageConfiguration = WebImageConfiguration()
     
+    @ObservedObject var indicatorStatus : IndicatorStatus
+    
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
     @Backport.StateObject var imagePlayer = ImagePlayer()
     
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
-    @Backport.StateObject var imageManager = ImageManager()
+    @Backport.StateObject var imageManager : ImageManager
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
     /// - Parameter url: The image url
@@ -83,9 +85,12 @@ public struct WebImage : View {
         }
         let imageModel = WebImageModel()
         imageModel.url = url
-        imageModel.webOptions = options
-        imageModel.webContext = context
+        imageModel.options = options
+        imageModel.context = context
         _imageModel = ObservedObject(wrappedValue: imageModel)
+        let imageManager = ImageManager()
+        _imageManager = Backport.StateObject(wrappedValue: imageManager)
+        _indicatorStatus = ObservedObject(wrappedValue: imageManager.indicatorStatus)
     }
     
     /// Create a web image with url, placeholder, custom options and context.
@@ -98,7 +103,7 @@ public struct WebImage : View {
     
     public var body: some View {
         return Group {
-            if let image = imageManager.image {
+            if imageManager.image != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
                     .onDisappear {
@@ -118,7 +123,7 @@ public struct WebImage : View {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
                     } else {
-                        configure(image: image)
+                        configure(image: imageManager.image!)
                     }
                 }
             } else {
@@ -127,17 +132,19 @@ public struct WebImage : View {
                     self.imageManager.successBlock = self.imageHandler.successBlock
                     self.imageManager.failureBlock = self.imageHandler.failureBlock
                     self.imageManager.progressBlock = self.imageHandler.progressBlock
-                    // Load remote image when first appear
-                    self.imageManager.load(url: imageModel.url, options: imageModel.webOptions, context: imageModel.webContext)
+                    if (self.imageManager.error == nil) {
+                        // Load remote image when first appear
+                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+                    }
                     guard self.imageConfiguration.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
-                    if self.imageManager.image == nil && !self.imageManager.isIncremental {
-                        self.imageManager.load(url: imageModel.url, options: imageModel.webOptions, context: imageModel.webContext)
+                    if self.imageManager.error != nil && !self.imageManager.isIncremental {
+                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
                     }
                 }, disappear: {
                     guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
-                    if self.imageManager.image == nil && !self.imageManager.isIncremental {
+                    if self.imageManager.error != nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
                 })
@@ -196,18 +203,25 @@ public struct WebImage : View {
     
     /// Animated Image Support
     func setupPlayer() -> some View {
-        if let currentFrame = imagePlayer.currentFrame {
+        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
             return configure(image: currentFrame).onAppear {
                 self.imagePlayer.startPlaying()
             }
         } else {
             return configure(image: imageManager.image!).onAppear {
-                if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+                self.imagePlayer.stopPlaying()
+                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
+                    // Clear previous status
+                    self.imagePlayer.player = nil;
+                    self.imagePlayer.currentFrame = nil;
+                    self.imagePlayer.currentFrameIndex = 0;
+                    self.imagePlayer.currentLoopCount = 0;
                     self.imagePlayer.customLoopCount = self.imageConfiguration.customLoopCount
                     self.imagePlayer.maxBufferSize = self.imageConfiguration.maxBufferSize
                     self.imagePlayer.runLoopMode = self.imageConfiguration.runLoopMode
                     self.imagePlayer.playbackMode = self.imageConfiguration.playbackMode
                     self.imagePlayer.playbackRate = self.imageConfiguration.playbackRate
+                    // Setup new player
                     self.imagePlayer.setupPlayer(animatedImage: animatedImage)
                     self.imagePlayer.startPlaying()
                 }
@@ -220,7 +234,7 @@ public struct WebImage : View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.error == nil {
+            if imageModel.options.contains(.delayPlaceholder) && imageManager.error == nil {
                 return AnyView(configure(image: .empty))
             } else {
                 return placeholder
@@ -347,7 +361,7 @@ extension WebImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(status: imageManager.indicatorStatus, indicator: indicator))
+        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
