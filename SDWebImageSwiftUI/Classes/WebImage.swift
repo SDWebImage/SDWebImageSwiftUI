@@ -103,22 +103,10 @@ public struct WebImage : View {
     
     public var body: some View {
         return Group {
+            // Render Logic
             if imageManager.image != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
-                    .onDisappear {
-                        // Only stop the player which is not intermediate status
-                        if !imagePlayer.isWaiting {
-                            if self.imageConfiguration.pausable {
-                                self.imagePlayer.pausePlaying()
-                            } else {
-                                self.imagePlayer.stopPlaying()
-                            }
-                            if self.imageConfiguration.purgeable {
-                                self.imagePlayer.clearFrameBuffer()
-                            }
-                        }
-                    }
                 } else {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
@@ -127,11 +115,10 @@ public struct WebImage : View {
                     }
                 }
             } else {
+                // Load Logic
                 setupPlaceholder()
                 .onPlatformAppear(appear: {
-                    self.imageManager.successBlock = self.imageHandler.successBlock
-                    self.imageManager.failureBlock = self.imageHandler.failureBlock
-                    self.imageManager.progressBlock = self.imageHandler.progressBlock
+                    setupManager()
                     if (self.imageManager.error == nil) {
                         // Load remote image when first appear
                         self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
@@ -201,14 +188,46 @@ public struct WebImage : View {
         }
     }
     
+    /// Image Manager status
+    func setupManager() {
+        self.imageManager.successBlock = self.imageHandler.successBlock
+        self.imageManager.failureBlock = self.imageHandler.failureBlock
+        self.imageManager.progressBlock = self.imageHandler.progressBlock
+        if imageModel.url != imageManager.currentURL {
+            imageManager.cancel()
+            imageManager.image = nil
+            imageManager.imageData = nil
+            imageManager.cacheType = .none
+            imageManager.error = nil
+            imageManager.isIncremental = false
+            imageManager.indicatorStatus.isLoading = false
+            imageManager.indicatorStatus.progress = 0
+        }
+    }
+    
     /// Animated Image Support
     func setupPlayer() -> some View {
-        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
-            return configure(image: currentFrame).onAppear {
-                self.imagePlayer.startPlaying()
+        let disappearAction = {
+            // Only stop the player which is not intermediate status
+            if !imagePlayer.isWaiting {
+                if self.imageConfiguration.pausable {
+                    self.imagePlayer.pausePlaying()
+                } else {
+                    self.imagePlayer.stopPlaying()
+                }
+                if self.imageConfiguration.purgeable {
+                    self.imagePlayer.clearFrameBuffer()
+                }
             }
+        }
+        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
+            return configure(image: currentFrame).onPlatformAppear(appear: {
+                self.imagePlayer.startPlaying()
+            }, disappear: {
+                disappearAction()
+            })
         } else {
-            return configure(image: imageManager.image!).onAppear {
+            return configure(image: imageManager.image!).onPlatformAppear(appear: {
                 self.imagePlayer.stopPlaying()
                 if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
                     // Clear previous status
@@ -225,7 +244,9 @@ public struct WebImage : View {
                     self.imagePlayer.setupPlayer(animatedImage: animatedImage)
                     self.imagePlayer.startPlaying()
                 }
-            }
+            }, disappear: {
+                disappearAction()
+            })
         }
     }
     
@@ -235,12 +256,12 @@ public struct WebImage : View {
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
             if imageModel.options.contains(.delayPlaceholder) && imageManager.error == nil {
-                return AnyView(configure(image: .empty))
+                return AnyView(configure(image: .empty).id(UUID())) // UUID to avoid SwiftUI engine cache the status and does not call `onAppear`
             } else {
                 return placeholder
             }
         } else {
-            return AnyView(configure(image: .empty))
+            return AnyView(configure(image: .empty).id(UUID())) // UUID to avoid SwiftUI engine cache the status and does not call `onAppear`
         }
     }
 }

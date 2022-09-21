@@ -101,6 +101,7 @@ public final class ImageManager : ObservableObject {
             currentOperation = nil
         }
         indicatorStatus.isLoading = false
+        currentURL = nil
     }
     
 }

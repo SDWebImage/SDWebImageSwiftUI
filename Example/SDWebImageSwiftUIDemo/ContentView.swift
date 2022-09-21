@@ -65,6 +65,10 @@ struct ContentView2: View {
                     imageIndex += 1
                 }
             }
+            Button("Reload") {
+                SDImageCache.shared.clearMemory()
+                SDImageCache.shared.clearDisk(onCompletion: nil)
+            }
             Toggle("Switch", isOn: $animated)
         }
     }
