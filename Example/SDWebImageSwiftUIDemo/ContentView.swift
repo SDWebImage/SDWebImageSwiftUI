@@ -48,6 +48,11 @@ struct ContentView2: View {
         Group {
             Text("\(animated ? "AnimatedImage" : "WebImage") - \((imageURLs[imageIndex] as NSString).lastPathComponent)")
             Spacer()
+            #if os(watchOS)
+            WebImage(url:URL(string: imageURLs[imageIndex]))
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            #else
             if self.animated {
                 AnimatedImage(url:URL(string: imageURLs[imageIndex]))
                 .resizable()
@@ -57,6 +62,7 @@ struct ContentView2: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
             }
+            #endif
             Spacer()
             Button("Next") {
                 if imageIndex + 1 >= imageURLs.count {
