@@ -63,7 +63,9 @@ public final class ImageManager : ObservableObject {
         if currentOperation != nil {
             return
         }
-        self.isLoading = true
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             guard let self = self else {
                 return
@@ -89,14 +91,18 @@ public final class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
-            self.image = image
-            self.error = error
-            self.isIncremental = !finished
+            DispatchQueue.main.async {
+                self.image = image
+                self.error = error
+                self.isIncremental = !finished
+            }
             if finished {
-                self.imageData = data
-                self.cacheType = cacheType
-                self.isLoading = false
-                self.progress = 1
+                DispatchQueue.main.async {
+                    self.imageData = data
+                    self.cacheType = cacheType
+                    self.isLoading = false
+                    self.progress = 1
+                }
                 if let image = image {
                     self.successBlock?(image, data, cacheType)
                 } else {
