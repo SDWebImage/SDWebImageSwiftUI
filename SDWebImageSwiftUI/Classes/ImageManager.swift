@@ -21,12 +21,10 @@ public final class ImageManager : ObservableObject {
     @Published public var cacheType: SDImageCacheType = .none
     /// loading error, you can grab the error code and reason listed in `SDWebImageErrorDomain`, to provide a user interface about the error reason
     @Published public var error: Error?
-    /// whether network is loading or cache is querying, should only be used for indicator binding
-    @Published public var isLoading: Bool = false
-    /// network progress, should only be used for indicator binding
-    @Published public var progress: Double = 0
     /// true means during incremental loading
     @Published public var isIncremental: Bool = false
+    /// A observed object to pass through the image manager loading status to indicator
+    @Published public var indicatorStatus = IndicatorStatus()
     
     weak var currentOperation: SDWebImageOperation? = nil
     
@@ -50,7 +48,7 @@ public final class ImageManager : ObservableObject {
         if currentOperation != nil {
             return
         }
-        self.isLoading = true
+        self.indicatorStatus.isLoading = true
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
             guard let self = self else {
                 return
@@ -62,7 +60,7 @@ public final class ImageManager : ObservableObject {
                 progress = 0
             }
             DispatchQueue.main.async {
-                self.progress = progress
+                self.indicatorStatus.progress = progress
             }
             self.progressBlock?(receivedSize, expectedSize)
         }) { [weak self] (image, data, error, cacheType, finished, _) in
@@ -82,8 +80,8 @@ public final class ImageManager : ObservableObject {
             if finished {
                 self.imageData = data
                 self.cacheType = cacheType
-                self.isLoading = false
-                self.progress = 1
+                self.indicatorStatus.isLoading = false
+                self.indicatorStatus.progress = 1
                 if let image = image {
                     self.successBlock?(image, data, cacheType)
                 } else {
@@ -98,8 +96,8 @@ public final class ImageManager : ObservableObject {
         if let operation = currentOperation {
             operation.cancel()
             currentOperation = nil
-            isLoading = false
         }
+        indicatorStatus.isLoading = false
     }
     
 }

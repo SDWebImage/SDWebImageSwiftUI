@@ -46,9 +46,13 @@ class PlatformAppearView: PlatformView {
     #if os(iOS) || os(tvOS)
     override func willMove(toWindow newWindow: UIWindow?) {
         if newWindow != nil {
-            appearAction()
+            DispatchQueue.main.async {
+                self.appearAction()
+            }
         } else {
-            disappearAction()
+            DispatchQueue.main.async {
+                self.disappearAction()
+            }
         }
     }
     #endif
@@ -56,9 +60,13 @@ class PlatformAppearView: PlatformView {
     #if os(macOS)
     override func viewWillMove(toWindow newWindow: NSWindow?) {
         if newWindow != nil {
-            appearAction()
+            DispatchQueue.main.async {
+                self.appearAction()
+            }
         } else {
-            disappearAction()
+            DispatchQueue.main.async {
+                self.disappearAction()
+            }
         }
     }
     #endif
@@ -76,7 +84,7 @@ extension View {
     /// - Returns: Some view
     func onPlatformAppear(appear: @escaping () -> Void = {}, disappear: @escaping () -> Void = {}) -> some View {
         #if os(iOS) || os(tvOS) || os(macOS)
-        return self.background(PlatformAppear(appearAction: appear, disappearAction: disappear))
+        return self.overlay(PlatformAppear(appearAction: appear, disappearAction: disappear))
         #else
         return self.onAppear(perform: appear).onDisappear(perform: disappear)
         #endif

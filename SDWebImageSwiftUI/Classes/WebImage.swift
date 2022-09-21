@@ -61,9 +61,6 @@ public struct WebImage : View {
     /// A observed object to pass through the image configuration to player
     @ObservedObject var imageConfiguration = WebImageConfiguration()
     
-    /// A observed object to pass through the image manager loading status to indicator
-    @ObservedObject var indicatorStatus = IndicatorStatus()
-    
     @ObservedObject var imagePlayer = ImagePlayer()
     
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
@@ -142,10 +139,7 @@ public struct WebImage : View {
                     if self.imageManager.image == nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                }).onReceive(imageManager.objectWillChange) { _ in
-                    indicatorStatus.isLoading = imageManager.isLoading
-                    indicatorStatus.progress = imageManager.progress
-                }
+                })
             }
         }
     }
@@ -225,7 +219,7 @@ public struct WebImage : View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.isLoading {
+            if imageModel.webOptions.contains(.delayPlaceholder) && imageManager.indicatorStatus.isLoading {
                 return AnyView(configure(image: .empty))
             } else {
                 return placeholder
@@ -352,7 +346,7 @@ extension WebImage {
     /// Associate a indicator when loading image with url
     /// - Parameter indicator: The indicator type, see `Indicator`
     public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
+        return self.modifier(IndicatorViewModifier(status: imageManager.indicatorStatus, indicator: indicator))
     }
     
     /// Associate a indicator when loading image with url, convenient method with block
