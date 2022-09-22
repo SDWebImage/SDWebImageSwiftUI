@@ -253,16 +253,20 @@ public struct WebImage : View {
     /// Placeholder View Support
     func setupPlaceholder() -> some View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
+        let result: AnyView
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
             if imageModel.options.contains(.delayPlaceholder) && imageManager.error == nil {
-                return AnyView(configure(image: .empty).id(UUID())) // UUID to avoid SwiftUI engine cache the status and does not call `onAppear`
+                result = AnyView(configure(image: .empty))
             } else {
-                return placeholder
+                result = placeholder
             }
         } else {
-            return AnyView(configure(image: .empty).id(UUID())) // UUID to avoid SwiftUI engine cache the status and does not call `onAppear`
+            result = AnyView(configure(image: .empty))
         }
+        // UUID to avoid SwiftUI engine cache the status, and does not call `onAppear` when placeholder not changed (See `ContentView.swift/ContentView2` case)
+        // Because we load the image url in `onAppear`, it should be called to sync with state changes :)
+        return result.id(UUID())
     }
 }
 
