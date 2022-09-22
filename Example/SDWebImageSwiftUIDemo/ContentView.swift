@@ -34,6 +34,52 @@ extension Indicator where T == ProgressView<EmptyView, EmptyView> {
 }
 #endif
 
+// Test Switching url using @State
+struct ContentView2: View {
+    @State var imageURLs = [
+        "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_1.jpg",
+        "https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_2.jpg",
+        "http://assets.sbnation.com/assets/2512203/dogflops.gif",
+        "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"
+    ]
+    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
+    @State var imageIndex : Int = 0
+    var body: some View {
+        Group {
+            Text("\(animated ? "AnimatedImage" : "WebImage") - \((imageURLs[imageIndex] as NSString).lastPathComponent)")
+            Spacer()
+            #if os(watchOS)
+            WebImage(url:URL(string: imageURLs[imageIndex]))
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            #else
+            if self.animated {
+                AnimatedImage(url:URL(string: imageURLs[imageIndex]))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            } else {
+                WebImage(url:URL(string: imageURLs[imageIndex]))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            }
+            #endif
+            Spacer()
+            Button("Next") {
+                if imageIndex + 1 >= imageURLs.count {
+                    imageIndex = 0
+                } else {
+                    imageIndex += 1
+                }
+            }
+            Button("Reload") {
+                SDImageCache.shared.clearMemory()
+                SDImageCache.shared.clearDisk(onCompletion: nil)
+            }
+            Toggle("Switch", isOn: $animated)
+        }
+    }
+}
+
 struct ContentView: View {
     @State var imageURLs = [
     "http://assets.sbnation.com/assets/2512203/dogflops.gif",
@@ -57,6 +103,58 @@ struct ContentView: View {
     ]
     @State var animated: Bool = false // You can change between WebImage/AnimatedImage
     @EnvironmentObject var settings: UserSettings
+    
+    // Used to avoid https://twitter.com/fatbobman/status/1572507700436807683?s=20&t=5rfj6BUza5Jii-ynQatCFA
+    struct ItemView: View {
+        @Binding var animated: Bool
+        @State var url: String
+        var body: some View {
+            NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
+                HStack {
+                    if self.animated {
+                        #if os(macOS) || os(iOS) || os(tvOS)
+                        AnimatedImage(url: URL(string:url), isAnimating: .constant(true))
+                        .onViewUpdate { view, context in
+                        #if os(macOS)
+                            view.toolTip = url
+                        #endif
+                        }
+                        .indicator(SDWebImageActivityIndicator.medium)
+                        /**
+                        .placeholder(UIImage(systemName: "photo"))
+                        */
+                        .transition(.fade)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        #else
+                        WebImage(url: URL(string:url), isAnimating: self.$animated)
+                        .resizable()
+                        .indicator(.activity)
+                        .transition(.fade(duration: 0.5))
+                        .scaledToFit()
+                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                        #endif
+                    } else {
+                        WebImage(url: URL(string:url), isAnimating: .constant(true))
+                        .resizable()
+                        /**
+                         .placeholder {
+                             Image(systemName: "photo")
+                         }
+                         */
+                        .indicator(.activity)
+                        .transition(.fade(duration: 0.5))
+                        .scaledToFit()
+                        .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
+                    }
+                    Text((url as NSString).lastPathComponent)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+    }
+
     
     var body: some View {
         #if os(iOS)
@@ -119,49 +217,8 @@ struct ContentView: View {
     func contentView() -> some View {
         List {
             ForEach(imageURLs, id: \.self) { url in
-                NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
-                    HStack {
-                        if self.animated {
-                            #if os(macOS) || os(iOS) || os(tvOS)
-                            AnimatedImage(url: URL(string:url), isAnimating: .constant(true))
-                            .onViewUpdate { view, context in
-                            #if os(macOS)
-                                view.toolTip = url
-                            #endif
-                            }
-                            .indicator(SDWebImageActivityIndicator.medium)
-                            /**
-                            .placeholder(UIImage(systemName: "photo"))
-                            */
-                            .transition(.fade)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            #else
-                            WebImage(url: URL(string:url), isAnimating: self.$animated)
-                            .resizable()
-                            .indicator(.activity)
-                            .transition(.fade(duration: 0.5))
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                            #endif
-                        } else {
-                            WebImage(url: URL(string:url), isAnimating: .constant(true))
-                            .resizable()
-                            /**
-                             .placeholder {
-                                 Image(systemName: "photo")
-                             }
-                             */
-                            .indicator(.activity)
-                            .transition(.fade(duration: 0.5))
-                            .scaledToFit()
-                            .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
-                        }
-                        Text((url as NSString).lastPathComponent)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
+                // Must use top level view instead of inlined view structure
+                ItemView(animated: $animated, url: url)
             }
             .onDelete { indexSet in
                 indexSet.forEach { index in

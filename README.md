@@ -270,7 +270,7 @@ It looks familiar like `SDWebImageManager`, but it's built for SwiftUI world, wh
 
 ```swift
 struct MyView : View {
-    @ObservedObject var imageManager: ImageManager
+    @ObservedObject var imageManager = ImageManager()
     var body: some View {
         // Your custom complicated view graph
         Group {
@@ -281,15 +281,9 @@ struct MyView : View {
             }
         }
         // Trigger image loading when appear
-        .onAppear { self.imageManager.load() }
+        .onAppear { self.imageManager.load(url: url) }
         // Cancel image loading when disappear
         .onDisappear { self.imageManager.cancel() }
-    }
-}
-
-struct MyView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyView(imageManager: ImageManager(url: URL(string: "https://via.placeholder.com/200x200.jpg"))
     }
 }
 ```
@@ -336,6 +330,54 @@ For more information, it's really recommended to check our demo, to learn detail
 ## FAQ
 
 ### Common Problems
+
+#### Using WebImage/AnimatedImage in List/LazyStack/LazyGrid and ForEach
+
+SwiftUI has a known behavior(bug?) when using stateful view in `List/LazyStack/LazyGrid`.
+Only the **Top Level** view can hold its own `@State/@StateObject`, but the sub structure will lose state when scroll out of screen.
+However, WebImage/Animated is both stateful. To ensure the state keep in sync even when scroll out of screen. you may use some tricks.
+
+See more: https://twitter.com/fatbobman/status/1572507700436807683?s=21&t=z4FkAWTMvjsgL-wKdJGreQ
+
+In short, it's not recommanded to do so:
+
+```swift
+struct ContentView {
+    @State var imageURLs: [String]
+    var body: some View {
+        List {
+            ForEach(imageURLs, id: \.self) { url in
+                VStack {
+                    WebImage(url) // The top level is `VStack`
+                }
+            }
+        }
+    }
+}
+```
+
+instead, using this approach:
+
+```swift
+struct ContentView {
+    struct BodyView {
+        @State var url: String
+        var body: some View {
+            VStack {
+                WebImage(url)
+            }
+        }
+    }
+    @State var imageURLs: [String]
+    var body: some View {
+        List {
+            ForEach(imageURLs, id: \.self) { url in
+                BodyView(url: url)
+            }
+        }
+    }
+}
+```
 
 #### Using Image/WebImage/AnimatedImage in Button/NavigationLink
 

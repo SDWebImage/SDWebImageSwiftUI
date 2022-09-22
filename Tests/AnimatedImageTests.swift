@@ -182,7 +182,7 @@ class AnimatedImageTests: XCTestCase {
         .animation(.easeInOut)
         _ = try introspectView.inspect()
         ViewHosting.host(view: introspectView)
-        self.waitForExpectations(timeout: 5, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
         ViewHosting.expel()
     }
 }

@@ -9,6 +9,15 @@
 import SwiftUI
 import SDWebImage
 
+/// Data Binding Object, only properties in this object can support changes from user with @State and refresh
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+final class WebImageModel : ObservableObject {
+    /// URL image
+    @Published var url: URL?
+    @Published var options: SDWebImageOptions = []
+    @Published var context: [SDWebImageContextOption : Any]? = nil
+}
+
 /// Completion Handler Binding Object, supports dynamic @State changes
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 final class WebImageHandler: ObservableObject {
@@ -43,34 +52,22 @@ public struct WebImage : View {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
+    /// A observed object to pass through the image model to manager
+    @ObservedObject var imageModel: WebImageModel
+    
     /// A observed object to pass through the image handler to manager
     @ObservedObject var imageHandler = WebImageHandler()
     
     /// A observed object to pass through the image configuration to player
     @ObservedObject var imageConfiguration = WebImageConfiguration()
     
-    /// A observed object to pass through the image manager loading status to indicator
-    @ObservedObject var indicatorStatus = IndicatorStatus()
+    @ObservedObject var indicatorStatus : IndicatorStatus
     
-    @SwiftUI.StateObject var imagePlayer_SwiftUI = ImagePlayer()
-    @Backport.StateObject var imagePlayer_Backport = ImagePlayer()
-    var imagePlayer: ImagePlayer {
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            return imagePlayer_SwiftUI
-        } else {
-            return imagePlayer_Backport
-        }
-    }
+    // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
+    @Backport.StateObject var imagePlayer = ImagePlayer()
     
-    @SwiftUI.StateObject var imageManager_SwiftUI = ImageManager()
-    @Backport.StateObject var imageManager_Backport = ImageManager()
-    var imageManager: ImageManager {
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            return imageManager_SwiftUI
-        } else {
-            return imageManager_Backport
-        }
-    }
+    // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
+    @Backport.StateObject var imageManager : ImageManager
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
     /// - Parameter url: The image url
@@ -86,11 +83,14 @@ public struct WebImage : View {
                 context[.animatedImageClass] = SDAnimatedImage.self
             }
         }
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            _imageManager_SwiftUI = SwiftUI.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
-        } else {
-            _imageManager_Backport = Backport.StateObject(wrappedValue: ImageManager(url: url, options: options, context: context))
-        }
+        let imageModel = WebImageModel()
+        imageModel.url = url
+        imageModel.options = options
+        imageModel.context = context
+        _imageModel = ObservedObject(wrappedValue: imageModel)
+        let imageManager = ImageManager()
+        _imageManager = Backport.StateObject(wrappedValue: imageManager)
+        _indicatorStatus = ObservedObject(wrappedValue: imageManager.indicatorStatus)
     }
     
     /// Create a web image with url, placeholder, custom options and context.
@@ -103,52 +103,38 @@ public struct WebImage : View {
     
     public var body: some View {
         return Group {
-            if let image = imageManager.image {
+            // Render Logic
+            if imageManager.image != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
-                    .onDisappear {
-                        // Only stop the player which is not intermediate status
-                        if !imagePlayer.isWaiting {
-                            if self.imageConfiguration.pausable {
-                                self.imagePlayer.pausePlaying()
-                            } else {
-                                self.imagePlayer.stopPlaying()
-                            }
-                            if self.imageConfiguration.purgeable {
-                                self.imagePlayer.clearFrameBuffer()
-                            }
-                        }
-                    }
                 } else {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
                     } else {
-                        configure(image: image)
+                        configure(image: imageManager.image!)
                     }
                 }
             } else {
+                // Load Logic
                 setupPlaceholder()
-                .onAppear {
-                    self.imageManager.successBlock = self.imageHandler.successBlock
-                    self.imageManager.failureBlock = self.imageHandler.failureBlock
-                    self.imageManager.progressBlock = self.imageHandler.progressBlock
-                    // Load remote image when first appear
-                    self.imageManager.load()
+                .onPlatformAppear(appear: {
+                    setupManager()
+                    if (self.imageManager.error == nil) {
+                        // Load remote image when first appear
+                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+                    }
                     guard self.imageConfiguration.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
-                    if self.imageManager.image == nil && !self.imageManager.isIncremental {
-                        self.imageManager.load()
+                    if self.imageManager.error != nil && !self.imageManager.isIncremental {
+                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
                     }
-                }.onDisappear {
+                }, disappear: {
                     guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
-                    if self.imageManager.image == nil && !self.imageManager.isIncremental {
+                    if self.imageManager.error != nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                }.onReceive(imageManager.objectWillChange) { _ in
-                    indicatorStatus.isLoading = imageManager.isLoading
-                    indicatorStatus.progress = imageManager.progress
-                }
+                })
             }
         }
     }
@@ -202,40 +188,85 @@ public struct WebImage : View {
         }
     }
     
+    /// Image Manager status
+    func setupManager() {
+        self.imageManager.successBlock = self.imageHandler.successBlock
+        self.imageManager.failureBlock = self.imageHandler.failureBlock
+        self.imageManager.progressBlock = self.imageHandler.progressBlock
+        if imageModel.url != imageManager.currentURL {
+            imageManager.cancel()
+            imageManager.image = nil
+            imageManager.imageData = nil
+            imageManager.cacheType = .none
+            imageManager.error = nil
+            imageManager.isIncremental = false
+            imageManager.indicatorStatus.isLoading = false
+            imageManager.indicatorStatus.progress = 0
+        }
+    }
+    
     /// Animated Image Support
     func setupPlayer() -> some View {
-        if let currentFrame = imagePlayer.currentFrame {
-            return configure(image: currentFrame).onAppear {
-                self.imagePlayer.startPlaying()
+        let disappearAction = {
+            // Only stop the player which is not intermediate status
+            if !imagePlayer.isWaiting {
+                if self.imageConfiguration.pausable {
+                    self.imagePlayer.pausePlaying()
+                } else {
+                    self.imagePlayer.stopPlaying()
+                }
+                if self.imageConfiguration.purgeable {
+                    self.imagePlayer.clearFrameBuffer()
+                }
             }
+        }
+        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
+            return configure(image: currentFrame).onPlatformAppear(appear: {
+                self.imagePlayer.startPlaying()
+            }, disappear: {
+                disappearAction()
+            })
         } else {
-            return configure(image: imageManager.image!).onAppear {
-                if let animatedImage = imageManager.image as? SDAnimatedImageProvider {
+            return configure(image: imageManager.image!).onPlatformAppear(appear: {
+                self.imagePlayer.stopPlaying()
+                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
+                    // Clear previous status
+                    self.imagePlayer.player = nil;
+                    self.imagePlayer.currentFrame = nil;
+                    self.imagePlayer.currentFrameIndex = 0;
+                    self.imagePlayer.currentLoopCount = 0;
                     self.imagePlayer.customLoopCount = self.imageConfiguration.customLoopCount
                     self.imagePlayer.maxBufferSize = self.imageConfiguration.maxBufferSize
                     self.imagePlayer.runLoopMode = self.imageConfiguration.runLoopMode
                     self.imagePlayer.playbackMode = self.imageConfiguration.playbackMode
                     self.imagePlayer.playbackRate = self.imageConfiguration.playbackRate
+                    // Setup new player
                     self.imagePlayer.setupPlayer(animatedImage: animatedImage)
                     self.imagePlayer.startPlaying()
                 }
-            }
+            }, disappear: {
+                disappearAction()
+            })
         }
     }
     
     /// Placeholder View Support
     func setupPlaceholder() -> some View {
         // Don't use `Group` because it will trigger `.onAppear` and `.onDisappear` when condition view removed, treat placeholder as an entire component
+        let result: AnyView
         if let placeholder = placeholder {
             // If use `.delayPlaceholder`, the placeholder is applied after loading failed, hide during loading :)
-            if imageManager.options.contains(.delayPlaceholder) && imageManager.isLoading {
-                return AnyView(configure(image: .empty))
+            if imageModel.options.contains(.delayPlaceholder) && imageManager.error == nil {
+                result = AnyView(configure(image: .empty))
             } else {
-                return placeholder
+                result = placeholder
             }
         } else {
-            return AnyView(configure(image: .empty))
+            result = AnyView(configure(image: .empty))
         }
+        // UUID to avoid SwiftUI engine cache the status, and does not call `onAppear` when placeholder not changed (See `ContentView.swift/ContentView2` case)
+        // Because we load the image url in `onAppear`, it should be called to sync with state changes :)
+        return result.id(UUID())
     }
 }
 

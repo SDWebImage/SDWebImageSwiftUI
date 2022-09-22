@@ -101,15 +101,7 @@ final class AnimatedImageConfiguration: ObservableObject {
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
-    @SwiftUI.StateObject var imageModel_SwiftUI = AnimatedImageModel()
-    @Backport.StateObject var imageModel_Backport = AnimatedImageModel()
-    var imageModel: AnimatedImageModel {
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            return imageModel_SwiftUI
-        } else {
-            return imageModel_Backport
-        }
-    }
+    @ObservedObject var imageModel: AnimatedImageModel
     @ObservedObject var imageHandler = AnimatedImageHandler()
     @ObservedObject var imageLayout = AnimatedImageLayout()
     @ObservedObject var imageConfiguration = AnimatedImageConfiguration()
@@ -186,11 +178,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     init(imageModel: AnimatedImageModel, isAnimating: Binding<Bool>) {
         self._isAnimating = isAnimating
-        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-            _imageModel_SwiftUI = SwiftUI.StateObject(wrappedValue: imageModel)
-        } else {
-            _imageModel_Backport = Backport.StateObject(wrappedValue: imageModel)
-        }
+        _imageModel = ObservedObject(wrappedValue: imageModel)
     }
     
     #if os(macOS)

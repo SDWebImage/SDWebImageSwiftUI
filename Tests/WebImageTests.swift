@@ -23,7 +23,7 @@ class WebImageTests: XCTestCase {
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, data, cacheType in
             #if os(macOS)
-            let displayImage = try? imageView.inspect().group().image(0).actualImage.nsImage()
+            let displayImage = try? imageView.inspect().group().image(0).actualImage().nsImage()
             #else
             let displayImage = try? imageView.inspect().group().image(0).actualImage().cgImage()
             #endif

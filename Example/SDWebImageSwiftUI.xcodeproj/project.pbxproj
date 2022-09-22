@@ -34,6 +34,8 @@
 		322E0E2228D332130003A55F /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 322E0DF228D331A20003A55F /* Images.bundle */; };
 		322E0E2328D332130003A55F /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 322E0DF228D331A20003A55F /* Images.bundle */; };
 		326B0D712345C01900D28269 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B0D702345C01900D28269 /* DetailView.swift */; };
+		327B90F228DC4EBB003E8BD9 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 327B90F128DC4EBB003E8BD9 /* ViewInspector */; };
+		327B90F428DC4EC0003E8BD9 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 327B90F328DC4EC0003E8BD9 /* ViewInspector */; };
 		32DCFE9528D333E8001A17BF /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 32DCFE9428D333E8001A17BF /* ViewInspector */; };
 		32E5290C2348A0C700EA46FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E5290B2348A0C700EA46FF /* AppDelegate.swift */; };
 		32E529102348A0C900EA46FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32E5290F2348A0C900EA46FF /* Assets.xcassets */; };
@@ -220,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				833A61715BAAB31702D867CC /* Pods_SDWebImageSwiftUITests_macOS.framework in Frameworks */,
+				327B90F228DC4EBB003E8BD9 /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E3D81A12C757E01A3C420F2 /* Pods_SDWebImageSwiftUITests_tvOS.framework in Frameworks */,
+				327B90F428DC4EC0003E8BD9 /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,9 +521,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				327B90EE28DC4EAA003E8BD9 /* PBXTargetDependency */,
 				322E0E0728D331F00003A55F /* PBXTargetDependency */,
 			);
 			name = "SDWebImageSwiftUITests macOS";
+			packageProductDependencies = (
+				327B90F128DC4EBB003E8BD9 /* ViewInspector */,
+			);
 			productName = "SDWebImageSwiftUITests macOS";
 			productReference = 322E0E0228D331F00003A55F /* SDWebImageSwiftUITests macOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -537,9 +545,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				327B90F028DC4EAE003E8BD9 /* PBXTargetDependency */,
 				322E0E1428D332050003A55F /* PBXTargetDependency */,
 			);
 			name = "SDWebImageSwiftUITests tvOS";
+			packageProductDependencies = (
+				327B90F328DC4EC0003E8BD9 /* ViewInspector */,
+			);
 			productName = "SDWebImageSwiftUITests tvOS";
 			productReference = 322E0E0F28D332050003A55F /* SDWebImageSwiftUITests tvOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -698,7 +710,7 @@
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			packageReferences = (
-				32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector.git" */,
+				32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
@@ -1224,6 +1236,14 @@
 			isa = PBXTargetDependency;
 			target = 32E5291F2348A0D300EA46FF /* SDWebImageSwiftUIDemo-tvOS */;
 			targetProxy = 322E0E1328D332050003A55F /* PBXContainerItemProxy */;
+		};
+		327B90EE28DC4EAA003E8BD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 327B90ED28DC4EAA003E8BD9 /* ViewInspector */;
+		};
+		327B90F028DC4EAE003E8BD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 327B90EF28DC4EAE003E8BD9 /* ViewInspector */;
 		};
 		32DCFE9728D333F1001A17BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2044,7 +2064,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector.git" */ = {
+		32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nalexn/ViewInspector.git";
 			requirement = {
@@ -2055,14 +2075,34 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		327B90ED28DC4EAA003E8BD9 /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+		327B90EF28DC4EAE003E8BD9 /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+		327B90F128DC4EBB003E8BD9 /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+		327B90F328DC4EC0003E8BD9 /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
 		32DCFE9428D333E8001A17BF /* ViewInspector */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector.git" */;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
 			productName = ViewInspector;
 		};
 		32DCFE9628D333F1001A17BF /* ViewInspector */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector.git" */;
+			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
 			productName = ViewInspector;
 		};
 /* End XCSwiftPackageProductDependency section */
