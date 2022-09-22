@@ -76,7 +76,7 @@ var body: some View {
 
 Note: However, many differences behavior between iOS 13/14's is hard to fixup. And we may break some APIs (which are not designed to be public) to fixup it.
 
-Due to maintain issue, in the future release, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior. And **v2.1** may be the last version support iOS 13.
+Due to maintain issue, in the future release, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior. And **v2.x** may be the last version support iOS 13.
 
 
 ## Installation

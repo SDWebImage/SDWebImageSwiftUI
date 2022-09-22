@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2022-09-22
+
+### Fixed
+
+- Fix iOS 13 compatibility #232
+- Fix WebImage/Animated using @State to publish changes
+- Al v2.1.0 users are recommend to update
+
+### Changed
+- ImageManager API changes. The init method has no args, use `load(url:options:context:)` instead
+
 ## [2.1.0] - 2022-09-15
 
 ### Fixed
