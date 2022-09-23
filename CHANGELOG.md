@@ -6,13 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.1] - 2022-09-23
+
+### Fixed
+
+- Fix the nil url always returns Error will cause infinity onAppear call and image manager to load, which waste CPU #235
+- Fix the case which sometimes the player does not stop when WebImage it out of screen #236
+- Al v2.2.0 users are recommended to update
+
 ## [2.2.0] - 2022-09-22
 
 ### Fixed
 
 - Fix iOS 13 compatibility #232
 - Fix WebImage/Animated using @State to publish changes
-- Al v2.1.0 users are recommend to update
+- Al v2.1.0 users are recommended to update
 
 ### Changed
 - ImageManager API changes. The init method has no args, use `load(url:options:context:)` instead
