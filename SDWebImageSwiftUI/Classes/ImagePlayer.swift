@@ -33,7 +33,6 @@ public final class ImagePlayer : ObservableObject {
     
     deinit {
         player?.stopPlaying()
-        currentFrame = nil
     }
     
     /// Current playing frame image
@@ -57,7 +56,7 @@ public final class ImagePlayer : ObservableObject {
         if let player = player {
             return player.isPlaying && waitingPlaying
         }
-        return false
+        return true
     }
     
     /// Current playing status

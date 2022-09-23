@@ -118,7 +118,7 @@ public struct WebImage : View {
                 // Load Logic
                 setupPlaceholder()
                 .onPlatformAppear(appear: {
-                    setupManager()
+                    self.setupManager()
                     if (self.imageManager.error == nil) {
                         // Load remote image when first appear
                         self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
@@ -136,6 +136,8 @@ public struct WebImage : View {
                     }
                 })
             }
+        }.onDisappear {
+            self.disappearAction()
         }
     }
     
@@ -205,36 +207,52 @@ public struct WebImage : View {
         }
     }
     
-    /// Animated Image Support
-    func setupPlayer() -> some View {
-        let disappearAction = {
-            // Only stop the player which is not intermediate status
-            if !imagePlayer.isWaiting {
-                if self.imageConfiguration.pausable {
-                    self.imagePlayer.pausePlaying()
-                } else {
-                    self.imagePlayer.stopPlaying()
-                }
-                if self.imageConfiguration.purgeable {
-                    self.imagePlayer.clearFrameBuffer()
-                }
+    /// Animated Image Disappear should stop display link
+    func disappearAction() {
+        // Only stop the player which is not intermediate status
+        if !imagePlayer.isWaiting {
+            if self.imageConfiguration.pausable {
+                self.imagePlayer.pausePlaying()
+            } else {
+                self.imagePlayer.stopPlaying()
+            }
+            if self.imageConfiguration.purgeable {
+                self.imagePlayer.clearFrameBuffer()
             }
         }
-        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
-            return configure(image: currentFrame).onPlatformAppear(appear: {
+    }
+    
+    /// Animated Image Support
+    func setupPlayer() -> some View {
+        let shouldResetPlayer: Bool
+        // Image compare should use ===/!==, which is faster than isEqual:
+        if let animatedImage = imagePlayer.currentAnimatedImage, animatedImage !== imageManager.image! {
+            shouldResetPlayer = true
+        } else {
+            shouldResetPlayer = false
+        }
+        if let currentFrame = imagePlayer.currentFrame, !shouldResetPlayer {
+            // Bind frame index to ID to ensure onDisappear called with sync
+            return configure(image: currentFrame)
+                .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
+            .onPlatformAppear(appear: {
                 self.imagePlayer.startPlaying()
             }, disappear: {
                 disappearAction()
             })
         } else {
-            return configure(image: imageManager.image!).onPlatformAppear(appear: {
-                self.imagePlayer.stopPlaying()
-                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
+            return configure(image: imageManager.image!)
+                .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
+            .onPlatformAppear(appear: {
+                if shouldResetPlayer {
                     // Clear previous status
+                    self.imagePlayer.stopPlaying()
                     self.imagePlayer.player = nil;
                     self.imagePlayer.currentFrame = nil;
                     self.imagePlayer.currentFrameIndex = 0;
                     self.imagePlayer.currentLoopCount = 0;
+                }
+                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
                     self.imagePlayer.customLoopCount = self.imageConfiguration.customLoopCount
                     self.imagePlayer.maxBufferSize = self.imageConfiguration.maxBufferSize
                     self.imagePlayer.runLoopMode = self.imageConfiguration.runLoopMode
