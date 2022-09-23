@@ -264,9 +264,9 @@ public struct WebImage : View {
         } else {
             result = AnyView(configure(image: .empty))
         }
-        // UUID to avoid SwiftUI engine cache the status, and does not call `onAppear` when placeholder not changed (See `ContentView.swift/ContentView2` case)
-        // Because we load the image url in `onAppear`, it should be called to sync with state changes :)
-        return result.id(UUID())
+        // Custom ID to avoid SwiftUI engine cache the status, and does not call `onAppear` when placeholder not changed (See `ContentView.swift/ContentView2` case)
+        // Because we load the image url in placeholder's `onAppear`, it should be called to sync with state changes :)
+        return result.id(imageModel.url)
     }
 }
 
