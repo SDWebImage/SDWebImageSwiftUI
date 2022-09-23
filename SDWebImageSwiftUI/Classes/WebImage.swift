@@ -102,8 +102,17 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        return Group {
-            // Render Logic
+        // Container
+        return ZStack {
+            // This empty Image is used to receive container's level appear/disappear to start/stop player, reduce CPU usage
+            Image(platformImage: .empty)
+            .onAppear {
+                self.appearAction()
+            }
+            .onDisappear {
+                self.disappearAction()
+            }
+            // Render Logic for actual animated image frame or static image
             if imageManager.image != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
@@ -118,7 +127,7 @@ public struct WebImage : View {
                 // Load Logic
                 setupPlaceholder()
                 .onPlatformAppear(appear: {
-                    setupManager()
+                    self.setupManager()
                     if (self.imageManager.error == nil) {
                         // Load remote image when first appear
                         self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
@@ -205,36 +214,50 @@ public struct WebImage : View {
         }
     }
     
+    /// Container level to resume animation when appear
+    func appearAction() {
+        self.imagePlayer.startPlaying()
+    }
+    
+    /// Container level to stop animation when disappear
+    func disappearAction() {
+        if self.imageConfiguration.pausable {
+            self.imagePlayer.pausePlaying()
+        } else {
+            self.imagePlayer.stopPlaying()
+        }
+        if self.imageConfiguration.purgeable {
+            self.imagePlayer.clearFrameBuffer()
+        }
+    }
+    
     /// Animated Image Support
     func setupPlayer() -> some View {
-        let disappearAction = {
-            // Only stop the player which is not intermediate status
-            if !imagePlayer.isWaiting {
-                if self.imageConfiguration.pausable {
-                    self.imagePlayer.pausePlaying()
-                } else {
-                    self.imagePlayer.stopPlaying()
-                }
-                if self.imageConfiguration.purgeable {
-                    self.imagePlayer.clearFrameBuffer()
-                }
-            }
-        }
-        if let currentFrame = imagePlayer.currentFrame, imagePlayer.currentAnimatedImage == imageManager.image! {
-            return configure(image: currentFrame).onPlatformAppear(appear: {
-                self.imagePlayer.startPlaying()
-            }, disappear: {
-                disappearAction()
-            })
+        let shouldResetPlayer: Bool
+        // Image compare should use ===/!==, which is faster than isEqual:
+        if let animatedImage = imagePlayer.currentAnimatedImage, animatedImage !== imageManager.image! {
+            shouldResetPlayer = true
         } else {
-            return configure(image: imageManager.image!).onPlatformAppear(appear: {
-                self.imagePlayer.stopPlaying()
-                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
+            shouldResetPlayer = false
+        }
+        if let currentFrame = imagePlayer.currentFrame, !shouldResetPlayer {
+            // Bind frame index to ID to ensure onDisappear called with sync
+            return configure(image: currentFrame)
+                .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
+            .onAppear {}
+        } else {
+            return configure(image: imageManager.image!)
+                .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
+            .onAppear {
+                if shouldResetPlayer {
                     // Clear previous status
-                    self.imagePlayer.player = nil;
+                    self.imagePlayer.stopPlaying()
+                    self.imagePlayer.player = nil
                     self.imagePlayer.currentFrame = nil;
                     self.imagePlayer.currentFrameIndex = 0;
                     self.imagePlayer.currentLoopCount = 0;
+                }
+                if let animatedImage = imageManager.image as? PlatformImage & SDAnimatedImageProvider {
                     self.imagePlayer.customLoopCount = self.imageConfiguration.customLoopCount
                     self.imagePlayer.maxBufferSize = self.imageConfiguration.maxBufferSize
                     self.imagePlayer.runLoopMode = self.imageConfiguration.runLoopMode
@@ -244,9 +267,7 @@ public struct WebImage : View {
                     self.imagePlayer.setupPlayer(animatedImage: animatedImage)
                     self.imagePlayer.startPlaying()
                 }
-            }, disappear: {
-                disappearAction()
-            })
+            }
         }
     }
     

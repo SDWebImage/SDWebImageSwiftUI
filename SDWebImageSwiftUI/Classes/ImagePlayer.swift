@@ -33,7 +33,6 @@ public final class ImagePlayer : ObservableObject {
     
     deinit {
         player?.stopPlaying()
-        currentFrame = nil
     }
     
     /// Current playing frame image
@@ -57,7 +56,7 @@ public final class ImagePlayer : ObservableObject {
         if let player = player {
             return player.isPlaying && waitingPlaying
         }
-        return false
+        return true
     }
     
     /// Current playing status
@@ -106,11 +105,21 @@ public final class ImagePlayer : ObservableObject {
         currentAnimatedImage = animatedImage
         if let imagePlayer = SDAnimatedImagePlayer(provider: animatedImage) {
             imagePlayer.animationFrameHandler = { [weak self] (index, frame) in
-                self?.currentFrameIndex = index
-                self?.currentFrame = frame
+                guard let self = self else {
+                    return
+                }
+                if (self.isPlaying) {
+                    self.currentFrameIndex = index
+                    self.currentFrame = frame
+                }
             }
             imagePlayer.animationLoopHandler = { [weak self] (loopCount) in
-                self?.currentLoopCount = loopCount
+                guard let self = self else {
+                    return
+                }
+                if (self.isPlaying) {
+                    self.currentLoopCount = loopCount
+                }
             }
             // Setup configuration
             if let maxBufferSize = maxBufferSize {
