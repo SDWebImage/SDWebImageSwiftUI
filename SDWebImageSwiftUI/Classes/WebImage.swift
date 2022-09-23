@@ -102,8 +102,17 @@ public struct WebImage : View {
     }
     
     public var body: some View {
-        return Group {
-            // Render Logic
+        // Container
+        return ZStack {
+            // This empty Image is used to receive container's level appear/disappear to start/stop player, reduce CPU usage
+            Image(platformImage: .empty)
+            .onAppear {
+                self.appearAction()
+            }
+            .onDisappear {
+                self.disappearAction()
+            }
+            // Render Logic for actual animated image frame or static image
             if imageManager.image != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
@@ -136,8 +145,6 @@ public struct WebImage : View {
                     }
                 })
             }
-        }.onDisappear {
-            self.disappearAction()
         }
     }
     
@@ -207,18 +214,20 @@ public struct WebImage : View {
         }
     }
     
-    /// Animated Image Disappear should stop display link
+    /// Container level to resume animation when appear
+    func appearAction() {
+        self.imagePlayer.startPlaying()
+    }
+    
+    /// Container level to stop animation when disappear
     func disappearAction() {
-        // Only stop the player which is not intermediate status
-        if !imagePlayer.isWaiting {
-            if self.imageConfiguration.pausable {
-                self.imagePlayer.pausePlaying()
-            } else {
-                self.imagePlayer.stopPlaying()
-            }
-            if self.imageConfiguration.purgeable {
-                self.imagePlayer.clearFrameBuffer()
-            }
+        if self.imageConfiguration.pausable {
+            self.imagePlayer.pausePlaying()
+        } else {
+            self.imagePlayer.stopPlaying()
+        }
+        if self.imageConfiguration.purgeable {
+            self.imagePlayer.clearFrameBuffer()
         }
     }
     
@@ -235,19 +244,15 @@ public struct WebImage : View {
             // Bind frame index to ID to ensure onDisappear called with sync
             return configure(image: currentFrame)
                 .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
-            .onPlatformAppear(appear: {
-                self.imagePlayer.startPlaying()
-            }, disappear: {
-                disappearAction()
-            })
+            .onAppear {}
         } else {
             return configure(image: imageManager.image!)
                 .id("\(imageModel.url!):\(imagePlayer.currentFrameIndex)")
-            .onPlatformAppear(appear: {
+            .onAppear {
                 if shouldResetPlayer {
                     // Clear previous status
                     self.imagePlayer.stopPlaying()
-                    self.imagePlayer.player = nil;
+                    self.imagePlayer.player = nil
                     self.imagePlayer.currentFrame = nil;
                     self.imagePlayer.currentFrameIndex = 0;
                     self.imagePlayer.currentLoopCount = 0;
@@ -262,9 +267,7 @@ public struct WebImage : View {
                     self.imagePlayer.setupPlayer(animatedImage: animatedImage)
                     self.imagePlayer.startPlaying()
                 }
-            }, disappear: {
-                disappearAction()
-            })
+            }
         }
     }
     
