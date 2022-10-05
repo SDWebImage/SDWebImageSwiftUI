@@ -56,13 +56,13 @@ public final class ImageManager : ObservableObject {
             guard let self = self else {
                 return
             }
-            let progress: Double
-            if (expectedSize > 0) {
-                progress = Double(receivedSize) / Double(expectedSize)
-            } else {
-                progress = 0
-            }
             DispatchQueue.main.async {
+                let progress: Double
+                if (expectedSize > 0) {
+                    progress = Double(receivedSize) / Double(expectedSize)
+                } else {
+                    progress = 0
+                }
                 self.indicatorStatus.progress = progress
             }
             self.progressBlock?(receivedSize, expectedSize)
@@ -85,10 +85,12 @@ public final class ImageManager : ObservableObject {
                 self.cacheType = cacheType
                 self.indicatorStatus.isLoading = false
                 self.indicatorStatus.progress = 1
-                if let image = image {
-                    self.successBlock?(image, data, cacheType)
-                } else {
-                    self.failureBlock?(error ?? NSError())
+                DispatchQueue.main.async {
+                    if let image = image {
+                        self.successBlock?(image, data, cacheType)
+                    } else {
+                        self.failureBlock?(error ?? NSError())
+                    }
                 }
             }
         }
