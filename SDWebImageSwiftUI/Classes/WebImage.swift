@@ -25,6 +25,7 @@ final class WebImageHandler: ObservableObject {
     @Published var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     @Published var failureBlock: ((Error) -> Void)?
     @Published var progressBlock: ((Int, Int) -> Void)?
+    @Published var shouldAnimateSuccessBlock: ((PlatformImage, Data?, SDImageCacheType) -> Bool)?
 }
 
 /// Configuration Binding Object, supports dynamic @State changes
@@ -101,6 +102,8 @@ public struct WebImage : View {
         self.init(url: url, options: options, context: context, isAnimating: .constant(true))
     }
     
+    @State private var imageManagerImage: PlatformImage? = nil
+    
     public var body: some View {
         // Container
         return ZStack {
@@ -113,14 +116,15 @@ public struct WebImage : View {
                 self.disappearAction()
             }
             // Render Logic for actual animated image frame or static image
-            if imageManager.image != nil && imageModel.url == imageManager.currentURL {
+            let imageToRender = imageManagerImage ?? imageManager.image
+            if imageToRender != nil && imageModel.url == imageManager.currentURL {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
                 } else {
                     if let currentFrame = imagePlayer.currentFrame {
                         configure(image: currentFrame)
                     } else {
-                        configure(image: imageManager.image!)
+                        configure(image: imageToRender!)
                     }
                 }
             } else {
@@ -199,7 +203,17 @@ public struct WebImage : View {
     
     /// Image Manager status
     func setupManager() {
-        self.imageManager.successBlock = self.imageHandler.successBlock
+        self.imageManager.successBlock = {  image, data, cacheType in
+            if self.imageHandler.shouldAnimateSuccessBlock?(image,data,cacheType) ?? false {
+                withAnimation {
+                    self.imageManagerImage = image
+                }
+            } else {
+                self.imageManagerImage = image
+            }
+            self.imageHandler.successBlock?(image,data,cacheType)
+        }
+        
         self.imageManager.failureBlock = self.imageHandler.failureBlock
         self.imageManager.progressBlock = self.imageHandler.progressBlock
         if imageModel.url != imageManager.currentURL {
@@ -348,6 +362,11 @@ extension WebImage {
     /// - Returns: A view that triggers `action` when this image load successes.
     public func onSuccess(perform action: ((PlatformImage, Data?, SDImageCacheType) -> Void)? = nil) -> WebImage {
         self.imageHandler.successBlock = action
+        return self
+    }
+    
+    public func shouldAnimateAppearanceOnSuccess(perform action: @escaping ((PlatformImage, Data?, SDImageCacheType) -> Bool)) -> WebImage {
+        self.imageHandler.shouldAnimateSuccessBlock = action
         return self
     }
     
