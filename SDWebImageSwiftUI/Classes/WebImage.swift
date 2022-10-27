@@ -365,11 +365,6 @@ extension WebImage {
         return self
     }
     
-    public func shouldAnimateAppearanceOnSuccess(perform action: @escaping ((PlatformImage, Data?, SDImageCacheType) -> Bool)) -> WebImage {
-        self.imageHandler.shouldAnimateSuccessBlock = action
-        return self
-    }
-    
     /// Provide the action when image load progress changes.
     /// - Parameters:
     ///   - action: The action to perform. The first arg is the received size, the second arg is the total size, all in bytes. If `action` is `nil`, the call has no effect.
@@ -377,6 +372,29 @@ extension WebImage {
     public func onProgress(perform action: ((Int, Int) -> Void)? = nil) -> WebImage {
         self.imageHandler.progressBlock = action
         return self
+    }
+}
+
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension WebImage {
+    /// Provide the check when image data loaded
+    /// - Parameters:
+    ///   - check: The check reurns if loaded image will be appeared with animation or not. The first arg is the error during loading. If `check` is `nil`, the call has no effect.
+    /// - Returns: A view that triggers `check` when this image load fails.
+    func shouldAnimateAppearingOnSuccess(perform check: @escaping ((PlatformImage, Data?, SDImageCacheType) -> Bool)) -> WebImage {
+        self.imageHandler.shouldAnimateSuccessBlock = check
+        return self
+    }
+    
+    func animateAppearingOnSuccessLoad() -> WebImage {
+        self.shouldAnimateAppearingOnSuccess { _, _, cacheType in
+            switch cacheType {
+            case .none, .disk:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }
 
