@@ -77,7 +77,9 @@ public final class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
-            self.image = image
+            withAnimation {
+                self.image = image
+            }
             self.error = error
             self.isIncremental = !finished
             if finished {
