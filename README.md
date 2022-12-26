@@ -164,7 +164,14 @@ var body: some View {
 }
 ```
 
-Note: For indicator, you can custom your own as well. For example, iOS 14/watchOS 7 introduce the new `ProgressView`, which can replace our built-in `ProgressIndicator/ActivityIndicator` (where watchOS does not provide).
+Note: For indicator, you can custom your own as well. For example, iOS 14/watchOS 7 introduce the new `ProgressView`, which can be easily used via:
+
+```swift
+WebImage(url: url)
+.indicator(.activity)
+```
+
+or you can just write like:
 
 ```swift
 WebImage(url: url)
@@ -628,7 +635,7 @@ SDWebImageSwiftUI has Unit Test to increase code quality. For SwiftUI, there are
 
 However, since SwiftUI is State-Based and Attributed-Implemented layout system, there are open source projects who provide the solution:
 
-+ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`. It also allows the inspect to native UIView/NSView, which we use to test `ActivityIndicator` and `ProgressIndicator`.
++ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`. It also allows the inspect to native UIView/NSView.
 
 To run the test:
 
