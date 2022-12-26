@@ -10,7 +10,7 @@ import SwiftUI
 
 #if os(macOS) || os(iOS) || os(tvOS)
 /// An activity indicator (system style)
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct ActivityIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
     var style: Style
@@ -72,7 +72,7 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     #endif
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension ActivityIndicator {
     public enum Style {
         case medium

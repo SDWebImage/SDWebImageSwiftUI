@@ -10,7 +10,7 @@ import SwiftUI
 
 #if os(macOS) || os(iOS) || os(tvOS)
 /// A progress bar indicator (system style)
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct ProgressIndicator: PlatformViewRepresentable {
     @Binding var isAnimating: Bool
     @Binding var progress: Double
@@ -102,7 +102,7 @@ public struct ProgressIndicator: PlatformViewRepresentable {
     #endif
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension ProgressIndicator {
     public enum Style {
         case `default`

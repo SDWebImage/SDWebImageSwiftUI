@@ -12,7 +12,7 @@ import SDWebImage
 #if os(iOS) || os(tvOS) || os(macOS)
 
 /// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public final class AnimatedImageCoordinator: NSObject {
     
     /// Any user-provided object for actual coordinator, such as delegate method, taget-action
@@ -25,7 +25,7 @@ public final class AnimatedImageCoordinator: NSObject {
 }
 
 /// Data Binding Object, only properties in this object can support changes from user with @State and refresh
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedImageModel : ObservableObject {
     /// URL image
     @Published var url: URL?
@@ -40,7 +40,7 @@ final class AnimatedImageModel : ObservableObject {
 }
 
 /// Loading Binding Object, only properties in this object can support changes from user with @State and refresh
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedLoadingModel : ObservableObject {
     @Published var image: PlatformImage? // loaded image, note when progressive loading, this will published multiple times with different partial image
     @Published var isLoading: Bool = false // whether network is loading or cache is querying, should only be used for indicator binding
@@ -53,7 +53,7 @@ final class AnimatedLoadingModel : ObservableObject {
 }
 
 /// Completion Handler Binding Object, supports dynamic @State changes
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedImageHandler: ObservableObject {
     // Completion Handler
     @Published var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
@@ -65,7 +65,7 @@ final class AnimatedImageHandler: ObservableObject {
 }
 
 /// Layout Binding Object, supports dynamic @State changes
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedImageLayout : ObservableObject {
     var contentMode: ContentMode?
     var aspectRatio: CGFloat?
@@ -77,7 +77,7 @@ final class AnimatedImageLayout : ObservableObject {
 }
 
 /// Configuration Binding Object, supports dynamic @State changes
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedImageConfiguration: ObservableObject {
     var incrementalLoad: Bool?
     var maxBufferSize: UInt?
@@ -99,7 +99,7 @@ final class AnimatedImageConfiguration: ObservableObject {
 }
 
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
     @ObservedObject var imageModel: AnimatedImageModel
     @ObservedObject var imageHandler = AnimatedImageHandler()
@@ -566,7 +566,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
 }
 
 // Layout
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Configurate this view's image with the specified cap insets and options.
@@ -606,7 +606,7 @@ extension AnimatedImage {
 }
 
 // Aspect Ratio
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     /// Constrains this view's dimensions to the specified aspect ratio.
     /// - Parameters:
@@ -659,7 +659,7 @@ extension AnimatedImage {
 }
 
 // AnimatedImage Modifier
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Total loop count for animated image rendering. Defaults to nil.
@@ -736,7 +736,7 @@ extension AnimatedImage {
 }
 
 // Completion Handler
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Provide the action when image load fails.
@@ -768,7 +768,7 @@ extension AnimatedImage {
 }
 
 // View Coordinator Handler
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Provide the action when view representable create the native view.
@@ -796,7 +796,7 @@ extension AnimatedImage {
 }
 
 // Web Image convenience, based on UIKit/AppKit API
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Associate a placeholder when loading image with url
@@ -837,7 +837,7 @@ extension AnimatedImage {
 }
 
 // Indicator
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
     
     /// Associate a indicator when loading image with url
@@ -854,7 +854,7 @@ extension AnimatedImage {
 }
 
 #if DEBUG
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 struct AnimatedImage_Previews : PreviewProvider {
     static var previews: some View {
         Group {

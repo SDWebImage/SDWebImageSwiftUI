@@ -21,10 +21,10 @@ It brings all your favorite features from SDWebImage, like async image loading, 
   s.author           = { 'DreamPiggy' => 'lizhuoli1126@126.com' }
   s.source           = { :git => 'https://github.com/SDWebImage/SDWebImageSwiftUI.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '13.0'
-  s.osx.deployment_target = '10.15'
-  s.tvos.deployment_target = '13.0'
-  s.watchos.deployment_target = '6.0'
+  s.ios.deployment_target = '14.0'
+  s.osx.deployment_target = '11.0'
+  s.tvos.deployment_target = '14.0'
+  s.watchos.deployment_target = '7.0'
 
   s.source_files = 'SDWebImageSwiftUI/Classes/**/*', 'SDWebImageSwiftUI/Module/*.h'
   s.pod_target_xcconfig = {
@@ -35,5 +35,5 @@ It brings all your favorite features from SDWebImage, like async image loading, 
 
   s.weak_frameworks = 'SwiftUI', 'Combine'
   s.dependency 'SDWebImage', '~> 5.10'
-  s.swift_version = '5.2'
+  s.swift_version = '5.3'
 end
