@@ -261,21 +261,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
             self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, data, error, cacheType, finished, _) in
-            if #available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *) {
-                // Do nothing. on iOS 14's SwiftUI, the @Published will always trigger another `updateUIView` call with new UIView instance.
-            } else {
-                // This is a hack because of iOS 13's SwiftUI bug, the @Published does not trigger another `updateUIView` call
-                // Here I have to use UIKit/AppKit API to triger the same effect (the window change implicitly cause re-render)
-                if let hostingView = view.findHostingView() {
-                    if let _ = hostingView.window {
-                        #if os(macOS)
-                        hostingView.viewDidMoveToWindow()
-                        #else
-                        hostingView.didMoveToWindow()
-                        #endif
-                    }
-                }
-            }
             context.coordinator.imageLoading.image = image
             context.coordinator.imageLoading.isLoading = false
             context.coordinator.imageLoading.progress = 1
