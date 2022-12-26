@@ -66,38 +66,6 @@ public class AnimatedImageViewWrapper : PlatformView {
     }
 }
 
-/// Use wrapper to solve the `UIProgressView`/`NSProgressIndicator` frame origin NaN crash (SwiftUI's bug)
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
-public class ProgressIndicatorWrapper : PlatformView {
-    #if os(macOS)
-    var wrapped = NSProgressIndicator()
-    #else
-    var wrapped = UIProgressView(progressViewStyle: .default)
-    #endif
-    
-    #if os(macOS)
-    public override func layout() {
-        super.layout()
-        wrapped.setFrameOrigin(CGPoint(x: round(self.bounds.width - wrapped.frame.width) / 2, y: round(self.bounds.height - wrapped.frame.height) / 2))
-    }
-    #else
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        wrapped.center = self.center
-    }
-    #endif
-    
-    public override init(frame frameRect: CGRect) {
-        super.init(frame: frameRect)
-        addSubview(wrapped)
-    }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addSubview(wrapped)
-    }
-}
-
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension PlatformView {
     /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
