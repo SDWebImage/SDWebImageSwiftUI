@@ -71,7 +71,7 @@ extension Indicator where T == AnyView {
     
     /// Activity Indicator with style
     /// - Parameter style: style
-    public static func activity(style: any ProgressViewStyle) -> Indicator<T> {
+    public static func activity<S>(style: S) -> Indicator<T> where S: ProgressViewStyle {
         Indicator { isAnimating, _ in
             AnyView(ProgressView().progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
@@ -89,7 +89,7 @@ extension Indicator where T == AnyView {
     
     /// Progress Indicator with style
     /// - Parameter style: style
-    public static func progress(style: any ProgressViewStyle) -> Indicator<T> {
+    public static func progress<S>(style: S) -> Indicator<T> where S: ProgressViewStyle {
         Indicator { isAnimating, progress in
             AnyView(ProgressView(value: progress.wrappedValue).progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
