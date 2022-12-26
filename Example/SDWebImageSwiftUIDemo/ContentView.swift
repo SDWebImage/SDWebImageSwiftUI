@@ -17,23 +17,6 @@ class UserSettings: ObservableObject {
     #endif
 }
 
-#if os(watchOS)
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
-extension Indicator where T == ProgressView<EmptyView, EmptyView> {
-    static var activity: Indicator {
-        Indicator { isAnimating, progress in
-            ProgressView()
-        }
-    }
-    
-    static var progress: Indicator {
-        Indicator { isAnimating, progress in
-            ProgressView(value: progress.wrappedValue)
-        }
-    }
-}
-#endif
-
 // Test Switching url using @State
 struct ContentView2: View {
     @State var imageURLs = [

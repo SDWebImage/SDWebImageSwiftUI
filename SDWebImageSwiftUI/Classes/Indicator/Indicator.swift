@@ -54,45 +54,44 @@ public struct IndicatorViewModifier<T> : ViewModifier where T : View {
     
     public func body(content: Content) -> some View {
         ZStack {
-            content.overlay(overlay, alignment: .center)
+            content
+            overlay
         }
     }
 }
 
-#if os(macOS) || os(iOS) || os(tvOS)
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
-extension Indicator where T == ActivityIndicator {
+extension Indicator where T == AnyView {
     /// Activity Indicator
-    public static var activity: Indicator {
+    public static var activity: Indicator<T> {
         Indicator { isAnimating, _ in
-            ActivityIndicator(isAnimating)
+            AnyView(ProgressView().opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
     
     /// Activity Indicator with style
     /// - Parameter style: style
-    public static func activity(style: ActivityIndicator.Style) -> Indicator {
+    public static func activity(style: any ProgressViewStyle) -> Indicator<T> {
         Indicator { isAnimating, _ in
-            ActivityIndicator(isAnimating, style: style)
+            AnyView(ProgressView().progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
 }
 
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
-extension Indicator where T == ProgressIndicator {
+extension Indicator where T == AnyView {
     /// Progress Indicator
-    public static var progress: Indicator {
+    public static var progress: Indicator<T> {
         Indicator { isAnimating, progress in
-            ProgressIndicator(isAnimating, progress: progress)
+            AnyView(ProgressView(value: progress.wrappedValue).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
     
     /// Progress Indicator with style
     /// - Parameter style: style
-    public static func progress(style: ProgressIndicator.Style) -> Indicator {
+    public static func progress(style: any ProgressViewStyle) -> Indicator<T> {
         Indicator { isAnimating, progress in
-            ProgressIndicator(isAnimating, progress: progress, style: style)
+            AnyView(ProgressView(value: progress.wrappedValue).progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
 }
-#endif
