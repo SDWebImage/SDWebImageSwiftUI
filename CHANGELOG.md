@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.2] - 2022-12-27
+
+### Fixed
+- Fix the bug that isAnimating control does not works on WebImage #251
+- Note you should upgrade the SDWebImage 5.14.3+, or this may cause extra Xcode 14's runtime warning (function is unaffected)
+
 ## [2.2.1] - 2022-09-23
 
 ### Fixed
