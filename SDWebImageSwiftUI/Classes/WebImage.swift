@@ -117,11 +117,7 @@ public struct WebImage : View {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
                 } else {
-                    if let currentFrame = imagePlayer.currentFrame {
-                        configure(image: currentFrame)
-                    } else {
-                        configure(image: imageManager.image!)
-                    }
+                    displayImage()
                 }
             } else {
                 // Load Logic
@@ -231,6 +227,16 @@ public struct WebImage : View {
         }
     }
     
+    /// Static Image Display
+    func displayImage() -> some View {
+        disappearAction()
+        if let currentFrame = imagePlayer.currentFrame {
+            return configure(image: currentFrame)
+        } else {
+            return configure(image: imageManager.image!)
+        }
+    }
+    
     /// Animated Image Support
     func setupPlayer() -> some View {
         let shouldResetPlayer: Bool
@@ -239,6 +245,9 @@ public struct WebImage : View {
             shouldResetPlayer = true
         } else {
             shouldResetPlayer = false
+        }
+        if !shouldResetPlayer {
+            imagePlayer.startPlaying()
         }
         if let currentFrame = imagePlayer.currentFrame, !shouldResetPlayer {
             // Bind frame index to ID to ensure onDisappear called with sync
