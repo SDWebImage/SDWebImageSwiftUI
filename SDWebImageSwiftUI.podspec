@@ -30,7 +30,6 @@ It brings all your favorite features from SDWebImage, like async image loading, 
   s.pod_target_xcconfig = {
     'SUPPORTS_MACCATALYST' => 'YES',
     'DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER' => 'NO',
-    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
   }
 
   s.weak_frameworks = 'SwiftUI', 'Combine'
