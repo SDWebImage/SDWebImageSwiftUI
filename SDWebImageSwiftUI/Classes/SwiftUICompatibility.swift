@@ -9,14 +9,14 @@
 import Foundation
 import SwiftUI
 
-#if os(iOS) || os(tvOS) || os(macOS)
+#if !os(watchOS)
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 struct PlatformAppear: PlatformViewRepresentable {
     let appearAction: () -> Void
     let disappearAction: () -> Void
     
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     func makeUIView(context: Context) -> some UIView {
         let view = PlatformAppearView()
         view.appearAction = appearAction

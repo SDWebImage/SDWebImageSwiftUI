@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-#if os(macOS) || os(iOS) || os(tvOS)
+#if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
 /// An activity indicator (system style)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct ActivityIndicator: PlatformViewRepresentable {
@@ -26,11 +26,11 @@ public struct ActivityIndicator: PlatformViewRepresentable {
     
     #if os(macOS)
     public typealias NSViewType = NSProgressIndicator
-    #elseif os(iOS) || os(tvOS)
+    #else
     public typealias UIViewType = UIActivityIndicatorView
     #endif
     
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     public func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
         let activityStyle: UIActivityIndicatorView.Style
         switch style {

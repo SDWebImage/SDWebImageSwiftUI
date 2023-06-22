@@ -64,10 +64,10 @@ public struct WebImage : View {
     @ObservedObject var indicatorStatus : IndicatorStatus
     
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
-    @Backport.StateObject var imagePlayer = ImagePlayer()
+    @StateObject var imagePlayer = ImagePlayer()
     
     // FIXME: Use SwiftUI StateObject and remove onPlatformAppear once drop iOS 13 support
-    @Backport.StateObject var imageManager : ImageManager
+    @StateObject var imageManager : ImageManager
     
     /// Create a web image with url, placeholder, custom options and context. Optional can support animated image using Binding.
     /// - Parameter url: The image url
@@ -89,7 +89,7 @@ public struct WebImage : View {
         imageModel.context = context
         _imageModel = ObservedObject(wrappedValue: imageModel)
         let imageManager = ImageManager()
-        _imageManager = Backport.StateObject(wrappedValue: imageManager)
+        _imageManager = StateObject(wrappedValue: imageManager)
         _indicatorStatus = ObservedObject(wrappedValue: imageManager.indicatorStatus)
     }
     
@@ -160,9 +160,11 @@ public struct WebImage : View {
             // ensure CGImage is nil
             if image.cgImage == nil {
                 // draw vector into bitmap with the screen scale (behavior like AppKit)
-                #if os(iOS) || os(tvOS)
+                #if os(visionOS)
+                let scale = UITraitCollection.current.displayScale
+                #elseif os(iOS) || os(tvOS) || os(visionOS)
                 let scale = UIScreen.main.scale
-                #else
+                #elseif os(watchOS)
                 let scale = WKInterfaceDevice.current().screenScale
                 #endif
                 UIGraphicsBeginImageContextWithOptions(image.size, false, scale)

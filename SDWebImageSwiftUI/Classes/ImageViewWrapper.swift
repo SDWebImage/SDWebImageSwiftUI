@@ -9,7 +9,7 @@
 import Foundation
 import SDWebImage
 
-#if os(iOS) || os(tvOS) || os(macOS)
+#if !os(watchOS)
 
 /// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)

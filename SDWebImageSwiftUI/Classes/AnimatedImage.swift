@@ -9,7 +9,7 @@
 import SwiftUI
 import SDWebImage
 
-#if os(iOS) || os(tvOS) || os(macOS)
+#if !os(watchOS)
 
 /// A coordinator object used for `AnimatedImage`native view  bridge for UIKit/AppKit.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
@@ -183,7 +183,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     #if os(macOS)
     public typealias NSViewType = AnimatedImageViewWrapper
-    #elseif os(iOS) || os(tvOS)
+    #else
     public typealias UIViewType = AnimatedImageViewWrapper
     #endif
     
@@ -205,7 +205,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     public static func dismantleNSView(_ nsView: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(nsView, coordinator: coordinator)
     }
-    #elseif os(iOS) || os(tvOS)
+    #else
     public func makeUIView(context: Context) -> AnimatedImageViewWrapper {
         makeView(context: context)
     }
@@ -373,14 +373,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // AspectRatio && ContentMode
         #if os(macOS)
         let contentMode: NSImageScaling
-        #elseif os(iOS) || os(tvOS)
+        #else
         let contentMode: UIView.ContentMode
         #endif
         if let _ = imageLayout.aspectRatio {
             // If `aspectRatio` is not `nil`, always scale to fill and SwiftUI will layout the container with custom aspect ratio.
             #if os(macOS)
             contentMode = .scaleAxesIndependently
-            #elseif os(iOS) || os(tvOS)
+            #else
             contentMode = .scaleToFill
             #endif
         } else {
@@ -391,20 +391,20 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 // Actually, NSImageView have no `.aspectFill` unlike UIImageView, only `CALayerContentsGravity.resizeAspectFill` have the same concept
                 // However, using `.scaleProportionallyUpOrDown`, SwiftUI still layout the HostingView correctly, so this is OK
                 contentMode = .scaleProportionallyUpOrDown
-                #elseif os(iOS) || os(tvOS)
+                #else
                 contentMode = .scaleAspectFill
                 #endif
             case .fit:
                 #if os(macOS)
                 contentMode = .scaleProportionallyUpOrDown
-                #elseif os(iOS) || os(tvOS)
+                #else
                 contentMode = .scaleAspectFit
                 #endif
             case .none:
                 // If `contentMode` is not set at all, using scale to fill as SwiftUI default value
                 #if os(macOS)
                 contentMode = .scaleAxesIndependently
-                #elseif os(iOS) || os(tvOS)
+                #else
                 contentMode = .scaleToFill
                 #endif
             }

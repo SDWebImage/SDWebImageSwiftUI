@@ -58,7 +58,7 @@ public struct IndicatorViewModifier<T> : ViewModifier where T : View {
     }
 }
 
-#if os(macOS) || os(iOS) || os(tvOS)
+#if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Indicator where T == ActivityIndicator {
     /// Activity Indicator

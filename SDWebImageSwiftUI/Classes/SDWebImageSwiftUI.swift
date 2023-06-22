@@ -22,7 +22,7 @@ public typealias PlatformImage = UIImage
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public typealias PlatformView = NSView
 #endif
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public typealias PlatformView = UIView
 #endif
@@ -35,7 +35,7 @@ public typealias PlatformView = WKInterfaceObject
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public typealias PlatformViewRepresentable = NSViewRepresentable
 #endif
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public typealias PlatformViewRepresentable = UIViewRepresentable
 #endif
@@ -50,7 +50,7 @@ extension NSViewRepresentable {
     typealias PlatformViewType = NSViewType
 }
 #endif
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension UIViewRepresentable {
     typealias PlatformViewType = UIViewType

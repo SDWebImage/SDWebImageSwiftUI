@@ -44,7 +44,7 @@ struct DetailView: View {
     
     var body: some View {
         VStack {
-            #if os(iOS) || os(tvOS)
+            #if os(iOS) || os(tvOS) || os(visionOS)
             zoomView()
             .navigationBarItems(trailing: Button(isAnimating ? "Stop" : "Start") {
                 self.isAnimating.toggle()
@@ -62,7 +62,7 @@ struct DetailView: View {
     }
     
     func zoomView() -> some View {
-        #if os(macOS) || os(iOS)
+        #if os(macOS) || os(iOS) || os(visionOS)
         return contentView()
             .scaleEffect(self.scale)
             .gesture(MagnificationGesture(minimumScaleDelta: 0.1).onChanged { value in
@@ -94,7 +94,7 @@ struct DetailView: View {
     func contentView() -> some View {
         HStack {
             if animated {
-                #if os(macOS) || os(iOS) || os(tvOS)
+                #if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
                 AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
                 .resizable()
                 .placeholder(.wifiExclamationmark)
