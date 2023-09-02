@@ -6,8 +6,8 @@
 * file that was distributed with this source code.
 */
 
-import Foundation
 import SwiftUI
+import Combine
 
 /// A  type to build the indicator
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)

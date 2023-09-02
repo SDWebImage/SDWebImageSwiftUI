@@ -26,6 +26,12 @@ You can only use the Xcode's built-in package manager dependency to build on vis
 
 To run the visionOS example, you need to clone and add both `SDWebImage` and `SDWebImageSwiftUI`, open the `SDWebImageSwiftUI.xcworkspace` and drag those folders to become local package dependency, see: [Editing a package dependency as a local package](https://developer.apple.com/documentation/xcode/editing-a-package-dependency-as-a-local-package)
 
+If you really want to build framework instead of using Xcode's package dependency, following the manual steps below:
+
+1. Clone SDWebImage, open `SDWebImage.xcodeproj` and build `SDWebImage` target for visionOS platform (Change `MACH_O_TYPE` to static library if you need)
+2. Clone SDWebImageSwiftUI, create directory at `Carthage/Build/visionOS` and copy `SDWebImage.framework` into it
+3. Open `SDWebImageSwiftUI.xcodeproj` and build `SDWebImageSwiftUI visionOS` target
+
 ## Features
 
 Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
