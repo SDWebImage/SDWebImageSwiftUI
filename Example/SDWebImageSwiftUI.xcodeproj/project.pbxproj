@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,6 +29,23 @@
 		322E0E2228D332130003A55F /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 322E0DF228D331A20003A55F /* Images.bundle */; };
 		322E0E2328D332130003A55F /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 322E0DF228D331A20003A55F /* Images.bundle */; };
 		326B0D712345C01900D28269 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B0D702345C01900D28269 /* DetailView.swift */; };
+		32ABE4D92AA3753300331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4D82AA3753300331406 /* SDWebImageWebPCoder */; };
+		32ABE4DC2AA3755D00331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4DB2AA3755D00331406 /* SDWebImageSVGCoder */; };
+		32ABE4DF2AA3756A00331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4DE2AA3756A00331406 /* SDWebImagePDFCoder */; };
+		32ABE4E12AA3757B00331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4E02AA3757B00331406 /* SDWebImageWebPCoder */; };
+		32ABE4E32AA3757B00331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4E22AA3757B00331406 /* SDWebImageSVGCoder */; };
+		32ABE4E52AA3757B00331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4E42AA3757B00331406 /* SDWebImagePDFCoder */; };
+		32ABE4E72AA3758400331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4E62AA3758400331406 /* SDWebImageWebPCoder */; };
+		32ABE4E92AA3758400331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4E82AA3758400331406 /* SDWebImageSVGCoder */; };
+		32ABE4EB2AA3758400331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4EA2AA3758400331406 /* SDWebImagePDFCoder */; };
+		32ABE4F32AA3759900331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F22AA3759900331406 /* SDWebImageWebPCoder */; };
+		32ABE4F52AA3759900331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F42AA3759900331406 /* SDWebImageSVGCoder */; };
+		32ABE4F72AA3759900331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F62AA3759900331406 /* SDWebImagePDFCoder */; };
+		32ABE4F92AA375A500331406 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F82AA375A500331406 /* SDWebImage */; };
+		32ABE4FD2AA375A500331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */; };
+		32ABE4FF2AA375A500331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4FE2AA375A500331406 /* SDWebImageSVGCoder */; };
+		32ABE5012AA375A500331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE5002AA375A500331406 /* SDWebImagePDFCoder */; };
+		32ABE5032AA375B400331406 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE5022AA375B400331406 /* SDWebImageSwiftUI */; };
 		32B13E812AA368B700BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E802AA368B700BE9B5B /* SDWebImageSwiftUI */; };
 		32B13E832AA368B900BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E822AA368B900BE9B5B /* SDWebImage */; };
 		32B13E852AA368C600BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E842AA368C600BE9B5B /* SDWebImageSwiftUI */; };
@@ -36,8 +53,6 @@
 		32B13E892AA368CC00BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E882AA368CC00BE9B5B /* SDWebImage */; };
 		32B13E8F2AA368E100BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E8E2AA368E100BE9B5B /* SDWebImageSwiftUI */; };
 		32B13E912AA368E300BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E902AA368E300BE9B5B /* SDWebImage */; };
-		32B13E932AA368EF00BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E922AA368EF00BE9B5B /* SDWebImageSwiftUI */; };
-		32B13E952AA368F300BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E942AA368F300BE9B5B /* SDWebImage */; };
 		32D5D1672A445B260098BDFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D5D1662A445B260098BDFC /* AppDelegate.swift */; };
 		32D5D16B2A445B260098BDFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D5D16A2A445B260098BDFC /* Assets.xcassets */; };
 		32D5D16E2A445B260098BDFC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D5D16D2A445B260098BDFC /* Preview Assets.xcassets */; };
@@ -193,6 +208,9 @@
 			files = (
 				32B13E892AA368CC00BE9B5B /* SDWebImage in Frameworks */,
 				32D5D1762A445C8F0098BDFC /* SDWebImageSwiftUI in Frameworks */,
+				32ABE4D92AA3753300331406 /* SDWebImageWebPCoder in Frameworks */,
+				32ABE4DF2AA3756A00331406 /* SDWebImagePDFCoder in Frameworks */,
+				32ABE4DC2AA3755D00331406 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +241,9 @@
 			files = (
 				32B13E832AA368B900BE9B5B /* SDWebImage in Frameworks */,
 				32B13E812AA368B700BE9B5B /* SDWebImageSwiftUI in Frameworks */,
+				32ABE4F32AA3759900331406 /* SDWebImageWebPCoder in Frameworks */,
+				32ABE4F72AA3759900331406 /* SDWebImagePDFCoder in Frameworks */,
+				32ABE4F52AA3759900331406 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +253,9 @@
 			files = (
 				32B13E872AA368C900BE9B5B /* SDWebImage in Frameworks */,
 				32B13E852AA368C600BE9B5B /* SDWebImageSwiftUI in Frameworks */,
+				32ABE4E12AA3757B00331406 /* SDWebImageWebPCoder in Frameworks */,
+				32ABE4E52AA3757B00331406 /* SDWebImagePDFCoder in Frameworks */,
+				32ABE4E32AA3757B00331406 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +265,9 @@
 			files = (
 				32B13E912AA368E300BE9B5B /* SDWebImage in Frameworks */,
 				32B13E8F2AA368E100BE9B5B /* SDWebImageSwiftUI in Frameworks */,
+				32ABE4E72AA3758400331406 /* SDWebImageWebPCoder in Frameworks */,
+				32ABE4EB2AA3758400331406 /* SDWebImagePDFCoder in Frameworks */,
+				32ABE4E92AA3758400331406 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +275,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32ABE5032AA375B400331406 /* SDWebImageSwiftUI in Frameworks */,
+				32ABE4F92AA375A500331406 /* SDWebImage in Frameworks */,
+				32ABE4FD2AA375A500331406 /* SDWebImageWebPCoder in Frameworks */,
+				32ABE5012AA375A500331406 /* SDWebImagePDFCoder in Frameworks */,
+				32ABE4FF2AA375A500331406 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,8 +294,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B13E952AA368F300BE9B5B /* SDWebImage in Frameworks */,
-				32B13E932AA368EF00BE9B5B /* SDWebImageSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +498,9 @@
 			packageProductDependencies = (
 				32D5D1752A445C8F0098BDFC /* SDWebImageSwiftUI */,
 				32B13E882AA368CC00BE9B5B /* SDWebImage */,
+				32ABE4D82AA3753300331406 /* SDWebImageWebPCoder */,
+				32ABE4DB2AA3755D00331406 /* SDWebImageSVGCoder */,
+				32ABE4DE2AA3756A00331406 /* SDWebImagePDFCoder */,
 			);
 			productName = SDWebImageSwiftUIDemo;
 			productReference = 320CDC2922FADB44007CF858 /* SDWebImageSwiftUIDemo.app */;
@@ -552,6 +585,9 @@
 			packageProductDependencies = (
 				32B13E802AA368B700BE9B5B /* SDWebImageSwiftUI */,
 				32B13E822AA368B900BE9B5B /* SDWebImage */,
+				32ABE4F22AA3759900331406 /* SDWebImageWebPCoder */,
+				32ABE4F42AA3759900331406 /* SDWebImageSVGCoder */,
+				32ABE4F62AA3759900331406 /* SDWebImagePDFCoder */,
 			);
 			productName = "SDWebImageSwiftUIDemo-visionOS";
 			productReference = 32D5D1602A445B250098BDFC /* SDWebImageSwiftUIDemo-visionOS.app */;
@@ -573,6 +609,9 @@
 			packageProductDependencies = (
 				32B13E842AA368C600BE9B5B /* SDWebImageSwiftUI */,
 				32B13E862AA368C900BE9B5B /* SDWebImage */,
+				32ABE4E02AA3757B00331406 /* SDWebImageWebPCoder */,
+				32ABE4E22AA3757B00331406 /* SDWebImageSVGCoder */,
+				32ABE4E42AA3757B00331406 /* SDWebImagePDFCoder */,
 			);
 			productName = "SDWebImageSwiftUIDemo-macOS";
 			productReference = 32E529092348A0C700EA46FF /* SDWebImageSwiftUIDemo-macOS.app */;
@@ -594,6 +633,9 @@
 			packageProductDependencies = (
 				32B13E8E2AA368E100BE9B5B /* SDWebImageSwiftUI */,
 				32B13E902AA368E300BE9B5B /* SDWebImage */,
+				32ABE4E62AA3758400331406 /* SDWebImageWebPCoder */,
+				32ABE4E82AA3758400331406 /* SDWebImageSVGCoder */,
+				32ABE4EA2AA3758400331406 /* SDWebImagePDFCoder */,
 			);
 			productName = "SDWebImageSwiftUIDemo-tvOS";
 			productReference = 32E529202348A0D300EA46FF /* SDWebImageSwiftUIDemo-tvOS.app */;
@@ -632,8 +674,6 @@
 			);
 			name = "SDWebImageSwiftUIDemo-watchOS WatchKit App";
 			packageProductDependencies = (
-				32B13E922AA368EF00BE9B5B /* SDWebImageSwiftUI */,
-				32B13E942AA368F300BE9B5B /* SDWebImage */,
 			);
 			productName = "SDWebImageSwiftUIDemo-watchOS WatchKit App";
 			productReference = 32E529372348A0DD00EA46FF /* SDWebImageSwiftUIDemo-watchOS WatchKit App.app */;
@@ -652,6 +692,13 @@
 			dependencies = (
 			);
 			name = "SDWebImageSwiftUIDemo-watchOS WatchKit Extension";
+			packageProductDependencies = (
+				32ABE4F82AA375A500331406 /* SDWebImage */,
+				32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */,
+				32ABE4FE2AA375A500331406 /* SDWebImageSVGCoder */,
+				32ABE5002AA375A500331406 /* SDWebImagePDFCoder */,
+				32ABE5022AA375B400331406 /* SDWebImageSwiftUI */,
+			);
 			productName = "SDWebImageSwiftUIDemo-watchOS WatchKit Extension";
 			productReference = 32E529462348A0DE00EA46FF /* SDWebImageSwiftUIDemo-watchOS WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -721,6 +768,9 @@
 			mainGroup = 607FACC71AFB9204008FA782;
 			packageReferences = (
 				3294617A2AA36734009E391B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
+				32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */,
+				32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
@@ -1852,6 +1902,30 @@
 				minimumVersion = 2.2.3;
 			};
 		};
+		32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageWebPCoder.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
+		32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSVGCoder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImagePDFCoder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nalexn/ViewInspector.git";
@@ -1872,6 +1946,89 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 32DCFE8D28D333B0001A17BF /* XCRemoteSwiftPackageReference "ViewInspector" */;
 			productName = ViewInspector;
+		};
+		32ABE4D82AA3753300331406 /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		32ABE4DB2AA3755D00331406 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		32ABE4DE2AA3756A00331406 /* SDWebImagePDFCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
+			productName = SDWebImagePDFCoder;
+		};
+		32ABE4E02AA3757B00331406 /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		32ABE4E22AA3757B00331406 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		32ABE4E42AA3757B00331406 /* SDWebImagePDFCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
+			productName = SDWebImagePDFCoder;
+		};
+		32ABE4E62AA3758400331406 /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		32ABE4E82AA3758400331406 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		32ABE4EA2AA3758400331406 /* SDWebImagePDFCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
+			productName = SDWebImagePDFCoder;
+		};
+		32ABE4F22AA3759900331406 /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		32ABE4F42AA3759900331406 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		32ABE4F62AA3759900331406 /* SDWebImagePDFCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
+			productName = SDWebImagePDFCoder;
+		};
+		32ABE4F82AA375A500331406 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SDWebImage;
+		};
+		32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
+			productName = SDWebImageWebPCoder;
+		};
+		32ABE4FE2AA375A500331406 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DA2AA3755D00331406 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		32ABE5002AA375A500331406 /* SDWebImagePDFCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
+			productName = SDWebImagePDFCoder;
+		};
+		32ABE5022AA375B400331406 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SDWebImageSwiftUI;
 		};
 		32B13E802AA368B700BE9B5B /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1898,14 +2055,6 @@
 			productName = SDWebImageSwiftUI;
 		};
 		32B13E902AA368E300BE9B5B /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
-		};
-		32B13E922AA368EF00BE9B5B /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImageSwiftUI;
-		};
-		32B13E942AA368F300BE9B5B /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SDWebImage;
 		};

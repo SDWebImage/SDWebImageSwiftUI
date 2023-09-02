@@ -618,9 +618,10 @@ struct ContentView : View {
 
 To run the example using SwiftUI, following the steps:
 
-1. Run `pod install` on root directory to install the dependency.
-2. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
-3. Choose `SDWebImageSwiftUIDemo` scheme and run the demo application.
+1. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
+2. Choose `SDWebImageSwiftUIDemo` (or other platforms) scheme and run the demo application.
+
+Note: The `Podfile` here is because history we use CocoaPods to integrate libs into Demo, but now we use SPM.
 
 Since SwiftUI is aimed to support all Apple platforms, our demo does this as well, one codebase including:
 
@@ -628,6 +629,7 @@ Since SwiftUI is aimed to support all Apple platforms, our demo does this as wel
 + macOS
 + tvOS
 + watchOS
++ visionOS
 
 Demo Tips:
 

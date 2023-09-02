@@ -9,12 +9,17 @@
 import SwiftUI
 import UIKit
 import SDWebImage
+import SDWebImageWebPCoder
+import SDWebImageSVGCoder
+import SDWebImagePDFCoder
 
 // no changes in your AppDelegate class
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Add WebP/SVG/PDF support
-        SDImageCodersManager.shared.addCoder(SDImageAWebPCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
         // Dynamic check to support vector format for both WebImage/AnimatedImage
         SDWebImageManager.shared.optionsProcessor = SDWebImageOptionsProcessor { url, options, context in
             var options = options
