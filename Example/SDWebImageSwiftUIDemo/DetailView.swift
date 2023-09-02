@@ -111,7 +111,7 @@ struct DetailView: View {
                 WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
                 .resizable()
                 .placeholder(.wifiExclamationmark)
-                .indicator(.progress)
+                .indicator(.progress(style: .circular))
                 .scaledToFit()
             }
         }

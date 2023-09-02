@@ -59,10 +59,10 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 ## Requirements
 
 + Xcode 12+
-+ iOS 13+ (14+ Recommended)
-+ macOS 10.15+ (11+ Recommended)
-+ tvOS 13+ (14+ Recommended)
-+ watchOS 6+ (7+ Recommended)
++ iOS 14+
++ macOS 11+
++ tvOS 14+
++ watchOS 7+
 
 ## SwiftUI 2.0 Compatibility
 
@@ -82,9 +82,7 @@ var body: some View {
 }
 ```
 
-Note: However, many differences behavior between iOS 13/14's is hard to fixup. And we may break some APIs (which are not designed to be public) to fixup it.
-
-Due to maintain issue, in the future release, we will drop the iOS 13 supports and always match SwiftUI 2.0's behavior. And **v2.x** may be the last version support iOS 13.
+Note: However, many differences behavior between iOS 13/14 is hard to fixup. Due to maintain issue, from SDWebImageSwiftUI v3.0, iOS 13 is no longer supported. We always match SwiftUI 2.0's behavior.
 
 
 ## Installation
@@ -174,7 +172,14 @@ var body: some View {
 }
 ```
 
-Note: For indicator, you can custom your own as well. For example, iOS 14/watchOS 7 introduce the new `ProgressView`, which can replace our built-in `ProgressIndicator/ActivityIndicator` (where watchOS does not provide).
+Note: For indicator, you can custom your own as well. For example, iOS 14/watchOS 7 introduce the new `ProgressView`, which can be easily used via:
+
+```swift
+WebImage(url: url)
+.indicator(.activity)
+```
+
+or you can just write like:
 
 ```swift
 WebImage(url: url)
@@ -522,7 +527,7 @@ For caches, you actually don't need to worry about anything. It just works after
 
 #### Using for backward deployment and weak linking SwiftUI
 
-SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 13/macOS 10.15/tvOS 13/watchOS 6. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
+SDWebImageSwiftUI supports to use when your App Target has a deployment target version less than iOS 14/macOS 11/tvOS 14/watchOS 7. Which will weak linking of SwiftUI(Combine) to allows writing code with available check at runtime.
 
 To use backward deployment, you have to do the follow things:
 
@@ -536,7 +541,7 @@ You should notice that all the third party SwiftUI frameworks should have this b
 
 For deployment target version below iOS 12.2 (The first version which Swift 5 Runtime bundled in iOS system), you have to change the min deployment target version of SDWebImageSwiftUI. This may take some side effect on compiler's optimization and trigger massive warnings for some frameworks.
 
-However, for iOS 12.2+, you can still keep the min deployment target version to iOS 13, no extra warnings or performance slow down for iOS 13 client.
+However, for iOS 12.2+, you can still keep the min deployment target version to iOS 14, no extra warnings or performance slow down for iOS 14 client.
 
 Because Swift use the min deployment target version to detect whether to link the App bundled Swift runtime, or the System built-in one (`/usr/lib/swift/libswiftCore.dylib`).
 
@@ -563,7 +568,7 @@ end
 + For CocoaPods user, you can skip the platform version validation in Podfile with:
 
 ```ruby
-platform :ios, '13.0' # This does not effect your App Target's deployment target version, just a hint for CocoaPods
+platform :ios, '14.0' # This does not effect your App Target's deployment target version, just a hint for CocoaPods
 ```
 
 + For SwiftPM user, SwiftPM does not support weak linking nor Library Evolution, so it can not deployment to iOS 12+ user without changing the min deployment target.
@@ -576,7 +581,7 @@ Add **all the SwiftUI code** with the available annotation and runtime check, li
 // AppDelegate.swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // ...
-    if #available(iOS 13, *) {
+    if #available(iOS 14, *) {
         window.rootViewController = UIHostingController(rootView: ContentView())
     } else {
         window.rootViewController = ViewController()
@@ -598,11 +603,11 @@ class ViewController: UIViewController {
 }
 
 // ContentView.swift
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 struct ContentView : View {
     var body: some View {
         Group {
-            Text("Hello World iOS 13!")
+            Text("Hello World iOS 14!")
             WebImage(url: URL(string: "https://i.loli.net/2019/09/24/rX2RkVWeGKIuJvc.jpg"))
         }
     }
@@ -638,7 +643,7 @@ SDWebImageSwiftUI has Unit Test to increase code quality. For SwiftUI, there are
 
 However, since SwiftUI is State-Based and Attributed-Implemented layout system, there are open source projects who provide the solution:
 
-+ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`. It also allows the inspect to native UIView/NSView, which we use to test `ActivityIndicator` and `ProgressIndicator`.
++ [ViewInspector](https://github.com/nalexn/ViewInspector): Inspect View's runtime attribute value (like `.frame` modifier, `.image` value). We use this to test `AnimatedImage` and `WebImage`. It also allows the inspect to native UIView/NSView.
 
 To run the test:
 

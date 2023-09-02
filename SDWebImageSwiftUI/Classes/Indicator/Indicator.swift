@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 /// A  type to build the indicator
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct Indicator<T> where T : View {
     var content: (Binding<Bool>, Binding<Double>) -> T
     
@@ -25,7 +25,7 @@ public struct Indicator<T> where T : View {
 }
 
 /// A observable model to report indicator loading status
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public class IndicatorStatus : ObservableObject {
     /// whether indicator is loading or not
     @Published var isLoading: Bool = false
@@ -36,7 +36,7 @@ public class IndicatorStatus : ObservableObject {
 /// A implementation detail View Modifier with indicator
 /// SwiftUI View Modifier construced by using a internal View type which modify the `body`
 /// It use type system to represent the view hierarchy, and Swift `some View` syntax to hide the type detail for users
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct IndicatorViewModifier<T> : ViewModifier where T : View {
     
     /// The loading status
@@ -45,53 +45,53 @@ public struct IndicatorViewModifier<T> : ViewModifier where T : View {
     /// The indicator
     public var indicator: Indicator<T>
     
+    @ViewBuilder
+    private var overlay: some View {
+        if status.isLoading {
+            indicator.content($status.isLoading, $status.progress)
+        }
+    }
+    
     public func body(content: Content) -> some View {
         ZStack {
             content
-            .backport
-            .overlay {
-                if status.isLoading {
-                    indicator.content($status.isLoading, $status.progress)
-                }
-            }
+            overlay
         }
     }
 }
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-extension Indicator where T == ActivityIndicator {
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+extension Indicator where T == AnyView {
     /// Activity Indicator
-    public static var activity: Indicator {
+    public static var activity: Indicator<T> {
         Indicator { isAnimating, _ in
-            ActivityIndicator(isAnimating)
+            AnyView(ProgressView().opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
     
     /// Activity Indicator with style
     /// - Parameter style: style
-    public static func activity(style: ActivityIndicator.Style) -> Indicator {
+    public static func activity<S>(style: S) -> Indicator<T> where S: ProgressViewStyle {
         Indicator { isAnimating, _ in
-            ActivityIndicator(isAnimating, style: style)
+            AnyView(ProgressView().progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-extension Indicator where T == ProgressIndicator {
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+extension Indicator where T == AnyView {
     /// Progress Indicator
-    public static var progress: Indicator {
+    public static var progress: Indicator<T> {
         Indicator { isAnimating, progress in
-            ProgressIndicator(isAnimating, progress: progress)
+            AnyView(ProgressView(value: progress.wrappedValue).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
     
     /// Progress Indicator with style
     /// - Parameter style: style
-    public static func progress(style: ProgressIndicator.Style) -> Indicator {
+    public static func progress<S>(style: S) -> Indicator<T> where S: ProgressViewStyle {
         Indicator { isAnimating, progress in
-            ProgressIndicator(isAnimating, progress: progress, style: style)
+            AnyView(ProgressView(value: progress.wrappedValue).progressViewStyle(style).opacity(isAnimating.wrappedValue ? 1 : 0))
         }
     }
 }
-#endif
