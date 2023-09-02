@@ -14,9 +14,9 @@ permissions:
 jobs:
   Pods:
     name: Cocoapods Lint
-    runs-on: macos-11
+    runs-on: macos-12
     env:
-      DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,9 +34,9 @@ jobs:
           
   Demo:
     name: Run Demo
-    runs-on: macos-11
+    runs-on: macos-12
     env:
-      DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
       WORKSPACE_NAME: SDWebImageSwiftUI.xcworkspace
       OSXSCHEME: SDWebImageSwiftUIDemo-macOS
       iOSSCHEME: SDWebImageSwiftUIDemo
@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         iosDestination: ["name=iPhone 13 Pro"]
-        tvOSDestination: ["name=Apple TV 4K"]
+        tvOSDestination: ["name=Apple TV"]
         watchOSDestination: ["platform=watchOS Simulator,name=Apple Watch Series 7 - 45mm"]
         macOSDestination: ["platform=macOS"]
         macCatalystDestination: ["platform=macOS,arch=x86_64,variant=Mac Catalyst"]
@@ -92,9 +92,9 @@ jobs:
           
   Test:
     name: Unit Test
-    runs-on: macos-11
+    runs-on: macos-12
     env:
-      DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
       WORKSPACE_NAME: SDWebImageSwiftUI.xcworkspace
       OSXSCHEME: SDWebImageSwiftUITests macOS
       iOSSCHEME: SDWebImageSwiftUITests
@@ -154,9 +154,9 @@ jobs:
           
   Build:
     name: Build Library
-    runs-on: macos-11
+    runs-on: macos-12
     env:
-      DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
       PROJECT_NAME: SDWebImageSwiftUI.xcodeproj
       OSXSCHEME: SDWebImageSwiftUI macOS
       iOSSCHEME: SDWebImageSwiftUI
