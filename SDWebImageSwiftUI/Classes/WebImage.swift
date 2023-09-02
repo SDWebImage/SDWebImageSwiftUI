@@ -158,9 +158,11 @@ public struct WebImage : View {
             // ensure CGImage is nil
             if image.cgImage == nil {
                 // draw vector into bitmap with the screen scale (behavior like AppKit)
-                #if os(iOS) || os(tvOS)
+                #if os(visionOS)
+                let scale = UITraitCollection.current.displayScale
+                #elseif os(iOS) || os(tvOS) || os(visionOS)
                 let scale = UIScreen.main.scale
-                #else
+                #elseif os(watchOS)
                 let scale = WKInterfaceDevice.current().screenScale
                 #endif
                 UIGraphicsBeginImageContextWithOptions(image.size, false, scale)

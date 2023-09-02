@@ -18,6 +18,20 @@ It brings all your favorite features from SDWebImage, like async image loading, 
 
 The framework provide the different View structs, which API match the SwiftUI framework guideline. If you're familiar with `Image`, you'll find it easy to use `WebImage` and `AnimatedImage`.
 
+## Apple VisionOS
+
+From v3.0.0 (beta), SDWebImageSwiftUI can be compiled for visionOS platform. However, due to the lacking package manager support (need tools update), we don't support CocoaPods/SPM yet.
+
+You can only use the Xcode's built-in package manager dependency to build on visionOS.
+
+To run the visionOS example, you need to clone and add both `SDWebImage` and `SDWebImageSwiftUI`, open the `SDWebImageSwiftUI.xcworkspace` and drag those folders to become local package dependency, see: [Editing a package dependency as a local package](https://developer.apple.com/documentation/xcode/editing-a-package-dependency-as-a-local-package)
+
+If you really want to build framework instead of using Xcode's package dependency, following the manual steps below:
+
+1. Clone SDWebImage, open `SDWebImage.xcodeproj` and build `SDWebImage` target for visionOS platform (Change `MACH_O_TYPE` to static library if you need)
+2. Clone SDWebImageSwiftUI, create directory at `Carthage/Build/visionOS` and copy `SDWebImage.framework` into it
+3. Open `SDWebImageSwiftUI.xcodeproj` and build `SDWebImageSwiftUI visionOS` target
+
 ## Features
 
 Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
@@ -50,32 +64,17 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 ## Requirements
 
-+ Xcode 12+
++ Xcode 14+
 + iOS 14+
 + macOS 11+
 + tvOS 14+
 + watchOS 7+
 
-## SwiftUI 2.0 Compatibility
+## for SwiftUI 1.0 (iOS 13)
 
 iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
 
-From v2.0.0, we adopt SwiftUI 2.0 and iOS 14(macOS 11)'s behavior. You can use `WebImage` and `AnimatedImage` inside the new `LazyVStack`.
-
-```swift
-var body: some View {
-    ScrollView {
-        LazyVStack {
-            ForEach(urls, id: \.self) { url in
-                AnimatedImage(url: url)
-            }
-        }
-    }
-}
-```
-
-Note: However, many differences behavior between iOS 13/14 is hard to fixup. Due to maintain issue, from SDWebImageSwiftUI v3.0, iOS 13 is no longer supported. We always match SwiftUI 2.0's behavior.
-
+From v3.0.0 (Beta), SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using `2.x` branch) instead.
 
 ## Installation
 
@@ -610,9 +609,10 @@ struct ContentView : View {
 
 To run the example using SwiftUI, following the steps:
 
-1. Run `pod install` on root directory to install the dependency.
-2. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
-3. Choose `SDWebImageSwiftUIDemo` scheme and run the demo application.
+1. Open `SDWebImageSwiftUI.xcworkspace`, wait for SwiftPM finishing downloading the test dependency.
+2. Choose `SDWebImageSwiftUIDemo` (or other platforms) scheme and run the demo application.
+
+Note: The `Podfile` here is because history we use CocoaPods to integrate libs into Demo, but now we use SPM.
 
 Since SwiftUI is aimed to support all Apple platforms, our demo does this as well, one codebase including:
 
@@ -620,6 +620,7 @@ Since SwiftUI is aimed to support all Apple platforms, our demo does this as wel
 + macOS
 + tvOS
 + watchOS
++ visionOS
 
 Demo Tips:
 

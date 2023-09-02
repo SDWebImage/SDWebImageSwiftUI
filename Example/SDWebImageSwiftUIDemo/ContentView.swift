@@ -95,7 +95,7 @@ struct ContentView: View {
             NavigationLink(destination: DetailView(url: url, animated: self.animated)) {
                 HStack {
                     if self.animated {
-                        #if os(macOS) || os(iOS) || os(tvOS)
+                        #if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
                         AnimatedImage(url: URL(string:url), isAnimating: .constant(true))
                         .onViewUpdate { view, context in
                         #if os(macOS)
@@ -140,6 +140,20 @@ struct ContentView: View {
 
     
     var body: some View {
+        #if os(visionOS)
+        return NavigationView {
+            contentView()
+            .navigationBarTitle(animated ? "AnimatedImage" : "WebImage")
+            .navigationBarItems(leading:
+                Button(action: { self.reloadCache() }) {
+                    Text("Reload")
+                }, trailing:
+                Button(action: { self.switchView() }) {
+                    Text("Switch")
+                }
+            )
+        }
+        #endif
         #if os(iOS)
         return NavigationView {
             contentView()

@@ -25,7 +25,7 @@ extension PlatformImage {
     static var empty = PlatformImage()
 }
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if !os(macOS)
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension PlatformImage.Orientation {
     @inlinable var toSwiftUI: Image.Orientation {

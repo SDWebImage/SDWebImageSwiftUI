@@ -7,22 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3243AFE62AA37EFF0049A43B /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
+		3243AFE72AA37EFF0049A43B /* WebImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDE22FD54C600BE87F5 /* WebImage.swift */; };
+		3243AFE82AA37EFF0049A43B /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
+		3243AFE92AA37EFF0049A43B /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
+		3243AFEA2AA37EFF0049A43B /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
+		3243AFEB2AA37EFF0049A43B /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */; };
+		3243AFEC2AA37EFF0049A43B /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDC22FD54C600BE87F5 /* ImageManager.swift */; };
+		3243AFED2AA37EFF0049A43B /* SDWebImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */; };
+		3243AFEE2AA37F010049A43B /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
+		3243AFEF2AA37F030049A43B /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		326B84822363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84832363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84842363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
 		326B84852363350C0011BDFB /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B84812363350C0011BDFB /* Indicator.swift */; };
-		326B8487236335110011BDFB /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B8486236335110011BDFB /* ActivityIndicator.swift */; };
-		326B8488236335110011BDFB /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B8486236335110011BDFB /* ActivityIndicator.swift */; };
-		326B8489236335110011BDFB /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B8486236335110011BDFB /* ActivityIndicator.swift */; };
-		326B848A236335110011BDFB /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B8486236335110011BDFB /* ActivityIndicator.swift */; };
-		326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B848B236335400011BDFB /* ProgressIndicator.swift */; };
-		326B848D236335400011BDFB /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B848B236335400011BDFB /* ProgressIndicator.swift */; };
-		326B848E236335400011BDFB /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B848B236335400011BDFB /* ProgressIndicator.swift */; };
-		326B848F236335400011BDFB /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326B848B236335400011BDFB /* ProgressIndicator.swift */; };
 		326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
+		329885EE2AA37FCB0071F2BA /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 329885ED2AA37FCB0071F2BA /* SDWebImage.framework */; };
 		32B79C9528DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
 		32B79C9628DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
 		32B79C9728DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
@@ -71,13 +74,12 @@
 		3211F84F23DE98E300FC757F /* WebImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageTests.swift; sourceTree = "<group>"; };
 		3211F85423DE9D2700FC757F /* Images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Images.bundle; sourceTree = "<group>"; };
 		322E0F4723E57F09006836DC /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
+		3243AFDF2AA37EE90049A43B /* SDWebImageSwiftUI_visionOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI_visionOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		326B84812363350C0011BDFB /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
-		326B8486236335110011BDFB /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
-		326B848B236335400011BDFB /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
+		329885ED2AA37FCB0071F2BA /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/visionOS/SDWebImage.framework; sourceTree = "<group>"; };
 		32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUICompatibility.swift; sourceTree = "<group>"; };
 		32B933E423659A1900BB7CAD /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
-		32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTests.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		32C43DDE22FD54C600BE87F5 /* WebImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebImage.swift; sourceTree = "<group>"; };
@@ -98,6 +100,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3243AFDC2AA37EE90049A43B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				329885EE2AA37FCB0071F2BA /* SDWebImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DC922FD540D00BE87F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -140,7 +150,6 @@
 				3211F84823DE984D00FC757F /* Info.plist */,
 				3211F84623DE984D00FC757F /* AnimatedImageTests.swift */,
 				3211F84F23DE98E300FC757F /* WebImageTests.swift */,
-				32BD9C4623E03B08008D5F6A /* IndicatorTests.swift */,
 				32ED4825242A13030053338E /* ImageManagerTests.swift */,
 				322E0F4723E57F09006836DC /* TestUtils.swift */,
 			);
@@ -151,8 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				326B84812363350C0011BDFB /* Indicator.swift */,
-				326B8486236335110011BDFB /* ActivityIndicator.swift */,
-				326B848B236335400011BDFB /* ProgressIndicator.swift */,
 			);
 			path = Indicator;
 			sourceTree = "<group>";
@@ -184,6 +191,7 @@
 				32C43DF422FD57FD00BE87F5 /* SDWebImageSwiftUI.framework */,
 				32C43E0122FD581400BE87F5 /* SDWebImageSwiftUI.framework */,
 				32C43E0E22FD581C00BE87F5 /* SDWebImageSwiftUI.framework */,
+				3243AFDF2AA37EE90049A43B /* SDWebImageSwiftUI_visionOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +224,7 @@
 		32C43DE822FD577300BE87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				329885ED2AA37FCB0071F2BA /* SDWebImage.framework */,
 				32C43E2D22FD586E00BE87F5 /* SDWebImage.framework */,
 				32C43E2922FD586200BE87F5 /* SDWebImage.framework */,
 				32C43E2522FD585300BE87F5 /* SDWebImage.framework */,
@@ -227,6 +236,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		3243AFDA2AA37EE90049A43B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DC722FD540D00BE87F5 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -262,6 +278,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3243AFDE2AA37EE90049A43B /* SDWebImageSwiftUI visionOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3243AFE32AA37EEA0049A43B /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUI visionOS" */;
+			buildPhases = (
+				3243AFDA2AA37EE90049A43B /* Headers */,
+				3243AFDB2AA37EE90049A43B /* Sources */,
+				3243AFDC2AA37EE90049A43B /* Frameworks */,
+				3243AFDD2AA37EE90049A43B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SDWebImageSwiftUI visionOS";
+			productName = "SDWebImageSwiftUI visionOS";
+			productReference = 3243AFDF2AA37EE90049A43B /* SDWebImageSwiftUI_visionOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		32C43DCB22FD540D00BE87F5 /* SDWebImageSwiftUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32C43DD422FD540D00BE87F5 /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUI" */;
@@ -344,6 +378,9 @@
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = SDWebImage;
 				TargetAttributes = {
+					3243AFDE2AA37EE90049A43B = {
+						CreatedOnToolsVersion = 15.0;
+					};
 					32C43DCB22FD540D00BE87F5 = {
 						CreatedOnToolsVersion = 11.0;
 						LastSwiftMigration = 1100;
@@ -371,8 +408,6 @@
 				Base,
 			);
 			mainGroup = 32C43DC222FD540D00BE87F5;
-			packageReferences = (
-			);
 			productRefGroup = 32C43DCD22FD540D00BE87F5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -381,11 +416,19 @@
 				32C43DF322FD57FD00BE87F5 /* SDWebImageSwiftUI macOS */,
 				32C43E0022FD581400BE87F5 /* SDWebImageSwiftUI tvOS */,
 				32C43E0D22FD581C00BE87F5 /* SDWebImageSwiftUI watchOS */,
+				3243AFDE2AA37EE90049A43B /* SDWebImageSwiftUI visionOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3243AFDD2AA37EE90049A43B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DCA22FD540D00BE87F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -417,6 +460,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3243AFDB2AA37EE90049A43B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3243AFEF2AA37F030049A43B /* Transition.swift in Sources */,
+				3243AFE92AA37EFF0049A43B /* ImageViewWrapper.swift in Sources */,
+				3243AFE72AA37EFF0049A43B /* WebImage.swift in Sources */,
+				3243AFEC2AA37EFF0049A43B /* ImageManager.swift in Sources */,
+				3243AFEB2AA37EFF0049A43B /* AnimatedImage.swift in Sources */,
+				3243AFE82AA37EFF0049A43B /* ImagePlayer.swift in Sources */,
+				3243AFED2AA37EFF0049A43B /* SDWebImageSwiftUI.swift in Sources */,
+				3243AFE62AA37EFF0049A43B /* SwiftUICompatibility.swift in Sources */,
+				3243AFEE2AA37F010049A43B /* Indicator.swift in Sources */,
+				3243AFEA2AA37EFF0049A43B /* Image.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		32C43DC822FD540D00BE87F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -424,12 +484,10 @@
 				32B933E523659A1900BB7CAD /* Transition.swift in Sources */,
 				32CBA78025E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
 				32C43E1722FD583700BE87F5 /* WebImage.swift in Sources */,
-				326B848C236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84822363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3222FD5DE100BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32B79C9528DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
-				326B8487236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A022446B546005905DA /* Image.swift in Sources */,
@@ -443,12 +501,10 @@
 				32B933E623659A1900BB7CAD /* Transition.swift in Sources */,
 				32CBA78125E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
 				32C43E1A22FD583700BE87F5 /* WebImage.swift in Sources */,
-				326B848D236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84832363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32B79C9628DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
-				326B8488236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A032446B546005905DA /* Image.swift in Sources */,
@@ -462,12 +518,10 @@
 				32B933E723659A1900BB7CAD /* Transition.swift in Sources */,
 				32CBA78225E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
 				32C43E1D22FD583800BE87F5 /* WebImage.swift in Sources */,
-				326B848E236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84842363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32B79C9728DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
-				326B8489236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A042446B546005905DA /* Image.swift in Sources */,
@@ -481,12 +535,10 @@
 				32B933E823659A1900BB7CAD /* Transition.swift in Sources */,
 				32CBA78325E4D7D800C6A8DC /* ImagePlayer.swift in Sources */,
 				32C43E2022FD583800BE87F5 /* WebImage.swift in Sources */,
-				326B848F236335400011BDFB /* ProgressIndicator.swift in Sources */,
 				326B84852363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
 				32B79C9828DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
-				326B848A236335110011BDFB /* ActivityIndicator.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A052446B546005905DA /* Image.swift in Sources */,
@@ -496,6 +548,91 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		3243AFE42AA37EEA0049A43B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/visionOS",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 SDWebImage. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dreampiggy.SDWebImageSwiftUI-visionOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = xros;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Debug;
+		};
+		3243AFE52AA37EEA0049A43B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/visionOS",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 SDWebImage. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dreampiggy.SDWebImageSwiftUI-visionOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = xros;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Release;
+		};
 		32C43DD222FD540D00BE87F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -566,6 +703,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 7.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -633,6 +771,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 7.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
@@ -877,6 +1016,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3243AFE32AA37EEA0049A43B /* Build configuration list for PBXNativeTarget "SDWebImageSwiftUI visionOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3243AFE42AA37EEA0049A43B /* Debug */,
+				3243AFE52AA37EEA0049A43B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		32C43DC622FD540D00BE87F5 /* Build configuration list for PBXProject "SDWebImageSwiftUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
