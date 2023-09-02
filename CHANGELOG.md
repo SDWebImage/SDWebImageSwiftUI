@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0-beta] - 2023-09-02
+
+### Added
+- (Part 1) Support compile for visionOS (no package manager support) #267
+
+### Changed
+
+- Drop iOS 13/macOS 10.15/tvOS 13/watchOS 6 support #250
+- ProgressIndicator and ActivityIndicator is removed. Use `ProgressView` instead
+- Availability is changed to iOS 14/macOS 11/tvOS 11/watchOS 7
+- Embed `SwiftUIBackports` dependency is removed.
+
 ## [2.2.3] - 2023-04-32
 - Fix the issue that Static Library + Library Evolution cause the build issue on Swift 5.8 #263
 
