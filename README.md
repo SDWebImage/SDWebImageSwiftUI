@@ -18,6 +18,14 @@ It brings all your favorite features from SDWebImage, like async image loading, 
 
 The framework provide the different View structs, which API match the SwiftUI framework guideline. If you're familiar with `Image`, you'll find it easy to use `WebImage` and `AnimatedImage`.
 
+## Apple VisionOS
+
+SDWebImageSwiftUI can compiled for visionOS platform. However, due to the package manager support, we can not integrate using the exists function.
+
+So, in [visionOS branch](https://github.com/SDWebImage/SDWebImageSwiftUI/tree/feature/visionOS), our demo use the Xcode's built-in dependency to build.
+
+You can build and run to see the example (still need improvement)
+
 ## Features
 
 Since SDWebImageSwiftUI is built on top of SDWebImage, it provide both the out-of-box features as well as advanced powerful features you may want in real world Apps. Check our [Wiki](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage) when you need:
