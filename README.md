@@ -20,11 +20,11 @@ The framework provide the different View structs, which API match the SwiftUI fr
 
 ## Apple VisionOS
 
-SDWebImageSwiftUI can compiled for visionOS platform. However, due to the package manager support, we can not integrate using the exists function.
+From v3.0.0 (beta), SDWebImageSwiftUI can be compiled for visionOS platform. However, due to the lacking package manager support (need tools update), we don't support CocoaPods/SPM yet.
 
-So, in [visionOS branch](https://github.com/SDWebImage/SDWebImageSwiftUI/tree/feature/visionOS), our demo use the Xcode's built-in dependency to build.
+You can only use the Xcode's built-in package manager dependency to build on visionOS.
 
-You can build and run to see the example (still need improvement)
+To run the visionOS example, you need to clone and add both `SDWebImage` and `SDWebImageSwiftUI`, open the `SDWebImageSwiftUI.xcworkspace` and drag those folders to become local package dependency, see: [Editing a package dependency as a local package](https://developer.apple.com/documentation/xcode/editing-a-package-dependency-as-a-local-package)
 
 ## Features
 
@@ -58,32 +58,17 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 ## Requirements
 
-+ Xcode 12+
++ Xcode 14+
 + iOS 14+
 + macOS 11+
 + tvOS 14+
 + watchOS 7+
 
-## SwiftUI 2.0 Compatibility
+## for SwiftUI 1.0 (iOS 13)
 
 iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
 
-From v2.0.0, we adopt SwiftUI 2.0 and iOS 14(macOS 11)'s behavior. You can use `WebImage` and `AnimatedImage` inside the new `LazyVStack`.
-
-```swift
-var body: some View {
-    ScrollView {
-        LazyVStack {
-            ForEach(urls, id: \.self) { url in
-                AnimatedImage(url: url)
-            }
-        }
-    }
-}
-```
-
-Note: However, many differences behavior between iOS 13/14 is hard to fixup. Due to maintain issue, from SDWebImageSwiftUI v3.0, iOS 13 is no longer supported. We always match SwiftUI 2.0's behavior.
-
+From v3.0.0 (Beta), SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using `2.x` branch) instead.
 
 ## Installation
 
