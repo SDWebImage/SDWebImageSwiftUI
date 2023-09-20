@@ -101,18 +101,26 @@ struct DetailView: View {
                 .indicator(SDWebImageProgressIndicator.default)
                 .scaledToFit()
                 #else
-                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
-                .resizable()
-                .placeholder(.wifiExclamationmark)
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Image.wifiExclamationmark
+                        .resizable()
+                        .scaledToFit()
+                }
                 .indicator(.progress)
-                .scaledToFit()
                 #endif
             } else {
-                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
-                .resizable()
-                .placeholder(.wifiExclamationmark)
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Image.wifiExclamationmark
+                        .resizable()
+                        .scaledToFit()
+                }
                 .indicator(.progress(style: .circular))
-                .scaledToFit()
             }
         }
     }
