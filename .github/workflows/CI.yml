@@ -46,7 +46,7 @@ jobs:
       matrix:
         iosDestination: ["name=iPhone 13 Pro"]
         tvOSDestination: ["name=Apple TV"]
-        watchOSDestination: ["platform=watchOS Simulator,name=Apple Watch Series 7 - 45mm"]
+        watchOSDestination: ["platform=watchOS Simulator,name=Apple Watch Series 7 (45mm)"]
         macOSDestination: ["platform=macOS"]
         macCatalystDestination: ["platform=macOS,arch=x86_64,variant=Mac Catalyst"]
     steps:
