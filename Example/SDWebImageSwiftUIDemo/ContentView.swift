@@ -96,22 +96,19 @@ struct ContentView: View {
                 HStack {
                     if self.animated {
                         #if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
-                        AnimatedImage(url: URL(string:url), isAnimating: .constant(true))
+                        AnimatedImage(url: URL(string:url))
                         .onViewUpdate { view, context in
                         #if os(macOS)
                             view.toolTip = url
                         #endif
                         }
-                        .indicator(SDWebImageActivityIndicator.medium)
-                        /**
-                        .placeholder(UIImage(systemName: "photo"))
-                        */
+                        .indicator(.activity)
                         .transition(.fade)
                         .resizable()
                         .scaledToFit()
                         .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                         #else
-                        WebImage(url: URL(string:url), isAnimating: self.$animated)
+                        WebImage(url: URL(string:url))
                         .resizable()
                         .indicator(.activity)
                         .transition(.fade(duration: 0.5))
@@ -119,13 +116,8 @@ struct ContentView: View {
                         .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
                         #endif
                     } else {
-                        WebImage(url: URL(string:url), isAnimating: .constant(true))
+                        WebImage(url: URL(string:url))
                         .resizable()
-                        /**
-                         .placeholder {
-                             Image(systemName: "photo")
-                         }
-                         */
                         .indicator(.activity)
                         .transition(.fade(duration: 0.5))
                         .scaledToFit()

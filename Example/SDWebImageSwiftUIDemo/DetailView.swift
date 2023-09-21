@@ -95,10 +95,9 @@ struct DetailView: View {
         HStack {
             if animated {
                 #if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
-                AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
+                AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating, placeholderImage: .wifiExclamationmark)
+                .indicator(.progress)
                 .resizable()
-                .placeholder(.wifiExclamationmark)
-                .indicator(SDWebImageProgressIndicator.default)
                 .scaledToFit()
                 #else
                 WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating) { image in
