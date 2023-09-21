@@ -52,10 +52,8 @@ struct DetailView: View {
             #endif
             #if os(macOS) || os(watchOS)
             zoomView()
-            .contextMenu {
-                Button(isAnimating ? "Stop" : "Start") {
-                    self.isAnimating.toggle()
-                }
+            .onTapGesture {
+                self.isAnimating.toggle()
             }
             #endif
         }

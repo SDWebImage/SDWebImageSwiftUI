@@ -191,15 +191,16 @@ struct ContentView: View {
         }
         #endif
         #if os(watchOS)
-        return contentView()
-            .contextMenu {
-                Button(action: { self.reloadCache() }) {
-                    Text("Reload")
+        return NavigationView {
+            contentView()
+                .navigationTitle("WebImage")
+                .toolbar {
+                    Button(action: { self.reloadCache() }) {
+                        Text("Reload")
+                    }
                 }
-                Button(action: { self.switchView() }) {
-                    Text("Switch")
-                }
-            }
+            
+        }
         #endif
     }
     

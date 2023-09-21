@@ -622,8 +622,8 @@ Since SwiftUI is aimed to support all Apple platforms, our demo does this as wel
 
 Demo Tips:
 
-1. Use `Switch` (right-click on macOS/force press on watchOS) to switch between `WebImage` and `AnimatedImage`.
-2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
+1. Use `Switch` (right-click on macOS/tap on watchOS) to switch between `WebImage` and `AnimatedImage`.
+2. Use `Reload` (right-click on macOS/button on watchOS) to clear cache.
 3. Use `Swipe Left` (menu button on tvOS) to delete one image url from list.
 4. Pinch gesture (Digital Crown on watchOS, play button on tvOS) to zoom-in detail page image.
 5. Clear cache and go to detail page to see progressive loading.
