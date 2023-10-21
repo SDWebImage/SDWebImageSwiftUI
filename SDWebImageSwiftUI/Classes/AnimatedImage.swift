@@ -307,7 +307,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             var image: PlatformImage? = SDAnimatedImage(data: data, scale: imageModel.scale)
             if image == nil {
                 // For static image, use UIImage as defaults
-                image = PlatformImage(data: data)
+                image = PlatformImage.sd_image(with: data, scale: imageModel.scale)
             }
             context.coordinator.imageLoading.imageData = data
             view.wrapped.image = image
