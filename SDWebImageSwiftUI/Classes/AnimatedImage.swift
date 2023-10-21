@@ -301,15 +301,29 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
         if let name = imageModel.name, name != context.coordinator.imageLoading.imageName {
+            var image: PlatformImage?
             #if os(macOS)
-            let image = SDAnimatedImage(named: name, in: imageModel.bundle)
+            image = SDAnimatedImage(named: name, in: imageModel.bundle)
+            if image == nil {
+                // For static image, use NSImage as defaults
+                let bundle = imageModel.bundle ?? .main
+                image = bundle.image(forResource: name)
+            }
             #else
-            let image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
+            image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
+            if image == nil {
+                // For static image, use UIImage as defaults
+                image = PlatformImage(named: name, in: imageModel.bundle, compatibleWith: nil)
+            }
             #endif
             context.coordinator.imageLoading.imageName = name
             view.wrapped.image = image
         } else if let data = imageModel.data, data != context.coordinator.imageLoading.imageData {
-            let image = SDAnimatedImage(data: data, scale: imageModel.scale)
+            var image: PlatformImage? = SDAnimatedImage(data: data, scale: imageModel.scale)
+            if image == nil {
+                // For static image, use UIImage as defaults
+                image = PlatformImage(data: data)
+            }
             context.coordinator.imageLoading.imageData = data
             view.wrapped.image = image
         } else if let url = imageModel.url {
