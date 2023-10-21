@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [3.0.0-beta.2] - 2023-10-21
+
+### Changed
+- Update the WebImage API to match SwiftUI.AsyncImage #275 @Kyle-Ye 
+- Allows to use UIImage/NSImage as defaults when init the AnimatedImage with JPEG data #277
+
+### Removed
+- `WebImage.placeholder<T>(@ViewBuilder content: () -> T) -> WebImage`
+- `WebImage.placeholder(_ image: Image) -> WebImage`
+- `AnimatedImage.placeholder<T>(@ViewBuilder content: () -> T) -> AnimatedImage`
+- `AnimatedImage.placeholder(_ image: PlatformImage) -> AnimatedImage`
+
 ## [3.0.0-beta] - 2023-09-02
 
 ### Added
