@@ -73,7 +73,11 @@ class WebImageTests: XCTestCase {
     func testWebImageModifier() throws {
         let expectation = self.expectation(description: "WebImage modifier")
         let imageUrl = URL(string: "https://raw.githubusercontent.com/ibireme/YYImage/master/Demo/YYImageDemo/mew_baseline.jpg")
-        let imageView = WebImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1])
+        let imageView = WebImage(url: imageUrl, options: [.progressiveLoad], context: [.imageScaleFactor: 1]) { image in
+            image.resizable()
+        } placeholder: {
+            Circle()
+        }
         let introspectView = imageView
         .onSuccess { _, _, _ in
             expectation.fulfill()
@@ -83,10 +87,6 @@ class WebImageTests: XCTestCase {
         }
         .onProgress { _, _ in
             
-        }
-        .placeholder(.init(platformImage: PlatformImage()))
-        .placeholder {
-            Circle()
         }
         // Image
         .resizable()

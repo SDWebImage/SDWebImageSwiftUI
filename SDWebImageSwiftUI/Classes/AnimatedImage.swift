@@ -31,6 +31,12 @@ final class AnimatedImageModel : ObservableObject {
     @Published var url: URL?
     @Published var webOptions: SDWebImageOptions = []
     @Published var webContext: [SDWebImageContextOption : Any]? = nil
+    @Published var placeholderImage: PlatformImage?
+    @Published var placeholderView: PlatformView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+        }
+    }
     /// Name image
     @Published var name: String?
     @Published var bundle: Bundle?
@@ -90,12 +96,6 @@ final class AnimatedImageConfiguration: ObservableObject {
     // These configurations only useful for web image loading
     var indicator: SDWebImageIndicator?
     var transition: SDWebImageTransition?
-    var placeholder: PlatformImage?
-    var placeholderView: PlatformView? {
-        didSet {
-            oldValue?.removeFromSuperview()
-        }
-    }
 }
 
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
@@ -115,13 +115,19 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
-    /// Create an animated image with url, placeholder, custom options and context.
+    /// Create an animated image with url, placeholder, custom options and context, including animation control binding.
     /// - Parameter url: The image url
     /// - Parameter placeholder: The placeholder image to show during loading
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
-        self.init(url: url, options: options, context: context, isAnimating: .constant(true))
+    /// - Parameter isAnimating: The binding for animation control
+    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true), placeholderImage: PlatformImage? = nil) {
+        let imageModel = AnimatedImageModel()
+        imageModel.url = url
+        imageModel.webOptions = options
+        imageModel.webContext = context
+        imageModel.placeholderImage = placeholderImage
+        self.init(imageModel: imageModel, isAnimating: isAnimating)
     }
     
     /// Create an animated image with url, placeholder, custom options and context, including animation control binding.
@@ -130,20 +136,18 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     /// - Parameter isAnimating: The binding for animation control
-    public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool>) {
+    public init<T>(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true), @ViewBuilder placeholder: @escaping () -> T) where T : View  {
         let imageModel = AnimatedImageModel()
         imageModel.url = url
         imageModel.webOptions = options
         imageModel.webContext = context
+        #if os(macOS)
+        let hostingView = NSHostingView(rootView: placeholder())
+        #else
+        let hostingView = _UIHostingView(rootView: placeholder())
+        #endif
+        imageModel.placeholderView = hostingView
         self.init(imageModel: imageModel, isAnimating: isAnimating)
-    }
-    
-    /// Create an animated image with name and bundle.
-    /// - Note: Asset Catalog is not supported.
-    /// - Parameter name: The image name
-    /// - Parameter bundle: The bundle contains image
-    public init(name: String, bundle: Bundle? = nil) {
-        self.init(name: name, bundle: bundle, isAnimating: .constant(true))
     }
     
     /// Create an animated image with name and bundle, including animation control binding.
@@ -151,25 +155,18 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter name: The image name
     /// - Parameter bundle: The bundle contains image
     /// - Parameter isAnimating: The binding for animation control
-    public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool>) {
+    public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool> = .constant(true)) {
         let imageModel = AnimatedImageModel()
         imageModel.name = name
         imageModel.bundle = bundle
         self.init(imageModel: imageModel, isAnimating: isAnimating)
     }
     
-    /// Create an animated image with data and scale.
-    /// - Parameter data: The image data
-    /// - Parameter scale: The scale factor
-    public init(data: Data, scale: CGFloat = 1) {
-        self.init(data: data, scale: scale, isAnimating: .constant(true))
-    }
-    
     /// Create an animated image with data and scale, including animation control binding.
     /// - Parameter data: The image data
     /// - Parameter scale: The scale factor
     /// - Parameter isAnimating: The binding for animation control
-    public init(data: Data, scale: CGFloat = 1, isAnimating: Binding<Bool>) {
+    public init(data: Data, scale: CGFloat = 1, isAnimating: Binding<Bool> = .constant(true)) {
         let imageModel = AnimatedImageModel()
         imageModel.data = data
         imageModel.scale = scale
@@ -222,7 +219,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     func setupIndicator(_ view: AnimatedImageViewWrapper, context: Context) {
         view.wrapped.sd_imageIndicator = imageConfiguration.indicator
         view.wrapped.sd_imageTransition = imageConfiguration.transition
-        if let placeholderView = imageConfiguration.placeholderView {
+        if let placeholderView = imageModel.placeholderView {
             placeholderView.removeFromSuperview()
             placeholderView.isHidden = true
             // Placeholder View should below the Indicator View
@@ -243,13 +240,13 @@ public struct AnimatedImage : PlatformViewRepresentable {
         context.coordinator.imageLoading.isLoading = true
         let webOptions = imageModel.webOptions
         if webOptions.contains(.delayPlaceholder) {
-            self.imageConfiguration.placeholderView?.isHidden = true
+            self.imageModel.placeholderView?.isHidden = true
         } else {
-            self.imageConfiguration.placeholderView?.isHidden = false
+            self.imageModel.placeholderView?.isHidden = false
         }
         var webContext = imageModel.webContext ?? [:]
         webContext[.animatedImageClass] = SDAnimatedImage.self
-        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageConfiguration.placeholder, options: webOptions, context: webContext, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
+        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageModel.placeholderImage, options: webOptions, context: webContext, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
             let progress: Double
             if (expectedSize > 0) {
                 progress = Double(receivedSize) / Double(expectedSize)
@@ -265,10 +262,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
             context.coordinator.imageLoading.isLoading = false
             context.coordinator.imageLoading.progress = 1
             if let image = image {
-                self.imageConfiguration.placeholderView?.isHidden = true
+                self.imageModel.placeholderView?.isHidden = true
                 self.imageHandler.successBlock?(image, data, cacheType)
             } else {
-                self.imageConfiguration.placeholderView?.isHidden = false
+                self.imageModel.placeholderView?.isHidden = false
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
         }
@@ -794,29 +791,18 @@ extension AnimatedImage {
     }
 }
 
+// Convenient indicator dot syntax
+extension SDWebImageIndicator where Self == SDWebImageActivityIndicator {
+    public static var activity: Self { Self() }
+}
+
+extension SDWebImageIndicator where Self == SDWebImageProgressIndicator {
+    public static var progress: Self { Self() }
+}
+
 // Web Image convenience, based on UIKit/AppKit API
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
-    
-    /// Associate a placeholder when loading image with url
-    /// - Parameter content: A view that describes the placeholder.
-    /// - note: The differences between this and placeholder image, it's that placeholder image replace the image for image view, but this modify the View Hierarchy to overlay the placeholder hosting view
-    public func placeholder<T>(@ViewBuilder content: () -> T) -> AnimatedImage where T : View {
-        #if os(macOS)
-        let hostingView = NSHostingView(rootView: content())
-        #else
-        let hostingView = _UIHostingView(rootView: content())
-        #endif
-        self.imageConfiguration.placeholderView = hostingView
-        return self
-    }
-    
-    /// Associate a placeholder image when loading image with url
-    /// - Parameter content: A view that describes the placeholder.
-    public func placeholder(_ image: PlatformImage?) -> AnimatedImage {
-        self.imageConfiguration.placeholder = image
-        return self
-    }
     
     /// Associate a indicator when loading image with url
     /// - Note: If you do not need indicator, specify nil. Defaults to nil
@@ -832,23 +818,6 @@ extension AnimatedImage {
     public func transition(_ transition: SDWebImageTransition?) -> AnimatedImage {
         self.imageConfiguration.transition = transition
         return self
-    }
-}
-
-// Indicator
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
-extension AnimatedImage {
-    
-    /// Associate a indicator when loading image with url
-    /// - Parameter indicator: The indicator type, see `Indicator`
-    public func indicator<T>(_ indicator: Indicator<T>) -> some View where T : View {
-        return self.modifier(IndicatorViewModifier(status: indicatorStatus, indicator: indicator))
-    }
-    
-    /// Associate a indicator when loading image with url, convenient method with block
-    /// - Parameter content: A view that describes the indicator.
-    public func indicator<T>(@ViewBuilder content: @escaping (_ isAnimating: Binding<Bool>, _ progress: Binding<Double>) -> T) -> some View where T : View {
-        return indicator(Indicator(content: content))
     }
 }
 

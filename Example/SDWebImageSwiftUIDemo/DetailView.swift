@@ -52,10 +52,8 @@ struct DetailView: View {
             #endif
             #if os(macOS) || os(watchOS)
             zoomView()
-            .contextMenu {
-                Button(isAnimating ? "Stop" : "Start") {
-                    self.isAnimating.toggle()
-                }
+            .onTapGesture {
+                self.isAnimating.toggle()
             }
             #endif
         }
@@ -95,24 +93,31 @@ struct DetailView: View {
         HStack {
             if animated {
                 #if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
-                AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
+                AnimatedImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating, placeholderImage: .wifiExclamationmark)
+                .indicator(.progress)
                 .resizable()
-                .placeholder(.wifiExclamationmark)
-                .indicator(SDWebImageProgressIndicator.default)
                 .scaledToFit()
                 #else
-                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
-                .resizable()
-                .placeholder(.wifiExclamationmark)
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Image.wifiExclamationmark
+                        .resizable()
+                        .scaledToFit()
+                }
                 .indicator(.progress)
-                .scaledToFit()
                 #endif
             } else {
-                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating)
-                .resizable()
-                .placeholder(.wifiExclamationmark)
+                WebImage(url: URL(string:url), options: [.progressiveLoad, .delayPlaceholder], isAnimating: $isAnimating) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Image.wifiExclamationmark
+                        .resizable()
+                        .scaledToFit()
+                }
                 .indicator(.progress(style: .circular))
-                .scaledToFit()
             }
         }
     }

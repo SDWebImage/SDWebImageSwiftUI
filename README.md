@@ -128,17 +128,15 @@ github "SDWebImage/SDWebImageSwiftUI"
 
 ```swift
 var body: some View {
-    WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic"))
+    WebImage(url: URL(string: "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic")) { image in
+        image.resizable() // Control layout like SwiftUI.AsyncImage, you must use this modifier or the view will use the image bitmap size
+    } placeholder: {
+            Rectangle().foregroundColor(.gray)
+    }
     // Supports options and context, like `.delayPlaceholder` to show placeholder only when error
     .onSuccess { image, data, cacheType in
         // Success
         // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-    }
-    .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-    .placeholder(Image(systemName: "photo")) // Placeholder Image
-    // Supports ViewBuilder as well
-    .placeholder {
-        Rectangle().foregroundColor(.gray)
     }
     .indicator(.activity) // Activity Indicator
     .transition(.fade(duration: 0.5)) // Fade Transition with duration
@@ -194,20 +192,20 @@ WebImage(url: url)
 ```swift
 var body: some View {
     Group {
-        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"))
+        AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif"), placeholderImage: .init(systemName: "photo")) // Placeholder Image
         // Supports options and context, like `.progressiveLoad` for progressive animation loading
         .onFailure { error in
             // Error
         }
         .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-        .placeholder(UIImage(systemName: "photo")) // Placeholder Image
-        // Supports ViewBuilder as well
-        .placeholder {
-            Circle().foregroundColor(.gray)
-        }
-        .indicator(SDWebImageActivityIndicator.medium) // Activity Indicator
+        .indicator(.activity) // Activity Indicator
         .transition(.fade) // Fade Transition
         .scaledToFit() // Attention to call it on AnimatedImage, but not `some View` after View Modifier (Swift Protocol Extension method is static dispatched)
+        
+        // Supports SwiftUI ViewBuilder placeholder as well
+        AnimatedImage(url: url) {
+            Circle().foregroundColor(.gray)
+        }
         
         // Data
         AnimatedImage(data: try! Data(contentsOf: URL(fileURLWithPath: "/tmp/foo.webp")))
@@ -624,8 +622,8 @@ Since SwiftUI is aimed to support all Apple platforms, our demo does this as wel
 
 Demo Tips:
 
-1. Use `Switch` (right-click on macOS/force press on watchOS) to switch between `WebImage` and `AnimatedImage`.
-2. Use `Reload` (right-click on macOS/force press on watchOS) to clear cache.
+1. Use `Switch` (right-click on macOS/tap on watchOS) to switch between `WebImage` and `AnimatedImage`.
+2. Use `Reload` (right-click on macOS/button on watchOS) to clear cache.
 3. Use `Swipe Left` (menu button on tvOS) to delete one image url from list.
 4. Pinch gesture (Digital Crown on watchOS, play button on tvOS) to zoom-in detail page image.
 5. Clear cache and go to detail page to see progressive loading.
