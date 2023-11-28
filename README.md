@@ -419,6 +419,26 @@ NavigationView {
 }
 ```
 
+#### Render vector image (SVG/PDF) with tint color
+
+Both `WebImage/AnimatedImage` supports to render the vector image, by using the `SVG/PDF` external coders. However they are different internally.
+
++ `AnimatedImage`: use tech from Apple's symbol image and vector drawing, supports dynamic size changes without lossing details. And it use UIKit/AppKit based implementation and APIs. If you want, pass `.context(.imageThumbnailPixelSize: size)` to use bitmap rendering and get more pixels.
++ `WebImage`: draws vector image into a bitmap version. Which just like normal PNG. By default, we use vector image content size (SVG canvas size or PDF media box size). If you want, pass `.context(.imageThumbnailPixelSize: size)` to get more pixels.
+
+For `WebImage` (or bitmap rendering on `AnimatedImage`), you can also tint the SVG/PDF icons with custom colors (like symbol images), use the `.renderingMode(.template)` and `.foregroundColor(color)` modifier, which matches `SwiftUI.Image` behavior.
+
+```swift
+var body: some View {
+    WebImage(url: URL(string: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/w3c.svg"))
+    .resizable()
+    .renderingMode(.template)
+    .foregroundColor(.red)
+    .scaledToFit()
+}
+```
+
+See more: [Configuring and displaying symbol images in your UI](https://developer.apple.com/documentation/uikit/uiimage/configuring_and_displaying_symbol_images_in_your_ui?language=objc)
 
 #### Using with external loaders/caches/coders
 
