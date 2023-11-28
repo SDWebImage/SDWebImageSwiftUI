@@ -353,6 +353,13 @@ extension WebImage {
         configure { $0.renderingMode(renderingMode) }
     }
     
+    /// Sets the rendering mode for symbol images within this view.
+    /// - Parameter mode: The symbol rendering mode to use
+    @available(iOS 15.0, OSX 12.0, tvOS 15.0, watchOS 8.0, *)
+    public func symbolRenderingMode(_ mode: SymbolRenderingMode?) -> WebImage {
+        configure { $0.symbolRenderingMode(mode) }
+    }
+    
     /// Configurate this view's image interpolation quality
     /// - Parameter interpolation: The interpolation quality
     public func interpolation(_ interpolation: Image.Interpolation) -> WebImage {
