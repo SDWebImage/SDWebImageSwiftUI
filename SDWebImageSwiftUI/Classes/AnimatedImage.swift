@@ -66,8 +66,8 @@ final class AnimatedImageHandler: ObservableObject {
     @Published var failureBlock: ((Error) -> Void)?
     @Published var progressBlock: ((Int, Int) -> Void)?
     // Coordinator Handler
-    @Published var viewCreateBlock: ((PlatformView, AnimatedImage.Context) -> Void)?
-    @Published var viewUpdateBlock: ((PlatformView, AnimatedImage.Context) -> Void)?
+    @Published var viewCreateBlock: ((SDAnimatedImageView, AnimatedImage.Context) -> Void)?
+    @Published var viewUpdateBlock: ((SDAnimatedImageView, AnimatedImage.Context) -> Void)?
 }
 
 /// Layout Binding Object, supports dynamic @State changes
@@ -109,7 +109,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// A observed object to pass through the image manager loading status to indicator
     @ObservedObject var indicatorStatus = IndicatorStatus()
     
-    static var viewDestroyBlock: ((PlatformView, Coordinator) -> Void)?
+    static var viewDestroyBlock: ((SDAnimatedImageView, Coordinator) -> Void)?
     
     /// A Binding to control the animation. You can bind external logic to control the animation status.
     /// True to start animation, false to stop animation.
@@ -770,7 +770,7 @@ extension AnimatedImage {
     /// Provide the action when view representable create the native view.
     /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable create the native view.
-    public func onViewCreate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
+    public func onViewCreate(perform action: ((SDAnimatedImageView, Context) -> Void)? = nil) -> AnimatedImage {
         self.imageHandler.viewCreateBlock = action
         return self
     }
@@ -778,7 +778,7 @@ extension AnimatedImage {
     /// Provide the action when view representable update the native view.
     /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the context.
     /// - Returns: A view that triggers `action` when view representable update the native view.
-    public func onViewUpdate(perform action: ((PlatformView, Context) -> Void)? = nil) -> AnimatedImage {
+    public func onViewUpdate(perform action: ((SDAnimatedImageView, Context) -> Void)? = nil) -> AnimatedImage {
         self.imageHandler.viewUpdateBlock = action
         return self
     }
@@ -786,7 +786,7 @@ extension AnimatedImage {
     /// Provide the action when view representable destroy the native view
     /// - Parameter action: The action to perform. The first arg is the native view. The seconds arg is the coordinator (with userInfo).
     /// - Returns: A view that triggers `action` when view representable destroy the native view.
-    public static func onViewDestroy(perform action: ((PlatformView, Coordinator) -> Void)? = nil) {
+    public static func onViewDestroy(perform action: ((SDAnimatedImageView, Coordinator) -> Void)? = nil) {
         self.viewDestroyBlock = action
     }
 }
