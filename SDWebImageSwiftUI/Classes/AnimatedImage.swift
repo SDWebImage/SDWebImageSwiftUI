@@ -78,6 +78,7 @@ final class AnimatedImageLayout : ObservableObject {
     var capInsets: EdgeInsets = EdgeInsets()
     var resizingMode: Image.ResizingMode?
     var renderingMode: Image.TemplateRenderingMode?
+    var symbolRenderingMode: AnimatedImage.SymbolRenderingMode?
     var interpolation: Image.Interpolation?
     var antialiased: Bool = false
 }
@@ -101,6 +102,18 @@ final class AnimatedImageConfiguration: ObservableObject {
 /// A Image View type to load image from url, data or bundle. Supports animated and static image format.
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct AnimatedImage : PlatformViewRepresentable {
+    /// A symbol rendering mode. This match `SwiftUI.SymbolRenderingMode`
+    public enum SymbolRenderingMode {
+        /// A mode that renders symbols as multiple layers, with different opacities applied to the foreground style.
+        case hierarchical
+        /// A mode that renders symbols as a single layer filled with the foreground style.
+        case monochrome
+        /// A mode that renders symbols as multiple layers with their inherit styles.
+        case multicolor
+        /// A mode that renders symbols as multiple layers, with different styles applied to the layers.
+        case palette
+    }
+    
     @ObservedObject var imageModel: AnimatedImageModel
     @ObservedObject var imageHandler = AnimatedImageHandler()
     @ObservedObject var imageLayout = AnimatedImageLayout()
@@ -435,7 +448,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
                     #endif
-                    view.wrapped.image = image
                 case .tile:
                     #if os(macOS)
                     image.resizingMode = .tile
@@ -443,7 +455,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
                     #endif
-                    view.wrapped.image = image
                 @unknown default:
                     // Future cases, not implements
                     break
@@ -459,18 +470,33 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.withRenderingMode(.alwaysTemplate)
                     #endif
-                    view.wrapped.image = image
                 case .original:
                     #if os(macOS)
                     image.isTemplate = false
                     #else
                     image = image.withRenderingMode(.alwaysOriginal)
                     #endif
-                    view.wrapped.image = image
                 @unknown default:
                     // Future cases, not implements
                     break
                 }
+            }
+            
+            // Symbol Configuration
+            if let mode = imageLayout.symbolRenderingMode {
+                if #available(iOS 15.0, *) {
+                    let symbolConfiguration = createSymbolConfiguration(mode, view.tintColor, view.backgroundColor)
+                    image = image.applyingSymbolConfiguration(symbolConfiguration) ?? image
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
+            
+            // Only update when needed
+            if image !== view.wrapped.image {
+                view.wrapped.image = image
+            } else {
+                print("Equal")
             }
         }
         
@@ -497,6 +523,25 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.shouldAntialias = imageLayout.antialiased
         
         view.invalidateIntrinsicContentSize()
+    }
+    
+    @available(iOS 15.0, *)
+    private func createSymbolConfiguration(_ mode: AnimatedImage.SymbolRenderingMode, _ primary: UIColor?, _ secondary: UIColor?) -> UIImage.SymbolConfiguration {
+        switch mode {
+        case .hierarchical:
+            return .init(hierarchicalColor: primary!)
+        case .monochrome:
+            if #available(iOS 16.0, *) {
+                return .preferringMonochrome()
+            } else {
+                // Fallback on earlier versions
+                return .init(hierarchicalColor: .black)
+            }
+        case .multicolor:
+            return .preferringMulticolor()
+        case .palette:
+            return .init(paletteColors: [primary!, secondary!])
+        }
     }
     
     func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
@@ -583,6 +628,14 @@ extension AnimatedImage {
     /// - Parameter renderingMode: The resizing mode
     public func renderingMode(_ renderingMode: Image.TemplateRenderingMode?) -> AnimatedImage {
         self.imageLayout.renderingMode = renderingMode
+        return self
+    }
+    
+    /// Sets the rendering mode for symbol images within this view.
+    /// - Parameter mode: The symbol rendering mode to use
+    @available(iOS 15.0, OSX 12.0, tvOS 15.0, watchOS 8.0, *)
+    public func symbolRenderingMode(_ mode: AnimatedImage.SymbolRenderingMode?) -> AnimatedImage {
+        self.imageLayout.symbolRenderingMode = mode
         return self
     }
     

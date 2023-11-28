@@ -118,7 +118,9 @@ struct ContentView: View {
                     } else {
                         WebImage(url: URL(string:url))
                         .resizable()
+                        .renderingMode(.template)
                         .indicator(.activity)
+                        .foregroundColor(.red)
                         .transition(.fade(duration: 0.5))
                         .scaledToFit()
                         .frame(width: CGFloat(100), height: CGFloat(100), alignment: .center)
