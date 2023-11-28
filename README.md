@@ -229,7 +229,7 @@ Note: `AnimatedImage` supports both image url or image data for animated image f
 
 Note: `AnimatedImage` some methods like `.transition`, `.indicator` and `.aspectRatio` have the same naming as `SwiftUI.View` protocol methods. But the args receive the different type. This is because `AnimatedImage` supports to be used with UIKit/AppKit component and animation. If you find ambiguity, use full type declaration instead of the dot expression syntax.
 
-Note: some of methods on `AnimatedImage` will return `some View`, a new Modified Content. You'll lose the type related modifier method. For this case, you can either reorder the method call, or use Native View in `.onViewUpdate` for rescue.
+Note: some of methods on `AnimatedImage` will return `some View`, a new Modified Content. You'll lose the type related modifier method. For this case, you can either reorder the method call, or use native view (actually `SDAnimatedImageView`) in `.onViewUpdate`, use UIKIt/AppKit API for rescue.
 
 ```swift
 
@@ -417,6 +417,42 @@ NavigationView {
 }
 ```
 
+#### Render vector image (SVG/PDF) with tint color
+
+Both `WebImage/AnimatedImage` supports to render the vector image, by using the `SVG/PDF` external coders. However they are different internally.
+
++ `AnimatedImage`: use tech from Apple's symbol image and vector drawing, supports dynamic size changes without lossing details. And it use UIKit/AppKit based implementation and APIs. If you want, pass `.context(.imageThumbnailPixelSize: size)` to use bitmap rendering and get more pixels.
++ `WebImage`: draws vector image into a bitmap version. Which just like normal PNG. By default, we use vector image content size (SVG canvas size or PDF media box size). If you want, pass `.context(.imageThumbnailPixelSize: size)` to get more pixels.
+
+For bitmap rendering, you can also tint the SVG/PDF icons with custom colors (like symbol images), use the `.renderingMode(.template)` and `.tint(:)` or `.foregroundColor(:)` modifier, which matches `SwiftUI.Image` behavior.
+
++ WebImage
+
+```swift
+var body: some View {
+    WebImage(url: URL(string: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/w3c.svg"))
+    .resizable()
+    .renderingMode(.template)
+    .foregroundColor(.red) // or `.tint(:)`, `.accentColor(:)`
+    .scaledToFit()
+}
+```
+
++ AnimatedImage
+
+```swift
+var body: some View {
+    AnimatedImage(url: URL(string: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/w3c.svg"), context: [.imageThumbnailPixelSize : CGSize(width: 100, height: 100)])
+    .resizable()
+    .renderingMode(.template)
+    // seems `.foregroundColor(:)` does effect `UIView.tintColor`, use `tint(:)` or `.accentColor(:)` instead.
+    // Or you can use `onViewCreate(:)` to get native `SDAnimatedImageView` and set `tintColor` (AppKit use `contentTintColor`)
+    .tint(.red)
+    .scaledToFit()
+}
+```
+
+See more: [Configuring and displaying symbol images in your UI](https://developer.apple.com/documentation/uikit/uiimage/configuring_and_displaying_symbol_images_in_your_ui?language=objc)
 
 #### Using with external loaders/caches/coders
 

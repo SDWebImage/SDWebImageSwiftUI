@@ -436,7 +436,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = view.wrapped.image, !image.conforms(to: SDAnimatedImageProtocol.self) {
+        if let image = view.wrapped.image {
             var image = image
             // ResizingMode
             if let resizingMode = imageLayout.resizingMode, imageLayout.capInsets != EdgeInsets() {
