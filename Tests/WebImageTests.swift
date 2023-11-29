@@ -23,9 +23,9 @@ class WebImageTests: XCTestCase {
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, data, cacheType in
             #if os(macOS)
-            let displayImage = try? imageView.inspect().zStack().image(1).actualImage().nsImage()
+            let displayImage = try? imageView.inspect().zStack().image(0).actualImage().nsImage()
             #else
-            let displayImage = try? imageView.inspect().zStack().image(1).actualImage().cgImage()
+            let displayImage = try? imageView.inspect().zStack().image(0).actualImage().cgImage()
             #endif
             XCTAssertNotNil(displayImage)
             expectation.fulfill()
@@ -47,10 +47,10 @@ class WebImageTests: XCTestCase {
             if let animatedImage = image as? SDAnimatedImage {
                 XCTAssertTrue(imageView.isAnimating)
                 #if os(macOS)
-                let displayImage = try? imageView.inspect().zStack().image(1).actualImage().nsImage()
+                let displayImage = try? imageView.inspect().zStack().image(0).actualImage().nsImage()
                 let size = displayImage?.size
                 #else
-                let displayImage = try? imageView.inspect().zStack().image(1).actualImage().cgImage()
+                let displayImage = try? imageView.inspect().zStack().image(0).actualImage().cgImage()
                 let size = CGSize(width: displayImage?.width ?? 0, height: displayImage?.height ?? 0)
                 #endif
                 XCTAssertNotNil(displayImage)
@@ -161,11 +161,11 @@ class WebImageTests: XCTestCase {
         let imageView = WebImage(url: imageUrl)
         let introspectView = imageView.onSuccess { image, data, cacheType in
             #if os(macOS)
-            let displayImage = try? imageView.inspect().zStack().image(1).actualImage().nsImage()
+            let displayImage = try? imageView.inspect().zStack().image(0).actualImage().nsImage()
             XCTAssertNotNil(displayImage)
             #else
-            let displayImage = try? imageView.inspect().zStack().image(1).actualImage().cgImage()
-            let orientation = try? imageView.inspect().zStack().image(1).actualImage().orientation()
+            let displayImage = try? imageView.inspect().zStack().image(0).actualImage().cgImage()
+            let orientation = try? imageView.inspect().zStack().image(0).actualImage().orientation()
             XCTAssertNotNil(displayImage)
             XCTAssertEqual(orientation, .leftMirrored)
             #endif
