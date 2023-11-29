@@ -178,11 +178,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         _imageModel = ObservedObject(wrappedValue: imageModel)
     }
     
-    #if os(macOS)
-    public typealias NSViewType = AnimatedImageViewWrapper
-    #else
-    public typealias UIViewType = AnimatedImageViewWrapper
-    #endif
+    public typealias PlatformViewType = AnimatedImageViewWrapper
     
     public typealias Coordinator = AnimatedImageCoordinator
     
