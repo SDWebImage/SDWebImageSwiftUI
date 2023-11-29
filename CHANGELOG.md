@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.5] - 2023-11-29
+- Fix the AnimatedImgae rendering mode about compatible with SDWebImage 5.18+
+
 ## [2.2.4] - 2023-10-21
 - Allows to use UIImage/NSImage as defaults when init the AnimatedImage with JPEG data #277
 
