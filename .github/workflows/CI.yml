@@ -134,7 +134,7 @@ jobs:
       - name: Test - ${{ matrix.macOSDestination }}
         run: |
           set -o pipefail
-          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
+          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO
           mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/macOS
     
       - name: Test - ${{ matrix.tvOSDestination }}
