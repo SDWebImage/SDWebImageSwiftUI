@@ -41,18 +41,13 @@
 		32ABE4F32AA3759900331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F22AA3759900331406 /* SDWebImageWebPCoder */; };
 		32ABE4F52AA3759900331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F42AA3759900331406 /* SDWebImageSVGCoder */; };
 		32ABE4F72AA3759900331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F62AA3759900331406 /* SDWebImagePDFCoder */; };
-		32ABE4F92AA375A500331406 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4F82AA375A500331406 /* SDWebImage */; };
 		32ABE4FD2AA375A500331406 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */; };
 		32ABE4FF2AA375A500331406 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE4FE2AA375A500331406 /* SDWebImageSVGCoder */; };
 		32ABE5012AA375A500331406 /* SDWebImagePDFCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE5002AA375A500331406 /* SDWebImagePDFCoder */; };
 		32ABE5032AA375B400331406 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32ABE5022AA375B400331406 /* SDWebImageSwiftUI */; };
 		32B13E812AA368B700BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E802AA368B700BE9B5B /* SDWebImageSwiftUI */; };
-		32B13E832AA368B900BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E822AA368B900BE9B5B /* SDWebImage */; };
 		32B13E852AA368C600BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E842AA368C600BE9B5B /* SDWebImageSwiftUI */; };
-		32B13E872AA368C900BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E862AA368C900BE9B5B /* SDWebImage */; };
-		32B13E892AA368CC00BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E882AA368CC00BE9B5B /* SDWebImage */; };
 		32B13E8F2AA368E100BE9B5B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E8E2AA368E100BE9B5B /* SDWebImageSwiftUI */; };
-		32B13E912AA368E300BE9B5B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 32B13E902AA368E300BE9B5B /* SDWebImage */; };
 		32D5D1672A445B260098BDFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D5D1662A445B260098BDFC /* AppDelegate.swift */; };
 		32D5D16B2A445B260098BDFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D5D16A2A445B260098BDFC /* Assets.xcassets */; };
 		32D5D16E2A445B260098BDFC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D5D16D2A445B260098BDFC /* Preview Assets.xcassets */; };
@@ -169,7 +164,6 @@
 		322E0E0228D331F00003A55F /* SDWebImageSwiftUITests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDWebImageSwiftUITests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		322E0E0F28D332050003A55F /* SDWebImageSwiftUITests tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDWebImageSwiftUITests tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		326B0D702345C01900D28269 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		3294617D2AA36759009E391B /* SDWebImage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SDWebImage; path = ../../SDWebImage; sourceTree = "<group>"; };
 		3294617E2AA36761009E391B /* SDWebImageSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SDWebImageSwiftUI; path = ..; sourceTree = "<group>"; };
 		32D5D1602A445B250098BDFC /* SDWebImageSwiftUIDemo-visionOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDWebImageSwiftUIDemo-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32D5D1662A445B260098BDFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -209,7 +203,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B13E892AA368CC00BE9B5B /* SDWebImage in Frameworks */,
 				32D5D1762A445C8F0098BDFC /* SDWebImageSwiftUI in Frameworks */,
 				32ABE4D92AA3753300331406 /* SDWebImageWebPCoder in Frameworks */,
 				32ABE4DF2AA3756A00331406 /* SDWebImagePDFCoder in Frameworks */,
@@ -245,7 +238,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B13E832AA368B900BE9B5B /* SDWebImage in Frameworks */,
 				32B13E812AA368B700BE9B5B /* SDWebImageSwiftUI in Frameworks */,
 				32ABE4F32AA3759900331406 /* SDWebImageWebPCoder in Frameworks */,
 				32ABE4F72AA3759900331406 /* SDWebImagePDFCoder in Frameworks */,
@@ -257,7 +249,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B13E872AA368C900BE9B5B /* SDWebImage in Frameworks */,
 				32B13E852AA368C600BE9B5B /* SDWebImageSwiftUI in Frameworks */,
 				32ABE4E12AA3757B00331406 /* SDWebImageWebPCoder in Frameworks */,
 				32ABE4E52AA3757B00331406 /* SDWebImagePDFCoder in Frameworks */,
@@ -269,7 +260,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B13E912AA368E300BE9B5B /* SDWebImage in Frameworks */,
 				32B13E8F2AA368E100BE9B5B /* SDWebImageSwiftUI in Frameworks */,
 				32ABE4E72AA3758400331406 /* SDWebImageWebPCoder in Frameworks */,
 				32ABE4EB2AA3758400331406 /* SDWebImagePDFCoder in Frameworks */,
@@ -282,7 +272,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				32ABE5032AA375B400331406 /* SDWebImageSwiftUI in Frameworks */,
-				32ABE4F92AA375A500331406 /* SDWebImage in Frameworks */,
 				32ABE4FD2AA375A500331406 /* SDWebImageWebPCoder in Frameworks */,
 				32ABE5012AA375A500331406 /* SDWebImagePDFCoder in Frameworks */,
 				32ABE4FF2AA375A500331406 /* SDWebImageSVGCoder in Frameworks */,
@@ -443,7 +432,6 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				3294617D2AA36759009E391B /* SDWebImage */,
 				3294617E2AA36761009E391B /* SDWebImageSwiftUI */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				320CDC2A22FADB44007CF858 /* SDWebImageSwiftUIDemo */,
@@ -503,7 +491,6 @@
 			name = SDWebImageSwiftUIDemo;
 			packageProductDependencies = (
 				32D5D1752A445C8F0098BDFC /* SDWebImageSwiftUI */,
-				32B13E882AA368CC00BE9B5B /* SDWebImage */,
 				32ABE4D82AA3753300331406 /* SDWebImageWebPCoder */,
 				32ABE4DB2AA3755D00331406 /* SDWebImageSVGCoder */,
 				32ABE4DE2AA3756A00331406 /* SDWebImagePDFCoder */,
@@ -593,7 +580,6 @@
 			name = "SDWebImageSwiftUIDemo-visionOS";
 			packageProductDependencies = (
 				32B13E802AA368B700BE9B5B /* SDWebImageSwiftUI */,
-				32B13E822AA368B900BE9B5B /* SDWebImage */,
 				32ABE4F22AA3759900331406 /* SDWebImageWebPCoder */,
 				32ABE4F42AA3759900331406 /* SDWebImageSVGCoder */,
 				32ABE4F62AA3759900331406 /* SDWebImagePDFCoder */,
@@ -617,7 +603,6 @@
 			name = "SDWebImageSwiftUIDemo-macOS";
 			packageProductDependencies = (
 				32B13E842AA368C600BE9B5B /* SDWebImageSwiftUI */,
-				32B13E862AA368C900BE9B5B /* SDWebImage */,
 				32ABE4E02AA3757B00331406 /* SDWebImageWebPCoder */,
 				32ABE4E22AA3757B00331406 /* SDWebImageSVGCoder */,
 				32ABE4E42AA3757B00331406 /* SDWebImagePDFCoder */,
@@ -641,7 +626,6 @@
 			name = "SDWebImageSwiftUIDemo-tvOS";
 			packageProductDependencies = (
 				32B13E8E2AA368E100BE9B5B /* SDWebImageSwiftUI */,
-				32B13E902AA368E300BE9B5B /* SDWebImage */,
 				32ABE4E62AA3758400331406 /* SDWebImageWebPCoder */,
 				32ABE4E82AA3758400331406 /* SDWebImageSVGCoder */,
 				32ABE4EA2AA3758400331406 /* SDWebImagePDFCoder */,
@@ -702,7 +686,6 @@
 			);
 			name = "SDWebImageSwiftUIDemo-watchOS WatchKit Extension";
 			packageProductDependencies = (
-				32ABE4F82AA375A500331406 /* SDWebImage */,
 				32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */,
 				32ABE4FE2AA375A500331406 /* SDWebImageSVGCoder */,
 				32ABE5002AA375A500331406 /* SDWebImagePDFCoder */,
@@ -2025,10 +2008,6 @@
 			package = 32ABE4DD2AA3756A00331406 /* XCRemoteSwiftPackageReference "SDWebImagePDFCoder" */;
 			productName = SDWebImagePDFCoder;
 		};
-		32ABE4F82AA375A500331406 /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
-		};
 		32ABE4FC2AA375A500331406 /* SDWebImageWebPCoder */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 32ABE4D72AA3753300331406 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
@@ -2052,29 +2031,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SDWebImageSwiftUI;
 		};
-		32B13E822AA368B900BE9B5B /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
-		};
 		32B13E842AA368C600BE9B5B /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SDWebImageSwiftUI;
 		};
-		32B13E862AA368C900BE9B5B /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
-		};
-		32B13E882AA368CC00BE9B5B /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
-		};
 		32B13E8E2AA368E100BE9B5B /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SDWebImageSwiftUI;
-		};
-		32B13E902AA368E300BE9B5B /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDWebImage;
 		};
 		32D5D1752A445C8F0098BDFC /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
