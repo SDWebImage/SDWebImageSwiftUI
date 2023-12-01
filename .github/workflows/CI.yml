@@ -14,7 +14,7 @@ permissions:
 jobs:
   Pods:
     name: Cocoapods Lint
-    runs-on: macos-12
+    runs-on: macos-13
     env:
       DEVELOPER_DIR: /Applications/Xcode_14.1.app
     steps:
@@ -34,7 +34,7 @@ jobs:
           
   Demo:
     name: Run Demo
-    runs-on: macos-12
+    runs-on: macos-13
     env:
       DEVELOPER_DIR: /Applications/Xcode_14.1.app
       WORKSPACE_NAME: SDWebImageSwiftUI.xcworkspace
@@ -44,11 +44,11 @@ jobs:
       WATCHSCHEME: SDWebImageSwiftUIDemo-watchOS WatchKit App
     strategy:
       matrix:
-        iosDestination: ["name=iPhone 13 Pro"]
-        tvOSDestination: ["name=Apple TV"]
+        iosDestination: ["platform=iOS Simulator,name=iPhone 14 Pro"]
+        tvOSDestination: ["platform=tvOS Simulator,name=Apple TV"]
         watchOSDestination: ["platform=watchOS Simulator,name=Apple Watch Series 7 (45mm)"]
         macOSDestination: ["platform=macOS"]
-        macCatalystDestination: ["platform=macOS,arch=x86_64,variant=Mac Catalyst"]
+        macCatalystDestination: ["platform=macOS,variant=Mac Catalyst"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -92,7 +92,7 @@ jobs:
           
   Test:
     name: Unit Test
-    runs-on: macos-12
+    runs-on: macos-13
     env:
       DEVELOPER_DIR: /Applications/Xcode_14.1.app
       WORKSPACE_NAME: SDWebImageSwiftUI.xcworkspace
@@ -101,9 +101,9 @@ jobs:
       TVSCHEME: SDWebImageSwiftUITests tvOS
     strategy:
       matrix:
-        iosDestination: ["platform=iOS Simulator,name=iPhone 13 Pro"]
-        macOSDestination: ["platform=macOS,arch=x86_64"]
-        tvOSDestination: ["platform=tvOS Simulator,name=Apple TV 4K"]
+        iosDestination: ["platform=iOS Simulator,name=iPhone 14 Pro"]
+        macOSDestination: ["platform=macOS"]
+        tvOSDestination: ["platform=tvOS Simulator,name=Apple TV"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -134,7 +134,7 @@ jobs:
       - name: Test - ${{ matrix.macOSDestination }}
         run: |
           set -o pipefail
-          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO | xcpretty -c
+          xcodebuild test -workspace "${{ env.WORKSPACE_NAME }}" -scheme "${{ env.OSXSCHEME }}" -destination "${{ matrix.macOSDestination }}" -configuration Debug CODE_SIGNING_ALLOWED=NO
           mv ~/Library/Developer/Xcode/DerivedData/ ./DerivedData/macOS
     
       - name: Test - ${{ matrix.tvOSDestination }}
@@ -154,7 +154,7 @@ jobs:
           
   Build:
     name: Build Library
-    runs-on: macos-12
+    runs-on: macos-13
     env:
       DEVELOPER_DIR: /Applications/Xcode_14.1.app
       PROJECT_NAME: SDWebImageSwiftUI.xcodeproj

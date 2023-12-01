@@ -14,12 +14,13 @@ import SDWebImage
 /// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public class AnimatedImageViewWrapper : PlatformView {
-    var wrapped = SDAnimatedImageView()
+    /// The wrapped actual image view, using SDWebImage's aniamted image view
+    public var wrapped = SDAnimatedImageView()
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
     var resizable = false
     
-    override public func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         #if os(macOS)
         guard let ctx = NSGraphicsContext.current?.cgContext else {
             return
