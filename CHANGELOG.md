@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0-beta.3] - 2023-12-04
+
+### Changed
+- Update the AnimatedImage API to expose the SDAnimatedImageView #285
+- Fix the AnimatedImgae rendering mode about compatible with SDWebImage 5.18+
 
 ## [3.0.0-beta.2] - 2023-10-21
 
