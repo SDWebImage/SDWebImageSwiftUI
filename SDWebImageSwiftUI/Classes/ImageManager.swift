@@ -7,6 +7,7 @@
  */
 
 import SwiftUI
+import Combine
 import SDWebImage
 
 /// A Image observable object for handle image load process. This drive the Source of Truth for image loading status.

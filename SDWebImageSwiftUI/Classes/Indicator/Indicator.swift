@@ -7,6 +7,7 @@
 */
 
 import Foundation
+import Combine
 import SwiftUI
 
 /// A  type to build the indicator
