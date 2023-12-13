@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.6] - 2023-12-13
+- Try to workaround the #281 when imagePlayer stopPlaying trigger the Combine Publisher during deallocating #287
+
 ## [2.2.5] - 2023-11-29
 - Fix the AnimatedImgae rendering mode about compatible with SDWebImage 5.18+
 
