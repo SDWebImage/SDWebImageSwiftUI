@@ -29,10 +29,6 @@ public final class ImagePlayer : ObservableObject {
     /// Animation playback mode
     public var playbackMode: SDAnimatedImagePlaybackMode = .normal
     
-    deinit {
-        player?.stopPlaying()
-    }
-    
     /// Current playing frame image
     @Published public var currentFrame: PlatformImage?
     
