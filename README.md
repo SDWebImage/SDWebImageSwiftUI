@@ -326,7 +326,7 @@ For more information, it's really recommended to check our demo, to learn detail
 
 ## Documentation
 
-+ [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/SDWebImageSwiftUI/)
++ [SDWebImageSwiftUI API documentation](https://sdwebimage.github.io/documentation/sdwebimageswiftui/)
 + [SDWebImage API documentation](https://sdwebimage.github.io/)
 
 ## FAQ
