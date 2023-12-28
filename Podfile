@@ -6,6 +6,8 @@ def all_pods
   pod 'SDWebImageWebPCoder'
   pod 'SDWebImageSVGCoder'
   pod 'SDWebImagePDFCoder'
+  pod 'SDWebImageAVIFCoder'
+  pod 'libavif', :subspecs => ['libdav1d']
 end
 
 def all_test_pods
