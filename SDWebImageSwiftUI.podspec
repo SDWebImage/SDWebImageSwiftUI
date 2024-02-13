@@ -25,6 +25,7 @@ It brings all your favorite features from SDWebImage, like async image loading, 
   s.osx.deployment_target = '11.0'
   s.tvos.deployment_target = '14.0'
   s.watchos.deployment_target = '7.0'
+  s.visionos.deployment_target = '1.0'
 
   s.source_files = 'SDWebImageSwiftUI/Classes/**/*', 'SDWebImageSwiftUI/Module/*.h'
   s.pod_target_xcconfig = {

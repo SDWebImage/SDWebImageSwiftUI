@@ -69,6 +69,7 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 + macOS 11+
 + tvOS 14+
 + watchOS 7+
++ visionOS 1+
 
 ## for SwiftUI 1.0 (iOS 13)
 
