@@ -55,6 +55,7 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 + macOS 10.15+ (11+ Recommended)
 + tvOS 13+ (14+ Recommended)
 + watchOS 6+ (7+ Recommended)
++ visionOS 1+
 
 ## SwiftUI 2.0 Compatibility
 
