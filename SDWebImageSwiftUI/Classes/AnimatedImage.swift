@@ -600,6 +600,11 @@ extension AnimatedImage {
 // Aspect Ratio
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 extension AnimatedImage {
+    func setImageLayoutAspectRatio(_ aspectRatio: CGFloat?, contentMode: ContentMode) {
+        self.imageLayout.aspectRatio = aspectRatio
+        self.imageLayout.contentMode = contentMode
+    }
+
     /// Constrains this view's dimensions to the specified aspect ratio.
     /// - Parameters:
     ///   - aspectRatio: The ratio of width to height to use for the resulting
@@ -609,6 +614,7 @@ extension AnimatedImage {
     ///     fill the parent context.
     /// - Returns: A view that constrains this view's dimensions to
     ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
+    @ViewBuilder
     public func aspectRatio(_ aspectRatio: CGFloat? = nil, contentMode: ContentMode) -> some View {
         // The `SwifUI.View.aspectRatio(_:contentMode:)` says:
         // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio
@@ -618,9 +624,12 @@ extension AnimatedImage {
         // But 2: there are no way to call a Protocol Extention default implementation in Swift 5.1
         // So, we directly call the implementation detail modifier instead
         // Fired Radar: FB7413534
-        self.imageLayout.aspectRatio = aspectRatio
-        self.imageLayout.contentMode = contentMode
-        return self.modifier(_AspectRatioLayout(aspectRatio: aspectRatio, contentMode: contentMode))
+        let _ = self.setImageLayoutAspectRatio(aspectRatio, contentMode: contentMode)
+        if let aspectRatio {
+            self.modifier(_AspectRatioLayout(aspectRatio: aspectRatio, contentMode: contentMode))
+        } else {
+            self
+        }
     }
 
     /// Constrains this view's dimensions to the aspect ratio of the given size.
