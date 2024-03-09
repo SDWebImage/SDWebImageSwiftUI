@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
         "state": {
           "branch": null,
-          "revision": "3e48cb68d8e668d146dc59c73fb98cb628616236",
-          "version": "5.13.2"
+          "revision": "73b9397cfbd902f606572964055464903b1d84c6",
+          "version": "5.19.0"
         }
       }
     ]

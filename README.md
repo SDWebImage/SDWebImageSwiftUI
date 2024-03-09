@@ -20,7 +20,7 @@ The framework provide the different View structs, which API match the SwiftUI fr
 
 ## Apple VisionOS
 
-From v3.0.0 (beta), SDWebImageSwiftUI can be compiled for visionOS platform. However, due to the lacking package manager support (need tools update), we don't support CocoaPods/SPM yet.
+From v3.0.0, SDWebImageSwiftUI can be compiled for visionOS platform. However, due to the lacking package manager support (need tools update), we don't support CocoaPods/SPM yet.
 
 You can only use the Xcode's built-in package manager dependency to build on visionOS.
 
@@ -75,7 +75,30 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
 
-From v3.0.0 (Beta), SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using `2.x` branch) instead.
+From v3.0.0, SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using `2.x` branch) instead.
+
+## for future transition
+
+Since SDWebImage 6.0 will introduce mixed Swift/Objc codebase, this repo will migrate into [SDWebImage Core Repo](https://github.com/SDWebImage/SDWebImage).
+
+But don't worry, we will use the automatic cross module overlay, whic means, you can use:
+
+```swift
+import SwiftUI
+import SDWebImage
+```
+
+to works like:
+
+```
+import SwiftUI
+import SDWebImage
+import SDWebImageSwiftUI // <-- Automatic infer this
+```
+
+You will automatically link the `SDWebImageSwiftUI`, and this library's naming will still be preserved in SPM target. So the transition is smooth for most of you, I don't want to bump another major version. **The 3.x is the final version for SDWebImageSwiftUI dedicated repo**
+
+Note: For super advanced user, if you using some custom Swift toolchain, be sure to pass `-Xfrontend -enable-cross-import-overlays`
 
 ## Installation
 
