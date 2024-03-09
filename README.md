@@ -75,7 +75,7 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 iOS 14(macOS 11) introduce the SwiftUI 2.0, which keep the most API compatible, but changes many internal behaviors, which breaks the SDWebImageSwiftUI's function.
 
-From v3.0.0, SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using `2.x` branch) instead.
+From v3.0.0, SDWebImageSwiftUI drop iOS 13 support. To use on iOS 13, checkout the latest v2.x version (or using [2.x](https://github.com/SDWebImage/SDWebImageSwiftUI/tree/2.x) branch) instead.
 
 ## for future transition
 
