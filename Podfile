@@ -60,3 +60,26 @@ target 'SDWebImageSwiftUITests tvOS' do
   platform :tvos, '14.0'
   all_test_pods
 end
+
+
+# Inject macro during SDWebImage Demo and Tests
+post_install do |installer_representation|
+  installer_representation.pods_project.targets.each do |target|
+    if target.product_name == 'SDWebImage'
+      target.build_configurations.each do |config|
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) SD_CHECK_CGIMAGE_RETAIN_SOURCE=1'
+      end
+    elsif target.product_name == 'SDWebImageSwiftUI'
+      # Do nothing
+    else
+      target.build_configurations.each do |config|
+        # Override the min deployment target for some test specs to workaround `libarclite.a` missing issue
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.11'
+        config.build_settings['TVOS_DEPLOYMENT_TARGET'] = '9.0'
+        config.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = '2.0'
+        config.build_settings['XROS_DEPLOYMENT_TARGET'] = '1.0'
+      end
+    end
+  end
+end
