@@ -17,7 +17,7 @@ class ImageManagerTests: XCTestCase {
     
     func testImageManager() throws {
         let expectation = self.expectation(description: "ImageManager usage with Combine")
-        let imageUrl = URL(string: "https://via.placeholder.com/500x500.jpg")
+        let imageUrl = URL(string: "https://placehold.co/500x500.jpg")
         let imageManager = ImageManager()
         imageManager.setOnSuccess { image, cacheType, data in
             XCTAssertNotNil(image)

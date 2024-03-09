@@ -137,7 +137,7 @@ class WebImageTests: XCTestCase {
     
     func testWebImageOnSuccessWhenCacheMiss() throws {
         let expectation = self.expectation(description: "WebImage onSuccess when cache miss")
-        let imageUrl = URL(string: "http://via.placeholder.com/100x100.png")
+        let imageUrl = URL(string: "https://placehold.co/100x100.png")
         let cacheKey = SDWebImageManager.shared.cacheKey(for: imageUrl)
         SDImageCache.shared.removeImageFromMemory(forKey: cacheKey)
         SDImageCache.shared.removeImageFromDisk(forKey: cacheKey)
