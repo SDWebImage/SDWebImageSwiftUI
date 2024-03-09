@@ -171,7 +171,6 @@ jobs:
       iOSSCHEME: SDWebImageSwiftUI
       TVSCHEME: SDWebImageSwiftUI tvOS
       WATCHSCHEME: SDWebImageSwiftUI watchOS
-      VISIONOSSCHEME: SDWebImageSwiftUI visionOS
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -186,7 +185,7 @@ jobs:
         run: brew install carthage
 
       - name: Carthage Update
-        run: ./carthage.sh update --platform "iOS, tvOS, macOS, watchOS, visionOS"
+        run: ./carthage.sh update --platform "iOS, tvOS, macOS, watchOS"
 
       - name: Build as dynamic frameworks
         run: |
@@ -195,4 +194,3 @@ jobs:
           xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.iOSSCHEME }}" -sdk iphoneos -configuration Release | xcpretty -c
           xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.TVSCHEME }}" -sdk appletvos -configuration Release | xcpretty -c
           xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.WATCHSCHEME }}" -sdk watchos -configuration Release | xcpretty -c
-          xcodebuild build -project "${{ env.PROJECT_NAME }}" -scheme "${{ env.VISIONOSSCHEME }}" -sdk xros -configuration Release | xcpretty -c
