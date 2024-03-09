@@ -303,6 +303,7 @@ The best place to put these setup code for SwiftUI App, it's the `AppDelegate.sw
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Add WebP/SVG/PDF support
     SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+    SDImageCodersManager.shared.addCoder(SDImageAVIFCoder.shared)
     SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
     SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
     
@@ -478,6 +479,8 @@ struct MyApp: App {
         SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
         // WebP support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        // AVIF support
+        SDImageCodersManager.shared.addCoder(SDImageAVIFCoder.shared)
     }
     
     var body: some Scene {
@@ -717,6 +720,7 @@ Which means, this project is one core use case and downstream dependency, which 
 
 - [SDWebImage](https://github.com/SDWebImage/SDWebImage)
 - [libwebp](https://github.com/SDWebImage/libwebp-Xcode)
+- [libavif](https://github.com/SDWebImage/libavif-Xcode)
 - [Kingfisher](https://github.com/onevcat/Kingfisher)
 - [SwiftUIX](https://github.com/SwiftUIX/SwiftUIX)
 - [Espera](https://github.com/JagCesar/Espera)

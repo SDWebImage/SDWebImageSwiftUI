@@ -73,6 +73,8 @@ struct ContentView: View {
     "http://littlesvr.ca/apng/images/SteamEngine.webp",
     "http://littlesvr.ca/apng/images/world-cup-2014-42.webp",
     "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
+    "https://raw.githubusercontent.com/link-u/avif-sample-images/master/fox.profile0.8bpc.yuv420.avif",
+    "https://raw.githubusercontent.com/link-u/avif-sample-images/master/star-12bpc-with-alpha.avifs",
     "https://nokiatech.github.io/heif/content/images/ski_jump_1440x960.heic",
     "https://nokiatech.github.io/heif/content/image_sequences/starfield_animation.heic",
     "https://nr-platform.s3.amazonaws.com/uploads/platform/published_extension/branding_icon/275/AmazonS3.png",
