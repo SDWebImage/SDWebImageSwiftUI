@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1] - 2024-03-18
+- Fix the issue for WebImage/AnimatedImage when url is nil will not cause the reloading #304
+
 ## [3.0.0] - 2024-03-09
 - This is the first release for 3.x version. Bump the min deplouyment from SwiftUI 1.0 to 2.0 (means iOS 14/macOS 11/tvOS 14/watchOS 7/visionOS 1)
 - Fix AnimatedImage aspectRatio issue when ratio is nil #301
