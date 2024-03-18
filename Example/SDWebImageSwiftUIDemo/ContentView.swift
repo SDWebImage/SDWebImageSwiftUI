@@ -18,7 +18,7 @@ class UserSettings: ObservableObject {
 }
 
 // Test Switching nil url
-struct ContentView: View {
+struct ContentView3: View {
     @State var isOn = false
     @State var animated: Bool = false // You can change between WebImage/AnimatedImage
 
@@ -100,7 +100,7 @@ struct ContentView2: View {
     }
 }
 
-struct ContentView3: View {
+struct ContentView: View {
     @State var imageURLs = [
     "http://assets.sbnation.com/assets/2512203/dogflops.gif",
     "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif",
