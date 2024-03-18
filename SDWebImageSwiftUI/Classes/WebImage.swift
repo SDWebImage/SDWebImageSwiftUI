@@ -163,6 +163,7 @@ public struct WebImage<Content> : View where Content: View {
                 }
             } else {
                 content((imageManager.error != nil) ? .failure(imageManager.error!) : .empty)
+                setupPlaceholder()
                 // Load Logic
                 .onPlatformAppear(appear: {
                     self.setupManager()
@@ -325,6 +326,14 @@ public struct WebImage<Content> : View where Content: View {
                 }
             }
         }
+    }
+    
+    /// Placeholder View Support
+    func setupPlaceholder() -> some View {
+        let result = content((imageManager.error != nil) ? .failure(imageManager.error!) : .empty)
+        // Custom ID to avoid SwiftUI engine cache the status, and does not call `onAppear` when placeholder not changed (See `ContentView.swift/ContentView2` case)
+        // Because we load the image url in placeholder's `onAppear`, it should be called to sync with state changes :)
+        return result.id(imageModel.url)
     }
 }
 

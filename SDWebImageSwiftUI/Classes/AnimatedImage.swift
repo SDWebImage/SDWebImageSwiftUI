@@ -27,6 +27,13 @@ public final class AnimatedImageCoordinator: NSObject {
 /// Data Binding Object, only properties in this object can support changes from user with @State and refresh
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 final class AnimatedImageModel : ObservableObject {
+    enum Kind {
+        case url
+        case data
+        case name
+        case unknown
+    }
+    var kind: Kind = .unknown
     /// URL image
     @Published var url: URL?
     @Published var webOptions: SDWebImageOptions = []
@@ -123,6 +130,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true), placeholderImage: PlatformImage? = nil) {
         let imageModel = AnimatedImageModel()
+        imageModel.kind = .url
         imageModel.url = url
         imageModel.webOptions = options
         imageModel.webContext = context
@@ -138,6 +146,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init<T>(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true), @ViewBuilder placeholder: @escaping () -> T) where T : View  {
         let imageModel = AnimatedImageModel()
+        imageModel.kind = .url
         imageModel.url = url
         imageModel.webOptions = options
         imageModel.webContext = context
@@ -157,6 +166,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(name: String, bundle: Bundle? = nil, isAnimating: Binding<Bool> = .constant(true)) {
         let imageModel = AnimatedImageModel()
+        imageModel.kind = .name
         imageModel.name = name
         imageModel.bundle = bundle
         self.init(imageModel: imageModel, isAnimating: isAnimating)
@@ -168,6 +178,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
     /// - Parameter isAnimating: The binding for animation control
     public init(data: Data, scale: CGFloat = 1, isAnimating: Binding<Bool> = .constant(true)) {
         let imageModel = AnimatedImageModel()
+        imageModel.kind = .data
         imageModel.data = data
         imageModel.scale = scale
         self.init(imageModel: imageModel, isAnimating: isAnimating)
@@ -275,57 +286,72 @@ public struct AnimatedImage : PlatformViewRepresentable {
         return view
     }
     
+    private func updateViewForName(_ name: String, view: AnimatedImageViewWrapper, context: Context) {
+        var image: PlatformImage?
+        #if os(macOS)
+        image = SDAnimatedImage(named: name, in: imageModel.bundle)
+        if image == nil {
+            // For static image, use NSImage as defaults
+            let bundle = imageModel.bundle ?? .main
+            image = bundle.image(forResource: name)
+        }
+        #else
+        image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
+        if image == nil {
+            // For static image, use UIImage as defaults
+            image = PlatformImage(named: name, in: imageModel.bundle, compatibleWith: nil)
+        }
+        #endif
+        context.coordinator.imageLoading.imageName = name
+        view.wrapped.image = image
+    }
+    
+    private func updateViewForData(_ data: Data, view: AnimatedImageViewWrapper, context: Context) {
+        var image: PlatformImage? = SDAnimatedImage(data: data, scale: imageModel.scale)
+        if image == nil {
+            // For static image, use UIImage as defaults
+            image = PlatformImage.sd_image(with: data, scale: imageModel.scale)
+        }
+        context.coordinator.imageLoading.imageData = data
+        view.wrapped.image = image
+    }
+    
+    private func updateViewForURL(_ url: URL?, view: AnimatedImageViewWrapper, context: Context) {
+        // Determine if image already been loaded and URL is match
+        var shouldLoad: Bool
+        if url != context.coordinator.imageLoading.imageURL {
+            // Change the URL, need new loading
+            shouldLoad = true
+            context.coordinator.imageLoading.imageURL = url
+        } else {
+            // Same URL, check if already loaded
+            if context.coordinator.imageLoading.isLoading {
+                shouldLoad = false
+            } else if let image = context.coordinator.imageLoading.image {
+                shouldLoad = false
+                view.wrapped.image = image
+            } else {
+                shouldLoad = true
+            }
+        }
+        if shouldLoad {
+            setupIndicator(view, context: context)
+            loadImage(view, context: context)
+        }
+    }
+    
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
-        if let name = imageModel.name, name != context.coordinator.imageLoading.imageName {
-            var image: PlatformImage?
-            #if os(macOS)
-            image = SDAnimatedImage(named: name, in: imageModel.bundle)
-            if image == nil {
-                // For static image, use NSImage as defaults
-                let bundle = imageModel.bundle ?? .main
-                image = bundle.image(forResource: name)
-            }
-            #else
-            image = SDAnimatedImage(named: name, in: imageModel.bundle, compatibleWith: nil)
-            if image == nil {
-                // For static image, use UIImage as defaults
-                image = PlatformImage(named: name, in: imageModel.bundle, compatibleWith: nil)
-            }
-            #endif
-            context.coordinator.imageLoading.imageName = name
-            view.wrapped.image = image
-        } else if let data = imageModel.data, data != context.coordinator.imageLoading.imageData {
-            var image: PlatformImage? = SDAnimatedImage(data: data, scale: imageModel.scale)
-            if image == nil {
-                // For static image, use UIImage as defaults
-                image = PlatformImage.sd_image(with: data, scale: imageModel.scale)
-            }
-            context.coordinator.imageLoading.imageData = data
-            view.wrapped.image = image
-        } else if let url = imageModel.url {
-            // Determine if image already been loaded and URL is match
-            var shouldLoad: Bool
-            if url != context.coordinator.imageLoading.imageURL {
-                // Change the URL, need new loading
-                shouldLoad = true
-                context.coordinator.imageLoading.imageURL = url
-            } else {
-                // Same URL, check if already loaded
-                if context.coordinator.imageLoading.isLoading {
-                    shouldLoad = false
-                } else if let image = context.coordinator.imageLoading.image {
-                    shouldLoad = false
-                    view.wrapped.image = image
-                } else {
-                    shouldLoad = true
-                }
-            }
-            if shouldLoad {
-                setupIndicator(view, context: context)
-                loadImage(view, context: context)
-            }
+        let kind = imageModel.kind
+        if kind == .name, let name = imageModel.name, name != context.coordinator.imageLoading.imageName {
+            updateViewForName(name, view: view, context: context)
+        } else if kind == .data, let data = imageModel.data, data != context.coordinator.imageLoading.imageData {
+            updateViewForData(data, view: view, context: context)
+        } else if kind == .url {
+            updateViewForURL(imageModel.url, view: view, context: context)
+        } else {
+            fatalError("Unsupported model kind: \(kind)")
         }
         
         #if os(macOS)

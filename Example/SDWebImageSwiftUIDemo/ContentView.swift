@@ -17,6 +17,43 @@ class UserSettings: ObservableObject {
     #endif
 }
 
+// Test Switching nil url
+struct ContentView3: View {
+    @State var isOn = false
+    @State var animated: Bool = false // You can change between WebImage/AnimatedImage
+
+    var url: URL? {
+        if isOn {
+            .init(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png")
+        } else {
+            nil
+        }
+    }
+
+    var body: some View {
+        VStack {
+            Text("\(animated ? "AnimatedImage" : "WebImage")")
+            Spacer()
+            if animated {
+                AnimatedImage(url: url)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+            } else {
+                WebImage(url: url)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+            }
+            Button("Toggle \(isOn ? "nil" : "valid") URL") {
+                isOn.toggle()
+            }
+            Spacer()
+            Toggle("Switch", isOn: $animated)
+        }
+    }
+}
+
 // Test Switching url using @State
 struct ContentView2: View {
     @State var imageURLs = [
