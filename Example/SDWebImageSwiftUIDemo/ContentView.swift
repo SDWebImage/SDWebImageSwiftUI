@@ -34,6 +34,12 @@ struct ContentView3: View {
         VStack {
             Text("\(animated ? "AnimatedImage" : "WebImage")")
             Spacer()
+            #if os(watchOS)
+            WebImage(url: url)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
+            #else
             if animated {
                 AnimatedImage(url: url)
                     .resizable()
@@ -45,6 +51,7 @@ struct ContentView3: View {
                     .scaledToFit()
                     .frame(width: 100, height: 100)
             }
+            #endif
             Button("Toggle \(isOn ? "nil" : "valid") URL") {
                 isOn.toggle()
             }
