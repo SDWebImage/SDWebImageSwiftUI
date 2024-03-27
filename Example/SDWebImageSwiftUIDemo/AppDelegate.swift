@@ -9,7 +9,9 @@
 import UIKit
 import SDWebImage
 import SDWebImageWebPCoder
+#if canImport(SDWebImageAVIFCoder)
 import SDWebImageAVIFCoder
+#endif
 import SDWebImageSVGCoder
 import SDWebImagePDFCoder
 
@@ -22,7 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // Add WebP/SVG/PDF support
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
+        #if canImport(SDWebImageAVIFCoder)
         SDImageCodersManager.shared.addCoder(SDImageAVIFCoder.shared)
+        #endif
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
         SDImageCodersManager.shared.addCoder(SDImagePDFCoder.shared)
         // Dynamic check to support vector format for both WebImage/AnimatedImage

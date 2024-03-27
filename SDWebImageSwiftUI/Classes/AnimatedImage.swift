@@ -286,7 +286,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
         return view
     }
     
-    private func updateViewForName(_ name: String, view: AnimatedImageViewWrapper, context: Context) {
+    private func updateViewForName(_ name: String?, view: AnimatedImageViewWrapper, context: Context) {
+        guard let name = name, name != context.coordinator.imageLoading.imageName else {
+            return
+        }
         var image: PlatformImage?
         #if os(macOS)
         image = SDAnimatedImage(named: name, in: imageModel.bundle)
@@ -306,7 +309,10 @@ public struct AnimatedImage : PlatformViewRepresentable {
         view.wrapped.image = image
     }
     
-    private func updateViewForData(_ data: Data, view: AnimatedImageViewWrapper, context: Context) {
+    private func updateViewForData(_ data: Data?, view: AnimatedImageViewWrapper, context: Context) {
+        guard let data = data, data != context.coordinator.imageLoading.imageData else {
+            return
+        }
         var image: PlatformImage? = SDAnimatedImage(data: data, scale: imageModel.scale)
         if image == nil {
             // For static image, use UIImage as defaults
@@ -344,14 +350,15 @@ public struct AnimatedImage : PlatformViewRepresentable {
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
         let kind = imageModel.kind
-        if kind == .name, let name = imageModel.name, name != context.coordinator.imageLoading.imageName {
-            updateViewForName(name, view: view, context: context)
-        } else if kind == .data, let data = imageModel.data, data != context.coordinator.imageLoading.imageData {
-            updateViewForData(data, view: view, context: context)
-        } else if kind == .url {
+        switch kind {
+        case .name:
+            updateViewForName(imageModel.name, view: view, context: context)
+        case .data:
+            updateViewForData(imageModel.data, view: view, context: context)
+        case .url:
             updateViewForURL(imageModel.url, view: view, context: context)
-        } else {
-            fatalError("Unsupported model kind: \(kind)")
+        case .unknown:
+            break // impossible
         }
         
         #if os(macOS)
