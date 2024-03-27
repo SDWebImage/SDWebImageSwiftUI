@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.2] - 2024-03-27
+- Fix the assert crash then when using Data/Name in AnimatedImage #309
+
 ## [3.0.1] - 2024-03-18
 - Fix the issue for WebImage/AnimatedImage when url is nil will not cause the reloading #304
 
