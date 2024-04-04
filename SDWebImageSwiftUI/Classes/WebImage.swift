@@ -91,9 +91,6 @@ public struct WebImage<Content> : View where Content: View {
     /// True to start animation, false to stop animation.
     @Binding public var isAnimating: Bool
     
-    /// A observed object to pass through the image model to manager
-    @ObservedObject var imageModel: WebImageModel
-    
     /// A observed object to pass through the image handler to manager
     @ObservedObject var imageHandler = WebImageHandler()
     
@@ -101,6 +98,8 @@ public struct WebImage<Content> : View where Content: View {
     @ObservedObject var imageConfiguration = WebImageConfiguration()
     
     @ObservedObject var indicatorStatus : IndicatorStatus
+    
+    @StateObject var imageModel: WebImageModel
     
     @StateObject var imagePlayer = ImagePlayer()
     
@@ -140,7 +139,7 @@ public struct WebImage<Content> : View where Content: View {
         imageModel.url = url
         imageModel.options = options
         imageModel.context = context
-        _imageModel = ObservedObject(wrappedValue: imageModel)
+        _imageModel = StateObject(wrappedValue: imageModel)
         let imageManager = ImageManager()
         _imageManager = StateObject(wrappedValue: imageManager)
         _indicatorStatus = ObservedObject(wrappedValue: imageManager.indicatorStatus)
