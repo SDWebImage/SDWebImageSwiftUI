@@ -32,6 +32,9 @@ It brings all your favorite features from SDWebImage, like async image loading, 
     'SUPPORTS_MACCATALYST' => 'YES',
     'DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER' => 'NO',
   }
+  s.resource_bundles = {
+    'SDWebImageSwiftUI' => ['Resources/PrivacyInfo.xcprivacy'],
+  }
 
   s.weak_frameworks = 'SwiftUI', 'Combine'
   s.dependency 'SDWebImage', '~> 5.10'
