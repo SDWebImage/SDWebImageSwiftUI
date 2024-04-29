@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3243AFE62AA37EFF0049A43B /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
 		3243AFE72AA37EFF0049A43B /* WebImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C43DDE22FD54C600BE87F5 /* WebImage.swift */; };
 		3243AFE82AA37EFF0049A43B /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */; };
 		3243AFE92AA37EFF0049A43B /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
@@ -26,10 +25,6 @@
 		326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E480923431C0F00C633E9 /* ImageViewWrapper.swift */; };
 		329885EE2AA37FCB0071F2BA /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 329885ED2AA37FCB0071F2BA /* SDWebImage.framework */; };
-		32B79C9528DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
-		32B79C9628DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
-		32B79C9728DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
-		32B79C9828DB40430088C432 /* SwiftUICompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */; };
 		32B933E523659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E623659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
 		32B933E723659A1900BB7CAD /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B933E423659A1900BB7CAD /* Transition.swift */; };
@@ -83,7 +78,6 @@
 		326B84812363350C0011BDFB /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		326E480923431C0F00C633E9 /* ImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWrapper.swift; sourceTree = "<group>"; };
 		329885ED2AA37FCB0071F2BA /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/visionOS/SDWebImage.framework; sourceTree = "<group>"; };
-		32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUICompatibility.swift; sourceTree = "<group>"; };
 		32B933E423659A1900BB7CAD /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
 		32C43DCC22FD540D00BE87F5 /* SDWebImageSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImageSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32C43DDC22FD54C600BE87F5 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -221,7 +215,6 @@
 				32C43DDE22FD54C600BE87F5 /* WebImage.swift */,
 				32C43DDF22FD54C600BE87F5 /* AnimatedImage.swift */,
 				32C43E3122FD5DE100BE87F5 /* SDWebImageSwiftUI.swift */,
-				32B79C9428DB40430088C432 /* SwiftUICompatibility.swift */,
 				326E480923431C0F00C633E9 /* ImageViewWrapper.swift */,
 				32D26A012446B546005905DA /* Image.swift */,
 			);
@@ -491,7 +484,6 @@
 				3243AFEB2AA37EFF0049A43B /* AnimatedImage.swift in Sources */,
 				3243AFE82AA37EFF0049A43B /* ImagePlayer.swift in Sources */,
 				3243AFED2AA37EFF0049A43B /* SDWebImageSwiftUI.swift in Sources */,
-				3243AFE62AA37EFF0049A43B /* SwiftUICompatibility.swift in Sources */,
 				3243AFEE2AA37F010049A43B /* Indicator.swift in Sources */,
 				3243AFEA2AA37EFF0049A43B /* Image.swift in Sources */,
 			);
@@ -507,7 +499,6 @@
 				326B84822363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3222FD5DE100BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480A23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
-				32B79C9528DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
 				32C43E1622FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1822FD583700BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A022446B546005905DA /* Image.swift in Sources */,
@@ -524,7 +515,6 @@
 				326B84832363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3322FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480B23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
-				32B79C9628DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
 				32C43E1922FD583700BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1B22FD583700BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A032446B546005905DA /* Image.swift in Sources */,
@@ -541,7 +531,6 @@
 				326B84842363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3422FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480C23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
-				32B79C9728DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
 				32C43E1C22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E1E22FD583800BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A042446B546005905DA /* Image.swift in Sources */,
@@ -558,7 +547,6 @@
 				326B84852363350C0011BDFB /* Indicator.swift in Sources */,
 				32C43E3522FD5DF400BE87F5 /* SDWebImageSwiftUI.swift in Sources */,
 				326E480D23431C0F00C633E9 /* ImageViewWrapper.swift in Sources */,
-				32B79C9828DB40430088C432 /* SwiftUICompatibility.swift in Sources */,
 				32C43E1F22FD583800BE87F5 /* ImageManager.swift in Sources */,
 				32C43E2122FD583800BE87F5 /* AnimatedImage.swift in Sources */,
 				32D26A052446B546005905DA /* Image.swift in Sources */,

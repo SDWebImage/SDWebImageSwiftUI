@@ -163,26 +163,22 @@ public struct WebImage<Content> : View where Content: View {
                 }
             } else {
                 content((imageManager.error != nil) ? .failure(imageManager.error!) : .empty)
-                setupPlaceholder()
+                setupInitialState()
                 // Load Logic
-                .onPlatformAppear(appear: {
-                    self.setupManager()
-                    if (self.imageManager.error == nil) {
-                        // Load remote image when first appear
-                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
-                    }
+                .onAppear {
                     guard self.imageConfiguration.retryOnAppear else { return }
                     // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
                     if self.imageManager.error != nil && !self.imageManager.isIncremental {
                         self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
                     }
-                }, disappear: {
+                }
+                .onDisappear {
                     guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.error != nil && !self.imageManager.isIncremental {
                         self.imageManager.cancel()
                     }
-                })
+                }
             }
         }
     }
@@ -326,6 +322,16 @@ public struct WebImage<Content> : View where Content: View {
                 }
             }
         }
+    }
+    
+    /// Initial state management (update when imageModel.url changed)
+    func setupInitialState() -> some View {
+        self.setupManager()
+        if (self.imageManager.error == nil) {
+            // Load remote image when first appear
+            self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+        }
+        return setupPlaceholder()
     }
     
     /// Placeholder View Support
