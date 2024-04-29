@@ -28,9 +28,21 @@ public struct Indicator<T> where T : View {
 @available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
 public class IndicatorStatus : ObservableObject {
     /// whether indicator is loading or not
-    @Published var isLoading: Bool = false
+    var isLoading: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
     /// indicator progress, should only be used for indicator binding, value between [0.0, 1.0]
-    @Published var progress: Double = 0
+    var progress: Double = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
 }
 
 /// A implementation detail View Modifier with indicator
