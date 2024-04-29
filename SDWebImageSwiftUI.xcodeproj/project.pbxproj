@@ -66,6 +66,11 @@
 		32D26A032446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
 		32D26A042446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
 		32D26A052446B546005905DA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D26A012446B546005905DA /* Image.swift */; };
+		32FFFE712BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */; };
+		32FFFE722BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */; };
+		32FFFE732BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */; };
+		32FFFE742BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */; };
+		32FFFE752BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +102,7 @@
 		32CBA77E25E4D7D800C6A8DC /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
 		32D26A012446B546005905DA /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		32ED4825242A13030053338E /* ImageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManagerTests.swift; sourceTree = "<group>"; };
+		32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +205,7 @@
 		32C43DCE22FD540D00BE87F5 /* SDWebImageSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				32FFFE6F2BDF97FB005D0719 /* Resources */,
 				32C43DDB22FD54C600BE87F5 /* Classes */,
 			);
 			path = SDWebImageSwiftUI;
@@ -232,6 +239,14 @@
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
+		};
+		32FFFE6F2BDF97FB005D0719 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				32FFFE702BDF97FB005D0719 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -426,6 +441,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FFFE752BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FFFE712BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FFFE722BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +465,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FFFE732BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +473,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FFFE742BDF97FB005D0719 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
