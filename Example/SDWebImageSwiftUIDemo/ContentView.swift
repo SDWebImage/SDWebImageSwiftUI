@@ -17,6 +17,33 @@ class UserSettings: ObservableObject {
     #endif
 }
 
+struct ContentView: View {
+    let imageURL = URL(string: "http://apng.onevcat.com/assets/elephant.png")!
+
+    var body: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(1 ... 200, id: \.self) { index in
+                    HStack {
+                        AnimatedImage(url: imageURL)
+                            .customLoopCount(0)
+                            .playbackMode(.normal)
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .environment(\.animationGroup, "A")
+                        AnimatedImage(url: imageURL)
+                            .customLoopCount(0)
+                            .playbackMode(.reverse)
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .environment(\.animationGroup, "B")
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Test Switching nil url
 struct ContentView3: View {
     @State var isOn = false
@@ -107,7 +134,7 @@ struct ContentView2: View {
     }
 }
 
-struct ContentView: View {
+struct ContentView4: View {
     @State var imageURLs = [
     "http://assets.sbnation.com/assets/2512203/dogflops.gif",
     "https://raw.githubusercontent.com/liyong03/YLGIFImage/master/YLGIFImageDemo/YLGIFImageDemo/joy.gif",

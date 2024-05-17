@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -194,6 +194,7 @@
 		32E529512348A0DF00EA46FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		32E529542348A0DF00EA46FF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		32E529562348A0DF00EA46FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		32F4114B2BF72FE800B4ECB7 /* SDWebImage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SDWebImage; path = ../../SDWebImage; sourceTree = "<group>"; };
 		3E9F8B5F06960FFFBD1A5F99 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		54859B427E0A79E823713963 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -432,6 +433,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				32F4114B2BF72FE800B4ECB7 /* SDWebImage */,
 				3294617E2AA36761009E391B /* SDWebImageSwiftUI */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				320CDC2A22FADB44007CF858 /* SDWebImageSwiftUIDemo */,

@@ -280,6 +280,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     func makeView(context: Context) -> AnimatedImageViewWrapper {
         let view = AnimatedImageViewWrapper()
+        if let group = context.environment.animationGroup {
+            view.wrapped.animationGroup = group
+        }
         if let viewCreateBlock = imageHandler.viewCreateBlock {
             viewCreateBlock(view.wrapped, context)
         }
@@ -347,6 +350,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
+        if let group = context.environment.animationGroup {
+            view.wrapped.animationGroup = group
+        }
         // Refresh image, imageModel is the Source of Truth, switch the type
         // Although we have Source of Truth, we can check the previous value, to avoid re-generate SDAnimatedImage, which is performance-cost.
         let kind = imageModel.kind
@@ -384,11 +390,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
     
     static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: Coordinator) {
         view.wrapped.sd_cancelCurrentImageLoad()
-        #if os(macOS)
-        view.wrapped.animates = false
-        #else
-        view.wrapped.stopAnimating()
-        #endif
         if let viewDestroyBlock = viewDestroyBlock {
             viewDestroyBlock(view.wrapped, coordinator)
         }
