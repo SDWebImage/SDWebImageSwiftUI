@@ -12,7 +12,7 @@ import SDWebImage
 
 /// A Image observable object for handle image load process. This drive the Source of Truth for image loading status.
 /// You can use `@ObservedObject` to associate each instance of manager to your View type, which update your view's body from SwiftUI framework when image was loaded.
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public final class ImageManager : ObservableObject {
     /// loaded image, note when progressive loading, this will published multiple times with different partial image
     public var image: PlatformImage? {
@@ -136,7 +136,7 @@ public final class ImageManager : ObservableObject {
 }
 
 // Completion Handler
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension ImageManager {
     /// Provide the action when image load fails.
     /// - Parameters:

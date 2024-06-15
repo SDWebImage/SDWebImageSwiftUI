@@ -12,7 +12,7 @@ import SDWebImage
 #if !os(watchOS)
 
 /// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public class AnimatedImageViewWrapper : PlatformView {
     /// The wrapped actual image view, using SDWebImage's aniamted image view
     public var wrapped = SDAnimatedImageView()
@@ -67,7 +67,7 @@ public class AnimatedImageViewWrapper : PlatformView {
     }
 }
 
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension PlatformView {
     /// Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
     /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
