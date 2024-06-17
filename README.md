@@ -117,7 +117,7 @@ For downstream framework author, you should create a `Package.swift` file into y
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "2.0.0")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "3.0.0")
     ],
 )
 ```
