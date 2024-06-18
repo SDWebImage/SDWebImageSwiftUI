@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension Image {
     @inlinable init(platformImage: PlatformImage) {
         #if os(macOS)
@@ -20,13 +20,13 @@ extension Image {
     }
 }
 
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension PlatformImage {
     static var empty = PlatformImage()
 }
 
 #if !os(macOS)
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension PlatformImage.Orientation {
     @inlinable var toSwiftUI: Image.Orientation {
         switch self {
@@ -52,7 +52,7 @@ extension PlatformImage.Orientation {
     }
 }
 
-@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension Image.Orientation {
     @inlinable var toPlatform: PlatformImage.Orientation {
         switch self {
