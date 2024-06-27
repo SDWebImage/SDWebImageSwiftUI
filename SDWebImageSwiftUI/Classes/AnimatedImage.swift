@@ -309,8 +309,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         context.coordinator.imageLoading.imageName = name
         view.wrapped.image = image
-        // Finished loading, sync
-        finishUpdateView(view, context: context, image: image)
     }
     
     private func updateViewForData(_ data: Data?, view: AnimatedImageViewWrapper, context: Context) {
@@ -324,8 +322,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         context.coordinator.imageLoading.imageData = data
         view.wrapped.image = image
-        // Finished loading, sync
-        finishUpdateView(view, context: context, image: image)
     }
     
     private func updateViewForURL(_ url: URL?, view: AnimatedImageViewWrapper, context: Context) {
@@ -350,8 +346,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             setupIndicator(view, context: context)
             loadImage(view, context: context)
         }
-        // Finished loading, sync
-        finishUpdateView(view, context: context, image: view.wrapped.image)
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
@@ -368,6 +362,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
         case .unknown:
             break // impossible
         }
+        
+        // Finished loading, sync
+        finishUpdateView(view, context: context, image: view.wrapped.image)
         
         if let viewUpdateBlock = imageHandler.viewUpdateBlock {
             viewUpdateBlock(view.wrapped, context)

@@ -17,6 +17,7 @@ class UserSettings: ObservableObject {
     #endif
 }
 
+#if !os(watchOS)
 struct ContentView4: View {
     var url = URL(string: "https://github.com/SDWebImage/SDWebImageSwiftUI/assets/97430818/72d27f90-e9d8-48d7-b144-82ada828a027")!
     var body: some View {
@@ -27,6 +28,7 @@ struct ContentView4: View {
             .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
     }
 }
+#endif
 
 // Test Switching nil url
 struct ContentView3: View {
