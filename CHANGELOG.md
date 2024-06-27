@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2024-06-27
+- Re-implements the aspectRatio support on AnimatedImage, fix issue like cornerRadius #324
+- Add Image scale support in WebImage init #323
+- Update platform names in `available` attributes #321
+- - This is source compatible but binary incompatible version
+
 ## [3.0.4] - 2024-04-30
 - Trying to move the initial state setup before onAppear to fix the watchOS switching url or any other state issue #316
 - This solve a issue in history when sometimes SwiftUI does not trigger the `onAppear` and cause state error, like #312 #314
