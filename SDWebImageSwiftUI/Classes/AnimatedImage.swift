@@ -275,9 +275,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 self.imageModel.placeholderView?.isHidden = false
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
-            // Finished loading
-            configureView(view, context: context)
-            layoutView(view, context: context)
+            // Finished loading, async
+            finishUpdateView(view, context: context, image: image)
         }
     }
     
@@ -310,6 +309,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         context.coordinator.imageLoading.imageName = name
         view.wrapped.image = image
+        // Finished loading, sync
+        finishUpdateView(view, context: context, image: image)
     }
     
     private func updateViewForData(_ data: Data?, view: AnimatedImageViewWrapper, context: Context) {
@@ -323,6 +324,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         context.coordinator.imageLoading.imageData = data
         view.wrapped.image = image
+        // Finished loading, sync
+        finishUpdateView(view, context: context, image: image)
     }
     
     private func updateViewForURL(_ url: URL?, view: AnimatedImageViewWrapper, context: Context) {
@@ -347,6 +350,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
             setupIndicator(view, context: context)
             loadImage(view, context: context)
         }
+        // Finished loading, sync
+        finishUpdateView(view, context: context, image: view.wrapped.image)
     }
     
     func updateView(_ view: AnimatedImageViewWrapper, context: Context) {
@@ -364,9 +369,6 @@ public struct AnimatedImage : PlatformViewRepresentable {
             break // impossible
         }
         
-        // Finished loading
-        configureView(view, context: context)
-        layoutView(view, context: context)
         if let viewUpdateBlock = imageHandler.viewUpdateBlock {
             viewUpdateBlock(view.wrapped, context)
         }
@@ -382,6 +384,17 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if let viewDestroyBlock = viewDestroyBlock {
             viewDestroyBlock(view.wrapped, coordinator)
         }
+    }
+    
+    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context, image: PlatformImage?) {
+        // Finished loading
+        if let imageSize = image?.size {
+            view.imageSize = imageSize
+        } else {
+            view.imageSize = nil
+        }
+        configureView(view, context: context)
+        layoutView(view, context: context)
     }
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: Context) {
