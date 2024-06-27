@@ -8,6 +8,7 @@
 
 import Foundation
 import SDWebImage
+import SwiftUI
 
 #if !os(watchOS)
 
@@ -18,7 +19,7 @@ public class AnimatedImageViewWrapper : PlatformView {
     public var wrapped = SDAnimatedImageView()
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
-    var resizable = false
+    var resizingMode: Image.ResizingMode?
     
     public override func draw(_ rect: CGRect) {
         #if os(macOS)
@@ -48,11 +49,20 @@ public class AnimatedImageViewWrapper : PlatformView {
     
     public override var intrinsicContentSize: CGSize {
         /// Match the behavior of SwiftUI.Image, only when image is resizable, use the super implementation to calculate size
-        if resizable {
-            return super.intrinsicContentSize
+        let imageSize = wrapped.intrinsicContentSize
+        if let _ = resizingMode {
+            /// Keep aspect ratio
+            let noIntrinsicMetric = AnimatedImageViewWrapper.noIntrinsicMetric
+            if (imageSize.width > 0 && imageSize.height > 0) {
+                let ratio = imageSize.width / imageSize.height
+                let size = CGSize(width: ratio, height: 1)
+                return size
+            } else {
+                return CGSize(width: noIntrinsicMetric, height: noIntrinsicMetric)
+            }
         } else {
             /// Not resizable, always use image size, like SwiftUI.Image
-            return wrapped.intrinsicContentSize
+            return imageSize
         }
     }
     
