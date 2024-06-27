@@ -275,6 +275,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 self.imageModel.placeholderView?.isHidden = false
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
+            // Finished loading, async
+            finishUpdateView(view, context: context, image: image)
         }
     }
     
@@ -361,22 +363,9 @@ public struct AnimatedImage : PlatformViewRepresentable {
             break // impossible
         }
         
-        #if os(macOS)
-        if self.isAnimating != view.wrapped.animates {
-            view.wrapped.animates = self.isAnimating
-        }
-        #else
-        if self.isAnimating != view.wrapped.isAnimating {
-            if self.isAnimating {
-                view.wrapped.startAnimating()
-            } else {
-                view.wrapped.stopAnimating()
-            }
-        }
-        #endif
+        // Finished loading, sync
+        finishUpdateView(view, context: context, image: view.wrapped.image)
         
-        configureView(view, context: context)
-        layoutView(view, context: context)
         if let viewUpdateBlock = imageHandler.viewUpdateBlock {
             viewUpdateBlock(view.wrapped, context)
         }
@@ -392,6 +381,17 @@ public struct AnimatedImage : PlatformViewRepresentable {
         if let viewDestroyBlock = viewDestroyBlock {
             viewDestroyBlock(view.wrapped, coordinator)
         }
+    }
+    
+    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context, image: PlatformImage?) {
+        // Finished loading
+        if let imageSize = image?.size {
+            view.imageSize = imageSize
+        } else {
+            view.imageSize = nil
+        }
+        configureView(view, context: context)
+        layoutView(view, context: context)
     }
     
     func layoutView(_ view: AnimatedImageViewWrapper, context: Context) {
@@ -442,9 +442,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         #endif
         
         // Resizable
-        if let _ = imageLayout.resizingMode {
-            view.resizable = true
-        }
+        view.resizingMode = imageLayout.resizingMode
         
         // Animated Image does not support resizing mode and rendering mode
         if let image = view.wrapped.image {
@@ -587,6 +585,21 @@ public struct AnimatedImage : PlatformViewRepresentable {
         } else {
             view.wrapped.playbackMode = .normal
         }
+        
+        // Animation
+        #if os(macOS)
+        if self.isAnimating != view.wrapped.animates {
+            view.wrapped.animates = self.isAnimating
+        }
+        #else
+        if self.isAnimating != view.wrapped.isAnimating {
+            if self.isAnimating {
+                view.wrapped.startAnimating()
+            } else {
+                view.wrapped.stopAnimating()
+            }
+        }
+        #endif
     }
 }
 
@@ -627,68 +640,6 @@ extension AnimatedImage {
     public func antialiased(_ isAntialiased: Bool) -> AnimatedImage {
         self.imageLayout.antialiased = isAntialiased
         return self
-    }
-}
-
-// Aspect Ratio
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-extension AnimatedImage {
-    func setImageLayoutAspectRatio(_ aspectRatio: CGFloat?, contentMode: ContentMode) {
-        self.imageLayout.aspectRatio = aspectRatio
-        self.imageLayout.contentMode = contentMode
-    }
-
-    /// Constrains this view's dimensions to the specified aspect ratio.
-    /// - Parameters:
-    ///   - aspectRatio: The ratio of width to height to use for the resulting
-    ///     view. If `aspectRatio` is `nil`, the resulting view maintains this
-    ///     view's aspect ratio.
-    ///   - contentMode: A flag indicating whether this view should fit or
-    ///     fill the parent context.
-    /// - Returns: A view that constrains this view's dimensions to
-    ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
-    @ViewBuilder
-    public func aspectRatio(_ aspectRatio: CGFloat? = nil, contentMode: ContentMode) -> some View {
-        // The `SwifUI.View.aspectRatio(_:contentMode:)` says:
-        // If `aspectRatio` is `nil`, the resulting view maintains this view's aspect ratio
-        // But 1: there are no public API to declare what `this view's aspect ratio` is
-        // So, if we don't override this method, SwiftUI ignore the content mode on actual ImageView
-        // To workaround, we want to call the default `SwifUI.View.aspectRatio(_:contentMode:)` method
-        // But 2: there are no way to call a Protocol Extention default implementation in Swift 5.1
-        // So, we directly call the implementation detail modifier instead
-        // Fired Radar: FB7413534
-        let _ = self.setImageLayoutAspectRatio(aspectRatio, contentMode: contentMode)
-        if let aspectRatio {
-            self.modifier(_AspectRatioLayout(aspectRatio: aspectRatio, contentMode: contentMode))
-        } else {
-            self
-        }
-    }
-
-    /// Constrains this view's dimensions to the aspect ratio of the given size.
-    /// - Parameters:
-    ///   - aspectRatio: A size specifying the ratio of width to height to use
-    ///     for the resulting view.
-    ///   - contentMode: A flag indicating whether this view should fit or
-    ///     fill the parent context.
-    /// - Returns: A view that constrains this view's dimensions to
-    ///   `aspectRatio`, using `contentMode` as its scaling algorithm.
-    public func aspectRatio(_ aspectRatio: CGSize, contentMode: ContentMode) -> some View {
-        return self.aspectRatio(aspectRatio.width / aspectRatio.height, contentMode: contentMode)
-    }
-
-    /// Scales this view to fit its parent.
-    /// - Returns: A view that scales this view to fit its parent,
-    ///   maintaining this view's aspect ratio.
-    public func scaledToFit() -> some View {
-        return self.aspectRatio(nil, contentMode: .fit)
-    }
-    
-    /// Scales this view to fill its parent.
-    /// - Returns: A view that scales this view to fit its parent,
-    ///   maintaining this view's aspect ratio.
-    public func scaledToFill() -> some View {
-        return self.aspectRatio(nil, contentMode: .fill)
     }
 }
 

@@ -8,6 +8,7 @@
 
 import Foundation
 import SDWebImage
+import SwiftUI
 
 #if !os(watchOS)
 
@@ -18,7 +19,8 @@ public class AnimatedImageViewWrapper : PlatformView {
     public var wrapped = SDAnimatedImageView()
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
-    var resizable = false
+    var resizingMode: Image.ResizingMode?
+    var imageSize: CGSize?
     
     public override func draw(_ rect: CGRect) {
         #if os(macOS)
@@ -48,11 +50,27 @@ public class AnimatedImageViewWrapper : PlatformView {
     
     public override var intrinsicContentSize: CGSize {
         /// Match the behavior of SwiftUI.Image, only when image is resizable, use the super implementation to calculate size
-        if resizable {
-            return super.intrinsicContentSize
+        var contentSize = wrapped.intrinsicContentSize
+        /// Sometimes, like during the transaction, the wrapped.image == nil, which cause contentSize invalid
+        /// Use image size as backup
+        /// TODO: This mixed use of UIKit/SwiftUI animation will cause visial issue because the intrinsicContentSize during animation may be changed
+        if let imageSize = imageSize {
+            if contentSize != imageSize {
+                contentSize = imageSize
+            }
+        }
+        if let _ = resizingMode {
+            /// Keep aspect ratio
+            if contentSize.width > 0 && contentSize.height > 0 {
+                let ratio = contentSize.width / contentSize.height
+                let size = CGSize(width: ratio, height: 1)
+                return size
+            } else {
+                return contentSize
+            }
         } else {
             /// Not resizable, always use image size, like SwiftUI.Image
-            return wrapped.intrinsicContentSize
+            return contentSize
         }
     }
     
