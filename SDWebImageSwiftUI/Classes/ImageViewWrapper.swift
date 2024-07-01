@@ -16,11 +16,15 @@ import SwiftUI
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public class AnimatedImageViewWrapper : PlatformView {
     /// The wrapped actual image view, using SDWebImage's aniamted image view
-    public var wrapped = SDAnimatedImageView()
+    @objc dynamic public var wrapped = SDAnimatedImageView()
+    var observation: NSKeyValueObservation?
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
     var resizingMode: Image.ResizingMode?
-    var imageSize: CGSize?
+    
+    deinit {
+        observation?.invalidate()
+    }
     
     public override func draw(_ rect: CGRect) {
         #if os(macOS)
@@ -50,15 +54,7 @@ public class AnimatedImageViewWrapper : PlatformView {
     
     public override var intrinsicContentSize: CGSize {
         /// Match the behavior of SwiftUI.Image, only when image is resizable, use the super implementation to calculate size
-        var contentSize = wrapped.intrinsicContentSize
-        /// Sometimes, like during the transaction, the wrapped.image == nil, which cause contentSize invalid
-        /// Use image size as backup
-        /// TODO: This mixed use of UIKit/SwiftUI animation will cause visial issue because the intrinsicContentSize during animation may be changed
-        if let imageSize = imageSize {
-            if contentSize != imageSize {
-                contentSize = imageSize
-            }
-        }
+        let contentSize = wrapped.intrinsicContentSize
         if let _ = resizingMode {
             /// Keep aspect ratio
             if contentSize.width > 0 && contentSize.height > 0 {
@@ -77,11 +73,17 @@ public class AnimatedImageViewWrapper : PlatformView {
     public override init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
         addSubview(wrapped)
+        observation = observe(\.wrapped.image, options: [.new]) { _, _ in
+            self.invalidateIntrinsicContentSize()
+        }
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         addSubview(wrapped)
+        observation = observe(\.wrapped.image, options: [.new]) { _, _ in
+            self.invalidateIntrinsicContentSize()
+        }
     }
 }
 
