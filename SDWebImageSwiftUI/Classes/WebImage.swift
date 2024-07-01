@@ -81,8 +81,6 @@ final class WebImageConfiguration: ObservableObject {
 /// A Image View type to load image from url. Supports static/animated image format.
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct WebImage<Content> : View where Content: View {
-    var transaction: Transaction
-    
     var configurations: [(Image) -> Image] = []
     
     var content: (WebImagePhase) -> Content
@@ -146,10 +144,10 @@ public struct WebImage<Content> : View where Content: View {
         imageModel.context = context
         _imageModel = ObservedObject(wrappedValue: imageModel)
         let imageManager = ImageManager()
+        imageManager.transaction = transaction
         _imageManager = StateObject(wrappedValue: imageManager)
         _indicatorStatus = ObservedObject(wrappedValue: imageManager.indicatorStatus)
         
-        self.transaction = transaction
         self.content = { phase in
             content(phase)
         }
