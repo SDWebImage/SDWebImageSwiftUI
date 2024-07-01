@@ -60,6 +60,7 @@ public final class ImageManager : ObservableObject {
     weak var currentOperation: SDWebImageOperation? = nil
 
     var currentURL: URL?
+    var transaction = Transaction()
     var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
     var failureBlock: ((Error) -> Void)?
     var progressBlock: ((Int, Int) -> Void)?
@@ -106,18 +107,20 @@ public final class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
-            self.image = image
-            self.error = error
-            self.isIncremental = !finished
-            if finished {
-                self.imageData = data
-                self.cacheType = cacheType
-                self.indicatorStatus.isLoading = false
-                self.indicatorStatus.progress = 1
-                if let image = image {
-                    self.successBlock?(image, data, cacheType)
-                } else {
-                    self.failureBlock?(error ?? NSError())
+            withTransaction(transaction) {
+                self.image = image
+                self.error = error
+                self.isIncremental = !finished
+                if finished {
+                    self.imageData = data
+                    self.cacheType = cacheType
+                    self.indicatorStatus.isLoading = false
+                    self.indicatorStatus.progress = 1
+                    if let image = image {
+                        self.successBlock?(image, data, cacheType)
+                    } else {
+                        self.failureBlock?(error ?? NSError())
+                    }
                 }
             }
         }
