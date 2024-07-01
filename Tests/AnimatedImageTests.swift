@@ -39,7 +39,7 @@ class AnimatedImageTests: XCTestCase {
         let imageName = "TestImage.gif"
         let imageView = AnimatedImage(name: imageName, bundle: TestUtils.testImageBundle())
         ViewHosting.host(view: imageView)
-        let animatedImageView = try imageView.inspect().actualView().platformView().wrapped
+        let animatedImageView = try imageView.inspect().actualView().platformView()
         if let animatedImage = animatedImageView.image as? SDAnimatedImage {
             XCTAssertEqual(animatedImage.animatedImageLoopCount, 0)
             XCTAssertEqual(animatedImage.animatedImageFrameCount, 5)
@@ -56,7 +56,7 @@ class AnimatedImageTests: XCTestCase {
         let imageData = try XCTUnwrap(TestUtils.testImageData(name: "TestLoopCount.gif"))
         let imageView = AnimatedImage(data: imageData)
         ViewHosting.host(view: imageView)
-        let animatedImageView = try imageView.inspect().actualView().platformView().wrapped
+        let animatedImageView = try imageView.inspect().actualView().platformView()
         if let animatedImage = animatedImageView.image as? SDAnimatedImage {
             XCTAssertEqual(animatedImage.animatedImageLoopCount, 1)
             XCTAssertEqual(animatedImage.animatedImageFrameCount, 2)
@@ -85,7 +85,7 @@ class AnimatedImageTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
         ViewHosting.host(view: imageView)
-        let animatedImageView = try imageView.inspect().actualView().platformView().wrapped
+        let animatedImageView = try imageView.inspect().actualView().platformView()
         XCTAssertEqual(animatedImageView.sd_imageURL, imageUrl)
         self.waitForExpectations(timeout: 10, handler: nil)
         ViewHosting.expel()
