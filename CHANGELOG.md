@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.1] - 2024-07-01
+- Fix the transition visual jump between placeholderImage and final image for AnimatedImage #326
+
 ## [3.1.0] - 2024-06-27
 - Re-implements the aspectRatio support on AnimatedImage, fix issue like cornerRadius #324
 - Add Image scale support in WebImage init #323
