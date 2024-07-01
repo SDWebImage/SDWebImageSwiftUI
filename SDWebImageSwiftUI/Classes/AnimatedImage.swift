@@ -276,7 +276,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
             // Finished loading, async
-            finishUpdateView(view, context: context, image: image)
+            finishUpdateView(view, context: context)
         }
     }
     
@@ -364,7 +364,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Finished loading, sync
-        finishUpdateView(view, context: context, image: view.wrapped.image)
+        finishUpdateView(view, context: context)
         
         if let viewUpdateBlock = imageHandler.viewUpdateBlock {
             viewUpdateBlock(view.wrapped, context)
@@ -383,13 +383,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
     }
     
-    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context, image: PlatformImage?) {
+    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // Finished loading
-        if let imageSize = image?.size {
-            view.imageSize = imageSize
-        } else {
-            view.imageSize = nil
-        }
         configureView(view, context: context)
         layoutView(view, context: context)
     }
