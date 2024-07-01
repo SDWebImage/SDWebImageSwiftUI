@@ -218,26 +218,29 @@ public struct AnimatedImage : PlatformViewRepresentable {
         updateView(uiView, context: context)
     }
     
+//    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: AnimatedImageViewWrapper, context: Context) -> CGSize? {}
+//    func _overrideSizeThatFits(_ size: inout CGSize, in proposedSize: _ProposedSize, uiView: UIViewType) {}
+    
     public static func dismantleUIView(_ uiView: AnimatedImageViewWrapper, coordinator: Coordinator) {
         dismantleView(uiView, coordinator: coordinator)
     }
     #endif
     
     func setupIndicator(_ view: AnimatedImageViewWrapper, context: Context) {
-        view.wrapped.sd_imageIndicator = imageConfiguration.indicator
-        view.wrapped.sd_imageTransition = imageConfiguration.transition
+        view.sd_imageIndicator = imageConfiguration.indicator
+        view.sd_imageTransition = imageConfiguration.transition
         if let placeholderView = imageModel.placeholderView {
             placeholderView.removeFromSuperview()
             placeholderView.isHidden = true
             // Placeholder View should below the Indicator View
             if let indicatorView = imageConfiguration.indicator?.indicatorView {
                 #if os(macOS)
-                view.wrapped.addSubview(placeholderView, positioned: .below, relativeTo: indicatorView)
+                view.addSubview(placeholderView, positioned: .below, relativeTo: indicatorView)
                 #else
-                view.wrapped.insertSubview(placeholderView, belowSubview: indicatorView)
+                view.insertSubview(placeholderView, belowSubview: indicatorView)
                 #endif
             } else {
-                view.wrapped.addSubview(placeholderView)
+                view.addSubview(placeholderView)
             }
             placeholderView.bindFrameToSuperviewBounds()
         }
@@ -253,7 +256,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         var webContext = imageModel.webContext ?? [:]
         webContext[.animatedImageClass] = SDAnimatedImage.self
-        view.wrapped.sd_internalSetImage(with: imageModel.url, placeholderImage: imageModel.placeholderImage, options: webOptions, context: webContext, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
+        view.sd_internalSetImage(with: imageModel.url, placeholderImage: imageModel.placeholderImage, options: webOptions, context: webContext, setImageBlock: nil, progress: { (receivedSize, expectedSize, _) in
             let progress: Double
             if (expectedSize > 0) {
                 progress = Double(receivedSize) / Double(expectedSize)
@@ -276,14 +279,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 self.imageHandler.failureBlock?(error ?? NSError())
             }
             // Finished loading, async
-            finishUpdateView(view, context: context, image: image)
+            finishUpdateView(view, context: context)
         }
     }
     
     func makeView(context: Context) -> AnimatedImageViewWrapper {
         let view = AnimatedImageViewWrapper()
         if let viewCreateBlock = imageHandler.viewCreateBlock {
-            viewCreateBlock(view.wrapped, context)
+            viewCreateBlock(view, context)
         }
         return view
     }
@@ -308,7 +311,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         #endif
         context.coordinator.imageLoading.imageName = name
-        view.wrapped.image = image
+        view.image = image
     }
     
     private func updateViewForData(_ data: Data?, view: AnimatedImageViewWrapper, context: Context) {
@@ -321,7 +324,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
             image = PlatformImage.sd_image(with: data, scale: imageModel.scale)
         }
         context.coordinator.imageLoading.imageData = data
-        view.wrapped.image = image
+        view.image = image
     }
     
     private func updateViewForURL(_ url: URL?, view: AnimatedImageViewWrapper, context: Context) {
@@ -337,7 +340,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                 shouldLoad = false
             } else if let image = context.coordinator.imageLoading.image {
                 shouldLoad = false
-                view.wrapped.image = image
+                view.image = image
             } else {
                 shouldLoad = true
             }
@@ -364,32 +367,27 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         // Finished loading, sync
-        finishUpdateView(view, context: context, image: view.wrapped.image)
+        finishUpdateView(view, context: context)
         
         if let viewUpdateBlock = imageHandler.viewUpdateBlock {
-            viewUpdateBlock(view.wrapped, context)
+            viewUpdateBlock(view, context)
         }
     }
     
     static func dismantleView(_ view: AnimatedImageViewWrapper, coordinator: Coordinator) {
-        view.wrapped.sd_cancelCurrentImageLoad()
+        view.sd_cancelCurrentImageLoad()
         #if os(macOS)
-        view.wrapped.animates = false
+        view.animates = false
         #else
-        view.wrapped.stopAnimating()
+        view.stopAnimating()
         #endif
         if let viewDestroyBlock = viewDestroyBlock {
-            viewDestroyBlock(view.wrapped, coordinator)
+            viewDestroyBlock(view, coordinator)
         }
     }
     
-    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context, image: PlatformImage?) {
+    func finishUpdateView(_ view: AnimatedImageViewWrapper, context: Context) {
         // Finished loading
-        if let imageSize = image?.size {
-            view.imageSize = imageSize
-        } else {
-            view.imageSize = nil
-        }
         configureView(view, context: context)
         layoutView(view, context: context)
     }
@@ -436,16 +434,16 @@ public struct AnimatedImage : PlatformViewRepresentable {
         }
         
         #if os(macOS)
-        view.wrapped.imageScaling = contentMode
+        view.imageScaling = contentMode
         #else
-        view.wrapped.contentMode = contentMode
+        view.contentMode = contentMode
         #endif
         
         // Resizable
         view.resizingMode = imageLayout.resizingMode
         
         // Animated Image does not support resizing mode and rendering mode
-        if let image = view.wrapped.image {
+        if let image = view.image {
             var image = image
             // ResizingMode
             if let resizingMode = imageLayout.resizingMode, imageLayout.capInsets != EdgeInsets() {
@@ -462,7 +460,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
                     #endif
-                    view.wrapped.image = image
+                    view.image = image
                 case .tile:
                     #if os(macOS)
                     image.resizingMode = .tile
@@ -470,7 +468,7 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
                     #endif
-                    view.wrapped.image = image
+                    view.image = image
                 @unknown default:
                     // Future cases, not implements
                     break
@@ -486,14 +484,14 @@ public struct AnimatedImage : PlatformViewRepresentable {
                     #else
                     image = image.withRenderingMode(.alwaysTemplate)
                     #endif
-                    view.wrapped.image = image
+                    view.image = image
                 case .original:
                     #if os(macOS)
                     image.isTemplate = false
                     #else
                     image = image.withRenderingMode(.alwaysOriginal)
                     #endif
-                    view.wrapped.image = image
+                    view.image = image
                 @unknown default:
                     // Future cases, not implements
                     break
@@ -529,74 +527,74 @@ public struct AnimatedImage : PlatformViewRepresentable {
     func configureView(_ view: AnimatedImageViewWrapper, context: Context) {
         // IncrementalLoad
         if let incrementalLoad = imageConfiguration.incrementalLoad {
-            view.wrapped.shouldIncrementalLoad = incrementalLoad
+            view.shouldIncrementalLoad = incrementalLoad
         } else {
-            view.wrapped.shouldIncrementalLoad = true
+            view.shouldIncrementalLoad = true
         }
         
         // MaxBufferSize
         if let maxBufferSize = imageConfiguration.maxBufferSize {
-            view.wrapped.maxBufferSize = maxBufferSize
+            view.maxBufferSize = maxBufferSize
         } else {
             // automatically
-            view.wrapped.maxBufferSize = 0
+            view.maxBufferSize = 0
         }
         
         // CustomLoopCount
         if let customLoopCount = imageConfiguration.customLoopCount {
-            view.wrapped.shouldCustomLoopCount = true
-            view.wrapped.animationRepeatCount = Int(customLoopCount)
+            view.shouldCustomLoopCount = true
+            view.animationRepeatCount = Int(customLoopCount)
         } else {
             // disable custom loop count
-            view.wrapped.shouldCustomLoopCount = false
+            view.shouldCustomLoopCount = false
         }
         
         // RunLoop Mode
         if let runLoopMode = imageConfiguration.runLoopMode {
-            view.wrapped.runLoopMode = runLoopMode
+            view.runLoopMode = runLoopMode
         } else {
-            view.wrapped.runLoopMode = .common
+            view.runLoopMode = .common
         }
         
         // Pausable
         if let pausable = imageConfiguration.pausable {
-            view.wrapped.resetFrameIndexWhenStopped = !pausable
+            view.resetFrameIndexWhenStopped = !pausable
         } else {
-            view.wrapped.resetFrameIndexWhenStopped = false
+            view.resetFrameIndexWhenStopped = false
         }
         
         // Clear Buffer
         if let purgeable = imageConfiguration.purgeable {
-            view.wrapped.clearBufferWhenStopped = purgeable
+            view.clearBufferWhenStopped = purgeable
         } else {
-            view.wrapped.clearBufferWhenStopped = false
+            view.clearBufferWhenStopped = false
         }
         
         // Playback Rate
         if let playbackRate = imageConfiguration.playbackRate {
-            view.wrapped.playbackRate = playbackRate
+            view.playbackRate = playbackRate
         } else {
-            view.wrapped.playbackRate = 1.0
+            view.playbackRate = 1.0
         }
         
         // Playback Mode
         if let playbackMode = imageConfiguration.playbackMode {
-            view.wrapped.playbackMode = playbackMode
+            view.playbackMode = playbackMode
         } else {
-            view.wrapped.playbackMode = .normal
+            view.playbackMode = .normal
         }
         
         // Animation
         #if os(macOS)
-        if self.isAnimating != view.wrapped.animates {
-            view.wrapped.animates = self.isAnimating
+        if self.isAnimating != view.animates {
+            view.animates = self.isAnimating
         }
         #else
-        if self.isAnimating != view.wrapped.isAnimating {
+        if self.isAnimating != view.isAnimating {
             if self.isAnimating {
-                view.wrapped.startAnimating()
+                view.startAnimating()
             } else {
-                view.wrapped.stopAnimating()
+                view.stopAnimating()
             }
         }
         #endif

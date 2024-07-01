@@ -14,13 +14,10 @@ import SwiftUI
 
 /// Use wrapper to solve tne `UIImageView`/`NSImageView` frame size become image size issue (SwiftUI's Bug)
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-public class AnimatedImageViewWrapper : PlatformView {
-    /// The wrapped actual image view, using SDWebImage's aniamted image view
-    public var wrapped = SDAnimatedImageView()
+public class AnimatedImageViewWrapper : SDAnimatedImageView {
     var interpolationQuality = CGInterpolationQuality.default
     var shouldAntialias = false
     var resizingMode: Image.ResizingMode?
-    var imageSize: CGSize?
     
     public override func draw(_ rect: CGRect) {
         #if os(macOS)
@@ -36,29 +33,9 @@ public class AnimatedImageViewWrapper : PlatformView {
         ctx.setShouldAntialias(shouldAntialias)
     }
     
-    #if os(macOS)
-    public override func layout() {
-        super.layout()
-        wrapped.frame = self.bounds
-    }
-    #else
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        wrapped.frame = self.bounds
-    }
-    #endif
-    
     public override var intrinsicContentSize: CGSize {
         /// Match the behavior of SwiftUI.Image, only when image is resizable, use the super implementation to calculate size
-        var contentSize = wrapped.intrinsicContentSize
-        /// Sometimes, like during the transaction, the wrapped.image == nil, which cause contentSize invalid
-        /// Use image size as backup
-        /// TODO: This mixed use of UIKit/SwiftUI animation will cause visial issue because the intrinsicContentSize during animation may be changed
-        if let imageSize = imageSize {
-            if contentSize != imageSize {
-                contentSize = imageSize
-            }
-        }
+        let contentSize = super.intrinsicContentSize
         if let _ = resizingMode {
             /// Keep aspect ratio
             if contentSize.width > 0 && contentSize.height > 0 {
@@ -72,16 +49,6 @@ public class AnimatedImageViewWrapper : PlatformView {
             /// Not resizable, always use image size, like SwiftUI.Image
             return contentSize
         }
-    }
-    
-    public override init(frame frameRect: CGRect) {
-        super.init(frame: frameRect)
-        addSubview(wrapped)
-    }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addSubview(wrapped)
     }
 }
 
