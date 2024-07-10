@@ -71,7 +71,7 @@ public final class ImageManager : ObservableObject {
     /// - Parameter url: The image url
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    public func load(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) {
+    public func load(url: URL?, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil) async {
         let manager: SDWebImageManager
         if let customManager = context?[.customManager] as? SDWebImageManager {
             manager = customManager
@@ -127,7 +127,7 @@ public final class ImageManager : ObservableObject {
     }
     
     /// Cancel the current url loading
-    public func cancel() {
+    public func cancel() async {
         if let operation = currentOperation {
             operation.cancel()
             currentOperation = nil

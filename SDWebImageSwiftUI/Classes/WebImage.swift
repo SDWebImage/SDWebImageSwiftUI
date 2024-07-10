@@ -168,17 +168,21 @@ public struct WebImage<Content> : View where Content: View {
                 setupInitialState()
                 // Load Logic
                 .onAppear {
-                    guard self.imageConfiguration.retryOnAppear else { return }
-                    // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
-                    if self.imageManager.error != nil && !self.imageManager.isIncremental {
-                        self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+                    Task {
+                        guard self.imageConfiguration.retryOnAppear else { return }
+                        // When using prorgessive loading, the new partial image will cause onAppear. Filter this case
+                        if self.imageManager.error != nil && !self.imageManager.isIncremental {
+                            await imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+                        }
                     }
                 }
                 .onDisappear {
                     guard self.imageConfiguration.cancelOnDisappear else { return }
                     // When using prorgessive loading, the previous partial image will cause onDisappear. Filter this case
                     if self.imageManager.error != nil && !self.imageManager.isIncremental {
-                        self.imageManager.cancel()
+                        Task {
+                            await imageManager.cancel()
+                        }
                     }
                 }
             }
@@ -245,14 +249,16 @@ public struct WebImage<Content> : View where Content: View {
         self.imageManager.failureBlock = self.imageHandler.failureBlock
         self.imageManager.progressBlock = self.imageHandler.progressBlock
         if imageModel.url != imageManager.currentURL {
-            imageManager.cancel()
-            imageManager.image = nil
-            imageManager.imageData = nil
-            imageManager.cacheType = .none
-            imageManager.error = nil
-            imageManager.isIncremental = false
-            imageManager.indicatorStatus.isLoading = false
-            imageManager.indicatorStatus.progress = 0
+            Task {
+                await imageManager.cancel()
+                imageManager.image = nil
+                imageManager.imageData = nil
+                imageManager.cacheType = .none
+                imageManager.error = nil
+                imageManager.isIncremental = false
+                imageManager.indicatorStatus.isLoading = false
+                imageManager.indicatorStatus.progress = 0
+            }
         }
     }
     
@@ -331,7 +337,9 @@ public struct WebImage<Content> : View where Content: View {
         self.setupManager()
         if (self.imageManager.error == nil) {
             // Load remote image when first appear
-            self.imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+            Task {
+               await imageManager.load(url: imageModel.url, options: imageModel.options, context: imageModel.context)
+            }
         }
         return setupPlaceholder()
     }
