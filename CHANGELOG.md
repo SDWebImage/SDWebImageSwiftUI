@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.2] - 2024-08-29
+- Allows easy to use WebImage with isAnimating default to false and change to true later #333
+- Note: This changes WebImage's internal loaded image from `UIImage/NSImage` to `SDAnimatedImage`, which is compatible for `UIImageView/NSImageView`
+
 ## [3.1.1] - 2024-07-01
 - Fix the transition visual jump between placeholderImage and final image for AnimatedImage #326
 
