@@ -109,7 +109,7 @@ public struct WebImage<Content> : View where Content: View {
     /// - Parameter scale: The scale to use for the image. The default is 1. Set a different value when loading images designed for higher resolution displays. For example, set a value of 2 for an image that you would name with the @2x suffix if stored in a file on disk.
     /// - Parameter options: The options to use when downloading the image. See `SDWebImageOptions` for the possible values.
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
-    /// - Parameter isAnimating: The binding for animation control. The binding value should be `true` when initialized to setup the correct animated image class. If not, you must provide the `.animatedImageClass` explicitly. When the animation started, this binding can been used to start / stop the animation.
+    /// - Parameter isAnimating: The binding for animation control. When the animation started, this binding can been used to start / stop the animation. You can still customize the `.animatedImageClass` context for advanced custom animation.
     public init(url: URL?, scale: CGFloat = 1, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true)) where Content == Image {
         self.init(url: url, options: options, context: context, isAnimating: isAnimating) { phase in
             phase.image ?? Image(platformImage: .empty)
@@ -132,11 +132,11 @@ public struct WebImage<Content> : View where Content: View {
         if context[.imageScaleFactor] == nil {
             context[.imageScaleFactor] = scale
         }
-        // provide animated image class if the initialized `isAnimating` is true, user can still custom the image class if they want
-        if isAnimating.wrappedValue {
-            if context[.animatedImageClass] == nil {
-                context[.animatedImageClass] = SDAnimatedImage.self
-            }
+        // always provide animated image class to allows dynamic control
+        // since most cases, SDAnimatedImage should be compatible with UIImage
+        // user can still custom the image class if they want
+        if context[.animatedImageClass] == nil {
+            context[.animatedImageClass] = SDAnimatedImage.self
         }
         let imageModel = WebImageModel()
         imageModel.url = url

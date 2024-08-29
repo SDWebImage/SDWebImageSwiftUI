@@ -17,6 +17,24 @@ class UserSettings: ObservableObject {
     #endif
 }
 
+struct ContentView5: View {
+    let url: URL = URL(string: "http://assets.sbnation.com/assets/2512203/dogflops.gif")!
+
+    @State private var isAnimating = false
+
+    var body: some View {
+        ZStack {
+            WebImage(url: url, isAnimating: $isAnimating)
+                .pausable(false)
+            Button {
+                isAnimating.toggle()
+            } label: {
+                Text(isAnimating ? "Stop" : "Start")
+            }
+        }
+    }
+}
+
 #if !os(watchOS)
 struct ContentView4: View {
     var url = URL(string: "https://github.com/SDWebImage/SDWebImageSwiftUI/assets/97430818/72d27f90-e9d8-48d7-b144-82ada828a027")!
