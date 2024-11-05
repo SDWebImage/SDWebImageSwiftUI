@@ -107,7 +107,7 @@ public final class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
-            withTransaction(transaction) {
+            withTransaction(self.transaction) {
                 self.image = image
                 self.error = error
                 self.isIncremental = !finished
