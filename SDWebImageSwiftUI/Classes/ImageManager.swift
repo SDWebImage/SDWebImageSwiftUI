@@ -85,6 +85,7 @@ public final class ImageManager : ObservableObject {
         self.indicatorStatus.isLoading = true
         self.indicatorStatus.progress = 0
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
+            // This block may be called in non-main thread
             guard let self = self else {
                 return
             }
@@ -95,7 +96,11 @@ public final class ImageManager : ObservableObject {
                 progress = 0
             }
             self.indicatorStatus.progress = progress
-            self.progressBlock?(receivedSize, expectedSize)
+            if let progressBlock = self.progressBlock {
+                DispatchQueue.main.async {
+                    progressBlock(receivedSize, expectedSize)
+                }
+            }
         }) { [weak self] (image, data, error, cacheType, finished, _) in
             guard let self = self else {
                 return
