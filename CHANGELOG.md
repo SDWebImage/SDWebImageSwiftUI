@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.3] - 2024-11-06
+- Fixed old version compiler does not support automatic self capture in Xcode 14.2 and Swift 5.7.2 #340
+- Fix the data race because progress block is called in non-main queue #341
+
 ## [3.1.2] - 2024-08-29
 - Allows easy to use WebImage with isAnimating default to false and change to true later #333
 - Note: This changes WebImage's internal loaded image from `UIImage/NSImage` to `SDAnimatedImage`, which is compatible for `UIImageView/NSImageView`
