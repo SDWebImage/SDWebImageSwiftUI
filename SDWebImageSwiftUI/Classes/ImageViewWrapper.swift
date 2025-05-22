@@ -73,7 +73,10 @@ public class AnimatedImageViewWrapper : PlatformView {
     public override init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
         addSubview(wrapped)
-        observation = observe(\.wrapped.image, options: [.new]) { _, _ in
+        observation = observe(\.wrapped.image, options: [.new]) { [weak self] _, _ in
+            guard let self = self else {
+                return
+            }
             self.invalidateIntrinsicContentSize()
         }
     }
@@ -81,7 +84,10 @@ public class AnimatedImageViewWrapper : PlatformView {
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         addSubview(wrapped)
-        observation = observe(\.wrapped.image, options: [.new]) { _, _ in
+        observation = observe(\.wrapped.image, options: [.new]) { [weak self] _, _ in
+            guard let self = self else {
+                return
+            }
             self.invalidateIntrinsicContentSize()
         }
     }
