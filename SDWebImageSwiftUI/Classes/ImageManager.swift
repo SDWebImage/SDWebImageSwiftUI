@@ -61,9 +61,27 @@ public final class ImageManager : ObservableObject {
 
     var currentURL: URL?
     var transaction = Transaction()
-    var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
-    var failureBlock: ((Error) -> Void)?
-    var progressBlock: ((Int, Int) -> Void)?
+    
+    // Thread-safe callback properties
+    private let callbackQueue = DispatchQueue(label: "ImageManager.callbacks", qos: .userInitiated)
+    private var _successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)?
+    private var _failureBlock: ((Error) -> Void)?
+    private var _progressBlock: ((Int, Int) -> Void)?
+    
+    var successBlock: ((PlatformImage, Data?, SDImageCacheType) -> Void)? {
+        get { callbackQueue.sync { _successBlock } }
+        set { callbackQueue.sync { _successBlock = newValue } }
+    }
+    
+    var failureBlock: ((Error) -> Void)? {
+        get { callbackQueue.sync { _failureBlock } }
+        set { callbackQueue.sync { _failureBlock = newValue } }
+    }
+    
+    var progressBlock: ((Int, Int) -> Void)? {
+        get { callbackQueue.sync { _progressBlock } }
+        set { callbackQueue.sync { _progressBlock = newValue } }
+    }
     
     public init() {}
     
@@ -96,9 +114,11 @@ public final class ImageManager : ObservableObject {
                 progress = 0
             }
             self.indicatorStatus.progress = progress
-            if let progressBlock = self.progressBlock {
+            // Capture progress callback in thread-safe way
+            let progressCallback = self.progressBlock
+            if let progressCallback = progressCallback {
                 DispatchQueue.main.async {
-                    progressBlock(receivedSize, expectedSize)
+                    progressCallback(receivedSize, expectedSize)
                 }
             }
         }) { [weak self] (image, data, error, cacheType, finished, _) in
@@ -112,6 +132,10 @@ public final class ImageManager : ObservableObject {
                 // So previous View struct call `onDisappear` and cancel the currentOperation
                 return
             }
+            // Capture completion callbacks in thread-safe way
+            let successCallback = self.successBlock
+            let failureCallback = self.failureBlock
+            
             withTransaction(self.transaction) {
                 self.image = image
                 self.error = error
@@ -122,9 +146,9 @@ public final class ImageManager : ObservableObject {
                     self.indicatorStatus.isLoading = false
                     self.indicatorStatus.progress = 1
                     if let image = image {
-                        self.successBlock?(image, data, cacheType)
+                        successCallback?(image, data, cacheType)
                     } else {
-                        self.failureBlock?(error ?? NSError())
+                        failureCallback?(error ?? NSError())
                     }
                 }
             }
