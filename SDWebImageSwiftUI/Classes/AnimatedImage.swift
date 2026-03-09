@@ -262,8 +262,8 @@ public struct AnimatedImage : PlatformViewRepresentable {
             }
             DispatchQueue.main.async {
                 context.coordinator.imageLoading.progress = progress
+                self.imageHandler.progressBlock?(receivedSize, expectedSize)
             }
-            self.imageHandler.progressBlock?(receivedSize, expectedSize)
         }) { (image, data, error, cacheType, finished, _) in
             context.coordinator.imageLoading.image = image
             context.coordinator.imageLoading.isLoading = false

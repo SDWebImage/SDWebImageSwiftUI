@@ -15,45 +15,15 @@ import SDWebImage
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public final class ImageManager : ObservableObject {
     /// loaded image, note when progressive loading, this will published multiple times with different partial image
-    public var image: PlatformImage? {
-        didSet {
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }
-    }
+    public var image: PlatformImage?
     /// loaded image data, may be nil if hit from memory cache. This will only published once even on incremental image loading
-    public var imageData: Data? {
-        didSet {
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }
-    }
+    public var imageData: Data?
     /// loaded image cache type, .none means from network
-    public var cacheType: SDImageCacheType = .none {
-        didSet {
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }
-    }
+    public var cacheType: SDImageCacheType = .none
     /// loading error, you can grab the error code and reason listed in `SDWebImageErrorDomain`, to provide a user interface about the error reason
-    public var error: Error? {
-        didSet {
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }
-    }
+    public var error: Error?
     /// true means during incremental loading
-    public var isIncremental: Bool = false {
-        didSet {
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }
-    }
+    public var isIncremental: Bool = false
     /// A observed object to pass through the image manager loading status to indicator
     public var indicatorStatus = IndicatorStatus()
     
@@ -85,46 +55,48 @@ public final class ImageManager : ObservableObject {
         self.indicatorStatus.isLoading = true
         self.indicatorStatus.progress = 0
         currentOperation = manager.loadImage(with: url, options: options, context: context, progress: { [weak self] (receivedSize, expectedSize, _) in
-            // This block may be called in non-main thread
-            guard let self = self else {
-                return
-            }
-            let progress: Double
-            if (expectedSize > 0) {
-                progress = Double(receivedSize) / Double(expectedSize)
-            } else {
-                progress = 0
-            }
-            self.indicatorStatus.progress = progress
-            if let progressBlock = self.progressBlock {
-                DispatchQueue.main.async {
-                    progressBlock(receivedSize, expectedSize)
+            // This block may be called in non-main thread — dispatch to main for thread safety
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                let progress: Double
+                if (expectedSize > 0) {
+                    progress = Double(receivedSize) / Double(expectedSize)
+                } else {
+                    progress = 0
                 }
+                self.indicatorStatus.progress = progress
+                self.progressBlock?(receivedSize, expectedSize)
             }
         }) { [weak self] (image, data, error, cacheType, finished, _) in
-            guard let self = self else {
-                return
-            }
-            if let error = error as? SDWebImageError, error.code == .cancelled {
-                // Ignore user cancelled
-                // There are race condition when quick scroll
-                // Indicator modifier disapper and trigger `WebImage.body`
-                // So previous View struct call `onDisappear` and cancel the currentOperation
-                return
-            }
-            withTransaction(self.transaction) {
-                self.image = image
-                self.error = error
-                self.isIncremental = !finished
-                if finished {
-                    self.imageData = data
-                    self.cacheType = cacheType
-                    self.indicatorStatus.isLoading = false
-                    self.indicatorStatus.progress = 1
-                    if let image = image {
-                        self.successBlock?(image, data, cacheType)
-                    } else {
-                        self.failureBlock?(error ?? NSError())
+            guard let self else { return }
+            // Completion may be called on any thread — always dispatch to main so
+            // withTransaction and all property writes (SwiftUI APIs) are thread-safe.
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                if let error = error as? SDWebImageError, error.code == .cancelled {
+                    // Ignore user cancelled
+                    // There are race condition when quick scroll
+                    // Indicator modifier disapper and trigger `WebImage.body`
+                    // So previous View struct call `onDisappear` and cancel the currentOperation
+                    return
+                }
+                // Send once, before any mutation — correct ObservableObject semantics.
+                // This collapses all property changes into a single SwiftUI render pass.
+                self.objectWillChange.send()
+                withTransaction(self.transaction) {
+                    self.image = image
+                    self.error = error
+                    self.isIncremental = !finished
+                    if finished {
+                        self.imageData = data
+                        self.cacheType = cacheType
+                        self.indicatorStatus.isLoading = false
+                        self.indicatorStatus.progress = 1
+                        if let image = image {
+                            self.successBlock?(image, data, cacheType)
+                        } else {
+                            self.failureBlock?(error ?? NSError())
+                        }
                     }
                 }
             }
