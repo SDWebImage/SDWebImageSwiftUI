@@ -14,6 +14,9 @@ import SDWebImage
 /// You can use `@ObservedObject` to associate each instance of manager to your View type, which update your view's body from SwiftUI framework when image was loaded.
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public final class ImageManager : ObservableObject {
+    /// Explicit publisher: the synthesized one looks itself up in a global table on every access
+    public let objectWillChange = ObservableObjectPublisher()
+
     /// loaded image, note when progressive loading, this will published multiple times with different partial image
     public var image: PlatformImage? {
         didSet {

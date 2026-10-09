@@ -27,6 +27,9 @@ public struct Indicator<T> where T : View {
 /// A observable model to report indicator loading status
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public class IndicatorStatus : ObservableObject {
+    /// Explicit publisher: the synthesized one looks itself up in a global table on every access
+    public let objectWillChange = ObservableObjectPublisher()
+
     /// whether indicator is loading or not
     var isLoading: Bool = false {
         didSet {
