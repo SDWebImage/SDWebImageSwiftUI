@@ -40,7 +40,7 @@ class WebImageTests: XCTestCase {
     
     func testWebImageWithAnimatedURL() throws {
         let expectation = self.expectation(description: "WebImage animated url initializer")
-        let imageUrl = URL(string: "https://apng.onevcat.com/assets/elephant.png")
+        let imageUrl = URL(string: "https://raw.githubusercontent.com/SDWebImage/SDWebImage/master/Tests/Tests/Images/TestImageAnimated.apng")
         let binding = Binding<Bool>(wrappedValue: true)
         let imageView = WebImage(url: imageUrl, isAnimating: binding)
         let introspectView = imageView.onSuccess { image, data, cacheType in
