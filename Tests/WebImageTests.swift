@@ -178,4 +178,14 @@ class WebImageTests: XCTestCase {
         self.waitForExpectations(timeout: 5, handler: nil)
         ViewHosting.expel()
     }
+    
+    func testWebImageScaleParameter() throws {
+        let imageUrl = URL(string: "https://example.com/test.png")
+        let imageView1 = WebImage(url: imageUrl, scale: 2)
+        XCTAssertEqual(imageView1.imageModel.context?[.imageScaleFactor] as? CGFloat, 2)
+        
+        let imageView2 = WebImage(url: imageUrl, scale: 3, content: { $0 }, placeholder: { Text("Loading") })
+        XCTAssertEqual(imageView2.imageModel.context?[.imageScaleFactor] as? CGFloat, 3)
+    }
 }
+
