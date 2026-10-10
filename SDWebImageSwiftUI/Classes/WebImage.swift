@@ -111,13 +111,13 @@ public struct WebImage<Content> : View where Content: View {
     /// - Parameter context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
     /// - Parameter isAnimating: The binding for animation control. When the animation started, this binding can been used to start / stop the animation. You can still customize the `.animatedImageClass` context for advanced custom animation.
     public init(url: URL?, scale: CGFloat = 1, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true)) where Content == Image {
-        self.init(url: url, options: options, context: context, isAnimating: isAnimating) { phase in
+        self.init(url: url, scale: scale, options: options, context: context, isAnimating: isAnimating) { phase in
             phase.image ?? Image(platformImage: .empty)
         }
     }
 
     public init<I, P>(url: URL?, scale: CGFloat = 1, options: SDWebImageOptions = [], context: [SDWebImageContextOption : Any]? = nil, isAnimating: Binding<Bool> = .constant(true), @ViewBuilder content: @escaping (Image) -> I, @ViewBuilder placeholder: @escaping () -> P) where Content == _ConditionalContent<I, P>, I: View, P: View {
-        self.init(url: url, options: options, context: context, isAnimating: isAnimating) { phase in
+        self.init(url: url, scale: scale, options: options, context: context, isAnimating: isAnimating) { phase in
             if let i = phase.image {
                 content(i)
             } else {
